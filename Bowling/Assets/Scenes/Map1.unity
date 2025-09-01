@@ -339,6 +339,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4067935608601208363, guid: 4342ef7e4932f2247a0f23fe9a25f20f, type: 3}
+      propertyPath: m_RotationSpeed.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6162373275742460906, guid: 4342ef7e4932f2247a0f23fe9a25f20f, type: 3}
       propertyPath: m_Name
       value: RotaCube
