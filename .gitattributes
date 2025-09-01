@@ -1,22 +1,31 @@
-# テキストファイルの改行コードを自動調整
-text=auto
+# ====== Line Endings ======
+# テキストファイルは LF に統一
+* text=auto eol=lf
 
-# Unityのシーン・プレハブはテキスト形式なので差分管理OK
-*.unity text
-*.prefab text
-*.asset text
-*.mat text
-*.anim text
-*.controller text
-*.overrideController text
+# Windows バッチファイルは CRLF
+*.bat text eol=crlf
 
-# バイナリファイルは差分無視
+# ====== Binary Files ======
+# 画像やUnityシーンはバイナリとして扱う
 *.png binary
 *.jpg binary
+*.jpeg binary
+*.gif binary
 *.psd binary
+*.tga binary
 *.fbx binary
-*.mp3 binary
+*.unity binary
+*.prefab binary
+*.asset binary
+*.mat binary
+*.anim binary
+*.controller binary
 *.wav binary
+*.mp3 binary
+*.ogg binary
 
-# OSによる実行権限の違いを無視
-*.sh text eol=lf
+# ====== Git Merge Strategies ======
+# バイナリは基本マージできないので ours を採用（コンフリクト防止）
+*.unity merge=ours
+*.prefab merge=ours
+*.asset merge=ours
