@@ -6,34 +6,35 @@ using System.Collections.Generic;
 //非同期処理や並列処理管理機能
 using System.Threading.Tasks;
 
-//シーングループ
-public enum SceneGroup
-{
-    Title,
-    StageSelect,
-    Play,
-    Result,
+////シーングループ
+//public enum SceneGroup
+//{
+//    Title,          //タイトル
+//    StageSelect,    //ステージセレクト
+//    Play,           //プレイ
+//    Result,         //リザルト
 
-}
+//}
 //ゲームステート
 public enum GameState
 {
-    Title,
-    StageSelect,
-    Play,
-    Result,
+    Title,          //タイトル
+    StageSelect,    //ステージセレクト
+    Play,           //プレイ
+    Result,         //リザルト
 
 }
 
+//シーングループ
 public static class SceneGroups
 {
-    public static readonly Dictionary<SceneGroup, List<string>> Groups =
-        new Dictionary<SceneGroup, List<string>>()
+    public static readonly Dictionary<GameState, List<string>> Groups =
+        new Dictionary<GameState, List<string>>()
         {
-              { SceneGroup.Title, new List<string> { /*"Title_UI", "Title_BG", */"Title"} },
-              { SceneGroup.StageSelect, new List<string> { "StageSelect" } },
-              { SceneGroup.Play, new List<string> { /*"Play_UI", "Play_BG", */"Title", "Map1", "TitleUi"} },
-              { SceneGroup.Result, new List<string> { "Result_UI", "Resultr_BG" } },
+              { GameState.Title, new List<string> { /*"Title_UI", "Title_BG", */"Title"} },
+              { GameState.StageSelect, new List<string> { "StageSelect" } },
+              { GameState.Play, new List<string> { /*"Play_UI", "Play_BG", */"Title", "Map1", "TitleUi"} },
+              { GameState.Result, new List<string> { "Result_UI", "Resultr_BG" } },
         };
 }
 
@@ -42,6 +43,7 @@ public class SceneController : MonoBehaviour
     //シングルトン
     public static SceneController Instance { get; private set; }
 
+    //現在のシーン
     public GameState CurrentState { get; private set; }
 
     private void Awake()
@@ -65,8 +67,10 @@ public class SceneController : MonoBehaviour
     {
         //最初タイトル
         CurrentState = GameState.Title;
+        Debug.Log("最初のシーンはタイトルです");
     }
 
+    //非同期読み込み
     public async Task LoadSceneAsync(List<string> scenenames)
     {
         foreach (var scenename in scenenames)
@@ -79,6 +83,7 @@ public class SceneController : MonoBehaviour
         }
     }
 
+    //非同期消去
     public async Task UnloadSceneAsync(List<string> scenenames)
     {
         foreach (var scenename in scenenames)
@@ -90,7 +95,7 @@ public class SceneController : MonoBehaviour
             }
         }
     }
-    public async Task GoTo(SceneGroup group)
+    public async Task GoTo(GameState group)
     {
         await UnloadAllExceptManagers();
         await LoadSceneAsync(SceneGroups.Groups[group]);
@@ -111,12 +116,15 @@ public class SceneController : MonoBehaviour
         await UnloadSceneAsync(allScenes);
     }
 
-    // 状態を変更する
+    //状態を変更する
     public void ChangeState(GameState newState)
     {
+        //現在のシーンが変更しようとするシーンと同じ場合
         if (CurrentState == newState) return;
 
+        //シーン変更ログ
         Debug.Log($"GameState: {CurrentState} → {newState}");
+        //シーンを変更
         CurrentState = newState;
 
         switch (newState)
@@ -143,14 +151,14 @@ public class SceneController : MonoBehaviour
 
     private async Task OnEnterTitleAsync()
     {
-        await Instance.GoTo(SceneGroup.Title);
+        await Instance.GoTo(GameState.Title);
         SceneController.Instance.ChangeState(GameState.Title);
         Debug.Log("タイトル画面へ");
     }
 
     private async Task OnEnterPlayAsync()
     {
-        await Instance.GoTo(SceneGroup.Play);
+        await Instance.GoTo(GameState.Play);
         SceneController.Instance.ChangeState(GameState.Play);
         Debug.Log("ゲーム開始！");
     }
