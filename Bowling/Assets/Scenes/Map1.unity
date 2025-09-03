@@ -255,7 +255,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
-<<<<<<< Updated upstream
 --- !u!1 &1408315831
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,8 +421,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
-=======
->>>>>>> Stashed changes
 --- !u!1 &1925360810
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,15 +9,23 @@ using System.Threading.Tasks;
 public class SceneController : MonoBehaviour
 {
     //シングルトン
-    public static SceneController instance { get; private set; }
+    public static SceneController Instance { get; private set; }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Awake()
+    {
+        //インスタンスが空であれば
+        if(Instance == null)
+        {
+            Instance = this; DontDestroyOnLoad(gameObject);
+        }
+        else Destroy(gameObject);
+    }
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
