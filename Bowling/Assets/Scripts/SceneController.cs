@@ -32,7 +32,7 @@ public static class SceneGroups
         {
               { SceneGroup.Title, new List<string> { /*"Title_UI", "Title_BG", */"Title"} },
               { SceneGroup.StageSelect, new List<string> { "StageSelect" } },
-              { SceneGroup.Play, new List<string> { /*"Play_UI", "Play_BG", */"Map1"} },
+              { SceneGroup.Play, new List<string> { /*"Play_UI", "Play_BG", */"Title", "Map1"} },
               { SceneGroup.Result, new List<string> { "Result_UI", "Resultr_BG" } },
         };
 }
