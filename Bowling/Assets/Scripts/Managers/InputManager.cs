@@ -16,7 +16,16 @@ public class InputManager : MonoBehaviour
 
     private void Awake()
     {
-        
+        if(Instance = null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+
+            inputActions = new GameInput();
+            inputActions.Enable();
+
+            savePath = Path.Combine(Application.persistentDataPath, "rebinds.json");
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
