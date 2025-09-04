@@ -1,7 +1,24 @@
 using UnityEngine;
+//入力システム
+using UnityEngine.InputSystem;
+//ファイル・ディレクトリ操作用
+using System.IO;
 
 public class InputManager : MonoBehaviour
 {
+    //シングルトン
+    public static InputManager Instance { get; private set; }
+
+    //インプットキー情報
+    private GameInput inputActions;
+
+    private string savePath;
+
+    private void Awake()
+    {
+        
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
