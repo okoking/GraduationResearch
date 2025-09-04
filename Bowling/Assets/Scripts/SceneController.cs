@@ -33,7 +33,7 @@ public static class SceneGroups
         {
               { GameState.Title, new List<string> { /*"Title_UI", "Title_BG", */"Title"} },
               { GameState.StageSelect, new List<string> { "StageSelect" } },
-              { GameState.Play, new List<string> { /*"Play_UI", "Play_BG", */"Title", "Map1", "TitleUi"} },
+              { GameState.Play, new List<string> { /*"Play_UI", "Play_BG", */"Player",} },
               { GameState.Result, new List<string> { "Result_UI", "Resultr_BG" } },
         };
 }
