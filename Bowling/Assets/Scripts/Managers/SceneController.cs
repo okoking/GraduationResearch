@@ -18,10 +18,11 @@ using System.Threading.Tasks;
 //ゲームステート
 public enum GameState
 {
-    Title,          //タイトル
-    StageSelect,    //ステージセレクト
-    Play,           //プレイ
-    Result,         //リザルト
+    Title,              //タイトル
+    Option,             //オプション
+    StageSelect,        //ステージセレクト
+    Play,               //プレイ
+    Result,             //リザルト
 
 }
 
@@ -32,6 +33,7 @@ public static class SceneGroups
         new Dictionary<GameState, List<string>>()
         {
               { GameState.Title, new List<string> { /*"Title_UI", "Title_BG", */"Title"} },
+              { GameState.Option, new List<string> { "OptionUI" } },
               { GameState.StageSelect, new List<string> { "StageSelect" } },
               { GameState.Play, new List<string> { /*"Play_UI", "Play_BG", */"Player","EnemyTest",} },
               { GameState.Result, new List<string> { "Result_UI", "Resultr_BG" } },
@@ -67,6 +69,7 @@ public class SceneController : MonoBehaviour
     {
         //最初タイトル
         CurrentState = GameState.Title;
+        _ = OnEnterTitleAsync();
         Debug.Log("最初のシーンはタイトルです");
     }
 
@@ -132,6 +135,9 @@ public class SceneController : MonoBehaviour
             case GameState.Title:
                 _ = OnEnterTitleAsync();
                 break;
+            case GameState.Option:
+                _ = OnEnterOptionAsync();
+                break;
             case GameState.Play:
                 _ = OnEnterPlayAsync();
                 break;
@@ -143,23 +149,26 @@ public class SceneController : MonoBehaviour
     }
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Return))
-        {
-            Instance.ChangeState(GameState.Play);
-        }
+      
     }
 
     private async Task OnEnterTitleAsync()
     {
         await Instance.GoTo(GameState.Title);
-        SceneController.Instance.ChangeState(GameState.Title);
+        
         Debug.Log("タイトル画面へ");
+    }
+    private async Task OnEnterOptionAsync()
+    {
+        await Instance.GoTo(GameState.Option);
+      
+        Debug.Log("オプション画面へ");
     }
 
     private async Task OnEnterPlayAsync()
     {
         await Instance.GoTo(GameState.Play);
-        SceneController.Instance.ChangeState(GameState.Play);
+       
         Debug.Log("ゲーム開始！");
     }
 
