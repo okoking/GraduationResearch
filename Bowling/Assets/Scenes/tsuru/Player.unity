@@ -372,6 +372,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7375743374108007620, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
+      propertyPath: JUMP_POWER
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 692210106748338692, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
       propertyPath: m_Name
       value: Ball
@@ -415,6 +419,10 @@ PrefabInstance:
     - target: {fileID: 1464570747603738632, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1950698911052805772, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
+      propertyPath: m_Mass
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

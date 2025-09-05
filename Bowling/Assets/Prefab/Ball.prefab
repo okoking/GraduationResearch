@@ -149,4 +149,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fb6e915ff40de4188a21d796a5ae41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RotationSpeed: {x: 0, y: 0, z: 0}
+  JUMP_POWER: 20
+  BALL_SPEED_SCALE: 1000
