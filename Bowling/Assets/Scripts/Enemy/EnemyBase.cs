@@ -17,8 +17,7 @@ public class EnemyBase : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             enemyHp.TakeDamage(1);
+            Debug.Log("Enemy HP: " + enemyHp.GetCurrentHp());
         }
-
-        Debug.Log("Enemy HP: " + enemyHp.GetCurrentHp());
     }
 }
