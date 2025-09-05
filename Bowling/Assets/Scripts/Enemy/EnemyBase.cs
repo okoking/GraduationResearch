@@ -20,4 +20,6 @@ public class EnemyBase : MonoBehaviour
             Debug.Log("Enemy HP: " + enemyHp.GetCurrentHp());
         }
     }
+
+    public HitPointManager GetEnemyHp() { return enemyHp; }
 }
