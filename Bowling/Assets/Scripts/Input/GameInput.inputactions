@@ -127,13 +127,22 @@
             ]
         },
         {
-            "name": "New action map",
+            "name": "Dicide",
             "id": "012447f8-60c1-4f1f-b35d-639ee73924b1",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "KeyBoardDicide",
                     "type": "Button",
-                    "id": "f71ef276-d613-4d4e-b924-372cc59c536a",
+                    "id": "133511f2-4d6f-4288-bdd5-44cad06c2172",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PadDicide",
+                    "type": "Button",
+                    "id": "2669c45e-bf63-4923-b695-24193ce31581",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -143,12 +152,23 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "542fad92-f32f-41ef-81cf-3a79e6ba7f9d",
+                    "id": "e5669530-15c0-45d8-b17f-7cf374b635d0",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "KeyBoardDicide",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cf08d461-2e1e-43ed-9dfd-667a87fb1638",
                     "path": "",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "PadDicide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

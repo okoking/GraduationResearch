@@ -150,13 +150,22 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""New action map"",
+            ""name"": ""Dicide"",
             ""id"": ""012447f8-60c1-4f1f-b35d-639ee73924b1"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""KeyBoardDicide"",
                     ""type"": ""Button"",
-                    ""id"": ""f71ef276-d613-4d4e-b924-372cc59c536a"",
+                    ""id"": ""133511f2-4d6f-4288-bdd5-44cad06c2172"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PadDicide"",
+                    ""type"": ""Button"",
+                    ""id"": ""2669c45e-bf63-4923-b695-24193ce31581"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -166,12 +175,23 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""542fad92-f32f-41ef-81cf-3a79e6ba7f9d"",
+                    ""id"": ""e5669530-15c0-45d8-b17f-7cf374b635d0"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyBoardDicide"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cf08d461-2e1e-43ed-9dfd-667a87fb1638"",
                     ""path"": """",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""PadDicide"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -184,15 +204,16 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        // New action map
-        m_Newactionmap = asset.FindActionMap("New action map", throwIfNotFound: true);
-        m_Newactionmap_Newaction = m_Newactionmap.FindAction("New action", throwIfNotFound: true);
+        // Dicide
+        m_Dicide = asset.FindActionMap("Dicide", throwIfNotFound: true);
+        m_Dicide_KeyBoardDicide = m_Dicide.FindAction("KeyBoardDicide", throwIfNotFound: true);
+        m_Dicide_PadDicide = m_Dicide.FindAction("PadDicide", throwIfNotFound: true);
     }
 
     ~@GameInput()
     {
         Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, GameInput.Player.Disable() has not been called.");
-        Debug.Assert(!m_Newactionmap.enabled, "This will cause a leak and performance issues, GameInput.Newactionmap.Disable() has not been called.");
+        Debug.Assert(!m_Dicide.enabled, "This will cause a leak and performance issues, GameInput.Dicide.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -305,58 +326,67 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     }
     public PlayerActions @Player => new PlayerActions(this);
 
-    // New action map
-    private readonly InputActionMap m_Newactionmap;
-    private List<INewactionmapActions> m_NewactionmapActionsCallbackInterfaces = new List<INewactionmapActions>();
-    private readonly InputAction m_Newactionmap_Newaction;
-    public struct NewactionmapActions
+    // Dicide
+    private readonly InputActionMap m_Dicide;
+    private List<IDicideActions> m_DicideActionsCallbackInterfaces = new List<IDicideActions>();
+    private readonly InputAction m_Dicide_KeyBoardDicide;
+    private readonly InputAction m_Dicide_PadDicide;
+    public struct DicideActions
     {
         private @GameInput m_Wrapper;
-        public NewactionmapActions(@GameInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Newaction => m_Wrapper.m_Newactionmap_Newaction;
-        public InputActionMap Get() { return m_Wrapper.m_Newactionmap; }
+        public DicideActions(@GameInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @KeyBoardDicide => m_Wrapper.m_Dicide_KeyBoardDicide;
+        public InputAction @PadDicide => m_Wrapper.m_Dicide_PadDicide;
+        public InputActionMap Get() { return m_Wrapper.m_Dicide; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(NewactionmapActions set) { return set.Get(); }
-        public void AddCallbacks(INewactionmapActions instance)
+        public static implicit operator InputActionMap(DicideActions set) { return set.Get(); }
+        public void AddCallbacks(IDicideActions instance)
         {
-            if (instance == null || m_Wrapper.m_NewactionmapActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_NewactionmapActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            if (instance == null || m_Wrapper.m_DicideActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DicideActionsCallbackInterfaces.Add(instance);
+            @KeyBoardDicide.started += instance.OnKeyBoardDicide;
+            @KeyBoardDicide.performed += instance.OnKeyBoardDicide;
+            @KeyBoardDicide.canceled += instance.OnKeyBoardDicide;
+            @PadDicide.started += instance.OnPadDicide;
+            @PadDicide.performed += instance.OnPadDicide;
+            @PadDicide.canceled += instance.OnPadDicide;
         }
 
-        private void UnregisterCallbacks(INewactionmapActions instance)
+        private void UnregisterCallbacks(IDicideActions instance)
         {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @KeyBoardDicide.started -= instance.OnKeyBoardDicide;
+            @KeyBoardDicide.performed -= instance.OnKeyBoardDicide;
+            @KeyBoardDicide.canceled -= instance.OnKeyBoardDicide;
+            @PadDicide.started -= instance.OnPadDicide;
+            @PadDicide.performed -= instance.OnPadDicide;
+            @PadDicide.canceled -= instance.OnPadDicide;
         }
 
-        public void RemoveCallbacks(INewactionmapActions instance)
+        public void RemoveCallbacks(IDicideActions instance)
         {
-            if (m_Wrapper.m_NewactionmapActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_DicideActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(INewactionmapActions instance)
+        public void SetCallbacks(IDicideActions instance)
         {
-            foreach (var item in m_Wrapper.m_NewactionmapActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_DicideActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_NewactionmapActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_DicideActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public NewactionmapActions @Newactionmap => new NewactionmapActions(this);
+    public DicideActions @Dicide => new DicideActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
     }
-    public interface INewactionmapActions
+    public interface IDicideActions
     {
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnKeyBoardDicide(InputAction.CallbackContext context);
+        void OnPadDicide(InputAction.CallbackContext context);
     }
 }
