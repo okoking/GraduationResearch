@@ -28,6 +28,7 @@ public class Title : MonoBehaviour
         //プレイシーンへ
         if (Input.GetKeyDown(KeyCode.Return))
         {
+
             SceneController.Instance.ChangeState(GameState.Play);
         }
 
