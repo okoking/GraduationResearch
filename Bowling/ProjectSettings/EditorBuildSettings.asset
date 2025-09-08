@@ -40,14 +40,20 @@ EditorBuildSettings:
     guid: d7d9d33601a5fa7429a1179a33d9b8bf
   - enabled: 1
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     path: Assets/Scenes/Gimmick/Gimmick.unity
     guid: 9f6a3ee541ca81b49a166b2cbb006dfe
 =======
+=======
+>>>>>>> Stashed changes
     path: Assets/Scenes/Result/Result.unity
     guid: 0bd6514fcd90091449452779e3ef184b
   - enabled: 1
     path: Assets/Scenes/Result/ResultUI.unity
     guid: 441e2e9a66f85ff44bf3e2f8a60af6f8
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: bb17436b69a4dc44b869feacddcfc392, type: 3}
