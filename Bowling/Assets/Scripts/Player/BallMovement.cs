@@ -69,7 +69,7 @@ public class BallMovement : MonoBehaviour
             updateStickPosTime = Time.time;
         }
 
-        // —£‚µ‚½uŠÔ‚Ìˆ—i
+        // —£‚µ‚½uŠÔ‚Ìˆ—
         if (prevInput.magnitude > 0f &&
             input.magnitude == 0f &&
             prevMaxInput.magnitude > 0.2f)
