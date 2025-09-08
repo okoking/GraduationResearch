@@ -4,12 +4,19 @@ public class EnemyUi : MonoBehaviour
 {
     private EnemyBase enemy;
 
-    [SerializeField] private Transform bar;
+    private Transform enemyTransform;
+
+    public float height;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         enemy = GetComponentInParent<EnemyBase>();
+
+        if (enemy != null)
+        {
+            enemyTransform = enemy.transform;
+        }
     }
 
     // Update is called once per frame
@@ -25,7 +32,7 @@ public class EnemyUi : MonoBehaviour
         ratio = Mathf.Clamp01(ratio);
 
         // ÉoÅ[ÇèkÇﬂÇÈ
-        transform.localScale = new Vector3(ratio, 0.1f, 0.1f);
-        transform.localPosition = new Vector3((ratio - 1f) * 0.5f, 2f, 0f);
+        transform.localScale = new Vector3(ratio, height, 0.1f);
+        transform.position = enemyTransform.position + new Vector3((ratio - 1f) * 0.5f, 1f, 0f);
     }
 }

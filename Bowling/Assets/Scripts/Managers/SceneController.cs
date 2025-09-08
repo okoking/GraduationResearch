@@ -32,10 +32,10 @@ public static class SceneGroups
     public static readonly Dictionary<GameState, List<string>> Groups =
         new Dictionary<GameState, List<string>>()
         {
-              { GameState.Title, new List<string> { /*"Title_UI", "Title_BG", */"Title"} },
-              { GameState.Option, new List<string> { "OptionUI" } },
-              { GameState.StageSelect, new List<string> { "StageSelect" } },
-              { GameState.Play, new List<string> { /*"Play_UI", "Play_BG", */"Player","EnemyTest", "Gimmick" } },
+              { GameState.Title, new List<string> { "Title_UI", "Title" } },
+              { GameState.Option, new List<string> { "Option", "OptionUI" } },
+              { GameState.StageSelect, new List<string> { "StageSelect", "StageSelectUI" } },
+              { GameState.Play, new List<string> { "Play", "PlayUI", "Player","EnemyTest", "Gimmick" } },
               { GameState.Result, new List<string> { "Result_UI", "Resultr_BG" } },
         };
 }

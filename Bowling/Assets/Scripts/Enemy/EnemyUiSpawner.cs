@@ -13,7 +13,7 @@ public class EnemyUiSpawner : MonoBehaviour
         hpBarInstance = Instantiate(hpBarPrefab, transform);
 
         //ì™ÇÃè„Ç…îzíu
-        hpBarInstance.transform.localPosition = new Vector3(0, 2f, 0);
+        hpBarInstance.transform.localPosition = new Vector3(0, -1f, 0);
     }
 
     // Update is called once per frame

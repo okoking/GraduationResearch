@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/tsuru/Player.unity
-    guid: 732f07d0972a18d4b9eb8c5a65659d1b
-  - enabled: 1
     path: Assets/Scenes/Managers.unity
     guid: 0cac7dcfce3c8924c8cb12f70cd96bcf
   - enabled: 1
@@ -18,11 +15,37 @@ EditorBuildSettings:
     path: Assets/Scenes/Title/TitleUi.unity
     guid: 309e0101844a3e14fbc988cad089c0e6
   - enabled: 1
+    path: Assets/Scenes/Option/Option.unity
+    guid: f8883f0890aabc441ba6f6ad70b6bc7a
+  - enabled: 1
+    path: Assets/Scenes/Option/OptionUI.unity
+    guid: 8c427a624fc9fa548b112f529cba4e4f
+  - enabled: 1
+    path: Assets/Scenes/StageSelect/StageSelect.unity
+    guid: ff925ce68715ee347a2949707ff1cdf3
+  - enabled: 1
+    path: Assets/Scenes/StageSelect/StageSelectUI.unity
+    guid: b24b43347d3ec974ea50ca60b2361cec
+  - enabled: 1
+    path: Assets/Scenes/Play/Play.unity
+    guid: b7c13a68124054d40a8bd28af4b04186
+  - enabled: 1
+    path: Assets/Scenes/Play/PlayUI.unity
+    guid: b699f71f40a51c14783b2cc2fa52a575
+  - enabled: 1
+    path: Assets/Scenes/tsuru/Player.unity
+    guid: 732f07d0972a18d4b9eb8c5a65659d1b
+  - enabled: 1
     path: Assets/Scenes/Enemy/EnemyTest.unity
     guid: d7d9d33601a5fa7429a1179a33d9b8bf
   - enabled: 1
     path: Assets/Scenes/Gimmick/Gimmick.unity
     guid: 9f6a3ee541ca81b49a166b2cbb006dfe
+    path: Assets/Scenes/Result/Result.unity
+    guid: 0bd6514fcd90091449452779e3ef184b
+  - enabled: 1
+    path: Assets/Scenes/Result/ResultUI.unity
+    guid: 441e2e9a66f85ff44bf3e2f8a60af6f8
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: bb17436b69a4dc44b869feacddcfc392, type: 3}
   m_UseUCBPForAssetBundles: 0

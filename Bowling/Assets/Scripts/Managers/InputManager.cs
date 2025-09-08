@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 //ファイル・ディレクトリ操作用
 using System.IO;
+using System;
 
 public class InputManager : MonoBehaviour
 {
@@ -50,20 +51,29 @@ public class InputManager : MonoBehaviour
     }
 
     //リバインド開始
-    public void StartRebind(string actionName, System.Action onComplete = null)
+    public void StartRebind(string actionName, int bindingIndex = 0, Action onComplete = null)
     {
-        var action = inputActions.asset.FindAction(actionName);
+        var action = GetAction(actionName);
         if (action == null)
         {
-            Debug.LogError($"Action {actionName} が見つかりません");
+            Debug.LogError($"リバインド対象のアクションが見つかりません: {actionName}");
             return;
         }
 
-        action.PerformInteractiveRebinding()
+        //既存のリバインドをキャンセル
+        action.Disable();
+
+        //インタラクティブリバインド開始
+        action.PerformInteractiveRebinding(bindingIndex)
+            .WithControlsExcluding("<Mouse>/position") // 不要なら除外
+            .WithControlsExcluding("<Mouse>/delta")
             .OnComplete(operation =>
             {
+                action.Enable();
                 operation.Dispose();
-                SaveRebinds();
+
+                Debug.Log($"{actionName} のリバインド完了: {action.bindings[bindingIndex].effectivePath}");
+
                 onComplete?.Invoke();
             })
             .Start();
@@ -89,9 +99,48 @@ public class InputManager : MonoBehaviour
     }
 
     //UIで現在のキー表示に使う
-    public string GetBindingDisplayName(string actionName, int bindingIndex = 0)
+    public string GetBindingDisplayName(string actionName, int bindingIndex)
     {
-        var action = inputActions.asset.FindAction(actionName);
-        return action != null ? action.GetBindingDisplayString(bindingIndex) : "N/A";
+        var action = GetAction(actionName);
+        if (action == null) return "N/A";
+
+        if (bindingIndex < 0 || bindingIndex >= action.bindings.Count) return "N/A";
+
+        return action.GetBindingDisplayString(bindingIndex);
+    }
+
+    //アクションを取得する
+    //actionName は "Player/Jump" のようにマップ名/アクション名で指定
+    public InputAction GetAction(string actionName)
+    {
+        if (string.IsNullOrEmpty(actionName) || inputActions == null)
+            return null;
+
+        //"Player/Jump" → マップ "Player" の "Jump"
+        var parts = actionName.Split('/');
+        if (parts.Length != 2)
+        {
+            Debug.LogError($"ActionName の形式が不正です: {actionName}");
+            return null;
+        }
+
+        var mapName = parts[0];
+        var actionNameOnly = parts[1];
+
+        var map = inputActions.asset.FindActionMap(mapName, true);
+        if (map == null)
+        {
+            Debug.LogError($"アクションマップ {mapName} が見つかりません");
+            return null;
+        }
+
+        var action = map.FindAction(actionNameOnly, true);
+        if (action == null)
+        {
+            Debug.LogError($"アクション {actionNameOnly} が見つかりません");
+            return null;
+        }
+
+        return action;
     }
 }
