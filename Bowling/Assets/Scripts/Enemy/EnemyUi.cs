@@ -8,6 +8,8 @@ public class EnemyUi : MonoBehaviour
 
     public float height;
 
+    private Vector3 initPos;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,6 +19,8 @@ public class EnemyUi : MonoBehaviour
         {
             enemyTransform = enemy.transform;
         }
+
+        initPos = enemyTransform.position;
     }
 
     // Update is called once per frame
@@ -33,6 +37,6 @@ public class EnemyUi : MonoBehaviour
 
         // ÉoÅ[ÇèkÇﬂÇÈ
         transform.localScale = new Vector3(ratio, height, 0.1f);
-        transform.position = enemyTransform.position + new Vector3((ratio - 1f) * 0.5f, 1f, 0f);
+        transform.position = initPos + new Vector3((ratio - 1f) * 0.5f, 1f, 0f);
     }
 }
