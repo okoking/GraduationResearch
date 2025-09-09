@@ -8,6 +8,8 @@ TagManager:
   - fall
   - Ball
   - Wall
+  - Slippery floor
+  - Slowdown Floor
   layers:
   - Default
   - TransparentFX
