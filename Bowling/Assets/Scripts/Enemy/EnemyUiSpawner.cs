@@ -4,7 +4,6 @@ public class EnemyUiSpawner : MonoBehaviour
 {
 
     [SerializeField] private GameObject hpBarPrefab;
-    [SerializeField] private GameObject hpBarBgPrefab;
     private GameObject hpBarInstance;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -12,7 +11,6 @@ public class EnemyUiSpawner : MonoBehaviour
     {
         //HPバーを生成してこの敵の子にする
         hpBarInstance = Instantiate(hpBarPrefab, transform);
-        hpBarInstance = Instantiate(hpBarBgPrefab, transform);
 
         //頭の上に配置
         hpBarInstance.transform.localPosition = new Vector3(0, -1f, 0);
