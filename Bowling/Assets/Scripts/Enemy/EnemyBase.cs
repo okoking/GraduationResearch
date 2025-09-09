@@ -21,5 +21,11 @@ public class EnemyBase : MonoBehaviour
         }
     }
 
+    //“–‚½‚è”»’è
+    private void OnCollisionEnter(Collision collision)
+    {
+        
+    }
+
     public HitPointManager GetEnemyHp() { return enemyHp; }
 }
