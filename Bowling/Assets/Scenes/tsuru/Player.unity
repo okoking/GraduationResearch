@@ -376,6 +376,10 @@ PrefabInstance:
       propertyPath: JUMP_POWER
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: -7375743374108007620, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
+      propertyPath: BALL_SPEED_SCALE
+      value: 800
+      objectReference: {fileID: 0}
     - target: {fileID: 692210106748338692, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
       propertyPath: m_Name
       value: Ball
@@ -390,7 +394,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1464570747603738632, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 1464570747603738632, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
       propertyPath: m_LocalRotation.w

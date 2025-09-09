@@ -9,8 +9,10 @@ public class BallMovement : MonoBehaviour
 
     private Vector3 prevInput = new(0f, 0f, 0f);
     private Vector3 prevMaxInput = new(0f, 0f, 0f);
+    private Vector3 HorizontalballSpeed = new(0f, 0f, 0f);
 
     private float updateStickPosTime;
+    private float ballSpeed = 10f;
 
     // ジャンプ押したか
     private bool isJump = false;
@@ -40,6 +42,8 @@ public class BallMovement : MonoBehaviour
         Jump();
         // 発射
         Shot();
+        // 移動
+        Move();
 
         // Xでリセット
         if (Input.GetKeyDown("joystick button 2"))
@@ -66,6 +70,15 @@ public class BallMovement : MonoBehaviour
             isShot = false;
             isableShot = false;
         }
+
+        if (!isableShot)
+        {
+            // 力を加えて球を動かす
+            rb.AddForce(HorizontalballSpeed);
+        }
+
+
+
         rb.AddForce(Vector3.down * 20f, ForceMode.Acceleration);
     }
 
@@ -81,6 +94,13 @@ public class BallMovement : MonoBehaviour
         float h = Input.GetAxis("Horizontal") * BALL_SPEED_SCALE; // A/D, ←/→, スティックX
         float v = Input.GetAxis("Vertical") * BALL_SPEED_SCALE;   // W/S, ↑/↓, スティックY
 
+        //float hor = Mathf.Abs(Input.GetAxis("Horizontal"));
+
+        //if (hor < .5f)
+        //{
+        //    Debug.Log(hor);
+        //}
+
         Vector3 input = new(h, 0f, v);
 
         float elapsed = Time.time - updateStickPosTime;
@@ -90,6 +110,7 @@ public class BallMovement : MonoBehaviour
         {
             prevMaxInput = input;
             updateStickPosTime = Time.time;
+            Debug.Log(prevMaxInput);
         }
 
         // 離した瞬間の処理
@@ -106,6 +127,19 @@ public class BallMovement : MonoBehaviour
         }
 
         prevInput = input;
+    }
+
+    void Move()
+    {
+        if (isableShot) 
+        {
+            return;
+        }
+
+        // 入力を取得（キーボードまたはスティック）
+        float h = Input.GetAxis("Horizontal") * ballSpeed; // A/D, ←/→, スティックX
+
+        HorizontalballSpeed = new Vector3(h, 0f, 0f);
     }
 
     void Jump()
