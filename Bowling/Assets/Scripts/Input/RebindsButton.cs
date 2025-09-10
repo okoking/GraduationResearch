@@ -28,14 +28,12 @@ public class RebindsButton : MonoBehaviour
                 Debug.LogError("InputManager がシーンに存在しません");
                 return;
             }
-
             var action = InputManager.Instance.GetAction(actionName);
             if (action == null)
             {
                 Debug.LogError($"アクション {actionName} が見つかりません");
                 return;
             }
-
             bindingText.text = "Press a key...";
             InputManager.Instance.StartRebind(actionName, 0, () =>
             {
@@ -52,6 +50,6 @@ public class RebindsButton : MonoBehaviour
     }
     private void UpdateUI()
     {
-        //bindingText.text = InputManager.Instance.GetBindingDisplayName(actionName, bindingIndex);
+        bindingText.text = InputManager.Instance.GetBindingDisplayName(actionName, bindingIndex);
     }
 }

@@ -5,10 +5,7 @@ public class Title : MonoBehaviour
     //Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //InputManager.Instance.StartRebind("Player/Jump", () => 
-        //{
-        //    Debug.Log("Jump が新しいキーに設定されました");
-        //});
+
     }
 
     //Update is called once per frame
@@ -20,13 +17,13 @@ public class Title : MonoBehaviour
         }
 
         //オプションシーンへ
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (InputManager.Instance.KeyBoardOption || InputManager.Instance.PadOption)
         {
             SceneController.Instance.ChangeState(GameState.Option);
         }
 
         //プレイシーンへ
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (InputManager.Instance.KeyBoardEnter || InputManager.Instance.PadEnter)
         {
 
             SceneController.Instance.ChangeState(GameState.Play);

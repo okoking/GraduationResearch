@@ -138,6 +138,9 @@ public class SceneController : MonoBehaviour
             case GameState.Option:
                 _ = OnEnterOptionAsync();
                 break;
+            case GameState.StageSelect:
+                _ = OnEnterStageSelectAsync();
+                break;
             case GameState.Play:
                 _ = OnEnterPlayAsync();
                 break;
@@ -156,15 +159,20 @@ public class SceneController : MonoBehaviour
     {
         await Instance.GoTo(GameState.Title);
         
-        Debug.Log("タイトル画面へ");
+        Debug.Log("タイトル画面!");
     }
     private async Task OnEnterOptionAsync()
     {
         await Instance.GoTo(GameState.Option);
       
-        Debug.Log("オプション画面へ");
+        Debug.Log("オプション画面!");
     }
+    private async Task OnEnterStageSelectAsync()
+    {
+        await Instance.GoTo(GameState.StageSelect);
 
+        Debug.Log("ステージセレクト画面!");
+    }
     private async Task OnEnterPlayAsync()
     {
         await Instance.GoTo(GameState.Play);
@@ -177,10 +185,7 @@ public class SceneController : MonoBehaviour
       
         Debug.Log("リザルト！");
       
-        //_ = SceneController.Instance.SwitchScenesAsync(
-        //    new string[] { "Game_Stage", "Game_Player", "Game_Enemy", "Game_UI" },
-        //    new string[] { "GameOver_UI", "GameOver_BG" }
-        //);
+      
     }
  
 }

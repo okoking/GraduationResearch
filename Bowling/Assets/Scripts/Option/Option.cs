@@ -12,7 +12,7 @@ public class Option : MonoBehaviour
     void Update()
     {
         //タイトルシーンへ
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (InputManager.Instance.KeyBoardCancel || InputManager.Instance.PadCancel)
         {
             SceneController.Instance.ChangeState(GameState.Title);
         }

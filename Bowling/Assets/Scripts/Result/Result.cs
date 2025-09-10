@@ -14,7 +14,7 @@ public class Result : MonoBehaviour
       
 
         //ステージセレクトシーンへ
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (InputManager.Instance.KeyBoardEnter || InputManager.Instance.PadEnter)
         {
             SceneController.Instance.ChangeState(GameState.StageSelect);
         }

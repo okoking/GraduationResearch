@@ -35,9 +35,6 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    public Vector2 Move => inputActions.Player.Move.ReadValue<Vector2>();
-    public bool Jump => inputActions.Player.Jump.triggered;
-
     //Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -116,7 +113,6 @@ public class InputManager : MonoBehaviour
         if (string.IsNullOrEmpty(actionName) || inputActions == null)
             return null;
 
-        //"Player/Jump" ¨ ƒ}ƒbƒv "Player" ‚Ì "Jump"
         var parts = actionName.Split('/');
         if (parts.Length != 2)
         {
@@ -143,4 +139,14 @@ public class InputManager : MonoBehaviour
 
         return action;
     }
+
+    //“ü—Íˆê——
+    public Vector2 Move => inputActions.Player.Move.ReadValue<Vector2>();
+    public bool Jump => inputActions.Player.Jump.triggered;
+    public bool KeyBoardEnter => inputActions.Dicide.KeyBoardDicide.triggered;
+    public bool PadEnter => inputActions.Dicide.PadDicide.triggered;
+    public bool KeyBoardCancel => inputActions.Cancel.KeyBoradCancel.triggered;
+    public bool PadCancel => inputActions.Cancel.PadCancel.triggered;
+    public bool KeyBoardOption => inputActions.Option.KeyBoard.triggered;
+    public bool PadOption => inputActions.Option.Pad.triggered;
 }
