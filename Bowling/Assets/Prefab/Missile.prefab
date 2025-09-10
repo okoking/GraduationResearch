@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 6925002267404205714}
   - component: {fileID: 1845391681537861776}
   - component: {fileID: 3841113135705655902}
-  - component: {fileID: -6314190132011792832}
   - component: {fileID: -3167746342190462181}
+  - component: {fileID: -2909669098509251380}
   m_Layer: 0
   m_Name: Missile
   m_TagString: Untagged
@@ -110,23 +110,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-6314190132011792832
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3899912685306639125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e30473ad6db517468ab289a5b2f054f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 727497205073763627, guid: c59305cb362bc0548b3296687e5b1e28, type: 3}
-  speed: 10
-  rotateSpeed: 5
-  waveAmplitude: 1
-  waveFrequency: 5
 --- !u!54 &-3167746342190462181
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -154,3 +137,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-2909669098509251380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3899912685306639125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b976186db5ad40b458de5cfae6016c78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shooter: {fileID: 4702020340213658628, guid: 6fddf2aabef8fd541bf34c9810c495f2, type: 3}
