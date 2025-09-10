@@ -7,12 +7,11 @@ public class BallMovement : MonoBehaviour
     public float JUMP_POWER = 1000f;
     public float BALL_SPEED_SCALE = 1000f;
 
-    private Vector3 prevInput = new(0f, 0f, 0f);
-    private Vector3 prevMaxInput = new(0f, 0f, 0f);
+    public Vector3 InputPower = new(0f, 0f, 0f);
+
     private Vector3 HorizontalballSpeed = new(0f, 0f, 0f);
 
-    private float updateStickPosTime;
-    private float ballSpeed = 10f;
+    private float ballSpeed = 20f;
 
     // ジャンプ押したか
     private bool isJump = false;
@@ -23,15 +22,9 @@ public class BallMovement : MonoBehaviour
     private bool isableJump = false;
     // 発射できるか
     private bool isableShot = false;
-
-    //private bool eventStarted = false;
-
-    // この値秒間のうちのスティック最大座標を保存する
-    const float PREVIVENT_STICKPOS_UPDATE_TIME = .5f;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        updateStickPosTime = Time.time;
         isableJump = true;
         isableShot = true;
     }
@@ -44,15 +37,6 @@ public class BallMovement : MonoBehaviour
         Shot();
         // 移動
         Move();
-
-        // Xでリセット
-        if (Input.GetKeyDown("joystick button 2"))
-        {
-            isableShot = true;
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-            rb.position = new(0f, 0.5f, -5f);
-        }
     }
     void FixedUpdate()
     {    
@@ -65,10 +49,11 @@ public class BallMovement : MonoBehaviour
         // 発射
         if (isShot)
         {
-            rb.AddForce(-prevMaxInput);
-            prevMaxInput = new(0f, 0f, 0f);
+            //rb.AddForce(-prevMaxInput);
+            //prevMaxInput = new(0f, 0f, 0f);
+            rb.AddForce(-InputPower* BALL_SPEED_SCALE);
+            InputPower = new(0f, 0f, 0f);
             isShot = false;
-            isableShot = false;
         }
 
         if (!isableShot)
@@ -77,8 +62,6 @@ public class BallMovement : MonoBehaviour
             rb.AddForce(HorizontalballSpeed);
         }
 
-
-
         rb.AddForce(Vector3.down * 20f, ForceMode.Acceleration);
     }
 
@@ -86,13 +69,31 @@ public class BallMovement : MonoBehaviour
     // スティック操作関数
     void Shot()
     {
-        if (!isableShot)
-        {
-            return;
-        }
 
-        float h = Input.GetAxis("Horizontal") * BALL_SPEED_SCALE; // A/D, ←/→, スティックX
-        float v = Input.GetAxis("Vertical") * BALL_SPEED_SCALE;   // W/S, ↑/↓, スティックY
+        float h = Input.GetAxis("Horizontal"); // A/D, ←/→, スティックX
+        float v = Input.GetAxis("Vertical");   // W/S, ↑/↓, スティックY
+        InputPower = new(h, 0f, v);
+
+        // Xでリセット
+        if (Input.GetKeyDown("joystick button 2"))
+        {
+            if (isableShot) // 発射準備
+            {
+                h = Mathf.Abs(h);
+                if (v < 0f && h < .5f)
+                {
+                    isShot = true;
+                    isableShot = false;
+                }
+            }
+            else           // リセット
+            {
+                isableShot = true;
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                rb.position = new(0f, 0.5f, -5f);
+            }
+        }
 
         //float hor = Mathf.Abs(Input.GetAxis("Horizontal"));
 
@@ -101,32 +102,32 @@ public class BallMovement : MonoBehaviour
         //    Debug.Log(hor);
         //}
 
-        Vector3 input = new(h, 0f, v);
+        //Vector3 input = new(h, 0f, v);
 
-        float elapsed = Time.time - updateStickPosTime;
+        //float elapsed = Time.time - updateStickPosTime;
 
-        // でかい値が入るか、時間がたったら時間と値を更新する
-        if (input.magnitude > prevMaxInput.magnitude || elapsed > PREVIVENT_STICKPOS_UPDATE_TIME)
-        {
-            prevMaxInput = input;
-            updateStickPosTime = Time.time;
-            Debug.Log(prevMaxInput);
-        }
+        //// でかい値が入るか、時間がたったら時間と値を更新する
+        //if (input.magnitude > prevMaxInput.magnitude || elapsed > PREVIVENT_STICKPOS_UPDATE_TIME)
+        //{
+        //    prevMaxInput = input;
+        //    updateStickPosTime = Time.time;
+        //    Debug.Log(prevMaxInput);
+        //}
 
-        // 離した瞬間の処理
-        if (prevInput.magnitude > 0f &&
-            input.magnitude == 0f &&
-            prevMaxInput.magnitude > 0.2f * BALL_SPEED_SCALE)
-        {
-            //スティックが下に倒されている時だけ発射できる
-            if (prevInput.z < 0f)
-            {
-                isShot = true;
-                isableShot = false;
-            }
-        }
+        //// 離した瞬間の処理
+        //if (prevInput.magnitude > 0f &&
+        //    input.magnitude == 0f &&
+        //    prevMaxInput.magnitude > 0.2f * BALL_SPEED_SCALE)
+        //{
+        //    //スティックが下に倒されている時だけ発射できる
+        //    if (prevInput.z < 0f)
+        //    {
+        //        isShot = true;
+        //        isableShot = false;
+        //    }
+        //}
 
-        prevInput = input;
+        //prevInput = input;
     }
 
     void Move()
