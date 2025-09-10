@@ -22,8 +22,8 @@ public class EnemyBase : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("Enemy HP: " + enemyHp.GetCurrentHp());
+            Debug.Log("Enemy Spd: " + enemyRd);
         }
-        Debug.Log("Enemy Spd: " + enemyRd);
     }
 
     //“–‚½‚è”»’è
