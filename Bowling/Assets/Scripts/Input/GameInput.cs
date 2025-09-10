@@ -187,11 +187,107 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""cf08d461-2e1e-43ed-9dfd-667a87fb1638"",
-                    ""path"": """",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PadDicide"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Cancel"",
+            ""id"": ""049c9d41-837b-432c-8f6d-2cb2da469d2f"",
+            ""actions"": [
+                {
+                    ""name"": ""KeyBoradCancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""0a2505cc-aa81-44a8-8c18-ec4b028d3417"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PadCancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""080e17bc-f334-4f87-81ae-27db743d34ae"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""48f334ef-a2ed-4e59-a427-d1e5a363037b"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyBoradCancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""39ddabbb-2fe9-49b1-a073-afe0a476b5de"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PadCancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Option"",
+            ""id"": ""54cb9d6c-33ce-4766-933f-fb7a889f7b83"",
+            ""actions"": [
+                {
+                    ""name"": ""KeyBoard"",
+                    ""type"": ""Button"",
+                    ""id"": ""da11d255-5241-4f18-aaa3-caf7e14666c7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pad"",
+                    ""type"": ""Button"",
+                    ""id"": ""9dc1828f-9508-4038-857a-2665fa53e164"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d3f71794-8a1e-45e9-9043-661ce1bae79e"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyBoard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ecc24ecf-cf5f-4c3e-8ae2-0c75426aad31"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pad"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -208,12 +304,22 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_Dicide = asset.FindActionMap("Dicide", throwIfNotFound: true);
         m_Dicide_KeyBoardDicide = m_Dicide.FindAction("KeyBoardDicide", throwIfNotFound: true);
         m_Dicide_PadDicide = m_Dicide.FindAction("PadDicide", throwIfNotFound: true);
+        // Cancel
+        m_Cancel = asset.FindActionMap("Cancel", throwIfNotFound: true);
+        m_Cancel_KeyBoradCancel = m_Cancel.FindAction("KeyBoradCancel", throwIfNotFound: true);
+        m_Cancel_PadCancel = m_Cancel.FindAction("PadCancel", throwIfNotFound: true);
+        // Option
+        m_Option = asset.FindActionMap("Option", throwIfNotFound: true);
+        m_Option_KeyBoard = m_Option.FindAction("KeyBoard", throwIfNotFound: true);
+        m_Option_Pad = m_Option.FindAction("Pad", throwIfNotFound: true);
     }
 
     ~@GameInput()
     {
         Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, GameInput.Player.Disable() has not been called.");
         Debug.Assert(!m_Dicide.enabled, "This will cause a leak and performance issues, GameInput.Dicide.Disable() has not been called.");
+        Debug.Assert(!m_Cancel.enabled, "This will cause a leak and performance issues, GameInput.Cancel.Disable() has not been called.");
+        Debug.Assert(!m_Option.enabled, "This will cause a leak and performance issues, GameInput.Option.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -379,6 +485,114 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         }
     }
     public DicideActions @Dicide => new DicideActions(this);
+
+    // Cancel
+    private readonly InputActionMap m_Cancel;
+    private List<ICancelActions> m_CancelActionsCallbackInterfaces = new List<ICancelActions>();
+    private readonly InputAction m_Cancel_KeyBoradCancel;
+    private readonly InputAction m_Cancel_PadCancel;
+    public struct CancelActions
+    {
+        private @GameInput m_Wrapper;
+        public CancelActions(@GameInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @KeyBoradCancel => m_Wrapper.m_Cancel_KeyBoradCancel;
+        public InputAction @PadCancel => m_Wrapper.m_Cancel_PadCancel;
+        public InputActionMap Get() { return m_Wrapper.m_Cancel; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CancelActions set) { return set.Get(); }
+        public void AddCallbacks(ICancelActions instance)
+        {
+            if (instance == null || m_Wrapper.m_CancelActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_CancelActionsCallbackInterfaces.Add(instance);
+            @KeyBoradCancel.started += instance.OnKeyBoradCancel;
+            @KeyBoradCancel.performed += instance.OnKeyBoradCancel;
+            @KeyBoradCancel.canceled += instance.OnKeyBoradCancel;
+            @PadCancel.started += instance.OnPadCancel;
+            @PadCancel.performed += instance.OnPadCancel;
+            @PadCancel.canceled += instance.OnPadCancel;
+        }
+
+        private void UnregisterCallbacks(ICancelActions instance)
+        {
+            @KeyBoradCancel.started -= instance.OnKeyBoradCancel;
+            @KeyBoradCancel.performed -= instance.OnKeyBoradCancel;
+            @KeyBoradCancel.canceled -= instance.OnKeyBoradCancel;
+            @PadCancel.started -= instance.OnPadCancel;
+            @PadCancel.performed -= instance.OnPadCancel;
+            @PadCancel.canceled -= instance.OnPadCancel;
+        }
+
+        public void RemoveCallbacks(ICancelActions instance)
+        {
+            if (m_Wrapper.m_CancelActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ICancelActions instance)
+        {
+            foreach (var item in m_Wrapper.m_CancelActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_CancelActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public CancelActions @Cancel => new CancelActions(this);
+
+    // Option
+    private readonly InputActionMap m_Option;
+    private List<IOptionActions> m_OptionActionsCallbackInterfaces = new List<IOptionActions>();
+    private readonly InputAction m_Option_KeyBoard;
+    private readonly InputAction m_Option_Pad;
+    public struct OptionActions
+    {
+        private @GameInput m_Wrapper;
+        public OptionActions(@GameInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @KeyBoard => m_Wrapper.m_Option_KeyBoard;
+        public InputAction @Pad => m_Wrapper.m_Option_Pad;
+        public InputActionMap Get() { return m_Wrapper.m_Option; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(OptionActions set) { return set.Get(); }
+        public void AddCallbacks(IOptionActions instance)
+        {
+            if (instance == null || m_Wrapper.m_OptionActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_OptionActionsCallbackInterfaces.Add(instance);
+            @KeyBoard.started += instance.OnKeyBoard;
+            @KeyBoard.performed += instance.OnKeyBoard;
+            @KeyBoard.canceled += instance.OnKeyBoard;
+            @Pad.started += instance.OnPad;
+            @Pad.performed += instance.OnPad;
+            @Pad.canceled += instance.OnPad;
+        }
+
+        private void UnregisterCallbacks(IOptionActions instance)
+        {
+            @KeyBoard.started -= instance.OnKeyBoard;
+            @KeyBoard.performed -= instance.OnKeyBoard;
+            @KeyBoard.canceled -= instance.OnKeyBoard;
+            @Pad.started -= instance.OnPad;
+            @Pad.performed -= instance.OnPad;
+            @Pad.canceled -= instance.OnPad;
+        }
+
+        public void RemoveCallbacks(IOptionActions instance)
+        {
+            if (m_Wrapper.m_OptionActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IOptionActions instance)
+        {
+            foreach (var item in m_Wrapper.m_OptionActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_OptionActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public OptionActions @Option => new OptionActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -388,5 +602,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     {
         void OnKeyBoardDicide(InputAction.CallbackContext context);
         void OnPadDicide(InputAction.CallbackContext context);
+    }
+    public interface ICancelActions
+    {
+        void OnKeyBoradCancel(InputAction.CallbackContext context);
+        void OnPadCancel(InputAction.CallbackContext context);
+    }
+    public interface IOptionActions
+    {
+        void OnKeyBoard(InputAction.CallbackContext context);
+        void OnPad(InputAction.CallbackContext context);
     }
 }

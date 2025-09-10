@@ -164,11 +164,107 @@
                 {
                     "name": "",
                     "id": "cf08d461-2e1e-43ed-9dfd-667a87fb1638",
-                    "path": "",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "PadDicide",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Cancel",
+            "id": "049c9d41-837b-432c-8f6d-2cb2da469d2f",
+            "actions": [
+                {
+                    "name": "KeyBoradCancel",
+                    "type": "Button",
+                    "id": "0a2505cc-aa81-44a8-8c18-ec4b028d3417",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PadCancel",
+                    "type": "Button",
+                    "id": "080e17bc-f334-4f87-81ae-27db743d34ae",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "48f334ef-a2ed-4e59-a427-d1e5a363037b",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "KeyBoradCancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "39ddabbb-2fe9-49b1-a073-afe0a476b5de",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PadCancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Option",
+            "id": "54cb9d6c-33ce-4766-933f-fb7a889f7b83",
+            "actions": [
+                {
+                    "name": "KeyBoard",
+                    "type": "Button",
+                    "id": "da11d255-5241-4f18-aaa3-caf7e14666c7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pad",
+                    "type": "Button",
+                    "id": "9dc1828f-9508-4038-857a-2665fa53e164",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d3f71794-8a1e-45e9-9043-661ce1bae79e",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "KeyBoard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ecc24ecf-cf5f-4c3e-8ae2-0c75426aad31",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pad",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
