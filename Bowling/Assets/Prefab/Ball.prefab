@@ -151,3 +151,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JUMP_POWER: 20
   BALL_SPEED_SCALE: 1000
+  InputPower: {x: 0, y: 0, z: 0}

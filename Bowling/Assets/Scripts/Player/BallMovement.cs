@@ -11,7 +11,8 @@ public class BallMovement : MonoBehaviour
 
     private Vector3 HorizontalballSpeed = new(0f, 0f, 0f);
 
-    private float ballSpeed = 20f;
+    const float DEFAULT_HORI_SPEED = 20f;
+    public float HoriSpeed = DEFAULT_HORI_SPEED;
 
     // ジャンプ押したか
     private bool isJump = false;
@@ -138,7 +139,7 @@ public class BallMovement : MonoBehaviour
         }
 
         // 入力を取得（キーボードまたはスティック）
-        float h = Input.GetAxis("Horizontal") * ballSpeed; // A/D, ←/→, スティックX
+        float h = Input.GetAxis("Horizontal") * HoriSpeed; // A/D, ←/→, スティックX
 
         HorizontalballSpeed = new Vector3(h, 0f, 0f);
     }
