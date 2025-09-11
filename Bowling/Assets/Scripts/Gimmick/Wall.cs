@@ -3,7 +3,7 @@ using static UnityEditor.PlayerSettings;
 
 public class Wall : MonoBehaviour
 {
-    public float speed = 2f;       // 移動速度（毎秒）
+    public float speed = 1f;       // 移動速度（毎秒）
     public float minX = -5f;       // 左端の座標transform.position.x
     public float maxX = 5f;        // 右端の座標
     bool IsUse;
@@ -22,7 +22,7 @@ public class Wall : MonoBehaviour
        
         if(IsUse==true)
         {
-            currentX--;
+            currentX-= Time.deltaTime;
             if (transform.position.x <= minX)
             {
                 IsUse = false;
@@ -30,7 +30,7 @@ public class Wall : MonoBehaviour
         }
         if (IsUse == false)
         {
-            currentX++;
+            currentX += Time.deltaTime;
             if (transform.position.x >= maxX)
             {
                 IsUse = true;
