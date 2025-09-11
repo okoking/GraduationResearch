@@ -4,15 +4,26 @@ using static UnityEditor.PlayerSettings;
 public class Wall : MonoBehaviour
 {
     public float speed = 1f;       // 移動速度（毎秒）
-    public float minX = -5f;       // 左端の座標transform.position.x
+    public float minX = -5f;       // 左端の座標
     public float maxX = 5f;        // 右端の座標
-    bool IsUse;
+    public bool StartPoint = true;
+    private bool IsUse=true;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Vector3 InitPos = transform.position;
         maxX += transform.position.x;
         minX += transform.position.x;
-        IsUse = true;
+        
+        if(StartPoint==true)
+        {
+            IsUse = true;
+        }
+        if (StartPoint == false)
+        {
+            IsUse = false;
+        }
     }
 
     // Update is called once per frame
@@ -22,7 +33,7 @@ public class Wall : MonoBehaviour
        
         if(IsUse==true)
         {
-            currentX-= Time.deltaTime;
+            transform.position -= transform.right*speed * Time.deltaTime;
             if (transform.position.x <= minX)
             {
                 IsUse = false;
@@ -30,18 +41,12 @@ public class Wall : MonoBehaviour
         }
         if (IsUse == false)
         {
-            currentX += Time.deltaTime;
+            transform.position += transform.right*speed * Time.deltaTime;
             if (transform.position.x >= maxX)
             {
                 IsUse = true;
             }
         }
-       
-        Vector3 UpDataPos;
-        UpDataPos.x = currentX;
-        UpDataPos.y = 0;
-        UpDataPos.z = 0;
-        transform.position = UpDataPos;
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -53,4 +58,9 @@ public class Wall : MonoBehaviour
 
         }
     }
+    private AnimationCurve speedCurve = new AnimationCurve(
+        new Keyframe(0f, 0f),
+        new Keyframe(0.5f, 1f),
+        new Keyframe(1f, 0f)
+    );
 }
