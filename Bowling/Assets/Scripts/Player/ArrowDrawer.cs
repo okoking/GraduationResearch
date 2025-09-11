@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class ArrowDrawer : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class ArrowDrawer : MonoBehaviour
     //private GameObject Ball;
     // 出したい3Dモデル
     public GameObject ArrowPrefab;
+    private GameObject arrow;
+
     //public GameObject ArrowPrefab;
 
 
@@ -16,35 +19,27 @@ public class ArrowDrawer : MonoBehaviour
         //Instantiate(Arrow, transform.transform);
         ballMovement = GetComponent<BallMovement>();
 
-        GameObject arrow = Instantiate(ArrowPrefab, transform);
-        arrow.transform.localPosition = new Vector3(0f, 1f, 0f);
+        arrow = Instantiate(ArrowPrefab, transform);
+        arrow.transform.localPosition = new Vector3(0f, 0f, -3f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //float h = Input.GetAxis("Horizontal"); // A/D, ←/→, スティックX
-        //float v = Input.GetAxis("Vertical");   // W/S, ↑/↓, スティックY
-        //h = Mathf.Abs(h);
-        //if (v < 0f && h < .5f)
-        //{
-        //    ArrowPrefab.SetActive(true);
-        //    Debug.Log("出現");
-        //}
-        //else
-        //{
-        //    ArrowPrefab.SetActive(false);
-        //    Debug.Log("出現sinai");
-        //}
-        if (ballMovement.InputPower != Vector3.zero)
+        if (ballMovement.InputPower.z < 0f && ballMovement.InputPower.x < .5f)
         {
-            ArrowPrefab.SetActive(true);
-            Debug.Log("出現");
+            arrow.transform.localScale = new(.5f, .5f, -ballMovement.InputPower.z);
+            float angle = Mathf.Atan2(ballMovement.InputPower.x, ballMovement.InputPower.z) * Mathf.Rad2Deg;
+            Vector3 currentEuler = arrow.transform.eulerAngles;
+            // Yだけ更新
+            currentEuler.y = angle;
+            // 反映
+            arrow.transform.eulerAngles = currentEuler; 
+            arrow.SetActive(true);
         }
         else
         {
-            ArrowPrefab.SetActive(false);
-            Debug.Log("出現sinai");
+            arrow.SetActive(false);
         }
     }
 }

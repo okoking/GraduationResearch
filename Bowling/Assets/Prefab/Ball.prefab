@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3748784625373423480}
   - component: {fileID: 1950698911052805772}
   - component: {fileID: -7375743374108007620}
+  - component: {fileID: 8437161749612055085}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Ball
@@ -152,3 +153,17 @@ MonoBehaviour:
   JUMP_POWER: 20
   BALL_SPEED_SCALE: 1000
   InputPower: {x: 0, y: 0, z: 0}
+  HoriSpeed: 20
+--- !u!114 &8437161749612055085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692210106748338692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b9c284133fa0d84790bff3a783a8488, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ArrowPrefab: {fileID: 172624660860559219, guid: 7996d5d732feb944bb7a51d90de48243, type: 3}
