@@ -22,16 +22,12 @@ public class Title : MonoBehaviour
             SceneController.Instance.ChangeState(GameState.Option);
         }
 
-        //プレイシーンへ
+        //ステージセレクトシーンへ
         if (InputManager.Instance.KeyBoardEnter || InputManager.Instance.PadEnter)
         {
-
-            SceneController.Instance.ChangeState(GameState.Play);
+            SceneController.Instance.ChangeState(GameState.StageSelect);
         }
 
-        //if(InputManager.Instance)
-        //{
-
-        //}
+       
     }
 }
