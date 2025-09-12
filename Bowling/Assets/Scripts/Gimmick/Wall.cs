@@ -58,9 +58,32 @@ public class Wall : MonoBehaviour
 
         }
     }
-    private AnimationCurve speedCurve = new AnimationCurve(
-        new Keyframe(0f, 0f),
-        new Keyframe(0.5f, 1f),
-        new Keyframe(1f, 0f)
-    );
+    public Color lineColor = Color.red;
+    public Color rangeLineColor = Color.yellow;
+
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = lineColor;
+
+    //    float left = transform.position.x + minX;
+    //    float right = transform.position.x + maxX;
+
+    //    // 左端
+    //    Gizmos.DrawLine(
+    //        new Vector3(left, transform.position.y - 1, transform.position.z),
+    //        new Vector3(left, transform.position.y + 1, transform.position.z)
+    //    );
+
+    //    // 右端
+    //    Gizmos.DrawLine(
+    //        new Vector3(right, transform.position.y - 1, transform.position.z),
+    //        new Vector3(right, transform.position.y + 1, transform.position.z)
+    //    );
+    //    // 中心線
+    //    Gizmos.color = rangeLineColor;
+    //    Gizmos.DrawLine(
+    //        new Vector3(left, transform.position.y, transform.position.z),
+    //        new Vector3(right, transform.position.y, transform.position.z)
+    //    );
+    //}
 }
