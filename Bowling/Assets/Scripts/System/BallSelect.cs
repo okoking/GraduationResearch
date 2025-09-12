@@ -10,7 +10,6 @@ public class BallSelect : MonoBehaviour
         ballSelectFlag = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(ballSelectFlag)
