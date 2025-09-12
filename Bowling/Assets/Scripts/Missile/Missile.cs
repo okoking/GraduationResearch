@@ -6,10 +6,9 @@ public class Missile : MonoBehaviour
     public float flightTime = 1f;            // 飛ぶ時間（秒）
     public GameObject projectilePrefab;      // 発射する球のプレハブ
     public Transform spawnPoint;             // 発射位置
+    public float maxHorizontalAngle = 15f;   // 左右ランダム角度（度）
 
-    public float randomAngle = 5f; // 度数
-
-    private bool canShoot = true;            // 発射可能か
+    private static bool canShoot = true;     // 発射可能か
 
     void Update()
     {
@@ -42,22 +41,11 @@ public class Missile : MonoBehaviour
         float vy = (diff.y / flightTime) + 0.5f * Mathf.Abs(Physics.gravity.y) * flightTime;
 
         Vector3 velocity = horizontal.normalized * vx + Vector3.up * vy;
-
-        // ランダムに向きを回転させる
-        Quaternion randomRot = Quaternion.Euler(
-            Random.Range(-randomAngle, randomAngle), // 上下方向のブレ
-            Random.Range(-randomAngle, randomAngle), // 左右方向のブレ
-            0
-        );
-
-        // velocity をランダム回転
-        velocity = randomRot * velocity;
-
         rb.linearVelocity = velocity;
 
         // 衝突で消すスクリプトを追加
         MissileCollision bc = bullet.AddComponent<MissileCollision>();
-        bc.shooter = this;
+        bc.shooter = this; // ★ 発射元をしっかり渡す！
 
         canShoot = false;
     }

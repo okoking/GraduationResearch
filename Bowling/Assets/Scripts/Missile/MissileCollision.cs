@@ -3,31 +3,38 @@ using UnityEngine;
 
 public class MissileCollision : MonoBehaviour
 {
+    public  Missile shooter;
+    public float killHeight = -5f;
 
-    public Missile shooter;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        if (transform.position.y < -10f)
+        Debug.Log("Bullet height: " + transform.position.y);
+        if (transform.position.y < killHeight)
         {
-            Destroy(gameObject);  //球を消す
-            shooter.ResetShoot(); //再度発射可能に
-            Debug.Log("おちた");
+            if (shooter != null)
+            {
+                shooter.ResetShoot(); // ★ 自分を撃った Shooter のみをリセット
+            }
+
+            Destroy(gameObject);
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision other)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Enemy"))
         {
-            Destroy(gameObject);  //球を消す
-            shooter.ResetShoot(); //再度発射可能に
+            Kill();
         }
+    }
+
+    void Kill()
+    {
+        if (shooter != null)
+        {
+            shooter.ResetShoot(); // ★ 自分を撃った Shooter のみをリセット
+        }
+
+        Destroy(gameObject);
     }
 }

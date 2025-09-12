@@ -125,3 +125,4 @@ MonoBehaviour:
   flightTime: 1
   projectilePrefab: {fileID: 3899912685306639125, guid: c8a5231c5fce0ab4c868a2f5c90fa7c1, type: 3}
   spawnPoint: {fileID: 5222717876336220982}
+  randomAngle: 5
