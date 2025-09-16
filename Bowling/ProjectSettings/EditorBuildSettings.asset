@@ -33,7 +33,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Play/PlayUI.unity
     guid: b699f71f40a51c14783b2cc2fa52a575
   - enabled: 1
-    path: Assets/Scenes/tsuru/Player.unity
+    path: Assets/Scenes/Player/Player.unity
     guid: 732f07d0972a18d4b9eb8c5a65659d1b
   - enabled: 1
     path: Assets/Scenes/Enemy/EnemyTest.unity
