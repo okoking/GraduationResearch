@@ -1,8 +1,12 @@
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class ArrowDrawer : MonoBehaviour
 {
+    public Material NormalMaterial; // インスペクターで指定
+    public Material OutsideMaterial; // インスペクターで指定
+
+    private new Renderer renderer;
+
     // private Transform spawnPoint;   // 出す位置
     private BallMovement ballMovement;
     //private GameObject Ball;
@@ -16,26 +20,44 @@ public class ArrowDrawer : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // カメラの参照
+        Camera cam = Camera.main;
+
         //Instantiate(Arrow, transform.transform);
         ballMovement = GetComponent<BallMovement>();
 
-        arrow = Instantiate(ArrowPrefab, transform);
-        arrow.transform.localPosition = new Vector3(0f, 0f, -3f);
+        arrow = Instantiate(ArrowPrefab, transform.position, cam.transform.rotation);
+        arrow.transform.localPosition = new Vector3(0f, 1f, -6f);
+        
+        renderer = arrow.GetComponent<Renderer>();
+        renderer.material = NormalMaterial;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (ballMovement.InputPower.z < 0f && ballMovement.InputPower.x < .5f)
+        if (ballMovement.GetisableShot())
         {
-            arrow.transform.localScale = new(.5f, .5f, -ballMovement.InputPower.z);
-            float angle = Mathf.Atan2(ballMovement.InputPower.x, ballMovement.InputPower.z) * Mathf.Rad2Deg;
+            //float angle = Mathf.Abs(Mathf.Atan2(ballMovement.GetInputPower().x, ballMovement.GetInputPower().z) * Mathf.Rad2Deg);
+            arrow.transform.localScale = new(.5f, -ballMovement.GetInputPower().z * 1.5f, .5f);
+
             Vector3 currentEuler = arrow.transform.eulerAngles;
             // Yだけ更新
-            currentEuler.y = angle;
+            float angle = -Mathf.Atan2(ballMovement.GetInputPower().x, ballMovement.GetInputPower().z) * Mathf.Rad2Deg;
+            currentEuler.z = angle;
             // 反映
-            arrow.transform.eulerAngles = currentEuler; 
-            arrow.SetActive(true);
+            arrow.transform.eulerAngles = currentEuler;
+            angle = Mathf.Abs(Mathf.Atan2(ballMovement.GetInputPower().x, ballMovement.GetInputPower().z) * Mathf.Rad2Deg);
+
+            if (angle > ballMovement.SHOT_ANGLE_RANGE)
+            {
+                arrow.SetActive(true);
+                renderer.material = NormalMaterial;
+            }
+            else
+            {
+                renderer.material = OutsideMaterial;
+            }
         }
         else
         {

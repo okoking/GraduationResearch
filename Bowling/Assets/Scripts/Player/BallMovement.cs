@@ -4,10 +4,12 @@ public class BallMovement : MonoBehaviour
 {
     private Rigidbody rb;
 
+    public float SHOT_ANGLE_RANGE = 135f;
+
     public float JUMP_POWER = 1000f;
     public float BALL_SPEED_SCALE = 1000f;
 
-    public Vector3 InputPower = new(0f, 0f, 0f);
+    private Vector3 InputPower = new(0f, 0f, 0f);
 
     private Vector3 HorizontalballSpeed = new(0f, 0f, 0f);
 
@@ -23,6 +25,7 @@ public class BallMovement : MonoBehaviour
     private bool isableJump = false;
     // î≠éÀÇ≈Ç´ÇÈÇ©
     private bool isableShot = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -80,8 +83,8 @@ public class BallMovement : MonoBehaviour
         {
             if (isableShot) // î≠éÀèÄîı
             {
-                h = Mathf.Abs(h);
-                if (v < 0f && h < .5f)
+                float angle = Mathf.Abs(Mathf.Atan2(h, v) * Mathf.Rad2Deg);
+                if (angle>SHOT_ANGLE_RANGE)
                 {
                     isShot = true;
                     isableShot = false;
@@ -91,6 +94,7 @@ public class BallMovement : MonoBehaviour
             {
                 isableShot = true;
                 rb.linearVelocity = Vector3.zero;
+                rb.rotation = Quaternion.identity;
                 rb.angularVelocity = Vector3.zero;
                 rb.position = new(0f, 0.5f, -5f);
             }
@@ -146,7 +150,7 @@ public class BallMovement : MonoBehaviour
 
     void Jump()
     {
-        if (!isableJump)
+        if (!isableJump/* || isableShot*/)
         {
             return;
         }
@@ -161,5 +165,15 @@ public class BallMovement : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         isableJump = true;
+    }
+
+    public bool GetisableShot()
+    {
+        return isableShot;
+    }
+
+    public Vector3 GetInputPower()
+    {
+        return InputPower;
     }
 }
