@@ -10,6 +10,7 @@ TagManager:
   - Wall
   - Slippery floor
   - Slowdown Floor
+  - Missile
   layers:
   - Default
   - TransparentFX
