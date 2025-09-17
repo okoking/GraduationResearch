@@ -4,7 +4,7 @@ using static UnityEditorInternal.ReorderableList;
 public class EnemyBase : MonoBehaviour
 {
     public float knockbackPower = 10f;  // ぶっ飛ばす強さ
-    public float upPower = 1.5f;          // 上方向に少し浮かす量
+    public float upPower = 4.5f;          // 上方向に少し浮かす量
 
     private HitPointManager enemyHp;
 
@@ -56,15 +56,15 @@ public class EnemyBase : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         //ボールとの当たり判定
-        if (collision.gameObject.CompareTag("Ball"))
+        if (collision.gameObject.CompareTag("Ball") || collision.gameObject.CompareTag("Missile"))
         {
             enemyHp.TakeDamage((int)enemyRd.linearVelocity.magnitude);
 
             // 弾の進行方向を使って吹っ飛ばす
             Vector3 forceDir = (transform.position - collision.transform.position).normalized;
-            forceDir.y += upPower; // 上方向にも少し力を加える
+            forceDir += Vector3.up * upPower; // 上方向にも少し力を加える
 
-            enemyRd.AddForce(forceDir * knockbackPower, ForceMode.Impulse);
+            enemyRd.AddForce(forceDir.normalized * knockbackPower, ForceMode.Impulse);
         }
     }
 
