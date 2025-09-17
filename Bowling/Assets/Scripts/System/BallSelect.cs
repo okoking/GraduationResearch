@@ -2,19 +2,15 @@ using UnityEngine;
 
 public class BallSelect : MonoBehaviour
 {
-    //ボールセレクト画面フラグ
-    private bool ballSelectFlag;
-
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        ballSelectFlag = false;
+        
     }
 
+    // Update is called once per frame
     void Update()
     {
-        if(ballSelectFlag)
-        {
-           
-        }
+        
     }
 }

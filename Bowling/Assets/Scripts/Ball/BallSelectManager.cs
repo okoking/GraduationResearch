@@ -1,22 +1,42 @@
+using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BallSelectManager : MonoBehaviour
 {
-    [SerializeField] private Image[] ballIcons;      //ボールのアイコンUI
-    [SerializeField] private BallData[] ballDatas;   //対応するボールデータ
-    [SerializeField] private RectTransform cursor;   //カーソル（ハイライト用）
+    [SerializeField] private Transform contentParent;     // UI配置先
+    [SerializeField] private GameObject buttonPrefab;     // ボタンのプレハブ
+    [SerializeField] private RectTransform cursor;        // カーソル
 
+    private List<BallSelectButton> buttons = new List<BallSelectButton>();
     private int currentIndex = 0;
 
     private void OnEnable()
     {
-        UpdateCursor();
+     
     }
 
     void Start()
     {
-        
+        LoadBallData();
+        if (buttons.Count > 0)
+        {
+            UpdateCursor();
+        }
+    }
+
+    private void LoadBallData()
+    {
+        BallData[] allBalls = Resources.LoadAll<BallData>("Balls");
+    
+        foreach (var ball in allBalls)
+        {
+            var obj = Instantiate(buttonPrefab, contentParent);
+            var btn = obj.GetComponent<BallSelectButton>();
+            btn.Setup(ball);
+            buttons.Add(btn);
+        }
     }
 
     private void Update()
@@ -27,12 +47,12 @@ public class BallSelectManager : MonoBehaviour
         //左右入力（キーボード or コントローラー想定）
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            currentIndex = (currentIndex + 1) % ballIcons.Length;
+            currentIndex = (currentIndex + 1) % buttons.Count;
             UpdateCursor();
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            currentIndex = (currentIndex - 1 + ballIcons.Length) % ballIcons.Length;
+            currentIndex = (currentIndex - 1 + buttons.Count) % buttons.Count;
             UpdateCursor();
         }
 
@@ -42,15 +62,17 @@ public class BallSelectManager : MonoBehaviour
             SelectBall();
         }
     }
+
     private void UpdateCursor()
     {
         //カーソルを選択中のアイコンの位置に移動
-        cursor.position = ballIcons[currentIndex].transform.position;
+        if (buttons.Count == 0) return;
+        cursor.position = buttons[currentIndex].transform.position;
     }
 
     private void SelectBall()
     {
-        BallData selected = ballDatas[currentIndex];
+        BallData selected = buttons[currentIndex].GetBallData();
 
         Debug.Log($"{selected.ballName} を選択しました！");
 

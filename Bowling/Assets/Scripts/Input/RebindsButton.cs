@@ -5,12 +5,11 @@ using TMPro;
 
 public class RebindsButton : MonoBehaviour
 {
-    [SerializeField] private string actionName;     //"Player/Jump" など
-    [SerializeField] private int bindingIndex;      //複数バインド対応用
+    [SerializeField] private string actionName;         //"Player/Jump" など
+    [SerializeField] private int bindingIndex;          //複数バインド対応用
     [SerializeField] private Button button;
     [SerializeField] private TMP_Text bindingText;      //現在のキー表示用
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //最初の表示
@@ -43,11 +42,11 @@ public class RebindsButton : MonoBehaviour
         });
     }
 
-    // Update is called once per frame
     void Update()
     {
      
     }
+
     private void UpdateUI()
     {
         bindingText.text = InputManager.Instance.GetBindingDisplayName(actionName, bindingIndex);

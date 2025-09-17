@@ -1,21 +1,22 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BallSelectButton : MonoBehaviour
 {
-    [SerializeField] private BallData ballData;
-    [SerializeField] private BallManager uiManager;
-    [SerializeField] private Button button;
+    [SerializeField] private Image iconImage;
+    [SerializeField] private TMP_Text nameText;
 
-    private void Awake()
+    private BallData ballData;
+
+    public void Setup(BallData data)
     {
-        button.onClick.AddListener(OnClick);
+        ballData = data;
+        iconImage.sprite = data.icon;
+        nameText.text = data.ballName;
     }
 
-    private void OnClick()
-    {
-        uiManager.SelectBall(ballData);
-    }
+    public BallData GetBallData() => ballData;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

@@ -11,7 +11,7 @@ public class BowlingUIManager : MonoBehaviour
     public static BowlingUIManager Instance;
 
     [SerializeField] private GameObject ballSelectPanel; //ボール選択用UI
-    [SerializeField] private GameObject throwPanel;      //投球用UI
+    //[SerializeField] private GameObject throwPanel;      //投球用UI
 
     private BowlingPhase currentPhase; //内部で制御
     public BowlingPhase CurrentPhase => currentPhase; //外部は読み取り専用
@@ -32,6 +32,6 @@ public class BowlingUIManager : MonoBehaviour
 
         //UI切り替え
         ballSelectPanel.SetActive(phase == BowlingPhase.BallSelect);
-        throwPanel.SetActive(phase == BowlingPhase.Throw);
+        //throwPanel.SetActive(phase == BowlingPhase.Throw);
     }
 }

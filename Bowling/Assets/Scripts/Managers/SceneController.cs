@@ -6,15 +6,6 @@ using System.Collections.Generic;
 //非同期処理や並列処理管理機能
 using System.Threading.Tasks;
 
-////シーングループ
-//public enum SceneGroup
-//{
-//    Title,          //タイトル
-//    StageSelect,    //ステージセレクト
-//    Play,           //プレイ
-//    Result,         //リザルト
-
-//}
 //ゲームステート
 public enum GameState
 {
