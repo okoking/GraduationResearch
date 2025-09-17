@@ -56,7 +56,7 @@ public class EnemyBase : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         //ボールとの当たり判定
-        if (collision.gameObject.CompareTag("Ball") || collision.gameObject.CompareTag("Missile"))
+        if (collision.gameObject.CompareTag("Ball"))
         {
             enemyHp.TakeDamage((int)enemyRd.linearVelocity.magnitude);
 
@@ -65,6 +65,14 @@ public class EnemyBase : MonoBehaviour
             forceDir += Vector3.up * upPower; // 上方向にも少し力を加える
 
             enemyRd.AddForce(forceDir.normalized * knockbackPower, ForceMode.Impulse);
+        }
+
+        //ミサイルと当たったらミサイルを消す,ダメージを受ける
+        if (collision.gameObject.CompareTag("Missile"))
+        {
+            Destroy(collision.gameObject);
+
+            enemyHp.TakeDamage(1);
         }
     }
 

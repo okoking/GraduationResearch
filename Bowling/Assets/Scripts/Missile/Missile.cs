@@ -1,78 +1,90 @@
+using System.Collections;
 using UnityEngine;
 
 public class Missile : MonoBehaviour
 {
-    public string targetTag = "Enemy";       // ターゲットのタグ
-    public float flightTime = 1f;            // 飛ぶ時間（秒）
-    public GameObject projectilePrefab;      // 発射する球のプレハブ
-    public Transform spawnPoint;             // 発射位置
-    public float maxHorizontalAngle = 15f;   // 左右ランダム角度（度）
+    [SerializeField]
+    Transform target;
+    [SerializeField, Min(0)]
+    float time = 1;
+    [SerializeField]
+    float lifeTime = 2;
+    [SerializeField]
+    bool limitAcceleration = false;
+    [SerializeField, Min(0)]
+    float maxAcceleration = 100;
+    [SerializeField]
+    Vector3 minInitVelocity;
+    [SerializeField]
+    Vector3 maxInitVelocity;
 
-    private static bool canShoot = true;     // 発射可能か
+    Vector3 position;
+    Vector3 velocity;
+    Vector3 acceleration;
+    Transform thisTransform;
 
-    void Update()
+    public Transform Target
     {
-        if (canShoot && Input.GetKeyDown(KeyCode.Space))
+        set
         {
-            Shoot();
+            target = value;
+        }
+        get
+        {
+            return target;
         }
     }
 
-    void Shoot()
+    void Start()
     {
-        // 球を生成
-        GameObject bullet = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.identity);
+        thisTransform = transform;
+        position = thisTransform.position;
+        velocity = new Vector3(Random.Range(minInitVelocity.x, maxInitVelocity.x), Random.Range(minInitVelocity.y, maxInitVelocity.y), Random.Range(minInitVelocity.z, maxInitVelocity.z));
+        target = FindRandomTarget();
 
-        // Rigidbodyを取得
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
-
-        // 最も近いターゲットを探す
-        Transform nearest = FindNearestTarget();
-        if (nearest == null) return;
-
-        // 初速を計算
-        Vector3 startPos = spawnPoint.position;
-        Vector3 targetPos = nearest.position;
-
-        Vector3 diff = targetPos - startPos;
-        Vector3 horizontal = new Vector3(diff.x, 0, diff.z);
-
-        float vx = horizontal.magnitude / flightTime;
-        float vy = (diff.y / flightTime) + 0.5f * Mathf.Abs(Physics.gravity.y) * flightTime;
-
-        Vector3 velocity = horizontal.normalized * vx + Vector3.up * vy;
-        rb.linearVelocity = velocity;
-
-        // 衝突で消すスクリプトを追加
-        MissileCollision bc = bullet.AddComponent<MissileCollision>();
-        bc.shooter = this; // ★ 発射元をしっかり渡す！
-
-        canShoot = false;
+        StartCoroutine(nameof(Timer));
     }
 
-    Transform FindNearestTarget()
+    public void Update()
     {
-        GameObject[] targets = GameObject.FindGameObjectsWithTag(targetTag);
+        if (target == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        acceleration = 2f / (time * time) * (target.position - position - time * velocity);
+
+        if (limitAcceleration && acceleration.sqrMagnitude > maxAcceleration * maxAcceleration)
+        {
+            acceleration = acceleration.normalized * maxAcceleration;
+        }
+
+        time -= Time.deltaTime;
+
+        if (time < 0f)
+        {
+            return;
+        }
+
+        velocity += acceleration * Time.deltaTime;
+        position += velocity * Time.deltaTime;
+        thisTransform.position = position;
+        thisTransform.rotation = Quaternion.LookRotation(velocity);
+    }
+
+
+    IEnumerator Timer()
+    {
+        yield return new WaitForSeconds(lifeTime);
+
+        Destroy(gameObject);
+    }
+
+    Transform FindRandomTarget()
+    {
+        GameObject[] targets = GameObject.FindGameObjectsWithTag("Enemy");
         if (targets.Length == 0) return null;
-
-        Transform nearest = targets[0].transform;
-        float minDist = Vector3.Distance(spawnPoint.position, nearest.position);
-
-        foreach (GameObject t in targets)
-        {
-            float dist = Vector3.Distance(spawnPoint.position, t.transform.position);
-            if (dist < minDist)
-            {
-                minDist = dist;
-                nearest = t.transform;
-            }
-        }
-        return nearest;
-    }
-
-    // 衝突後に再度発射可能にする
-    public void ResetShoot()
-    {
-        canShoot = true;
+        return targets[Random.Range(0, targets.Length)].transform;
     }
 }

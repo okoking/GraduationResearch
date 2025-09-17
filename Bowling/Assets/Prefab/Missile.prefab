@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3899912685306639125
+--- !u!1 &4437993144311020198
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,12 +8,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5128736642804649098}
-  - component: {fileID: 6925002267404205714}
-  - component: {fileID: 1845391681537861776}
-  - component: {fileID: 3841113135705655902}
-  - component: {fileID: -2909669098509251380}
-  - component: {fileID: -6793652521408336748}
+  - component: {fileID: 3720388041277143882}
+  - component: {fileID: 4623320759050110165}
+  - component: {fileID: 2130098793659219009}
+  - component: {fileID: 2739746418127395168}
+  - component: {fileID: -6360870800638480149}
   m_Layer: 0
   m_Name: Missile
   m_TagString: Missile
@@ -21,36 +20,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5128736642804649098
+--- !u!4 &3720388041277143882
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3899912685306639125}
+  m_GameObject: {fileID: 4437993144311020198}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.456288, y: 0, z: 8.91714}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &6925002267404205714
+--- !u!33 &4623320759050110165
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3899912685306639125}
+  m_GameObject: {fileID: 4437993144311020198}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &1845391681537861776
+--- !u!23 &2130098793659219009
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3899912685306639125}
+  m_GameObject: {fileID: 4437993144311020198}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -89,13 +88,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &3841113135705655902
+--- !u!135 &2739746418127395168
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3899912685306639125}
+  m_GameObject: {fileID: 4437993144311020198}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -110,44 +109,22 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-2909669098509251380
+--- !u!114 &-6360870800638480149
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3899912685306639125}
+  m_GameObject: {fileID: 4437993144311020198}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b976186db5ad40b458de5cfae6016c78, type: 3}
+  m_Script: {fileID: 11500000, guid: ad13b7c78d08c374c8eda702e06f3c23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shooter: {fileID: 4702020340213658628, guid: 6fddf2aabef8fd541bf34c9810c495f2, type: 3}
-  killHeight: -5
---- !u!54 &-6793652521408336748
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3899912685306639125}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  target: {fileID: 727497205073763627, guid: c59305cb362bc0548b3296687e5b1e28, type: 3}
+  time: 1
+  lifeTime: 2
+  limitAcceleration: 0
+  maxAcceleration: 100
+  minInitVelocity: {x: -10, y: 0, z: -10}
+  maxInitVelocity: {x: 10, y: 0, z: 10}
