@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class NewMonoBehaviourScript : MonoBehaviour
 {
+    public float speed = 1f;       // 移動速度（毎秒）
+    private bool IsUse = true;
     [ExecuteAlways] // エディタ上でも動くようにする
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -12,7 +14,24 @@ public class NewMonoBehaviourScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        float currentX = transform.position.x;
+
+        if (IsUse == true)
+        {
+            transform.position -= transform.right * speed * Time.deltaTime;
+            if (transform.position.x <= minX)
+            {
+                IsUse = false;
+            }
+        }
+        if (IsUse == false)
+        {
+            transform.position += transform.right * speed * Time.deltaTime;
+            if (transform.position.x >= maxX)
+            {
+                IsUse = true;
+            }
+        }
     }
     [Header("移動範囲設定")]
     public float minX = -5f;
