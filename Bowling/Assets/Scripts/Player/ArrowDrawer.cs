@@ -1,9 +1,13 @@
+using TMPro;
 using UnityEngine;
 
 public class ArrowDrawer : MonoBehaviour
 {
     public Material NormalMaterial; // インスペクターで指定
     public Material OutsideMaterial; // インスペクターで指定
+
+    public GameObject uiTextPrefab; // TextMeshProのオブジェクトを入れる
+    private GameObject uiText; // TextMeshProのオブジェクトを入れる
 
     private new Renderer renderer;
 
@@ -31,6 +35,8 @@ public class ArrowDrawer : MonoBehaviour
         
         renderer = arrow.GetComponent<Renderer>();
         renderer.material = NormalMaterial;
+
+        uiText = Instantiate(uiTextPrefab);
     }
 
     // Update is called once per frame
@@ -39,7 +45,7 @@ public class ArrowDrawer : MonoBehaviour
         if (ballMovement.GetisableShot())
         {
             //float angle = Mathf.Abs(Mathf.Atan2(ballMovement.GetInputPower().x, ballMovement.GetInputPower().z) * Mathf.Rad2Deg);
-            arrow.transform.localScale = new(.5f, -ballMovement.GetInputPower().z * 1.5f, .5f);
+            arrow.transform.localScale = new(.5f, -ballMovement.GetInputPower().magnitude * 1.5f, .5f);
 
             Vector3 currentEuler = arrow.transform.eulerAngles;
             // Yだけ更新
@@ -52,16 +58,26 @@ public class ArrowDrawer : MonoBehaviour
             if (angle > ballMovement.SHOT_ANGLE_RANGE)
             {
                 arrow.SetActive(true);
+                uiText.SetActive(false);
                 renderer.material = NormalMaterial;
             }
             else
             {
+                arrow.SetActive(true);
+                uiText.SetActive(true);
                 renderer.material = OutsideMaterial;
+            }
+
+            if (ballMovement.GetInputPower().magnitude == 0)
+            {
+                arrow.SetActive(false);
+                uiText.SetActive(false);
             }
         }
         else
         {
             arrow.SetActive(false);
+            uiText.SetActive(false);
         }
     }
 }
