@@ -11,6 +11,7 @@ TagManager:
   - Slippery floor
   - Slowdown Floor
   - Missile
+  - JumpPad
   layers:
   - Default
   - TransparentFX
