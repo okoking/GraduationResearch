@@ -33,7 +33,19 @@ public class BallSelectManager : MonoBehaviour
         foreach (var ball in allBalls)
         {
             var obj = Instantiate(buttonPrefab, contentParent);
+            if (obj == null)
+            {
+                Debug.LogError("buttonPrefab Ç™ null Ç≈Ç∑ÅI");
+                continue;
+            }
+
             var btn = obj.GetComponent<BallSelectButton>();
+            if (btn == null)
+            {
+                Debug.LogError($"{obj.name} Ç… BallSelectButton Ç™Ç†ÇËÇ‹ÇπÇÒÅI");
+                continue;
+            }
+
             btn.Setup(ball);
             buttons.Add(btn);
         }
@@ -61,6 +73,8 @@ public class BallSelectManager : MonoBehaviour
         {
             SelectBall();
         }
+
+
     }
 
     private void UpdateCursor()
