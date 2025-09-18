@@ -126,5 +126,5 @@ MonoBehaviour:
   lifeTime: 2
   limitAcceleration: 0
   maxAcceleration: 100
-  minInitVelocity: {x: -10, y: 0, z: -10}
-  maxInitVelocity: {x: 10, y: 0, z: 10}
+  minInitVelocity: {x: -30, y: 0, z: 0}
+  maxInitVelocity: {x: 30, y: 30, z: 0}
