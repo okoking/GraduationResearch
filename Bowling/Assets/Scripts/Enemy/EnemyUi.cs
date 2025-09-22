@@ -10,6 +10,8 @@ public class EnemyUi : MonoBehaviour
 
     private Vector3 initPos;
 
+    Camera mainCam;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,6 +23,8 @@ public class EnemyUi : MonoBehaviour
         }
 
         initPos = enemyTransform.position;
+
+        mainCam = Camera.main;
     }
 
     // Update is called once per frame
@@ -28,8 +32,11 @@ public class EnemyUi : MonoBehaviour
     {
         if (enemy == null) return;
 
-        // ƒJƒƒ‰‚Ì•ûŒü‚ğŒü‚­
-        transform.forward = Camera.main.transform.forward;
+        if (mainCam != null)
+        {
+            // ƒJƒƒ‰‚Ì•ûŒü‚ğŒü‚­
+            transform.forward = mainCam.transform.forward;
+        }
 
         // HPŠ„‡‚ğŒvZ
         float ratio = (float)enemy.GetEnemyHp().GetCurrentHp() / enemy.GetEnemyHp().MaxHp;
