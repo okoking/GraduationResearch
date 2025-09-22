@@ -54,4 +54,8 @@ public class MissileSpawner : MonoBehaviour
         isSpawning = false;
     }
 
+    public bool GetFlg()
+    {
+        return isSpawning;
+    }
 }

@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 727497205073763627, guid: c59305cb362bc0548b3296687e5b1e28, type: 3}
-  time: 1
+  time: 1.5
   lifeTime: 2
   limitAcceleration: 0
   maxAcceleration: 100
