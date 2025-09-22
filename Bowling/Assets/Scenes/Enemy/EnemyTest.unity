@@ -727,7 +727,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1615469393}
   - component: {fileID: 1615469390}
-  - component: {fileID: 1615469392}
   - component: {fileID: 1615469391}
   m_Layer: 0
   m_Name: SabCamera
@@ -831,14 +830,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!81 &1615469392
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1615469389}
-  m_Enabled: 1
 --- !u!4 &1615469393
 Transform:
   m_ObjectHideFlags: 0
@@ -905,6 +896,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 527156948}
+  - {fileID: 1615469393}
+  - {fileID: 1674041743}
   - {fileID: 1052246905}
   - {fileID: 1342197986}
   - {fileID: 1285592627}
@@ -912,5 +905,3 @@ SceneRoots:
   - {fileID: 1161097415}
   - {fileID: 1380260977}
   - {fileID: 178396288}
-  - {fileID: 1615469393}
-  - {fileID: 1674041743}
