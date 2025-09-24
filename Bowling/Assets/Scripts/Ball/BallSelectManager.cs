@@ -30,9 +30,9 @@ public class BallSelectManager : MonoBehaviour
     {
         BallData[] allBalls = Resources.LoadAll<BallData>("Balls");
 
-        float startX = 100f;   //並べ始める基準X座標
-        float startY = 100f;      //基準Y座標
-        float spacing = 200f;   //ボタン間の間隔（幅）
+        float startX = -300f;   //並べ始める基準X座標
+        float startY = -200f;      //基準Y座標
+        float spacing = 150f;   //ボタン間の間隔（幅）
 
         for (int i = 0; i < allBalls.Length; i++)
         {

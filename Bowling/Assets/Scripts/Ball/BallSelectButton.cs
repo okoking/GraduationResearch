@@ -26,16 +26,23 @@ public class BallSelectButton : MonoBehaviour
             return;
         }
 
+        ballData = data;
+
         if (iconImage == null || nameText == null)
         {
             Debug.LogError("Prefab の参照が Inspector で未設定です！");
             return;
         }
 
+        if (data.icon == null)
+        {
+            Debug.LogWarning($"{data.ballName} のアイコンが設定されていません！");
+        }
+
         iconImage.sprite = data.icon;
         nameText.text = data.ballName;
 
-        Debug.Log($"ボタン生成: {data.ballName}, アイコン={data.icon}, テキスト={nameText.text}");
+        Debug.Log($"ボタン生成: {data.ballName}, アイコン={(data.icon != null ? data.icon.name : "なし")}, テキスト={nameText.text}");
     }
 
     public BallData GetBallData() => ballData;

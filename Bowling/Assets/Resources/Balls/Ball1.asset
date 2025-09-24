@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Ball1
   m_EditorClassIdentifier: 
   ballName: ball1
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 0f56035802269aa42983f3c0a120d5b6, type: 3}
   weight: 5
   speed: 3
