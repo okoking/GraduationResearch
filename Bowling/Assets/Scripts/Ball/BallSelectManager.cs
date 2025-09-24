@@ -29,9 +29,14 @@ public class BallSelectManager : MonoBehaviour
     private void LoadBallData()
     {
         BallData[] allBalls = Resources.LoadAll<BallData>("Balls");
-    
-        foreach (var ball in allBalls)
+
+        float startX = 100f;   //並べ始める基準X座標
+        float startY = 100f;      //基準Y座標
+        float spacing = 200f;   //ボタン間の間隔（幅）
+
+        for (int i = 0; i < allBalls.Length; i++)
         {
+            var ball = allBalls[i];
             var obj = Instantiate(buttonPrefab, contentParent);
             if (obj == null)
             {
@@ -48,6 +53,14 @@ public class BallSelectManager : MonoBehaviour
 
             btn.Setup(ball);
             buttons.Add(btn);
+
+            //=== 座標を調整 ===
+            RectTransform rt = obj.GetComponent<RectTransform>();
+            if (rt != null)
+            {
+                // 横並びに配置
+                rt.anchoredPosition = new Vector2(startX + i * spacing, startY);
+            }
         }
     }
 
@@ -73,7 +86,6 @@ public class BallSelectManager : MonoBehaviour
         {
             SelectBall();
         }
-
 
     }
 

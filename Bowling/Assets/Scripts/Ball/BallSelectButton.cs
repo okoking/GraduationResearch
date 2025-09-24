@@ -9,11 +9,33 @@ public class BallSelectButton : MonoBehaviour
 
     private BallData ballData;
 
+    private void Awake()
+    {
+        if (iconImage == null)
+            iconImage = GetComponentInChildren<Image>();
+
+        if (nameText == null)
+            nameText = GetComponentInChildren<TMP_Text>();
+    }
+
     public void Setup(BallData data)
     {
-        ballData = data;
+        if (data == null)
+        {
+            Debug.LogError("Setup に渡された BallData が null です！");
+            return;
+        }
+
+        if (iconImage == null || nameText == null)
+        {
+            Debug.LogError("Prefab の参照が Inspector で未設定です！");
+            return;
+        }
+
         iconImage.sprite = data.icon;
         nameText.text = data.ballName;
+
+        Debug.Log($"ボタン生成: {data.ballName}, アイコン={data.icon}, テキスト={nameText.text}");
     }
 
     public BallData GetBallData() => ballData;

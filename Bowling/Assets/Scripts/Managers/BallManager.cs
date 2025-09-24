@@ -2,15 +2,6 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BallData", menuName = "Game/BallData")]
-public class BallData : ScriptableObject
-{
-    public string ballName;
-    public Sprite icon;
-    public float weight;
-    public float speed;
-}
-
 //ボールマネージャー
 public class BallManager : MonoBehaviour
 {
