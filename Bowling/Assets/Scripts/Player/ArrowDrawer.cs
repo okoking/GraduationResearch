@@ -32,7 +32,10 @@ public class ArrowDrawer : MonoBehaviour
 
         arrow = Instantiate(ArrowPrefab, transform.position, cam.transform.rotation);
         arrow.transform.localPosition = new Vector3(0f, 1f, -6f);
-        
+
+        // ƒJƒƒ‰‚Ì‚Ù‚¤‚ğŒü‚©‚¹‚é
+        arrow.transform.LookAt(2 * transform.position - cam.transform.position);
+
         renderer = arrow.GetComponent<Renderer>();
         renderer.material = NormalMaterial;
 
