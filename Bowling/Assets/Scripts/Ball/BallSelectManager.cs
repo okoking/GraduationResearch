@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class BallSelectManager : MonoBehaviour
 {
-    [SerializeField] private Transform contentParent;     // UI配置先
-    [SerializeField] private GameObject buttonPrefab;     // ボタンのプレハブ
-    [SerializeField] private RectTransform cursor;        // カーソル
+    [SerializeField] private Transform contentParent;     //UI配置先
+    [SerializeField] private GameObject buttonPrefab;     //ボタンのプレハブ
+    [SerializeField] private RectTransform cursor;        //カーソル
 
     private List<BallSelectButton> buttons = new List<BallSelectButton>();
     private int currentIndex = 0;
@@ -30,9 +30,9 @@ public class BallSelectManager : MonoBehaviour
     {
         BallData[] allBalls = Resources.LoadAll<BallData>("Balls");
 
-        float startX = -300f;   //並べ始める基準X座標
-        float startY = -200f;      //基準Y座標
-        float spacing = 150f;   //ボタン間の間隔（幅）
+        float startX = -300f;       //並べ始める基準X座標
+        float startY = -200f;       //基準Y座標
+        float spacing = 150f;       //ボタン間の間隔（幅）
 
         for (int i = 0; i < allBalls.Length; i++)
         {

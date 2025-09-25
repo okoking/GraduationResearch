@@ -170,6 +170,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseLeftClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""5642c614-6e68-4ebb-96b1-8f4f54e6ad76"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -192,6 +201,17 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PadDicide"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e82fdda-127a-4514-8e0f-962d02221f0a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseLeftClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -292,6 +312,76 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""LeftRight"",
+            ""id"": ""863f1f08-8c23-4742-8202-ace42df2eaeb"",
+            ""actions"": [
+                {
+                    ""name"": ""Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""98c14942-e383-4b76-8619-350a7acd5f0d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""9b04a221-6775-4848-a08f-8292d8ed8263"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""cff0705a-51f0-4411-885f-fafb41074dfb"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4c030e12-8ed3-4ca4-b449-b8a2c589dd6a"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""be5ea066-70e2-45f6-91c1-ff9eff5e0096"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""06a718ca-4a35-46b2-9c47-8547a82e96de"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -304,6 +394,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_Dicide = asset.FindActionMap("Dicide", throwIfNotFound: true);
         m_Dicide_KeyBoardDicide = m_Dicide.FindAction("KeyBoardDicide", throwIfNotFound: true);
         m_Dicide_PadDicide = m_Dicide.FindAction("PadDicide", throwIfNotFound: true);
+        m_Dicide_MouseLeftClick = m_Dicide.FindAction("MouseLeftClick", throwIfNotFound: true);
         // Cancel
         m_Cancel = asset.FindActionMap("Cancel", throwIfNotFound: true);
         m_Cancel_KeyBoradCancel = m_Cancel.FindAction("KeyBoradCancel", throwIfNotFound: true);
@@ -312,6 +403,10 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_Option = asset.FindActionMap("Option", throwIfNotFound: true);
         m_Option_KeyBoard = m_Option.FindAction("KeyBoard", throwIfNotFound: true);
         m_Option_Pad = m_Option.FindAction("Pad", throwIfNotFound: true);
+        // LeftRight
+        m_LeftRight = asset.FindActionMap("LeftRight", throwIfNotFound: true);
+        m_LeftRight_Right = m_LeftRight.FindAction("Right", throwIfNotFound: true);
+        m_LeftRight_Left = m_LeftRight.FindAction("Left", throwIfNotFound: true);
     }
 
     ~@GameInput()
@@ -320,6 +415,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         Debug.Assert(!m_Dicide.enabled, "This will cause a leak and performance issues, GameInput.Dicide.Disable() has not been called.");
         Debug.Assert(!m_Cancel.enabled, "This will cause a leak and performance issues, GameInput.Cancel.Disable() has not been called.");
         Debug.Assert(!m_Option.enabled, "This will cause a leak and performance issues, GameInput.Option.Disable() has not been called.");
+        Debug.Assert(!m_LeftRight.enabled, "This will cause a leak and performance issues, GameInput.LeftRight.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -437,12 +533,14 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private List<IDicideActions> m_DicideActionsCallbackInterfaces = new List<IDicideActions>();
     private readonly InputAction m_Dicide_KeyBoardDicide;
     private readonly InputAction m_Dicide_PadDicide;
+    private readonly InputAction m_Dicide_MouseLeftClick;
     public struct DicideActions
     {
         private @GameInput m_Wrapper;
         public DicideActions(@GameInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @KeyBoardDicide => m_Wrapper.m_Dicide_KeyBoardDicide;
         public InputAction @PadDicide => m_Wrapper.m_Dicide_PadDicide;
+        public InputAction @MouseLeftClick => m_Wrapper.m_Dicide_MouseLeftClick;
         public InputActionMap Get() { return m_Wrapper.m_Dicide; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -458,6 +556,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @PadDicide.started += instance.OnPadDicide;
             @PadDicide.performed += instance.OnPadDicide;
             @PadDicide.canceled += instance.OnPadDicide;
+            @MouseLeftClick.started += instance.OnMouseLeftClick;
+            @MouseLeftClick.performed += instance.OnMouseLeftClick;
+            @MouseLeftClick.canceled += instance.OnMouseLeftClick;
         }
 
         private void UnregisterCallbacks(IDicideActions instance)
@@ -468,6 +569,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @PadDicide.started -= instance.OnPadDicide;
             @PadDicide.performed -= instance.OnPadDicide;
             @PadDicide.canceled -= instance.OnPadDicide;
+            @MouseLeftClick.started -= instance.OnMouseLeftClick;
+            @MouseLeftClick.performed -= instance.OnMouseLeftClick;
+            @MouseLeftClick.canceled -= instance.OnMouseLeftClick;
         }
 
         public void RemoveCallbacks(IDicideActions instance)
@@ -593,6 +697,60 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         }
     }
     public OptionActions @Option => new OptionActions(this);
+
+    // LeftRight
+    private readonly InputActionMap m_LeftRight;
+    private List<ILeftRightActions> m_LeftRightActionsCallbackInterfaces = new List<ILeftRightActions>();
+    private readonly InputAction m_LeftRight_Right;
+    private readonly InputAction m_LeftRight_Left;
+    public struct LeftRightActions
+    {
+        private @GameInput m_Wrapper;
+        public LeftRightActions(@GameInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Right => m_Wrapper.m_LeftRight_Right;
+        public InputAction @Left => m_Wrapper.m_LeftRight_Left;
+        public InputActionMap Get() { return m_Wrapper.m_LeftRight; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(LeftRightActions set) { return set.Get(); }
+        public void AddCallbacks(ILeftRightActions instance)
+        {
+            if (instance == null || m_Wrapper.m_LeftRightActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_LeftRightActionsCallbackInterfaces.Add(instance);
+            @Right.started += instance.OnRight;
+            @Right.performed += instance.OnRight;
+            @Right.canceled += instance.OnRight;
+            @Left.started += instance.OnLeft;
+            @Left.performed += instance.OnLeft;
+            @Left.canceled += instance.OnLeft;
+        }
+
+        private void UnregisterCallbacks(ILeftRightActions instance)
+        {
+            @Right.started -= instance.OnRight;
+            @Right.performed -= instance.OnRight;
+            @Right.canceled -= instance.OnRight;
+            @Left.started -= instance.OnLeft;
+            @Left.performed -= instance.OnLeft;
+            @Left.canceled -= instance.OnLeft;
+        }
+
+        public void RemoveCallbacks(ILeftRightActions instance)
+        {
+            if (m_Wrapper.m_LeftRightActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ILeftRightActions instance)
+        {
+            foreach (var item in m_Wrapper.m_LeftRightActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_LeftRightActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public LeftRightActions @LeftRight => new LeftRightActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -602,6 +760,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     {
         void OnKeyBoardDicide(InputAction.CallbackContext context);
         void OnPadDicide(InputAction.CallbackContext context);
+        void OnMouseLeftClick(InputAction.CallbackContext context);
     }
     public interface ICancelActions
     {
@@ -612,5 +771,10 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     {
         void OnKeyBoard(InputAction.CallbackContext context);
         void OnPad(InputAction.CallbackContext context);
+    }
+    public interface ILeftRightActions
+    {
+        void OnRight(InputAction.CallbackContext context);
+        void OnLeft(InputAction.CallbackContext context);
     }
 }
