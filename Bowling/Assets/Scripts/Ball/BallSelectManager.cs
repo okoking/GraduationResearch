@@ -70,12 +70,12 @@ public class BallSelectManager : MonoBehaviour
             return;
 
         //左右入力（キーボード or コントローラー想定）
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (InputManager.Instance.RightInput)
         {
             currentIndex = (currentIndex + 1) % buttons.Count;
             UpdateCursor();
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (InputManager.Instance.LeftInput)
         {
             currentIndex = (currentIndex - 1 + buttons.Count) % buttons.Count;
             UpdateCursor();

@@ -149,4 +149,7 @@ public class InputManager : MonoBehaviour
     public bool PadCancel => inputActions.Cancel.PadCancel.triggered;
     public bool KeyBoardOption => inputActions.Option.KeyBoard.triggered;
     public bool PadOption => inputActions.Option.Pad.triggered;
+    public bool LeftInput => inputActions.LeftRight.Left.triggered;
+    public bool RightInput => inputActions.LeftRight.Right.triggered;
+
 }
