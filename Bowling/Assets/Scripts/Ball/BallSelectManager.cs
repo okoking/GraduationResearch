@@ -98,31 +98,31 @@ public class BallSelectManager : MonoBehaviour
 
     private void SelectBall()
     {
-        Debug.Log($"buttons.Count = {buttons.Count}, currentIndex = {currentIndex}");
-
-        var btn = buttons[currentIndex];
-        if (btn == null)
+        if (buttons.Count == 0)
         {
-            Debug.LogError("選択されたボタンが null です！");
+            Debug.LogWarning("選択ボタンが存在しません！");
             return;
         }
 
-        BallData selected = btn.GetBallData();
+        BallSelectButton selectedButton = buttons[currentIndex];
+        BallData selected = selectedButton.GetBallData();
+
         if (selected == null)
         {
-            Debug.LogError("BallData が null です！");
+            Debug.LogError($"ボタン {selectedButton.name} の BallData が null です！");
             return;
         }
 
-        Debug.Log($"{selected.ballName} を選択しました！ BallManager.Instance = {BallManager.Instance}");
+        Debug.Log($"[BallSelectManager] 選択されたボール: {selected.ballName}");
 
-        if (BallManager.Instance == null)
-        {
-            Debug.LogError("BallManager.Instance が null です！");
-            return;
-        }
-
+        // BallManager にセット
         BallManager.Instance.SelectBall(selected);
+
+        // フェーズを投球へ移行
         BowlingUIManager.Instance.SetPhase(BowlingPhase.Throw);
+        Debug.Log("[BallSelectManager] フェーズを BallSelect → Throw に変更");
+
+        // プレイ開始処理
+        GameManager.Instance.StartPlayPhase();
     }
 }

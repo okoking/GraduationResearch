@@ -18,7 +18,7 @@ public class Play : MonoBehaviour
         }
 
         //リザルトシーンへ
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             SceneController.Instance.ChangeState(GameState.Result);
         }
