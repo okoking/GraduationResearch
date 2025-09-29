@@ -10,7 +10,7 @@ public class MissileCamera : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // 最初はメインカメラを有効化
+        //最初はメインカメラを有効化
         mainCamera.enabled = true;
         subCamera.enabled = false;
         currentCamera = mainCamera;
@@ -21,7 +21,7 @@ public class MissileCamera : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            // 切り替え
+            //切り替え
             if (currentCamera == mainCamera)
             {
                 mainCamera.enabled = false;

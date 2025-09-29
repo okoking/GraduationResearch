@@ -34,15 +34,15 @@ public class EnemyUi : MonoBehaviour
 
         if (mainCam != null)
         {
-            // カメラの方向を向く
+            //カメラの方向を向く
             transform.forward = mainCam.transform.forward;
         }
 
-        // HP割合を計算
+        //HP割合を計算
         float ratio = (float)enemy.GetEnemyHp().GetCurrentHp() / enemy.GetEnemyHp().MaxHp;
         ratio = Mathf.Clamp01(ratio);
 
-        // バーを縮める
+        //バーを縮める
         transform.localScale = new Vector3(ratio, height, 0.1f);
         transform.position = initPos + new Vector3((ratio - 1f) * 0.5f, 1f, 0f);
     }

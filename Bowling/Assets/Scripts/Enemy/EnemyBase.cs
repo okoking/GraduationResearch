@@ -3,8 +3,8 @@ using static UnityEditorInternal.ReorderableList;
 
 public class EnemyBase : MonoBehaviour
 {
-    public float knockbackPower = 10f;  // ぶっ飛ばす強さ
-    public float upPower = 4.5f;          // 上方向に少し浮かす量
+    public float knockbackPower = 10f;  //ぶっ飛ばす強さ
+    public float upPower = 4.5f;          //上方向に少し浮かす量
 
     private HitPointManager enemyHp;
 
@@ -12,9 +12,9 @@ public class EnemyBase : MonoBehaviour
 
     private Vector3 defaultPos;
 
-    public float minY = -5f;          // y座標がこれ以下ならリセット
-    public float stopThreshold = 0.1f; // 速度がこの以下なら停止とみなす
-    public float checkDelay = 1f;      // 地面に落ちてから判定を始める遅延（秒）
+    public float minY = -5f;          //y座標がこれ以下ならリセット
+    public float stopThreshold = 0.1f; //速度がこの以下なら停止とみなす
+    public float checkDelay = 1f;      //地面に落ちてから判定を始める遅延（秒）
 
     private float groundedTime = 0f;
 
@@ -60,9 +60,9 @@ public class EnemyBase : MonoBehaviour
         {
             enemyHp.TakeDamage((int)enemyRd.linearVelocity.magnitude);
 
-            // 弾の進行方向を使って吹っ飛ばす
+            //弾の進行方向を使って吹っ飛ばす
             Vector3 forceDir = (transform.position - collision.transform.position).normalized;
-            forceDir += Vector3.up * upPower; // 上方向にも少し力を加える
+            forceDir += Vector3.up * upPower; //上方向にも少し力を加える
 
             enemyRd.AddForce(forceDir.normalized * knockbackPower, ForceMode.Impulse);
         }

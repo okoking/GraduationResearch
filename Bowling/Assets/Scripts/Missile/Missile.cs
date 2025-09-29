@@ -4,18 +4,23 @@ using UnityEngine;
 public class Missile : MonoBehaviour
 {
     [SerializeField]
+    //ターゲット
     Transform target;
     [SerializeField, Min(0)]
+    //何秒で着弾させるか
     float time = 1;
     [SerializeField]
+    //生存可能時間
     float lifeTime = 2;
     [SerializeField]
     bool limitAcceleration = false;
     [SerializeField, Min(0)]
     float maxAcceleration = 100;
     [SerializeField]
+    //最小振れ幅
     Vector3 minInitVelocity;
     [SerializeField]
+    //最大振れ幅
     Vector3 maxInitVelocity;
 
     Vector3 position;
@@ -39,6 +44,7 @@ public class Missile : MonoBehaviour
     {
         thisTransform = transform;
         position = thisTransform.position;
+        //球の軌道の初期振れ幅
         velocity = new Vector3(Random.Range(minInitVelocity.x, maxInitVelocity.x), Random.Range(minInitVelocity.y, maxInitVelocity.y), Random.Range(minInitVelocity.z, maxInitVelocity.z));
         target = FindRandomTarget();
 
@@ -47,12 +53,14 @@ public class Missile : MonoBehaviour
 
     public void Update()
     {
+        //ターゲットがなければミサイルを壊す
         if (target == null)
         {
             Destroy(gameObject);
             return;
         }
 
+        //加速度を計算
         acceleration = 2f / (time * time) * (target.position - position - time * velocity);
 
         if (limitAcceleration && acceleration.sqrMagnitude > maxAcceleration * maxAcceleration)
@@ -83,8 +91,11 @@ public class Missile : MonoBehaviour
 
     Transform FindRandomTarget()
     {
+        //敵のタグが付いたオブジェクトを探して格納
         GameObject[] targets = GameObject.FindGameObjectsWithTag("Enemy");
+        //ターゲットとの距離が0ならnullを返す
         if (targets.Length == 0) return null;
+        //ランダムなターゲットのトランスフォームを返す
         return targets[Random.Range(0, targets.Length)].transform;
     }
 }
