@@ -613,63 +613,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
---- !u!1001 &706862031157197849
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5461093335376804640, guid: fa9ed9868009f8943b0aa6d9b6655d2d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.47
-      objectReference: {fileID: 0}
-    - target: {fileID: 5461093335376804640, guid: fa9ed9868009f8943b0aa6d9b6655d2d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 5461093335376804640, guid: fa9ed9868009f8943b0aa6d9b6655d2d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -10.372828
-      objectReference: {fileID: 0}
-    - target: {fileID: 5461093335376804640, guid: fa9ed9868009f8943b0aa6d9b6655d2d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5461093335376804640, guid: fa9ed9868009f8943b0aa6d9b6655d2d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5461093335376804640, guid: fa9ed9868009f8943b0aa6d9b6655d2d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5461093335376804640, guid: fa9ed9868009f8943b0aa6d9b6655d2d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5461093335376804640, guid: fa9ed9868009f8943b0aa6d9b6655d2d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5461093335376804640, guid: fa9ed9868009f8943b0aa6d9b6655d2d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5461093335376804640, guid: fa9ed9868009f8943b0aa6d9b6655d2d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7172665227883789895, guid: fa9ed9868009f8943b0aa6d9b6655d2d, type: 3}
-      propertyPath: m_Name
-      value: Slippery floor
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: fa9ed9868009f8943b0aa6d9b6655d2d, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -679,4 +622,3 @@ SceneRoots:
   - {fileID: 805769466}
   - {fileID: 1751520862}
   - {fileID: 468829501}
-  - {fileID: 706862031157197849}
