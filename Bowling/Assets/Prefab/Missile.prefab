@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2130098793659219009}
   - component: {fileID: 2739746418127395168}
   - component: {fileID: -6360870800638480149}
+  - component: {fileID: -1236482858010485244}
   m_Layer: 0
   m_Name: Missile
   m_TagString: Missile
@@ -129,6 +130,21 @@ MonoBehaviour:
   maxAcceleration: 100
   minInitVelocity: {x: -30, y: 0, z: 0}
   maxInitVelocity: {x: 30, y: 30, z: 0}
+--- !u!114 &-1236482858010485244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4437993144311020198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82f9c0ca0ef61314aad9f105352551bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionEffect: {fileID: 1121192042590650, guid: 754e9207703250c42b142e805fb17c6f, type: 3}
+  explosionForce: 700
+  explosionRadius: 5
 --- !u!1001 &3307537812245855512
 PrefabInstance:
   m_ObjectHideFlags: 0
