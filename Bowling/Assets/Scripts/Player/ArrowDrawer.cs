@@ -58,7 +58,7 @@ public class ArrowDrawer : MonoBehaviour
             arrow.transform.eulerAngles = currentEuler;
             angle = Mathf.Abs(Mathf.Atan2(ballMovement.GetInputPower().x, ballMovement.GetInputPower().z) * Mathf.Rad2Deg);
 
-            if (angle > ballMovement.SHOT_ANGLE_RANGE)
+            if (angle > ballMovement.SHOT_ANGLE_RANGE && ballMovement.GetInputPower().magnitude > .5f)
             {
                 arrow.SetActive(true);
                 uiText.SetActive(false);

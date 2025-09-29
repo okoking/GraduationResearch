@@ -66,7 +66,8 @@ public class BallMovement : MonoBehaviour
             rb.AddForce(HorizontalballSpeed);
         }
 
-        rb.AddForce(Vector3.down * 20f, ForceMode.Acceleration);
+        rb.AddForce(Vector3.down * 30f, ForceMode.Acceleration);
+        isableJump = false;
     }
 
 
@@ -84,7 +85,7 @@ public class BallMovement : MonoBehaviour
             if (isableShot) // ”­ŽË€”õ
             {
                 float angle = Mathf.Abs(Mathf.Atan2(h, v) * Mathf.Rad2Deg);
-                if (angle>SHOT_ANGLE_RANGE)
+                if (angle > SHOT_ANGLE_RANGE && InputPower.magnitude > .5f)
                 {
                     isShot = true;
                     isableShot = false;
@@ -158,15 +159,17 @@ public class BallMovement : MonoBehaviour
         if (Input.GetKeyDown("joystick button 3"))
         {
             isJump = true;
-            isableJump = false;
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionStay(Collision collision)
     {
         isableJump = true;
     }
-
+    void OnCollisionExit(Collision collision)
+    {
+        //isableJump = false;
+    }
     public bool GetisableShot()
     {
         return isableShot;

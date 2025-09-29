@@ -118,6 +118,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &87652565 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 692210106748338692, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
+  m_PrefabInstance: {fileID: 1758251147}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &167591187
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,6 +349,21 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1464570747603738632, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
   m_PrefabInstance: {fileID: 1758251147}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &714844701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87652565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0987e10a5148304abcd15725c22b60d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionEffect: {fileID: 1121192042590650, guid: 754e9207703250c42b142e805fb17c6f, type: 3}
+  explosionForce: 700
+  explosionRadius: 5
 --- !u!1 &1408315831
 GameObject:
   m_ObjectHideFlags: 0
@@ -536,7 +556,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7375743374108007620, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
       propertyPath: BALL_SPEED_SCALE
-      value: 1000
+      value: 1500
       objectReference: {fileID: 0}
     - target: {fileID: 692210106748338692, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
       propertyPath: m_Name
@@ -598,7 +618,10 @@ PrefabInstance:
     - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 692210106748338692, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 714844701}
   m_SourcePrefab: {fileID: 100100000, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
 --- !u!1001 &1877369805
 PrefabInstance:
