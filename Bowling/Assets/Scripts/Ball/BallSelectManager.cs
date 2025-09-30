@@ -58,7 +58,7 @@ public class BallSelectManager : MonoBehaviour
             RectTransform rt = obj.GetComponent<RectTransform>();
             if (rt != null)
             {
-                // 横並びに配置
+                //横並びに配置
                 rt.anchoredPosition = new Vector2(startX + i * spacing, startY);
             }
         }
@@ -115,14 +115,14 @@ public class BallSelectManager : MonoBehaviour
 
         Debug.Log($"[BallSelectManager] 選択されたボール: {selected.ballName}");
 
-        // BallManager にセット
+        //BallManager にセット
         BallManager.Instance.SelectBall(selected);
 
-        // フェーズを投球へ移行
+        //フェーズを投球へ移行
         BowlingUIManager.Instance.SetPhase(BowlingPhase.Throw);
         Debug.Log("[BallSelectManager] フェーズを BallSelect → Throw に変更");
-
-        // プレイ開始処理
+        Debug.Log(BowlingUIManager.Instance.CurrentPhase);
+        //プレイ開始処理
         GameManager.Instance.StartPlayPhase();
     }
 }

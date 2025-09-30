@@ -34,6 +34,18 @@ public class BowlingUIManager : MonoBehaviour
 
         //UI切り替え
         ballSelectPanel.SetActive(phase == BowlingPhase.BallSelect);
-        //throwPanel.SetActive(phase == BowlingPhase.Throw);
+
+        switch (phase)
+        {
+            case BowlingPhase.BallSelect:
+                messageText.text = "ボールを選択してください";
+                break;
+            case BowlingPhase.Throw:
+                messageText.text = "スペースキーまたはEnterで投げます";
+                break;
+            default:
+                messageText.text = "";
+                break;
+        }
     }
 }
