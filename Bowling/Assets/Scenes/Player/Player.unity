@@ -355,6 +355,7 @@ MonoBehaviour:
   explosionEffect: {fileID: 1121192042590650, guid: 754e9207703250c42b142e805fb17c6f, type: 3}
   explosionForce: 700
   explosionRadius: 5
+  explosionDamage: 20
 --- !u!1 &1408315831
 GameObject:
   m_ObjectHideFlags: 0
