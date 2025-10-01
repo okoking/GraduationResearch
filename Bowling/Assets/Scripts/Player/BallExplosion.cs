@@ -5,6 +5,7 @@ public class BallExplosion : MonoBehaviour
     public GameObject explosionEffect; // 爆発エフェクト（プレハブ）
     public float explosionForce = 700f; // 吹き飛ばす力
     public float explosionRadius = 5f;  // 効果範囲
+    public int explosionDamage;  // 爆発のダメージ
 
     private bool isExplosion;
     
@@ -41,9 +42,11 @@ public class BallExplosion : MonoBehaviour
             foreach (Collider nearby in colliders)
             {
                 Rigidbody rb = nearby.GetComponent<Rigidbody>();
-                if (rb != null)
+                HitPointManager hpmang = nearby.GetComponent<HitPointManager>();
+                if (rb != null && hpmang != null)
                 {
                     rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+                    hpmang.TakeDamage(explosionDamage);
                 }
             }
 
