@@ -47,6 +47,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Play/BallSelect.unity
     guid: d415f01b070811d4d8409bafd78742a0
+  - enabled: 1
+    path: Assets/Scenes/Result/Result.unity
+    guid: 0bd6514fcd90091449452779e3ef184b
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: bb17436b69a4dc44b869feacddcfc392, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -25,7 +25,6 @@ public class BallSelectManager : MonoBehaviour
             UpdateCursor();
         }
     }
-
     private void LoadBallData()
     {
         BallData[] allBalls = Resources.LoadAll<BallData>("Balls");
