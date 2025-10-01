@@ -131,27 +131,9 @@
             "id": "012447f8-60c1-4f1f-b35d-639ee73924b1",
             "actions": [
                 {
-                    "name": "KeyBoardDicide",
+                    "name": "Dicide",
                     "type": "Button",
                     "id": "133511f2-4d6f-4288-bdd5-44cad06c2172",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "PadDicide",
-                    "type": "Button",
-                    "id": "2669c45e-bf63-4923-b695-24193ce31581",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "MouseLeftClick",
-                    "type": "Button",
-                    "id": "5642c614-6e68-4ebb-96b1-8f4f54e6ad76",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -166,7 +148,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "KeyBoardDicide",
+                    "action": "Dicide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -177,7 +159,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "PadDicide",
+                    "action": "Dicide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -188,7 +170,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MouseLeftClick",
+                    "action": "Dicide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -199,18 +181,9 @@
             "id": "049c9d41-837b-432c-8f6d-2cb2da469d2f",
             "actions": [
                 {
-                    "name": "KeyBoradCancel",
+                    "name": "Cancel",
                     "type": "Button",
                     "id": "0a2505cc-aa81-44a8-8c18-ec4b028d3417",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "PadCancel",
-                    "type": "Button",
-                    "id": "080e17bc-f334-4f87-81ae-27db743d34ae",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -225,7 +198,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "KeyBoradCancel",
+                    "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -236,7 +209,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "PadCancel",
+                    "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -247,18 +220,9 @@
             "id": "54cb9d6c-33ce-4766-933f-fb7a889f7b83",
             "actions": [
                 {
-                    "name": "KeyBoard",
+                    "name": "Option",
                     "type": "Button",
                     "id": "da11d255-5241-4f18-aaa3-caf7e14666c7",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Pad",
-                    "type": "Button",
-                    "id": "9dc1828f-9508-4038-857a-2665fa53e164",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -273,7 +237,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "KeyBoard",
+                    "action": "Option",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -284,7 +248,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Pad",
+                    "action": "Option",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

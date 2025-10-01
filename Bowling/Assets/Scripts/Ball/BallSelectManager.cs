@@ -81,7 +81,7 @@ public class BallSelectManager : MonoBehaviour
         }
 
         //Œˆ’è
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+        if (InputManager.Instance.Enter)
         {
             SelectBall();
         }
