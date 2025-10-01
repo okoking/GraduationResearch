@@ -84,6 +84,7 @@ public class BallSelectManager : MonoBehaviour
         if (InputManager.Instance.Enter)
         {
             SelectBall();
+            CameraManager.Instance.SwitchCamera(CameraMode.Play);
         }
 
     }
