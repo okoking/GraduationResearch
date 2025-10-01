@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SlowdownFloor : MonoBehaviour
 {
-    public float SlowSpeed = 0.2f;
+    public float SlowSpeed;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

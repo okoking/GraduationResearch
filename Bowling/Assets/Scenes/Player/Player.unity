@@ -553,6 +553,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ball
       objectReference: {fileID: 0}
+    - target: {fileID: 692210106748338692, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1464570747603738632, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
