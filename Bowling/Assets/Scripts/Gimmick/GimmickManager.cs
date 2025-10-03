@@ -15,22 +15,18 @@ public class GimmickManager : MonoBehaviour
     void Update()
     {
         WallAdd();
+
+
     }
     void WallAdd()
     {
-        bool WallIsUse = false;
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            WallIsUse = true;
+            Instantiate(WallPrefab, spawnPoint.position, Quaternion.identity);
+            Debug.LogWarning("WallPrefab または spawnPoint がクローンされました。");
 
         }
-        if (WallPrefab != null && spawnPoint != null)
-        {
-            Instantiate(WallPrefab, spawnPoint.position, Quaternion.identity);
-        }
-        else
-        {
-            Debug.LogWarning("WallPrefab または spawnPoint が設定されていません。");
-        }
+        
     }
 }
