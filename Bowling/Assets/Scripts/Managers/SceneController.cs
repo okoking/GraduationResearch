@@ -146,6 +146,32 @@ public class SceneController : MonoBehaviour
     {
       
     }
+    private void OnGUI()
+    {
+        if (Instance == null) return;
+
+        GameState mode = Instance.CurrentState;
+        GUI.color = Color.cyan;
+
+        GUI.Label(new Rect(200, 5, 300, 30), $"現在のシーン: {mode}");
+
+        ////モードに応じて有効化
+        //switch (mode)
+        //{
+        //    case GameState.Select:
+        //        GUI.Label(new Rect(10, 20, 300, 30), $"Cキー：FreeCameraへ");
+        //        GUI.Label(new Rect(10, 35, 300, 30), $"Vキー：PlayCameraへ");
+        //        break;
+        //    case GameState.FreeLook:
+        //        GUI.Label(new Rect(10, 20, 300, 30), $"Vキー：PlayCameraへ");
+        //        GUI.Label(new Rect(10, 35, 300, 30), $"Qキー：上昇");
+        //        GUI.Label(new Rect(10, 50, 300, 30), $"Eキー：下降");
+        //        break;
+        //    case GameState.Play:
+        //        GUI.Label(new Rect(10, 20, 300, 30), $"Cキー：FreeCameraへ");
+        //        break;
+        //}
+    }
 
     private async Task OnEnterTitleAsync()
     {
