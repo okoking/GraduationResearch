@@ -2,33 +2,23 @@ using UnityEngine;
 
 public class Patrol : MonoBehaviour
 {
-    [SerializeField] Transform[] waypoints; //通るオブジェクト（順番）
-    [SerializeField] float speed = 2f;      //移動速度
-    [SerializeField] float arriveDistance = 0.1f; //到着判定の距離
+    [SerializeField] Transform target; // 追いかけたいオブジェクト
+    [SerializeField] Vector3 offset = new Vector3(0, 5, -10); // カメラの位置補正
+    [SerializeField] float smoothSpeed = 5f; // 補間の速さ
 
-    int currentIndex = 0; //今向かっているウェイポイント
-
-    void Update()
+    void LateUpdate()
     {
-        if (waypoints.Length == 0) return;
+        if (target == null) return;
 
-        //今の目標
-        Transform target = waypoints[currentIndex];
+        // 目標位置（ターゲットの位置＋オフセット）
+        Vector3 desiredPosition = target.position + offset;
 
-        //ターゲットの方向
-        Vector3 dir = (target.position - transform.position).normalized;
+        // 補間してスムーズに追従
+        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
 
-        //移動
-        transform.position += dir * speed * Time.deltaTime;
+        transform.position = smoothedPosition;
 
-        //近づいたら次へ
-        if (Vector3.Distance(transform.position, target.position) < arriveDistance)
-        {
-            currentIndex++;
-            if (currentIndex >= waypoints.Length)
-            {
-                currentIndex = 0; //最初に戻る
-            }
-        }
+        // 常にターゲットを注視
+        transform.LookAt(target);
     }
 }

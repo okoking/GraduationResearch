@@ -22,5 +22,18 @@ public class Play : MonoBehaviour
         {
             SceneController.Instance.ChangeState(GameState.Result);
         }
+
+        //フリーカメラに変更
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            CameraManager.Instance.SwitchCamera(CameraMode.FreeLook);
+            Debug.Log("フリーカメラへ変更");
+        }
+
+        //フリーカメラに変更
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            CameraManager.Instance.SwitchCamera(CameraMode.Play);
+        }
     }
 }

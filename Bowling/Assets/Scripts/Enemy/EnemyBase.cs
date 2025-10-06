@@ -65,6 +65,9 @@ public class EnemyBase : MonoBehaviour
             forceDir += Vector3.up * upPower; //上方向にも少し力を加える
 
             enemyRd.AddForce(forceDir.normalized * knockbackPower, ForceMode.Impulse);
+
+            // ミッションに通知
+            FindFirstObjectByType<MissionManager>().HitEnemy();
         }
 
         //ミサイルと当たったらミサイルを消す,ダメージを受ける

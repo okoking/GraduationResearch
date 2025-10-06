@@ -143,12 +143,9 @@ public class InputManager : MonoBehaviour
     //“ü—Íˆê——
     public Vector2 Move => inputActions.Player.Move.ReadValue<Vector2>();
     public bool Jump => inputActions.Player.Jump.triggered;
-    public bool KeyBoardEnter => inputActions.Dicide.KeyBoardDicide.triggered;
-    public bool PadEnter => inputActions.Dicide.PadDicide.triggered;
-    public bool KeyBoardCancel => inputActions.Cancel.KeyBoradCancel.triggered;
-    public bool PadCancel => inputActions.Cancel.PadCancel.triggered;
-    public bool KeyBoardOption => inputActions.Option.KeyBoard.triggered;
-    public bool PadOption => inputActions.Option.Pad.triggered;
+    public bool Enter => inputActions.Dicide.Dicide.triggered;
+    public bool Cancel => inputActions.Cancel.Cancel.triggered;
+    public bool Option => inputActions.Option.Option.triggered;
     public bool LeftInput => inputActions.LeftRight.Left.triggered;
     public bool RightInput => inputActions.LeftRight.Right.triggered;
 

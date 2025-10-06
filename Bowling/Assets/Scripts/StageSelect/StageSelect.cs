@@ -12,13 +12,13 @@ public class StageSelect : MonoBehaviour
     void Update()
     {
         //タイトルシーンへ
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (InputManager.Instance.Option)
         {
             SceneController.Instance.ChangeState(GameState.Title);
         }
 
         //プレイシーンへ
-        if (InputManager.Instance.KeyBoardEnter || InputManager.Instance.PadEnter)
+        if (InputManager.Instance.Enter)
         {
             SceneController.Instance.ChangeState(GameState.Play);
         }

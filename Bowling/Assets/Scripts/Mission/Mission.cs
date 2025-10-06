@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class Result : MonoBehaviour
+public class Mission : MonoBehaviour
 {
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -11,12 +12,6 @@ public class Result : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      
 
-        //ステージセレクトシーンへ
-        if (InputManager.Instance.Enter)
-        {
-            SceneController.Instance.ChangeState(GameState.StageSelect);
-        }
     }
 }

@@ -124,6 +124,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e0c8db25976d8a439ea60dce32178b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  knockbackPower: 10
+  upPower: 4.5
+  minY: -5
+  stopThreshold: 0.1
+  checkDelay: 1
 --- !u!114 &4422769299292653827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70fd6d7800dc9274f89fac7eae7eb5a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHp: 50
+  MaxHp: 1000000
 --- !u!114 &-5260771985840306000
 MonoBehaviour:
   m_ObjectHideFlags: 0

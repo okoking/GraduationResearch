@@ -6,7 +6,7 @@ public class ArrowDrawer : MonoBehaviour
     public Material OutsideMaterial; // インスペクターで指定
 
     public GameObject uiTextPrefab; // TextMeshProのオブジェクトを入れる
-    private GameObject uiText; // TextMeshProのオブジェクトを入れる
+    private GameObject uiText;      // TextMeshProのオブジェクトを入れる
 
     private new Renderer renderer;
 

@@ -137,7 +137,7 @@ public class SceneController : MonoBehaviour
                 _ = OnEnterPlayAsync();
                 break;
             case GameState.Result:
-                OnEnterResult();
+                _ = OnEnterResult();
                 break;
             
         }
@@ -168,13 +168,16 @@ public class SceneController : MonoBehaviour
     private async Task OnEnterPlayAsync()
     {
         await Instance.GoTo(GameState.Play);
-       
+
+        CameraManager.Instance.RegisterCameras();
+
         Debug.Log("ゲーム開始！");
     }
 
-    private void OnEnterResult()
+    private async Task OnEnterResult()
     {
-      
+        await Instance.GoTo(GameState.Result);
+
         Debug.Log("リザルト！");
       
       

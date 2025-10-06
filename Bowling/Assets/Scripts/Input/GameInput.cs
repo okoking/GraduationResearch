@@ -154,27 +154,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             ""id"": ""012447f8-60c1-4f1f-b35d-639ee73924b1"",
             ""actions"": [
                 {
-                    ""name"": ""KeyBoardDicide"",
+                    ""name"": ""Dicide"",
                     ""type"": ""Button"",
                     ""id"": ""133511f2-4d6f-4288-bdd5-44cad06c2172"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""PadDicide"",
-                    ""type"": ""Button"",
-                    ""id"": ""2669c45e-bf63-4923-b695-24193ce31581"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""MouseLeftClick"",
-                    ""type"": ""Button"",
-                    ""id"": ""5642c614-6e68-4ebb-96b1-8f4f54e6ad76"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -189,7 +171,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""KeyBoardDicide"",
+                    ""action"": ""Dicide"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -200,7 +182,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""PadDicide"",
+                    ""action"": ""Dicide"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -211,7 +193,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MouseLeftClick"",
+                    ""action"": ""Dicide"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -222,18 +204,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             ""id"": ""049c9d41-837b-432c-8f6d-2cb2da469d2f"",
             ""actions"": [
                 {
-                    ""name"": ""KeyBoradCancel"",
+                    ""name"": ""Cancel"",
                     ""type"": ""Button"",
                     ""id"": ""0a2505cc-aa81-44a8-8c18-ec4b028d3417"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""PadCancel"",
-                    ""type"": ""Button"",
-                    ""id"": ""080e17bc-f334-4f87-81ae-27db743d34ae"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -248,7 +221,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""KeyBoradCancel"",
+                    ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -259,7 +232,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""PadCancel"",
+                    ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -270,18 +243,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             ""id"": ""54cb9d6c-33ce-4766-933f-fb7a889f7b83"",
             ""actions"": [
                 {
-                    ""name"": ""KeyBoard"",
+                    ""name"": ""Option"",
                     ""type"": ""Button"",
                     ""id"": ""da11d255-5241-4f18-aaa3-caf7e14666c7"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Pad"",
-                    ""type"": ""Button"",
-                    ""id"": ""9dc1828f-9508-4038-857a-2665fa53e164"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -296,7 +260,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""KeyBoard"",
+                    ""action"": ""Option"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -307,7 +271,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Pad"",
+                    ""action"": ""Option"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -436,17 +400,13 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         // Dicide
         m_Dicide = asset.FindActionMap("Dicide", throwIfNotFound: true);
-        m_Dicide_KeyBoardDicide = m_Dicide.FindAction("KeyBoardDicide", throwIfNotFound: true);
-        m_Dicide_PadDicide = m_Dicide.FindAction("PadDicide", throwIfNotFound: true);
-        m_Dicide_MouseLeftClick = m_Dicide.FindAction("MouseLeftClick", throwIfNotFound: true);
+        m_Dicide_Dicide = m_Dicide.FindAction("Dicide", throwIfNotFound: true);
         // Cancel
         m_Cancel = asset.FindActionMap("Cancel", throwIfNotFound: true);
-        m_Cancel_KeyBoradCancel = m_Cancel.FindAction("KeyBoradCancel", throwIfNotFound: true);
-        m_Cancel_PadCancel = m_Cancel.FindAction("PadCancel", throwIfNotFound: true);
+        m_Cancel_Cancel = m_Cancel.FindAction("Cancel", throwIfNotFound: true);
         // Option
         m_Option = asset.FindActionMap("Option", throwIfNotFound: true);
-        m_Option_KeyBoard = m_Option.FindAction("KeyBoard", throwIfNotFound: true);
-        m_Option_Pad = m_Option.FindAction("Pad", throwIfNotFound: true);
+        m_Option_Option = m_Option.FindAction("Option", throwIfNotFound: true);
         // LeftRight
         m_LeftRight = asset.FindActionMap("LeftRight", throwIfNotFound: true);
         m_LeftRight_Right = m_LeftRight.FindAction("Right", throwIfNotFound: true);
@@ -575,16 +535,12 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     // Dicide
     private readonly InputActionMap m_Dicide;
     private List<IDicideActions> m_DicideActionsCallbackInterfaces = new List<IDicideActions>();
-    private readonly InputAction m_Dicide_KeyBoardDicide;
-    private readonly InputAction m_Dicide_PadDicide;
-    private readonly InputAction m_Dicide_MouseLeftClick;
+    private readonly InputAction m_Dicide_Dicide;
     public struct DicideActions
     {
         private @GameInput m_Wrapper;
         public DicideActions(@GameInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @KeyBoardDicide => m_Wrapper.m_Dicide_KeyBoardDicide;
-        public InputAction @PadDicide => m_Wrapper.m_Dicide_PadDicide;
-        public InputAction @MouseLeftClick => m_Wrapper.m_Dicide_MouseLeftClick;
+        public InputAction @Dicide => m_Wrapper.m_Dicide_Dicide;
         public InputActionMap Get() { return m_Wrapper.m_Dicide; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -594,28 +550,16 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_DicideActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_DicideActionsCallbackInterfaces.Add(instance);
-            @KeyBoardDicide.started += instance.OnKeyBoardDicide;
-            @KeyBoardDicide.performed += instance.OnKeyBoardDicide;
-            @KeyBoardDicide.canceled += instance.OnKeyBoardDicide;
-            @PadDicide.started += instance.OnPadDicide;
-            @PadDicide.performed += instance.OnPadDicide;
-            @PadDicide.canceled += instance.OnPadDicide;
-            @MouseLeftClick.started += instance.OnMouseLeftClick;
-            @MouseLeftClick.performed += instance.OnMouseLeftClick;
-            @MouseLeftClick.canceled += instance.OnMouseLeftClick;
+            @Dicide.started += instance.OnDicide;
+            @Dicide.performed += instance.OnDicide;
+            @Dicide.canceled += instance.OnDicide;
         }
 
         private void UnregisterCallbacks(IDicideActions instance)
         {
-            @KeyBoardDicide.started -= instance.OnKeyBoardDicide;
-            @KeyBoardDicide.performed -= instance.OnKeyBoardDicide;
-            @KeyBoardDicide.canceled -= instance.OnKeyBoardDicide;
-            @PadDicide.started -= instance.OnPadDicide;
-            @PadDicide.performed -= instance.OnPadDicide;
-            @PadDicide.canceled -= instance.OnPadDicide;
-            @MouseLeftClick.started -= instance.OnMouseLeftClick;
-            @MouseLeftClick.performed -= instance.OnMouseLeftClick;
-            @MouseLeftClick.canceled -= instance.OnMouseLeftClick;
+            @Dicide.started -= instance.OnDicide;
+            @Dicide.performed -= instance.OnDicide;
+            @Dicide.canceled -= instance.OnDicide;
         }
 
         public void RemoveCallbacks(IDicideActions instance)
@@ -637,14 +581,12 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     // Cancel
     private readonly InputActionMap m_Cancel;
     private List<ICancelActions> m_CancelActionsCallbackInterfaces = new List<ICancelActions>();
-    private readonly InputAction m_Cancel_KeyBoradCancel;
-    private readonly InputAction m_Cancel_PadCancel;
+    private readonly InputAction m_Cancel_Cancel;
     public struct CancelActions
     {
         private @GameInput m_Wrapper;
         public CancelActions(@GameInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @KeyBoradCancel => m_Wrapper.m_Cancel_KeyBoradCancel;
-        public InputAction @PadCancel => m_Wrapper.m_Cancel_PadCancel;
+        public InputAction @Cancel => m_Wrapper.m_Cancel_Cancel;
         public InputActionMap Get() { return m_Wrapper.m_Cancel; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -654,22 +596,16 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_CancelActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_CancelActionsCallbackInterfaces.Add(instance);
-            @KeyBoradCancel.started += instance.OnKeyBoradCancel;
-            @KeyBoradCancel.performed += instance.OnKeyBoradCancel;
-            @KeyBoradCancel.canceled += instance.OnKeyBoradCancel;
-            @PadCancel.started += instance.OnPadCancel;
-            @PadCancel.performed += instance.OnPadCancel;
-            @PadCancel.canceled += instance.OnPadCancel;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
         }
 
         private void UnregisterCallbacks(ICancelActions instance)
         {
-            @KeyBoradCancel.started -= instance.OnKeyBoradCancel;
-            @KeyBoradCancel.performed -= instance.OnKeyBoradCancel;
-            @KeyBoradCancel.canceled -= instance.OnKeyBoradCancel;
-            @PadCancel.started -= instance.OnPadCancel;
-            @PadCancel.performed -= instance.OnPadCancel;
-            @PadCancel.canceled -= instance.OnPadCancel;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
         }
 
         public void RemoveCallbacks(ICancelActions instance)
@@ -691,14 +627,12 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     // Option
     private readonly InputActionMap m_Option;
     private List<IOptionActions> m_OptionActionsCallbackInterfaces = new List<IOptionActions>();
-    private readonly InputAction m_Option_KeyBoard;
-    private readonly InputAction m_Option_Pad;
+    private readonly InputAction m_Option_Option;
     public struct OptionActions
     {
         private @GameInput m_Wrapper;
         public OptionActions(@GameInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @KeyBoard => m_Wrapper.m_Option_KeyBoard;
-        public InputAction @Pad => m_Wrapper.m_Option_Pad;
+        public InputAction @Option => m_Wrapper.m_Option_Option;
         public InputActionMap Get() { return m_Wrapper.m_Option; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -708,22 +642,16 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_OptionActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_OptionActionsCallbackInterfaces.Add(instance);
-            @KeyBoard.started += instance.OnKeyBoard;
-            @KeyBoard.performed += instance.OnKeyBoard;
-            @KeyBoard.canceled += instance.OnKeyBoard;
-            @Pad.started += instance.OnPad;
-            @Pad.performed += instance.OnPad;
-            @Pad.canceled += instance.OnPad;
+            @Option.started += instance.OnOption;
+            @Option.performed += instance.OnOption;
+            @Option.canceled += instance.OnOption;
         }
 
         private void UnregisterCallbacks(IOptionActions instance)
         {
-            @KeyBoard.started -= instance.OnKeyBoard;
-            @KeyBoard.performed -= instance.OnKeyBoard;
-            @KeyBoard.canceled -= instance.OnKeyBoard;
-            @Pad.started -= instance.OnPad;
-            @Pad.performed -= instance.OnPad;
-            @Pad.canceled -= instance.OnPad;
+            @Option.started -= instance.OnOption;
+            @Option.performed -= instance.OnOption;
+            @Option.canceled -= instance.OnOption;
         }
 
         public void RemoveCallbacks(IOptionActions instance)
@@ -802,19 +730,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     }
     public interface IDicideActions
     {
-        void OnKeyBoardDicide(InputAction.CallbackContext context);
-        void OnPadDicide(InputAction.CallbackContext context);
-        void OnMouseLeftClick(InputAction.CallbackContext context);
+        void OnDicide(InputAction.CallbackContext context);
     }
     public interface ICancelActions
     {
-        void OnKeyBoradCancel(InputAction.CallbackContext context);
-        void OnPadCancel(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
     }
     public interface IOptionActions
     {
-        void OnKeyBoard(InputAction.CallbackContext context);
-        void OnPad(InputAction.CallbackContext context);
+        void OnOption(InputAction.CallbackContext context);
     }
     public interface ILeftRightActions
     {

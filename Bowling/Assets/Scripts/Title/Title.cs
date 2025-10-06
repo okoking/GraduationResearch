@@ -17,13 +17,13 @@ public class Title : MonoBehaviour
         }
 
         //オプションシーンへ
-        if (InputManager.Instance.KeyBoardOption || InputManager.Instance.PadOption)
+        if (InputManager.Instance.Option)
         {
             SceneController.Instance.ChangeState(GameState.Option);
         }
-
+        
         //ステージセレクトシーンへ
-        if (InputManager.Instance.KeyBoardEnter || InputManager.Instance.PadEnter)
+        if (InputManager.Instance.Enter)
         {
             SceneController.Instance.ChangeState(GameState.StageSelect);
         }

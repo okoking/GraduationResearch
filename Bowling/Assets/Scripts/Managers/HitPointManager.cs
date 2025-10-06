@@ -34,7 +34,7 @@ public class HitPointManager : MonoBehaviour
         {
             //0à»â∫Ç…ÇÕÇ»ÇÁÇ»Ç¢
             currentHp = 0;
-            //Å{éÄÅ{//
+            //éÄ//
             Die();
         }
     }
