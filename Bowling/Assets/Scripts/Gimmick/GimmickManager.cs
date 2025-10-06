@@ -14,11 +14,11 @@ public class GimmickManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        WallAdd();
+        AddObject();
 
 
     }
-    void WallAdd()
+    void AddObject()
     {
 
         if (Input.GetKeyDown(KeyCode.Space))
