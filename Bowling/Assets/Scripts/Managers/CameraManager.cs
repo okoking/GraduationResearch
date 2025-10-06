@@ -76,6 +76,33 @@ public class CameraManager : MonoBehaviour
         }
     }
 
+    private void OnGUI()
+    {
+        if (Instance == null) return;
+
+        CameraMode mode = Instance.GetCurrentMode()/*.ToString()*/;
+        GUI.color = Color.red;
+        
+        GUI.Label(new Rect(10, 5, 300, 30), $"現在のカメラモード: {mode}");
+
+        //モードに応じて有効化
+        switch (mode)
+        {
+            case CameraMode.Select:
+                GUI.Label(new Rect(10, 20, 300, 30), $"Cキー：FreeCameraへ");
+                GUI.Label(new Rect(10, 35, 300, 30), $"Vキー：PlayCameraへ");
+                break;
+            case CameraMode.FreeLook:
+                GUI.Label(new Rect(10, 20, 300, 30), $"Vキー：PlayCameraへ");
+                GUI.Label(new Rect(10, 35, 300, 30), $"Qキー：上昇");
+                GUI.Label(new Rect(10, 50, 300, 30), $"Eキー：下降");
+                break;
+            case CameraMode.Play:
+                GUI.Label(new Rect(10, 20, 300, 30), $"Cキー：FreeCameraへ");
+                break;
+        }
+    }
+
     //カメラモード取得関数
     public CameraMode GetCurrentMode() => currentMode;
 }
