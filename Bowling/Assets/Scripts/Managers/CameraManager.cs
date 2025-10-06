@@ -6,7 +6,7 @@ public enum CameraMode
     Select,     //ボール選択UI
     FreeLook,   //コース確認
     Play,       //投球時
-    Replay      //将来用
+    //Replay      //将来用
 }
 
 //カメラマネージャー
