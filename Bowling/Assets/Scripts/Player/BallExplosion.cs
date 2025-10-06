@@ -5,7 +5,7 @@ public class BallExplosion : MonoBehaviour
     public GameObject explosionEffect; // 爆発エフェクト（プレハブ）
     public float explosionForce = 700f; // 吹き飛ばす力
     public float explosionRadius = 5f;  // 効果範囲
-    public int explosionDamage;  // 爆発のダメージ
+    public int explosionDamage = 20;  // 爆発のダメージ
 
     private bool isExplosion;
     

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class FollowBall : MonoBehaviour
 {
-    public Transform target;     // ボール（追従対象）
-    public Vector3 offset;       // 相対位置（例: (0, 5, -10)）
+    private Transform target;     // ボール（追従対象）
+    public Vector3 offset;       // 相対位置
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -14,7 +14,11 @@ public class FollowBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        GameObject ballObj = GameObject.FindGameObjectWithTag("Ball");
+        if (ballObj != null)
+        {
+            target = ballObj.transform;
+        }
     }
     void LateUpdate()
     {

@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 
 public class ArrowDrawer : MonoBehaviour
@@ -18,9 +17,6 @@ public class ArrowDrawer : MonoBehaviour
     public GameObject ArrowPrefab;
     private GameObject arrow;
 
-    //public GameObject ArrowPrefab;
-
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -30,8 +26,14 @@ public class ArrowDrawer : MonoBehaviour
         //Instantiate(Arrow, transform.transform);
         ballMovement = GetComponent<BallMovement>();
 
-        arrow = Instantiate(ArrowPrefab, transform.position, cam.transform.rotation);
-        arrow.transform.localPosition = new Vector3(0f, 1f, -6f);
+        arrow = Instantiate(ArrowPrefab, transform.position, cam.transform.rotation, transform);
+        //// 例: 画面の中心の座標をワールドに変換する
+        //Vector3 screenPos = new Vector3(Screen.width / 2, Screen.height / 2, 10f);
+        //// zはカメラからの距離（これを指定しないと正しいワールド位置にならない）
+        //Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+
+        //// オブジェクトをその位置に配置
+        //arrow.transform.position = worldPos;
 
         // カメラのほうを向かせる
         arrow.transform.LookAt(2 * transform.position - cam.transform.position);
@@ -39,7 +41,10 @@ public class ArrowDrawer : MonoBehaviour
         renderer = arrow.GetComponent<Renderer>();
         renderer.material = NormalMaterial;
 
-        uiText = Instantiate(uiTextPrefab);
+        uiText = Instantiate(uiTextPrefab, transform);
+
+        arrow.SetActive(false);
+        uiText.SetActive(false);
     }
 
     // Update is called once per frame

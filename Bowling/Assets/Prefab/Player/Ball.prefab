@@ -151,9 +151,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SHOT_ANGLE_RANGE: 135
-  JUMP_POWER: 20
-  BALL_SPEED_SCALE: 1000
-  HoriSpeed: 20
+  JUMP_POWER: 10
+  BALL_SPEED_SCALE: 1500
+  HoriSpeed: 40
 --- !u!114 &8437161749612055085
 MonoBehaviour:
   m_ObjectHideFlags: 0

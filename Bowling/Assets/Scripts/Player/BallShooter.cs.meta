@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 13b4d2307b9dab144ad8d47bc91dac9d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - NormalMaterial: {fileID: -6478536213147159724, guid: b56ba41d7ff10fa4186e5b15a6d7c9fb, type: 3}
+  - OutsideMaterial: {fileID: -3846018093981099296, guid: b56ba41d7ff10fa4186e5b15a6d7c9fb, type: 3}
+  - ArrowPrefab: {fileID: 172624660860559219, guid: 7996d5d732feb944bb7a51d90de48243, type: 3}
+  - uiTextPrefab: {fileID: 5361073423655784598, guid: be7c706b76afd1c47805d27aaed5961e, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

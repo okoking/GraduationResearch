@@ -3,6 +3,7 @@ using UnityEngine;
 public class BallMovement : MonoBehaviour
 {
     private Rigidbody rb;
+    [SerializeField] private Vector3 SPAWN_POS = new(0f, 0.5f, -5f);
 
     public float SHOT_ANGLE_RANGE = 135f;
 
@@ -41,6 +42,15 @@ public class BallMovement : MonoBehaviour
         Shot();
         // ˆÚ“®
         Move();
+        // YÀ•W‚ªˆê’èˆÈ‰º‚É‚È‚ê‚Îíœ
+        if (transform.position.y < -20f)
+        {
+            isableShot = true;
+            rb.linearVelocity = Vector3.zero;
+            rb.rotation = Quaternion.identity;
+            rb.angularVelocity = Vector3.zero;
+            rb.position = SPAWN_POS;
+        }
     }
     void FixedUpdate()
     {    
@@ -97,7 +107,7 @@ public class BallMovement : MonoBehaviour
                 rb.linearVelocity = Vector3.zero;
                 rb.rotation = Quaternion.identity;
                 rb.angularVelocity = Vector3.zero;
-                rb.position = new(0f, 0.5f, -5f);
+                rb.position = SPAWN_POS;
             }
         }
 
