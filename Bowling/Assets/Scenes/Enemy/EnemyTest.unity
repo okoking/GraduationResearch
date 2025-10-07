@@ -1166,7 +1166,7 @@ GameObject:
   - component: {fileID: 1615469390}
   - component: {fileID: 1615469391}
   m_Layer: 0
-  m_Name: SabCamera
+  m_Name: MissileIventCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1311,8 +1311,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3b63073c592cfc4dbc10f3e68b799cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 527156947}
-  subCamera: {fileID: 1615469390}
 --- !u!4 &1674041743
 Transform:
   m_ObjectHideFlags: 0

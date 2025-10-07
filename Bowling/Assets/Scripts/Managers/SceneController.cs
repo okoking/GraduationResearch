@@ -27,7 +27,7 @@ public static class SceneGroups
               { GameState.Option, new List<string> { "Option", "OptionUI" } },
               { GameState.StageSelect, new List<string> { "StageSelect", "StageSelectUI" } },
               { GameState.Play, new List<string> { "Play", "PlayUI", "Player","EnemyTest",
-                  "Gimmick", "BallSelect", "Gimmick" } },
+                  "Gimmick", "BallSelect", "Gimmick","Map" } },
               { GameState.Result, new List<string> { "Result", "Result_UI" } },
         };
 }
@@ -60,7 +60,7 @@ public class SceneController : MonoBehaviour
     void Start()
     {
         //最初タイトル
-        CurrentState = GameState.Title;
+        CurrentState = GameState.Play;
         _ = OnEnterTitleAsync();
         Debug.Log("最初のシーンはタイトルです");
     }
