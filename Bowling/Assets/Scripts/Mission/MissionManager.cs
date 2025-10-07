@@ -4,7 +4,6 @@ using UnityEngine;
 public class MissionManager : MonoBehaviour
 {
     [SerializeField] List<MissionData> missions;        //ミッションを登録
-    [SerializeField] private MissionUIController ui;   // UI参照
     private MissionData                currentMission;  //選ばれているミッション
     private int                        progress = 0;    //達成率的な
     private bool isMissionFlg = false;
@@ -35,7 +34,6 @@ public class MissionManager : MonoBehaviour
         progress = 0;
 
         Debug.Log(currentMission.missionText);
-        ui.ShowMission(currentMission);
 
         isMissionFlg = true;
     }
@@ -54,7 +52,6 @@ public class MissionManager : MonoBehaviour
         if (progress >= currentMission.targetCount)
         {
             Debug.Log("クリア");
-            ui.ShowMissionClear(currentMission);
             isMissionFlg = false;
         }
     }

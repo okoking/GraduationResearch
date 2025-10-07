@@ -11,7 +11,6 @@ public enum MissionType
 public class MissionData : ScriptableObject
 {
     public string missionText;       //ミッション時に表示するテキスト
-    public string missionDescription;//ミッションの説明
     public int    missionClearValue; //ミッションをクリアしたときのメーター増加量
 
     public MissionType missionType;  //ミッションの種類
