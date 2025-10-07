@@ -2,18 +2,14 @@ using UnityEngine;
 
 public class MissileCamera : MonoBehaviour
 {
-    [SerializeField] Camera mainCamera;
-    [SerializeField] Camera subCamera;
-
-    Camera currentCamera;
+    [SerializeField]Camera MissileIventCamera;
+    CameraMode currentCamera;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //最初はメインカメラを有効化
-        mainCamera.enabled = true;
-        subCamera.enabled = false;
-        currentCamera = mainCamera;
+       
+        currentCamera = CameraManager.Instance.GetCurrentMode();
     }
 
     // Update is called once per frame
@@ -22,17 +18,17 @@ public class MissileCamera : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //切り替え
-            if (currentCamera == mainCamera)
+            if (currentCamera != CameraMode.MissileIvent)
             {
-                mainCamera.enabled = false;
-                subCamera.enabled = true;
-                currentCamera = subCamera;
+                CameraManager.Instance.SwitchCamera(CameraMode.MissileIvent);
+                Debug.Log("ミサイルイベントカメラへ変更");
+                currentCamera = CameraMode.MissileIvent;
             }
             else
             {
-                mainCamera.enabled = true;
-                subCamera.enabled = false;
-                currentCamera = mainCamera;
+                CameraManager.Instance.SwitchCamera(CameraMode.Play);
+                Debug.Log("プレイカメラへ変更");
+                currentCamera = CameraMode.Play;
             }
         }
     }

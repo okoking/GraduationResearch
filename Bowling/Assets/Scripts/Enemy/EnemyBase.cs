@@ -11,6 +11,7 @@ public class EnemyBase : MonoBehaviour
     private Rigidbody enemyRd;
 
     private Vector3 defaultPos;
+    private Quaternion defaultRot;
 
     public float minY = -5f;          //y座標がこれ以下ならリセット
     public float stopThreshold = 0.1f; //速度がこの以下なら停止とみなす
@@ -27,6 +28,7 @@ public class EnemyBase : MonoBehaviour
         enemyRd = this.GetComponent<Rigidbody>();
 
         defaultPos = transform.position;
+        defaultRot = transform.rotation;
     }
 
     // Update is called once per frame
@@ -86,7 +88,7 @@ public class EnemyBase : MonoBehaviour
         enemyRd.linearVelocity = Vector3.zero;
         enemyRd.angularVelocity = Vector3.zero;
         transform.position = defaultPos;
-        transform.rotation = Quaternion.identity;
+        transform.rotation = defaultRot;
         groundedTime = 0f;
     }
 }
