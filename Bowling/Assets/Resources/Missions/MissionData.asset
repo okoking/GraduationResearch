@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 742979f863c55d04db16e585860cf011, type: 3}
   m_Name: MissionData
   m_EditorClassIdentifier: 
-  missionText: "\u30DF\u30C3\u30B7\u30E7\u30F3\u3084\u3067\u30FC"
-  missionClearValue: 10
+  missionText: Mission_2_20
+  missionDescription: Mission!!
+  missionClearValue: 20
   missionType: 0
   targetCount: 2
