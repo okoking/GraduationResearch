@@ -67,8 +67,6 @@ public class PinKnockBack : MonoBehaviour
 
             FindFirstObjectByType<EnemyBase>().GetEnemyHp().TakeDamage((int)pinRd.linearVelocity.magnitude);
 
-            enemybase.GetEnemyHp().TakeDamage((int)enemybase.GetEnemyRd().linearVelocity.magnitude);
-
             // ミッションに通知
             FindFirstObjectByType<MissionManager>().HitEnemy();
         }
