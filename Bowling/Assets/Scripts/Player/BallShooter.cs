@@ -47,50 +47,20 @@ public class BallShooter : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        //if (ballMovement.GetisableShot())
-        //{
-        //    //float angle = Mathf.Abs(Mathf.Atan2(ballMovement.GetInputPower().x, ballMovement.GetInputPower().z) * Mathf.Rad2Deg);
-        //    arrow.transform.localScale = new(.5f, -ballMovement.GetInputPower().magnitude * 1.5f, .5f);
+    {       
+        // カメラの参照
+        Camera cam = Camera.main;
+        arrow.transform.position = cam.transform.position + cam.transform.forward * 2f;
 
-        //    Vector3 currentEuler = arrow.transform.eulerAngles;
-        //    // Yだけ更新
-        //    float angle = -Mathf.Atan2(ballMovement.GetInputPower().x, ballMovement.GetInputPower().z) * Mathf.Rad2Deg;
-        //    currentEuler.z = angle;
-        //    // 反映
-        //    arrow.transform.eulerAngles = currentEuler;
-        //    angle = Mathf.Abs(Mathf.Atan2(ballMovement.GetInputPower().x, ballMovement.GetInputPower().z) * Mathf.Rad2Deg);
-
-        //    if (angle > ballMovement.SHOT_ANGLE_RANGE && ballMovement.GetInputPower().magnitude > .5f)
-        //    {
-        //        arrow.SetActive(true);
-        //        uiText.SetActive(false);
-        //        renderer.material = NormalMaterial;
-        //    }
-        //    else
-        //    {
-        //        arrow.SetActive(true);
-        //        uiText.SetActive(true);
-        //        renderer.material = OutsideMaterial;
-        //    }
-
-        //    if (ballMovement.GetInputPower().magnitude == 0)
-        //    {
-        //        arrow.SetActive(false);
-        //        uiText.SetActive(false);
-        //    }
-        //}
-        //else
-        //{
-        //    arrow.SetActive(false);
-        //    uiText.SetActive(false);
-        //}
+        // カメラのほうを向かせる
+        arrow.transform.LookAt(2f * transform.position - cam.transform.position);
 
         Shot();
     }
 
     void Shot()
     {
+        // 発射シーン以外は飛ばす
         if (!isShootScene) return;
 
         float h = Input.GetAxis("Horizontal"); // A/D, ←/→, スティックX
@@ -99,15 +69,6 @@ public class BallShooter : MonoBehaviour
         float shotAngle = Mathf.Atan2(h, v);
 
         Vector3 InputPower = new(h, 0f, v);
-
-        // こっから矢印の表示についてのやつ
-        //// 発射できる範囲までスティックを倒しているか
-        //bool canShoot = false;
-
-        //if (shotAngle > SHOT_ANGLE_RANGE && InputPower.magnitude > .5f)
-        //{
-        //    canShoot = true;
-        //}
 
         if (InputPower.magnitude > 0f)
         {
@@ -127,6 +88,20 @@ public class BallShooter : MonoBehaviour
                 arrow.SetActive(true);
                 uiText.SetActive(false);
                 renderer.material = NormalMaterial;
+
+                // この時だけ球が打てる
+                // Xでリセット
+                if (Input.GetKeyDown("joystick button 2"))
+                {
+                    GameObject ballObj = GameObject.FindGameObjectWithTag("Ball");
+                    BallMovement ballScript = ballObj.GetComponent<BallMovement>();
+                    if (ballScript != null)
+                    {
+                        ballScript.Shot(InputPower);
+                        arrow.SetActive(false);
+                        isShootScene = false;
+                    }
+                }
             }
             else
             {
@@ -146,31 +121,10 @@ public class BallShooter : MonoBehaviour
             arrow.SetActive(false);
             uiText.SetActive(false);
         }
-
-
-
-
-        //// Xでリセット
-        //if (Input.GetKeyDown("joystick button 2"))
-        //{
-        //    if (isableShot) // 発射準備
-        //    {
-        //        float angle = Mathf.Abs(Mathf.Atan2(h, v) * Mathf.Rad2Deg);
-        //        if (angle > SHOT_ANGLE_RANGE && InputPower.magnitude > .5f)
-        //        {
-        //            isShot = true;
-        //            isableShot = false;
-        //        }
-        //    }
-        //    else           // リセット
-        //    {
-        //        isableShot = true;
-        //        rb.linearVelocity = Vector3.zero;
-        //        rb.rotation = Quaternion.identity;
-        //        rb.angularVelocity = Vector3.zero;
-        //        rb.position = new(0f, 0.5f, -5f);
-        //    }
-        //}
     }
 
+    public void BallSelect()
+    {
+        isShootScene = true;
+    }
 }

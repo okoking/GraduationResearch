@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5139517463962311343
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4374955258954509875}
+  - component: {fileID: 4100383500169608704}
+  - component: {fileID: 1833977809421121650}
+  m_Layer: 0
+  m_Name: BallShootManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4374955258954509875
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5139517463962311343}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4100383500169608704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5139517463962311343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b4d2307b9dab144ad8d47bc91dac9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NormalMaterial: {fileID: -6478536213147159724, guid: b56ba41d7ff10fa4186e5b15a6d7c9fb, type: 3}
+  OutsideMaterial: {fileID: -3846018093981099296, guid: b56ba41d7ff10fa4186e5b15a6d7c9fb, type: 3}
+  SHOT_ANGLE_RANGE: 135
+  ArrowPrefab: {fileID: 172624660860559219, guid: 7996d5d732feb944bb7a51d90de48243, type: 3}
+  uiTextPrefab: {fileID: 5361073423655784598, guid: be7c706b76afd1c47805d27aaed5961e, type: 3}
+--- !u!114 &1833977809421121650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5139517463962311343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a7dd6e788fd36e45aa6074cbb057447, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballPrefab: {fileID: 692210106748338692, guid: b73896847a69f274d81dccd97354ebb9, type: 3}
+  explosionballPrefab: {fileID: 692210106748338692, guid: ef91d35b9291fed4db5971789e017e8c, type: 3}

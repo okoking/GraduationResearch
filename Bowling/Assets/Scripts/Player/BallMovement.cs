@@ -39,21 +39,22 @@ public class BallMovement : MonoBehaviour
         // ジャンプ
         Jump();
         // 発射
-        Shot();
+        //Shot();
         // 移動
         Move();
         // Y座標が一定以下になれば削除
         if (transform.position.y < -20f)
         {
-            isableShot = true;
-            rb.linearVelocity = Vector3.zero;
-            rb.rotation = Quaternion.identity;
-            rb.angularVelocity = Vector3.zero;
-            rb.position = SPAWN_POS;
+            //isableShot = true;
+            //rb.linearVelocity = Vector3.zero;
+            //rb.rotation = Quaternion.identity;
+            //rb.angularVelocity = Vector3.zero;
+            //rb.position = SPAWN_POS;
+            Destroy(gameObject);
         }
     }
     void FixedUpdate()
-    {    
+    {
         // 通常の重力に追加で下向きの力をかける
         if (isJump)
         {
@@ -65,7 +66,7 @@ public class BallMovement : MonoBehaviour
         {
             //rb.AddForce(-prevMaxInput);
             //prevMaxInput = new(0f, 0f, 0f);
-            rb.AddForce(-InputPower* BALL_SPEED_SCALE);
+            rb.AddForce(-InputPower * BALL_SPEED_SCALE);
             InputPower = new(0f, 0f, 0f);
             isShot = false;
         }
@@ -80,6 +81,20 @@ public class BallMovement : MonoBehaviour
         isableJump = false;
     }
 
+    // スティック操作関数
+    public void Shot(Vector3 shootpower)
+    {
+        if (isableShot) // 発射準備
+        {
+            float angle = Mathf.Abs(Mathf.Atan2(shootpower.x, shootpower.z) * Mathf.Rad2Deg);
+            InputPower = shootpower;
+            if (angle > SHOT_ANGLE_RANGE && InputPower.magnitude > .5f)
+            {
+                isShot = true;
+                isableShot = false;
+            }
+        }
+    }
 
     // スティック操作関数
     void Shot()

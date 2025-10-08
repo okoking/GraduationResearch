@@ -32,6 +32,19 @@ public class BallSpawner : MonoBehaviour
 
     void Spawn(string str)
     {
+        // ‚·‚Å‚É¢Š«‚³‚ê‚Ä‚¢‚é‚È‚ç¢Š«‚Å‚«‚È‚¢‚æ‚¤‚É
+        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
+        if (ball != null) return;
+
         Instantiate(ballDict[str]);
+        // ƒ{[ƒ‹‚ğ¢Š«‚·‚é
+        GameObject ballObj = GameObject.Find("BallShootManager");
+        BallShooter ballShooter = ballObj.GetComponent<BallShooter>();
+        ballShooter.BallSelect();
+    }
+
+    public void Spawn()
+    {
+        Instantiate(ballDict["Normal"]);
     }
 }
