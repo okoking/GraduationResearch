@@ -1,14 +1,13 @@
 using UnityEngine;
-using static UnityEditorInternal.ReorderableList;
 
-public class EnemyBase : MonoBehaviour
+public class PinKnockBack : MonoBehaviour
 {
     public float knockbackPower = 10f;  //ぶっ飛ばす強さ
     public float upPower = 4.5f;          //上方向に少し浮かす量
 
-    private HitPointManager enemyHp;
+    private Rigidbody pinRd;
 
-    private Rigidbody enemyRd;
+    private EnemyBase enemybase;
 
     private Vector3 defaultPos;
     private Quaternion defaultRot;
@@ -22,10 +21,10 @@ public class EnemyBase : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        enemyHp = GetComponent<HitPointManager>();
-
         //このオブジェクトのリジッドボディを取得
-        enemyRd = this.GetComponent<Rigidbody>();
+        pinRd = this.GetComponent<Rigidbody>();
+
+        enemybase = GetComponent<EnemyBase>();
 
         defaultPos = transform.position;
         defaultRot = transform.rotation;
@@ -36,26 +35,21 @@ public class EnemyBase : MonoBehaviour
     {
         if (transform.position.y < minY)
         {
-            ResetEnemy();
+            ResetPin();
         }
 
         // スピードと回転が止まったら
-        if (enemyRd.linearVelocity.magnitude < stopThreshold && enemyRd.angularVelocity.magnitude < stopThreshold)
+        if (pinRd.linearVelocity.magnitude < stopThreshold && pinRd.angularVelocity.magnitude < stopThreshold)
         {
             groundedTime += Time.deltaTime;
             if (groundedTime >= checkDelay)
             {
-                ResetEnemy();
+                ResetPin();
             }
         }
         else
         {
             groundedTime = 0f; // 動いてたらリセット
-        }
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            Debug.Log(enemyHp.GetCurrentHp());
         }
     }
 
@@ -65,6 +59,16 @@ public class EnemyBase : MonoBehaviour
         //ボールとの当たり判定
         if (collision.gameObject.CompareTag("Ball"))
         {
+            //弾の進行方向を使って吹っ飛ばす
+            Vector3 forceDir = (transform.position - collision.transform.position).normalized;
+            forceDir += Vector3.up * upPower; //上方向にも少し力を加える
+
+            pinRd.AddForce(forceDir.normalized * knockbackPower, ForceMode.Impulse);
+
+            FindFirstObjectByType<EnemyBase>().GetEnemyHp().TakeDamage((int)pinRd.linearVelocity.magnitude);
+
+            enemybase.GetEnemyHp().TakeDamage((int)enemybase.GetEnemyRd().linearVelocity.magnitude);
+
             // ミッションに通知
             FindFirstObjectByType<MissionManager>().HitEnemy();
         }
@@ -73,19 +77,13 @@ public class EnemyBase : MonoBehaviour
         if (collision.gameObject.CompareTag("Missile"))
         {
             Destroy(collision.gameObject);
-
-            enemyHp.TakeDamage(1);
         }
     }
 
-    public HitPointManager GetEnemyHp() { return enemyHp; }
-
-    public Rigidbody GetEnemyRd() { return enemyRd; }
-
-    private void ResetEnemy()
+    private void ResetPin()
     {
-        enemyRd.linearVelocity = Vector3.zero;
-        enemyRd.angularVelocity = Vector3.zero;
+        pinRd.linearVelocity = Vector3.zero;
+        pinRd.angularVelocity = Vector3.zero;
         transform.position = defaultPos;
         transform.rotation = defaultRot;
         groundedTime = 0f;
