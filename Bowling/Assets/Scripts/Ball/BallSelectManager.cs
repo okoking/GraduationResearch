@@ -85,16 +85,6 @@ public class BallSelectManager : MonoBehaviour
         {
             SelectBall();
             CameraManager.Instance.SwitchCamera(CameraMode.Play);
-
-            // É{Å[ÉãÇè¢ä´Ç∑ÇÈ
-            GameObject ballObj = GameObject.Find("BallShootManager");
-            if (ballObj != null)
-            {
-                BallShooter ballShooter = ballObj.GetComponent<BallShooter>();
-                BallSpawner ballSpawner = ballObj.GetComponent<BallSpawner>();
-                ballShooter.BallSelect();
-                ballSpawner.Spawn();
-            }
         }
 
     }
