@@ -13,8 +13,8 @@ public class BallSpawner : MonoBehaviour
     void Start()
     {
         // ìoò^
-        ballDict.Add("Normal", ballPrefab);
-        ballDict.Add("Explosion", explosionballPrefab);
+        ballDict.Add("ball1", ballPrefab);
+        ballDict.Add("ball2", explosionballPrefab);
     }
 
     // Update is called once per frame
@@ -22,15 +22,15 @@ public class BallSpawner : MonoBehaviour
     {
         if (Input.GetKeyDown("joystick button 4"))
         {
-            Spawn("Normal");
+            Spawn("ball1");
         }
         else if (Input.GetKeyDown("joystick button 5"))
         {
-            Spawn("Explosion");
+            Spawn("ball2");
         }
     }
 
-    void Spawn(string str)
+    public void Spawn(string str)
     {
         // Ç∑Ç≈Ç…è¢ä´Ç≥ÇÍÇƒÇ¢ÇÈÇ»ÇÁè¢ä´Ç≈Ç´Ç»Ç¢ÇÊÇ§Ç…
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
@@ -41,10 +41,5 @@ public class BallSpawner : MonoBehaviour
         GameObject ballObj = GameObject.Find("BallShootManager");
         BallShooter ballShooter = ballObj.GetComponent<BallShooter>();
         ballShooter.BallSelect();
-    }
-
-    public void Spawn()
-    {
-        Instantiate(ballDict["Normal"]);
     }
 }

@@ -23,14 +23,18 @@ public class BallShooter : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        isShootScene = true;
+        isShootScene = false;
         // カメラの参照
         Camera cam = Camera.main;
 
         //Instantiate(Arrow, transform.transform);
 
-        arrow = Instantiate(ArrowPrefab/*, transform.position, cam.transform.rotation, transform*/);
-
+        // すでに召喚されているなら召喚できないように
+        GameObject arrowActive = GameObject.Find("Arrow");
+        if (arrowActive == null)
+        {
+            arrow = Instantiate(ArrowPrefab/*, transform.position, cam.transform.rotation, transform*/);
+        }
         arrow.transform.position = cam.transform.position + cam.transform.forward * 2f;
         
         // カメラのほうを向かせる
@@ -55,6 +59,22 @@ public class BallShooter : MonoBehaviour
         // カメラのほうを向かせる
         arrow.transform.LookAt(2f * transform.position - cam.transform.position);
 
+
+        // すでに発射されているならボールを消す
+        if (!isShootScene)
+        {
+            // Xでリセット
+            if (Input.GetKeyDown("joystick button 2"))
+            {
+                GameObject ballObj = GameObject.FindGameObjectWithTag("Ball");
+                if (ballObj != null)
+                {
+                    Destroy(ballObj);
+                }
+            }
+        }
+
+        // 発射処理
         Shot();
     }
 
@@ -125,6 +145,13 @@ public class BallShooter : MonoBehaviour
 
     public void BallSelect()
     {
+        if (isShootScene) return;
         isShootScene = true;
     }
+
+    public bool GetisShootScene()
+    {
+        return isShootScene;
+    }
+
 }
