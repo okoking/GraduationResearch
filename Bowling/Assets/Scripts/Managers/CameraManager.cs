@@ -16,10 +16,10 @@ public class CameraManager : MonoBehaviour
 {
     public static CameraManager Instance { get; private set; }
 
-    private Camera selectCamera;
-    private Camera freeLookCamera;
-    private Camera playerCamera;
-    private Camera missileIventCamera;
+    [SerializeField] private Camera selectCamera;
+    [SerializeField] private Camera freeLookCamera;
+    [SerializeField] private Camera playerCamera;
+    [SerializeField] private Camera missileIventCamera;
 
     private CameraMode currentMode;
 
@@ -31,15 +31,7 @@ public class CameraManager : MonoBehaviour
 
     void Start()
     {
-        //すべてのカメラを無効化
-        if (selectCamera != null) selectCamera.gameObject.SetActive(false);
-        if (freeLookCamera != null) freeLookCamera.gameObject.SetActive(false);
-        if (playerCamera != null) playerCamera.gameObject.SetActive(false);
-        if (missileIventCamera != null) missileIventCamera.gameObject.SetActive(false);
-
-        currentMode = CameraMode.Select;
-        //セレクトカメラに変更
-        selectCamera.gameObject.SetActive(true);
+        SwitchCamera(CameraMode.Select);
     }
 
     void Update()
