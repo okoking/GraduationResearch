@@ -1,10 +1,11 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class MovementRangeGizmo : MonoBehaviour
 {
-    public float speed = 1f;       // ˆÚ“®‘¬“xi–ˆ•bj
+    public float speed = 1f;       // ï¿½Ú“ï¿½ï¿½ï¿½ï¿½xï¿½iï¿½ï¿½ï¿½bï¿½j
     private bool IsUse = true;
-    [ExecuteAlways] // ƒGƒfƒBƒ^ã‚Å‚à“®‚­‚æ‚¤‚É‚·‚é
+    [ExecuteAlways] // ï¿½Gï¿½fï¿½Bï¿½^ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½É‚ï¿½ï¿½ï¿½
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,11 +34,11 @@ public class NewMonoBehaviourScript : MonoBehaviour
             }
         }
     }
-    [Header("ˆÚ“®”ÍˆÍİ’è")]
+    //[Header("ï¿½Ú“ï¿½ï¿½ÍˆÍİ’ï¿½")]
     public float minX = -5f;
     public float maxX = 5f;
 
-    [Header("Gizmo‚Ì•\¦İ’è")]
+    //[Header("Gizmoï¿½Ì•\ï¿½ï¿½ï¿½İ’ï¿½")]
     public float gizmoHeight = 2f;
     public Color edgeColor = Color.red;
     public Color lineColor = Color.yellow;
@@ -48,22 +49,22 @@ public class NewMonoBehaviourScript : MonoBehaviour
 
         float left = pos.x + minX;
         float right = pos.x + maxX;
-        //¶’[‚Ìã‰º‚Ì“_‚ğİ’è
+        //ï¿½ï¿½ï¿½[ï¿½Ìã‰ºï¿½Ì“_ï¿½ï¿½İ’ï¿½
         Vector3 bottomLeft = new Vector3(left, pos.y - gizmoHeight / 2f, pos.z);
         Vector3 topLeft = new Vector3(left, pos.y + gizmoHeight / 2f, pos.z);
-        //‰E’[‚Ìã‰º‚Ì“_‚ğİ’è
+        //ï¿½Eï¿½[ï¿½Ìã‰ºï¿½Ì“_ï¿½ï¿½İ’ï¿½
         Vector3 bottomRight = new Vector3(right, pos.y - gizmoHeight / 2f, pos.z);
         Vector3 topRight = new Vector3(right, pos.y + gizmoHeight / 2f, pos.z);
 
-        // ¶‚Ìƒ‰ƒCƒ“
+        // ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Cï¿½ï¿½
         Gizmos.color = edgeColor;
         Gizmos.DrawLine(bottomLeft, topLeft);
 
-        // ‰E‚Ìƒ‰ƒCƒ“
+        // ï¿½Eï¿½Ìƒï¿½ï¿½Cï¿½ï¿½
         Gizmos.DrawLine(bottomRight, topRight);
 
-        // ”ÍˆÍ‚ğ‚Â‚È‚®ƒ‰ƒCƒ“
-        //x,y,z‚Ì‡‚Å‚Â‚È‚¢‚Å‚¢‚é
+        // ï¿½ÍˆÍ‚ï¿½ï¿½Â‚È‚ï¿½ï¿½ï¿½ï¿½Cï¿½ï¿½
+        //x,y,zï¿½Ìï¿½ï¿½Å‚Â‚È‚ï¿½ï¿½Å‚ï¿½ï¿½ï¿½
         Gizmos.color = lineColor;
         Gizmos.DrawLine(
             new Vector3(left, pos.y, pos.z),
