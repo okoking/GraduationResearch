@@ -12,9 +12,9 @@ public class MissileCamera : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //切り替え
-            if (CameraManager.Instance.GetCurrentMode() != CameraMode.MissileIvent)
+            if (CameraManager.Instance.GetCurrentMode() != CameraMode.MissileEvent)
             {
-                CameraManager.Instance.SwitchCamera(CameraMode.MissileIvent);
+                CameraManager.Instance.SwitchCamera(CameraMode.MissileEvent);
                 Debug.Log("ミサイルイベントカメラへ変更");
             }
             else

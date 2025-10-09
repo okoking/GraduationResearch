@@ -3,10 +3,11 @@ using UnityEngine;
 //カメラモード
 public enum CameraMode
 {
-    Select,     //ボール選択UI
-    FreeLook,   //コース確認
-    Play,       //投球時
-    MissileIvent,  //ミサイル用
+    Select,         //ボール選択UI
+    FreeLook,       //コース確認
+    Play,           //投球時
+    MissileEvent,   //ミサイル用
+    Enemy,          //エネミー
 
     //Replay      //将来用
 }
@@ -16,10 +17,11 @@ public class CameraManager : MonoBehaviour
 {
     public static CameraManager Instance { get; private set; }
 
-    [SerializeField] private Camera selectCamera;
-    [SerializeField] private Camera freeLookCamera;
-    [SerializeField] private Camera playerCamera;
-    [SerializeField] private Camera missileIventCamera;
+    private Camera selectCamera;
+    private Camera freeLookCamera;
+    private Camera playerCamera;
+    private Camera missileEventCamera;
+    private Camera EnemyCamera;
 
     private CameraMode currentMode;
 
@@ -46,11 +48,13 @@ public class CameraManager : MonoBehaviour
         selectCamera = GameObject.Find("SelectCamera")?.GetComponent<Camera>();
         freeLookCamera = GameObject.Find("FreeCamera")?.GetComponent<Camera>();
         playerCamera = GameObject.Find("PlayerCamera")?.GetComponent<Camera>();
-        missileIventCamera = GameObject.Find("MissileIventCamera")?.GetComponent<Camera>();
+        missileEventCamera = GameObject.Find("MissileEventCamera")?.GetComponent<Camera>();
+        EnemyCamera = GameObject.Find("EnemyCamera")?.GetComponent<Camera>();
         if (selectCamera == null) Debug.LogWarning("SelectCamera が見つかりません！");
         if (freeLookCamera == null) Debug.LogWarning("FreeCamera が見つかりません！");
         if (playerCamera == null) Debug.LogWarning("PlayerCamera が見つかりません！");
-        if (missileIventCamera == null) Debug.LogWarning("MissileIventCamera が見つかりません！");
+        if (missileEventCamera == null) Debug.LogWarning("MissileEventCamera が見つかりません！");
+        if (EnemyCamera == null) Debug.LogWarning("EnemyCamera が見つかりません！");
     }
 
     public void SwitchCamera(CameraMode mode)
@@ -61,7 +65,8 @@ public class CameraManager : MonoBehaviour
         if (selectCamera != null) selectCamera.gameObject.SetActive(false);
         if (freeLookCamera != null) freeLookCamera.gameObject.SetActive(false);
         if (playerCamera != null) playerCamera.gameObject.SetActive(false);
-        if (missileIventCamera != null) missileIventCamera.gameObject.SetActive(false);
+        if (missileEventCamera != null) missileEventCamera.gameObject.SetActive(false);
+        if (EnemyCamera != null) EnemyCamera.gameObject.SetActive(false);
 
         //モードに応じて有効化
         switch (mode)
@@ -78,8 +83,8 @@ public class CameraManager : MonoBehaviour
                 if (playerCamera != null) playerCamera.gameObject.SetActive(true);
                 Debug.Log("プレイカメラに変更");
                 break;
-            case CameraMode.MissileIvent:
-                if (missileIventCamera != null) missileIventCamera.gameObject.SetActive(true);
+            case CameraMode.MissileEvent:
+                if (missileEventCamera != null) missileEventCamera.gameObject.SetActive(true);
                 Debug.Log("ミサイルイベントカメラに変更");
                 break;
         }
@@ -110,7 +115,7 @@ public class CameraManager : MonoBehaviour
                 GUI.Label(new Rect(10, 20, 300, 30), $"Cキー：FreeCameraへ");
                 GUI.Label(new Rect(10, 35, 300, 30), $"Spaceキー：MissileIventCameraへ");
                 break;
-            case CameraMode.MissileIvent:
+            case CameraMode.MissileEvent:
                 GUI.Label(new Rect(10, 20, 300, 30), $"Spaceキー：PlayCameraへ");
                 break;
         }
