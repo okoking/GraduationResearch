@@ -55,6 +55,7 @@ public class MissionManager : MonoBehaviour
         {
             Debug.Log("ÉNÉäÉA");
             ui.ShowMissionClear(currentMission);
+            FindFirstObjectByType<MissileSpawner>().MeterPlus(currentMission.missionClearValue);
             isMissionFlg = false;
         }
     }

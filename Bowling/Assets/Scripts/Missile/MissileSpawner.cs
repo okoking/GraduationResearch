@@ -17,6 +17,10 @@ public class MissileSpawner : MonoBehaviour
     Transform thisTransform;
     WaitForSeconds intervalWait;
 
+    public int MeterMax = 100;
+
+    int missileMeter;
+
     void Start()
     {
         thisTransform = transform;
@@ -30,9 +34,13 @@ public class MissileSpawner : MonoBehaviour
             return;
         }
 
-        if (Input.GetKey(KeyCode.Space))
+        if (missileMeter > MeterMax)
         {
-            StartCoroutine(nameof(SpawnMissile));
+            if (Input.GetKey(KeyCode.Space))
+            {
+                StartCoroutine(nameof(SpawnMissile));
+                missileMeter = 0;
+            }
         }
         
     }
@@ -57,5 +65,10 @@ public class MissileSpawner : MonoBehaviour
     public bool GetFlg()
     {
         return isSpawning;
+    }
+
+    public void MeterPlus(int num)
+    {
+        missileMeter += num;
     }
 }

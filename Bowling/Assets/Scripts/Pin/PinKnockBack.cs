@@ -7,8 +7,6 @@ public class PinKnockBack : MonoBehaviour
 
     private Rigidbody pinRd;
 
-    private EnemyBase enemybase;
-
     private Vector3 defaultPos;
     private Quaternion defaultRot;
 
@@ -23,8 +21,6 @@ public class PinKnockBack : MonoBehaviour
     {
         //このオブジェクトのリジッドボディを取得
         pinRd = this.GetComponent<Rigidbody>();
-
-        enemybase = GetComponent<EnemyBase>();
 
         defaultPos = transform.position;
         defaultRot = transform.rotation;
