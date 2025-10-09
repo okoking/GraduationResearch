@@ -29,6 +29,10 @@ public class BallManager : MonoBehaviour
         Debug.Log($"選んだボール: {ball.ballName}");
 
         FindFirstObjectByType<BowlingThrow>()?.Init(ball);
+        // ボールを召喚する
+        GameObject ballObj = GameObject.Find("BallShootManager");
+        BallSpawner ballSpawner = ballObj.GetComponent<BallSpawner>();
+        ballSpawner.Spawn(ball.ballName);
 
     }
 

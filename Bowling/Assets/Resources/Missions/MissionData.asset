@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   missionText: Mission_2_20
   missionDescription: Mission!!
-  missionClearValue: 20
+  missionClearValue: 100
   missionType: 0
-  targetCount: 2
+  targetCount: 1
