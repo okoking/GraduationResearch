@@ -9,6 +9,9 @@ public class BallSpawner : MonoBehaviour
     [SerializeField] private GameObject ballPrefab;
     [SerializeField] private GameObject explosionballPrefab;
 
+    [SerializeField] private Vector3 SPAWN_POS = new(0f, .5f, 0f);
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -36,7 +39,7 @@ public class BallSpawner : MonoBehaviour
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         if (ball != null) return;
 
-        Instantiate(ballDict[str]);
+        Instantiate(ballDict[str], SPAWN_POS, Quaternion.identity);
         // É{Å[ÉãÇè¢ä´Ç∑ÇÈ
         GameObject ballObj = GameObject.Find("BallShootManager");
         BallShooter ballShooter = ballObj.GetComponent<BallShooter>();
