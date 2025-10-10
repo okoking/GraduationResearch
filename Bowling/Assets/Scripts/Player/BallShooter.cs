@@ -35,10 +35,6 @@ public class BallShooter : MonoBehaviour
         {
             arrow = Instantiate(ArrowPrefab/*, transform.position, cam.transform.rotation, transform*/);
         }
-        arrow.transform.position = cam.transform.position + cam.transform.forward * 2f;
-        
-        // カメラのほうを向かせる
-        arrow.transform.LookAt(2f * transform.position - cam.transform.position);
 
         renderer = arrow.GetComponent<Renderer>();
         renderer.material = NormalMaterial;
@@ -59,20 +55,19 @@ public class BallShooter : MonoBehaviour
         // カメラのほうを向かせる
         arrow.transform.LookAt(2f * transform.position - cam.transform.position);
 
-
-        // すでに発射されているならボールを消す
-        if (!isShootScene)
-        {
-            // Xでリセット
-            if (Input.GetKeyDown("joystick button 2"))
-            {
-                GameObject ballObj = GameObject.FindGameObjectWithTag("Ball");
-                if (ballObj != null)
-                {
-                    Destroy(ballObj);
-                }
-            }
-        }
+        //// すでに発射されているならボールを消す
+        //if (!isShootScene)
+        //{
+        //    // Xでリセット
+        //    if (Input.GetKeyDown("joystick button 2"))
+        //    {
+        //        GameObject ballObj = GameObject.FindGameObjectWithTag("Ball");
+        //        if (ballObj != null)
+        //        {
+        //            Destroy(ballObj);
+        //        }
+        //    }
+        //}
 
         // 発射処理
         Shot();
@@ -93,7 +88,10 @@ public class BallShooter : MonoBehaviour
         if (InputPower.magnitude > 0f)
         {
             //float angle = Mathf.Abs(Mathf.Atan2(ballMovement.GetInputPower().x, ballMovement.GetInputPower().z) * Mathf.Rad2Deg);
-            arrow.transform.localScale = new(.5f, InputPower.magnitude * 1.5f, .5f);
+            arrow.transform.localScale = 
+                new(arrow.transform.localScale.x,
+                InputPower.magnitude * .6f,
+                arrow.transform.localScale.z);
 
             Vector3 currentEuler = arrow.transform.eulerAngles;
             // zだけ更新

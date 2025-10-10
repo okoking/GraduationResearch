@@ -37,7 +37,10 @@ public class BallSpawner : MonoBehaviour
     {
         // ‚·‚Å‚É¢Š«‚³‚ê‚Ä‚¢‚é‚È‚ç¢Š«‚Å‚«‚È‚¢‚æ‚¤‚É
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
-        if (ball != null) return;
+        if (ball != null)
+        {
+            Destroy(ball);
+        }
 
         Instantiate(ballDict[str], SPAWN_POS, Quaternion.identity);
         // ƒ{[ƒ‹‚ğ¢Š«‚·‚é

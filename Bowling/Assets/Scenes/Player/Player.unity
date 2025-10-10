@@ -259,7 +259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32a150e2ff8651d4dbbafd5e1618cd38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: 3, z: -8}
+  offset: {x: 0, y: 6, z: -8}
 --- !u!1001 &838434958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -335,7 +335,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &1323888869
 MeshCollider:
   m_ObjectHideFlags: 0
