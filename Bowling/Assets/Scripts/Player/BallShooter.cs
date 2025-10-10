@@ -88,18 +88,26 @@ public class BallShooter : MonoBehaviour
         if (InputPower.magnitude > 0f)
         {
             //float angle = Mathf.Abs(Mathf.Atan2(ballMovement.GetInputPower().x, ballMovement.GetInputPower().z) * Mathf.Rad2Deg);
-            arrow.transform.localScale = 
-                new(arrow.transform.localScale.x,
-                InputPower.magnitude * .6f,
-                arrow.transform.localScale.z);
+            //arrow.transform.localScale = 
+            //    new(arrow.transform.localScale.x,
+            //    InputPower.magnitude * .6f,
+            //    arrow.transform.localScale.z);
 
-            Vector3 currentEuler = arrow.transform.eulerAngles;
-            // z‚¾‚¯XV
-            float angle = -shotAngle * Mathf.Rad2Deg;
-            currentEuler.z = angle;
-            // ”½‰f
-            arrow.transform.eulerAngles = currentEuler;
-            angle = Mathf.Abs(shotAngle * Mathf.Rad2Deg);
+            //Vector3 currentEuler = arrow.transform.eulerAngles;
+            //// z‚¾‚¯XV
+            //float angle = -shotAngle * Mathf.Rad2Deg;
+            //currentEuler.z = angle;
+            //// ”½‰f
+            //arrow.transform.eulerAngles = currentEuler;
+            //angle = Mathf.Abs(shotAngle * Mathf.Rad2Deg);
+
+            // “ü—Í•ûŒü‚ÌŠp“x‚ðŽZo
+            float angle = shotAngle * Mathf.Rad2Deg;
+
+            // ‰ñ“]‚ðÝ’èiZ‰ñ“]‚ðŽg‚¤j
+            arrow.transform.rotation = Quaternion.Euler(0, angle, 0);
+
+            angle = Mathf.Abs(angle);
 
             if (angle > SHOT_ANGLE_RANGE && InputPower.magnitude > .5f)
             {
@@ -139,6 +147,16 @@ public class BallShooter : MonoBehaviour
             arrow.SetActive(false);
             uiText.SetActive(false);
         }
+    }
+
+    private void LateUpdate()
+    {
+        Transform cameraTransform = Camera.main.transform;
+        Vector3 offset = new Vector3(0, -0.5f, 2f);
+
+        arrow.transform.position = cameraTransform.position + cameraTransform.forward * offset.z
+                       + cameraTransform.up * offset.y
+                       + cameraTransform.right * offset.x;
     }
 
     public void BallSelect()
