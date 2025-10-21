@@ -12,6 +12,7 @@ TagManager:
   - Slowdown Floor
   - Missile
   - JumpPad
+  - Boss
   layers:
   - Default
   - TransparentFX
