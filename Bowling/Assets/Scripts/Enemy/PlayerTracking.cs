@@ -3,17 +3,21 @@ using static UnityEngine.GraphicsBuffer;
 
 public class PlayerTracking : MonoBehaviour
 {
-    [SerializeField] float speed = 3f;
-    [SerializeField] float stopDistance = 1.5f;
+    //移動速度
+    public float speed = 3f;
 
+    //プレイヤーにどこまで近づくか,攻撃可能にするか
+    public float stopDistance = 1.5f;
+
+    //追跡対象(プレイヤー)
     Transform target;
 
+    //プレイヤーが指定範囲内にいるか
     bool withinRange = false;
 
     void Start()
     {
-
-        // シーン上の「Player」タグを持つオブジェクトを探す
+        //プレイヤータグを持つオブジェクトを探す
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
         {
@@ -29,21 +33,22 @@ public class PlayerTracking : MonoBehaviour
     {
         if (target == null) return;
 
+        //距離
         float distance = Vector3.Distance(transform.position, target.position);
         //一定距離に近づくまで追跡
         if (distance > stopDistance)
         {
+            //対象(プレイヤー)の方向を見続ける
             transform.LookAt(target);
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                target.position,
-                speed * Time.deltaTime
-            );
+            //進行方向に進む
+            transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            //入ってない
             withinRange = false;
         }
         //そうでなければ
         else
         {
+            //入っている
             withinRange = true;
         }
     }

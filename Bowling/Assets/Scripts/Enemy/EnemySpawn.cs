@@ -6,7 +6,7 @@ public class EnemySpawn : MonoBehaviour
     //オリジンプレハブ
     public GameObject enemyPrefab;
 
-    //何体生むか
+    //何体生成するか
     public int spawnNum;
 
     //敵生成座標
@@ -14,6 +14,10 @@ public class EnemySpawn : MonoBehaviour
 
     //何秒おきに生成するか
     public float spawnSpeed;
+
+    //無限生成するか
+    [Header("無限生成するかどうか")]
+    public bool IsInfiniteSpawn;
 
     //秒数カウント変数
     float count = 0.0f;
@@ -33,6 +37,7 @@ public class EnemySpawn : MonoBehaviour
         //完了してなければ
         if (!finSpawn)
         {
+            //一グループを生成
             for (int i = 0; i < spawnNum; i++)
             {
                 Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
@@ -41,8 +46,8 @@ public class EnemySpawn : MonoBehaviour
             finSpawn = true;
         }
 
-        //完了していれば一定期間後に再生成
-        if (finSpawn)
+        //完了していれば&無限生成が設定されていれば一定期間後に再生成
+        if (finSpawn && IsInfiniteSpawn)
         {
             count++;
             //カウントが指定秒数に達したら

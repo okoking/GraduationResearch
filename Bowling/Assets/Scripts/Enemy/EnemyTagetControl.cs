@@ -21,3 +21,6 @@ public class EnemyTagetControl : MonoBehaviour
         transform.position += move * speed * Time.deltaTime;
     }
 }
+
+//ビームを撃つデメリット
+//

@@ -48,3 +48,4 @@ MonoBehaviour:
   spawnNum: 1
   spawnPos: {x: 0, y: 10, z: 0}
   spawnSpeed: 1800
+  IsInfiniteSpawn: 0

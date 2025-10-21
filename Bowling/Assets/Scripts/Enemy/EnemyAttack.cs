@@ -29,7 +29,7 @@ public class EnemyAttack : MonoBehaviour
             Debug.Log("攻撃です");
             isAttack = false;
         }
-
+        //攻撃不可能であれば
         if (!isAttack)
         {
             //時間をカウント
