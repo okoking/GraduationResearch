@@ -9,10 +9,10 @@ public class BossHandSpawer : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // 手を生成
+        //手を生成
         GameObject hand = Instantiate(bossHandPrefab, transform.position, Quaternion.identity);
 
-        // 手のスクリプトを取得して、自分（Spawner）を教える
+        //手のスクリプトを取得して自らに対応させる
         BossHand handScript = hand.GetComponent<BossHand>();
         if (handScript != null)
         {
