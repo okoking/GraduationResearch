@@ -82,6 +82,7 @@ public class EnemyAI : MonoBehaviour
         if (!agent.pathPending && Vector3.Distance(transform.position, patrolTarget) < 0.5f)
         {
             state = EnemyState.Idle;
+            Debug.Log("‘Ò‹@ó‘Ô‚Ö");
             patrolTimer = 0f;
         }
     }

@@ -26,8 +26,8 @@ public class Play : MonoBehaviour
         //フリーカメラに変更
         if(Input.GetKeyDown(KeyCode.C))
         {
-            CameraManager.Instance.SwitchCamera(CameraMode.FreeLook);
-            Debug.Log("フリーカメラへ変更");
+            //CameraManager.Instance.SwitchCamera(CameraMode.FreeLook);
+            //Debug.Log("フリーカメラへ変更");
         }
 
         //フリーカメラに変更

@@ -3,13 +3,12 @@ using UnityEngine;
 //カメラモード
 public enum CameraMode
 {
-    Select,         //ボール選択UI
     FreeLook,       //コース確認
-    Play,           //投球時
-    MissileEvent,   //ミサイル用
+    Play,           //プレイ
     Enemy,          //エネミー
+    Boss,           //ボス
 
-    //Replay      //将来用
+    //Replay        //将来用
 }
 
 //カメラマネージャー
@@ -17,11 +16,10 @@ public class CameraManager : MonoBehaviour
 {
     public static CameraManager Instance { get; private set; }
 
-    private Camera selectCamera;
     private Camera freeLookCamera;
     private Camera playerCamera;
-    private Camera missileEventCamera;
     private Camera EnemyCamera;
+    private Camera BossCamera;
 
     private CameraMode currentMode;
 
@@ -33,7 +31,7 @@ public class CameraManager : MonoBehaviour
 
     void Start()
     {
-        SwitchCamera(CameraMode.Select);
+        
     }
 
     void Update()
@@ -45,16 +43,14 @@ public class CameraManager : MonoBehaviour
     //動的にシーン内のカメラを探して登録
     public void RegisterCameras()
     {
-        selectCamera = GameObject.Find("SelectCamera")?.GetComponent<Camera>();
         freeLookCamera = GameObject.Find("FreeCamera")?.GetComponent<Camera>();
         playerCamera = GameObject.Find("PlayerCamera")?.GetComponent<Camera>();
-        missileEventCamera = GameObject.Find("MissileEventCamera")?.GetComponent<Camera>();
         EnemyCamera = GameObject.Find("EnemyCamera")?.GetComponent<Camera>();
-        if (selectCamera == null) Debug.LogWarning("SelectCamera が見つかりません！");
+        BossCamera = GameObject.Find("Main Camera")?.GetComponent<Camera>();
         if (freeLookCamera == null) Debug.LogWarning("FreeCamera が見つかりません！");
         if (playerCamera == null) Debug.LogWarning("PlayerCamera が見つかりません！");
-        if (missileEventCamera == null) Debug.LogWarning("MissileEventCamera が見つかりません！");
         if (EnemyCamera == null) Debug.LogWarning("EnemyCamera が見つかりません！");
+        if (BossCamera == null) Debug.LogWarning("BossCamera が見つかりません！");
     }
 
     public void SwitchCamera(CameraMode mode)
@@ -62,19 +58,14 @@ public class CameraManager : MonoBehaviour
         currentMode = mode;
 
         //すべてのカメラを無効化
-        if (selectCamera != null) selectCamera.gameObject.SetActive(false);
         if (freeLookCamera != null) freeLookCamera.gameObject.SetActive(false);
         if (playerCamera != null) playerCamera.gameObject.SetActive(false);
-        if (missileEventCamera != null) missileEventCamera.gameObject.SetActive(false);
         if (EnemyCamera != null) EnemyCamera.gameObject.SetActive(false);
+        if (BossCamera != null) BossCamera.gameObject.SetActive(false);
 
         //モードに応じて有効化
         switch (mode)
         {
-            case CameraMode.Select:
-                if (selectCamera != null) selectCamera.gameObject.SetActive(true);
-                Debug.Log("セレクトカメラに変更");
-                break;
             case CameraMode.FreeLook:
                 if (freeLookCamera != null) freeLookCamera.gameObject.SetActive(true);
                 Debug.Log("フリーカメラに変更");
@@ -82,10 +73,6 @@ public class CameraManager : MonoBehaviour
             case CameraMode.Play:
                 if (playerCamera != null) playerCamera.gameObject.SetActive(true);
                 Debug.Log("プレイカメラに変更");
-                break;
-            case CameraMode.MissileEvent:
-                if (missileEventCamera != null) missileEventCamera.gameObject.SetActive(true);
-                Debug.Log("ミサイルイベントカメラに変更");
                 break;
         }
     }
@@ -102,10 +89,6 @@ public class CameraManager : MonoBehaviour
         //モードに応じて有効化
         switch (mode)
         {
-            case CameraMode.Select:
-                GUI.Label(new Rect(10, 20, 300, 30), $"Cキー：FreeCameraへ");
-                GUI.Label(new Rect(10, 35, 300, 30), $"Vキー：PlayCameraへ");
-                break;
             case CameraMode.FreeLook:
                 GUI.Label(new Rect(10, 20, 300, 30), $"Vキー：PlayCameraへ");
                 GUI.Label(new Rect(10, 35, 300, 30), $"Qキー：上昇");
@@ -114,9 +97,6 @@ public class CameraManager : MonoBehaviour
             case CameraMode.Play:
                 GUI.Label(new Rect(10, 20, 300, 30), $"Cキー：FreeCameraへ");
                 GUI.Label(new Rect(10, 35, 300, 30), $"Spaceキー：MissileIventCameraへ");
-                break;
-            case CameraMode.MissileEvent:
-                GUI.Label(new Rect(10, 20, 300, 30), $"Spaceキー：PlayCameraへ");
                 break;
         }
     }

@@ -1,60 +1,80 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemySpawn : MonoBehaviour
 {
+    [Header("敵プレハブ")]
+    [SerializeField] private GameObject enemyPrefab;
+    [Header("スポーン地点（複数指定可能）")]
+    [SerializeField] private Transform[] spawnPoints;
+    [Header("1回あたりの生成数")]
+    [SerializeField] private int spawnCount = 5;
+    [Header("生成間隔（秒）")]
+    [SerializeField] private float spawnInterval = 10f;
+    [Header("無限に生成する")]
+    [SerializeField] private bool infiniteSpawn = true;
+    [Header("ランダム半径（スポーン地点の周囲）")]
+    [SerializeField] private float randomRadius = 5f;
+    [Header("NavMesh探索半径")]
+    [SerializeField] private float navMeshSearchRadius = 3f;
 
-    //オリジンプレハブ
-    public GameObject enemyPrefab;
+    private float timer;
+    private List<GameObject> activeEnemies = new List<GameObject>();
 
-    //何体生成するか
-    public int spawnNum;
-
-    //敵生成座標
-    public Vector3 spawnPos;
-
-    //何秒おきに生成するか
-    public float spawnSpeed;
-
-    //無限生成するか
-    [Header("無限生成するかどうか")]
-    public bool IsInfiniteSpawn;
-
-    //秒数カウント変数
-    float count = 0.0f;
-
-    //スポーン完了したかフラグ
-    bool finSpawn = false;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        SpawnEnemies();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //完了してなければ
-        if (!finSpawn)
+        if (infiniteSpawn)
         {
-            //一グループを生成
-            for (int i = 0; i < spawnNum; i++)
+            timer += Time.deltaTime;
+            if (timer >= spawnInterval)
             {
-                Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+                SpawnEnemies();
+                timer = 0f;
             }
-            //完了したら終了
-            finSpawn = true;
+        }
+    }
+    void SpawnEnemies()
+    {
+        if (spawnPoints.Length == 0)
+        {
+            Debug.LogWarning("EnemySpawn: スポーン地点が設定されていません。");
+            return;
         }
 
-        //完了していれば&無限生成が設定されていれば一定期間後に再生成
-        if (finSpawn && IsInfiniteSpawn)
+        for (int i = 0; i < spawnCount; i++)
         {
-            count++;
-            //カウントが指定秒数に達したら
-            if (count > spawnSpeed) {
-                finSpawn = false;
-                count = 0f;
+            //ランダムなスポーン地点を選ぶ
+            Transform basePoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+
+            //周囲に少しランダムオフセットを加える（Boids群が密集しすぎないように）
+            Vector3 randomOffset = Random.insideUnitSphere * randomRadius;
+            randomOffset.y = 0;
+            Vector3 candidatePos = basePoint.position + randomOffset;
+
+            //NavMesh上の有効な地点を探す
+            if (NavMesh.SamplePosition(candidatePos, out NavMeshHit hit, navMeshSearchRadius, NavMesh.AllAreas))
+            {
+                GameObject enemy = Instantiate(enemyPrefab, hit.position, Quaternion.identity);
+                activeEnemies.Add(enemy);
+            }
+            else
+            {
+                Debug.LogWarning($"EnemySpawn: {basePoint.name} 周辺で有効なNavMesh位置が見つかりませんでした。");
             }
         }
+    }
+    public void ClearEnemies()
+    {
+        foreach (var e in activeEnemies)
+        {
+            if (e != null) Destroy(e);
+        }
+        activeEnemies.Clear();
     }
 }
