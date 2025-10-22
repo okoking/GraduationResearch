@@ -10,8 +10,8 @@ public class BeamCamera : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        normalCam.Priority = isSootBeam ? 0 : 10;
-        beamCam.Priority = isSootBeam ? 10 : 0;
+        normalCam.gameObject.SetActive(!isSootBeam);
+        beamCam.gameObject.SetActive(isSootBeam);
     }
 
     // Update is called once per frame
@@ -20,8 +20,8 @@ public class BeamCamera : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.JoystickButton2))
         {
             isSootBeam = !isSootBeam;
-            normalCam.Priority = isSootBeam ? 0 : 10;
-            beamCam.Priority = isSootBeam ? 10 : 0;
+            normalCam.gameObject.SetActive(!isSootBeam);
+            beamCam.gameObject.SetActive(isSootBeam);
             Debug.Log("X");
         }
     }

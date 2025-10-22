@@ -38,6 +38,11 @@ public class PlayerMovement : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         Vector3 inputDir = new Vector3(h, 0, v).normalized;
+        // š “®‚­‘O‚ÉRigidbody‚ðWakeUp‚³‚¹‚é
+        if (inputDir.magnitude > 0)
+        {
+            rb.WakeUp();
+        }
 
         if (inputDir.magnitude > 0)
         {
