@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class BossHandSpawner : MonoBehaviour
+public class BossHandSpawnerCenter : MonoBehaviour
 {
     //ボスの手のオブジェクト
-    public GameObject bossHandPrefab;
+    public GameObject bossHandSpawerPrefab;
 
     //何体の手を生み出すか
     public int handNum = 2;
@@ -37,10 +37,11 @@ public class BossHandSpawner : MonoBehaviour
                     else if (i == 2) offset = new Vector3(-offsetX / 2, offsetY, 0);
                     else offset = new Vector3(offsetX / 2, offsetY, 0);
                     break;
+                default:
+                    break;
             }
 
-            GameObject hand = Instantiate(bossHandPrefab, transform.position + offset, Quaternion.identity);
-            hand.transform.SetParent(transform);
+            Instantiate(bossHandSpawerPrefab, transform.position + offset, Quaternion.identity);
         }
     }
 

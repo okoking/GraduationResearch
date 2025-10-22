@@ -3,10 +3,10 @@ using UnityEngine;
 public class BossHand : MonoBehaviour
 {
     //ターゲット(プレイヤー)
-    public Transform player;
+    Transform player;
 
-    //主(ボス)
-    public Transform boss;
+    //主(ボスの手を出す透明のやつ)
+    public Transform bossHandSpawn;
 
     //ビーム(攻撃)
     public GameObject beam;
@@ -28,15 +28,11 @@ public class BossHand : MonoBehaviour
         // シーン上の Player を自動で探す
         if (player == null)
             player = GameObject.FindWithTag("Player").transform;
-
-        // ボスも探す
-        if (boss == null)
-            boss = GameObject.FindWithTag("Boss").transform;
     }
 
     void Update()
     {
-        if (boss == null || player == null) return;
+        if (bossHandSpawn == null || player == null) return;
 
         //ボスの周囲を飛ばす
         angle += orbitSpeed * Time.deltaTime;
@@ -47,7 +43,7 @@ public class BossHand : MonoBehaviour
             Mathf.Sin(rad) * orbitRadius
         );
 
-        transform.position = boss.position + offset;
+        transform.position = bossHandSpawn.position + offset;
 
         //常にプレイヤーの方向を向く
         transform.LookAt(player);

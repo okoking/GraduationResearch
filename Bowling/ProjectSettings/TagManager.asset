@@ -13,6 +13,7 @@ TagManager:
   - Missile
   - JumpPad
   - Boss
+  - BossHandSpawn
   layers:
   - Default
   - TransparentFX
