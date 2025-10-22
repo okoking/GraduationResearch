@@ -17,6 +17,9 @@ public class TackleBoss : MonoBehaviour
     private float stunTimer = 0f;
     private float cooldownTimer = 0f;
 
+    //体力
+    public int hitPoint = 1;
+
     void Start()
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -34,7 +37,6 @@ public class TackleBoss : MonoBehaviour
     {
         if (target == null) return;
 
-        // ===== スタン中 =====
         if (isStunned)
         {
             stunTimer -= Time.deltaTime;
@@ -43,7 +45,6 @@ public class TackleBoss : MonoBehaviour
             return;
         }
 
-        // ===== クールタイム中 =====
         if (isOnCooldown)
         {
             cooldownTimer -= Time.deltaTime;
@@ -51,11 +52,15 @@ public class TackleBoss : MonoBehaviour
                 isOnCooldown = false;
         }
 
-        // ===== タックル中 =====
+        //===== タックル中 =====
         if (isTackling)
         {
             tackleTimer -= Time.deltaTime;
-            transform.position += transform.forward * tackleSpeed * Time.deltaTime;
+
+            // forward方向に進むけど、Y軸は固定
+            Vector3 moveDir = transform.forward;
+            moveDir.y = 0; // Y方向の動きを消す
+            transform.position += moveDir.normalized * tackleSpeed * Time.deltaTime;
 
             if (tackleTimer <= 0)
                 EndTackle();
@@ -63,19 +68,27 @@ public class TackleBoss : MonoBehaviour
             return;
         }
 
-        // ===== 通常の追跡 =====
+        // ===== 通常追跡 =====
         float distance = Vector3.Distance(transform.position, target.position);
         if (distance > stopDistance)
         {
-            transform.LookAt(target);
-            transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            // プレイヤーのYを無視して水平に向く
+            Vector3 lookPos = new Vector3(target.position.x, transform.position.y, target.position.z);
+            transform.LookAt(lookPos);
+
+            // 移動先のYを固定
+            Vector3 nextPos = Vector3.MoveTowards(transform.position, lookPos, speed * Time.deltaTime);
+            nextPos.y = transform.position.y;
+            transform.position = nextPos;
         }
         else
         {
-            // クールタイムが終わっていたらタックル
             if (!isOnCooldown)
                 StartTackle();
         }
+
+        //HP0以下になったら
+        Death();
     }
 
     void StartTackle()
@@ -101,15 +114,21 @@ public class TackleBoss : MonoBehaviour
             if (collision.gameObject.CompareTag("Player"))
             {
                 Debug.Log("プレイヤーに命中！");
-                // プレイヤーにダメージ処理を入れる
+                //プレイヤーにダメージ
             }
-            else
+            if (collision.gameObject.CompareTag("Wall"))
             {
                 Debug.Log("壁などに衝突 → スタン");
                 StartStun();
             }
 
             EndTackle();
+        }
+
+        //プレイヤーの攻撃との当たり判定//★//
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            TakeDamage();
         }
     }
 
@@ -118,6 +137,24 @@ public class TackleBoss : MonoBehaviour
         isStunned = true;
         stunTimer = stunTime;
         Debug.Log("スタン状態");
+    }
+
+    //ダメージを受ける
+    void TakeDamage()
+    {
+        //スタン中であればダメージが通る
+        if (isStunned)
+        {
+            hitPoint--;
+        }
+    }
+
+    void Death()
+    {
+        if(hitPoint <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }
 

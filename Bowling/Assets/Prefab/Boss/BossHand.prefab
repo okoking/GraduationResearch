@@ -104,6 +104,6 @@ MonoBehaviour:
   orbitRadius: 5
   orbitSpeed: 30
   floatAmplitude: 1
-  floatSpeed: 2
+  floatSpeed: 1
   beamInterval: 5
   beamSpeed: 10

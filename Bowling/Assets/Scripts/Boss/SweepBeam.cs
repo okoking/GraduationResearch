@@ -5,8 +5,8 @@ public class BeamSweepController : MonoBehaviour
     public float duration = 2f;        // ビームが出ている時間
     public float sweepAngle = 90f;     // 振り幅（左右に何度回転するか）
     public float sweepSpeed = 90f;     // 回転速度（度/秒）
-    public float beamLength = 10f;     // ビームの長さ
-    public float beamWidth = 0.3f;     // ビームの太さ
+    public float beamLength = 50f;     // ビームの長さ
+    public float beamWidth = 1.0f;     // ビームの太さ
 
     private LineRenderer line;
     private float timer;
