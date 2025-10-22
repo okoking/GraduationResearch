@@ -26,8 +26,8 @@ public static class SceneGroups
               { GameState.Title, new List<string> { "TitleUI", "Title" } },
               { GameState.Option, new List<string> { "Option", "OptionUI" } },
               { GameState.StageSelect, new List<string> { "StageSelect", "StageSelectUI" } },
-              { GameState.Play, new List<string> { "Play", "PlayUI", "Player","EnemyTest",
-                  "Gimmick", "BallSelect", "Gimmick","Map","BossTest" } },
+              { GameState.Play, new List<string> { "Play", "Player","EnemyTest",
+                  "Gimmick","Map","BossTest" } },
               { GameState.Result, new List<string> { "Result", "Result_UI" } },
         };
 }
@@ -196,7 +196,7 @@ public class SceneController : MonoBehaviour
         await Instance.GoTo(GameState.Play);
 
         CameraManager.Instance.RegisterCameras();
-
+        CameraManager.Instance.SwitchCamera(CameraMode.Play);
         Debug.Log("ゲーム開始！");
     }
 

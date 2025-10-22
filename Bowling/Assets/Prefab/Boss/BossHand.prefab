@@ -99,9 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3e7d0281545d4041814f9630f56b5f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   bossHandSpawn: {fileID: 8563033403297202376, guid: bc6473a9d7be48f4a9815f1ce2299852, type: 3}
-  beam: {fileID: 0}
+  beamSweepPrefab: {fileID: 5384188851145259235, guid: a621a8553b4ca1249a1b6701036e4a06, type: 3}
   orbitRadius: 5
   orbitSpeed: 30
   floatAmplitude: 1

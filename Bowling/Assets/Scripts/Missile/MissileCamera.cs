@@ -11,17 +11,17 @@ public class MissileCamera : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //切り替え
-            if (CameraManager.Instance.GetCurrentMode() != CameraMode.MissileEvent)
-            {
-                CameraManager.Instance.SwitchCamera(CameraMode.MissileEvent);
-                Debug.Log("ミサイルイベントカメラへ変更");
-            }
-            else
-            {
-                CameraManager.Instance.SwitchCamera(CameraMode.Play);
-                Debug.Log("プレイカメラへ変更");
-            }
+            ////切り替え
+            //if (CameraManager.Instance.GetCurrentMode() != CameraMode.MissileEvent)
+            //{
+            //    CameraManager.Instance.SwitchCamera(CameraMode.MissileEvent);
+            //    Debug.Log("ミサイルイベントカメラへ変更");
+            //}
+            //else
+            //{
+            //    CameraManager.Instance.SwitchCamera(CameraMode.Play);
+            //    Debug.Log("プレイカメラへ変更");
+            //}
         }
     }
 }

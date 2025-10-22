@@ -2,30 +2,32 @@ using UnityEngine;
 
 public class BossHand : MonoBehaviour
 {
-    //ƒ^[ƒQƒbƒg(ƒvƒŒƒCƒ„[)
+    //ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ(ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼)
     Transform player;
 
-    //å(ƒ{ƒX‚Ìè‚ğo‚·“§–¾‚Ì‚â‚Â)
+    //ä¸»(ãƒœã‚¹ã®æ‰‹ã‚’å‡ºã™é€æ˜ã®ã‚„ã¤)
     public Transform bossHandSpawn;
 
-    //ƒr[ƒ€(UŒ‚)
-    public GameObject beam;
+    //ãƒ“ãƒ¼ãƒ (æ”»æ’ƒ)
+    public GameObject beamSweepPrefab;
 
-    public float orbitRadius    = 5f;   //ƒ{ƒX‚©‚ç‚Ì‹——£
-    public float orbitSpeed     = 30f;  //‰ñ“]ƒXƒs[ƒh
-    public float floatAmplitude = 1f;   //ã‰º‚Ì—h‚ê•
-    public float floatSpeed     = 2f;   //ã‰º‚Ì—h‚êƒXƒs[ƒh
+    public float orbitRadius    = 5f;   //ãƒœã‚¹ã‹ã‚‰ã®è·é›¢
+    public float orbitSpeed     = 30f;  //å›è»¢ã‚¹ãƒ”ãƒ¼ãƒ‰
+    public float floatAmplitude = 1f;   //ä¸Šä¸‹ã®æºã‚Œå¹…
+    public float floatSpeed     = 2f;   //ä¸Šä¸‹ã®æºã‚Œã‚¹ãƒ”ãƒ¼ãƒ‰
 
-    public float beamInterval   = 5f;   //ƒr[ƒ€”­ËŠÔŠu
-    public float beamSpeed      = 10f;  //ƒr[ƒ€‚Ì‘¬‚³
+    public float beamInterval   = 5f;   //ãƒ“ãƒ¼ãƒ ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«
+    public float beamSpeed      = 10f;  //ãƒ“ãƒ¼ãƒ ã®ã‚¹ãƒ”ãƒ¼ãƒ‰
 
     private float angle;
     private float beamTimer;
 
+    private bool isFiringBeam = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // ƒV[ƒ“ã‚Ì Player ‚ğ©“®‚Å’T‚·
+        //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã‚¿ã‚°ãŒä»˜ã„ãŸã‚‚ã®ã‚’æ¢ã™
         if (player == null)
             player = GameObject.FindWithTag("Player").transform;
     }
@@ -34,25 +36,44 @@ public class BossHand : MonoBehaviour
     {
         if (bossHandSpawn == null || player == null) return;
 
-        //ƒ{ƒX‚ÌüˆÍ‚ğ”ò‚Î‚·
-        angle += orbitSpeed * Time.deltaTime;
-        float rad = angle * Mathf.Deg2Rad;
-        Vector3 offset = new Vector3(
-            Mathf.Cos(rad) * orbitRadius,
-            Mathf.Sin(Time.time * floatSpeed) * floatAmplitude,
-            Mathf.Sin(rad) * orbitRadius
-        );
+        //ãƒ“ãƒ¼ãƒ ä¸­ã¯å‹•ã‹ã•ãªã„ã‚ˆã†ã«ã™ã‚‹
+        if (!isFiringBeam)
+        {
+            //ä¸­å¿ƒã‚’è»¸ã«å‹•ã
+            angle += orbitSpeed * Time.deltaTime;
+            float rad = angle * Mathf.Deg2Rad;
+            Vector3 offset = new Vector3(
+                Mathf.Cos(rad) * orbitRadius,
+                Mathf.Sin(Time.time * floatSpeed) * floatAmplitude,
+                Mathf.Sin(rad) * orbitRadius
+            );
+            transform.position = bossHandSpawn.position + offset;
 
-        transform.position = bossHandSpawn.position + offset;
+            //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’å‘ã
+            transform.LookAt(player);
+        }
 
-        //í‚ÉƒvƒŒƒCƒ„[‚Ì•ûŒü‚ğŒü‚­
-        transform.LookAt(player);
-
-        //’èŠú“I‚Éƒr[ƒ€‚ğŒ‚‚½‚¹‚é
+        //ä¸€å®šé–“éš”ã§ãƒ“ãƒ¼ãƒ 
         beamTimer += Time.deltaTime;
-        if (beamTimer >= beamInterval)
+        if (beamTimer >= beamInterval && !isFiringBeam)
         {
             beamTimer = 0f;
+            //ãƒ“ãƒ¼ãƒ ã‚’å‘¼ã³å‡ºã™
+            StartCoroutine(ShootSweepBeam());
         }
+    }
+
+    private System.Collections.IEnumerator ShootSweepBeam()
+    {
+        isFiringBeam = true;
+
+        //ç™ºå°„
+        GameObject beam = Instantiate(beamSweepPrefab, transform.position, transform.rotation);
+        float beamDuration = beam.GetComponent<BeamSweepController>().duration;
+
+        //æ’ƒã£ã¦ã‚‹æ™‚é–“ã¯æ‰‹ã‚’å›ºå®š
+        yield return new WaitForSeconds(beamDuration);
+
+        isFiringBeam = false;
     }
 }

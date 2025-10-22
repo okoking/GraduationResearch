@@ -8,8 +8,8 @@ public class BossHandSpawnerCenter : MonoBehaviour
     //‰½‘Ì‚Ìè‚ğ¶‚İo‚·‚©
     public int handNum = 2;
 
-    public float offsetX = 3f;   // ‰¡‚Ì‹——£
-    public float offsetY = 2f;   // ã‰º‚Ì‹——£
+    public float offsetX = 3f;   //‰¡‚Ì‹——£
+    public float offsetY = 2f;   //ã‰º‚Ì‹——£
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
