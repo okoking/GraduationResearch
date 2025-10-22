@@ -12,10 +12,14 @@ public class EnemyManager : MonoBehaviour
     public void Register(EnemyAI enemy)
     {
         enemies.Add(enemy);
+        if (playerTransform == null)
+        {
+            Debug.Log("プレイヤーがありません");
+        }
         //プレイヤーが既に存在していれば EnemyAI にセット
         if (playerTransform != null)
             Debug.Log("プレイヤーを取得成功");
-            enemy.SetPlayer(playerTransform);
+        enemy.SetPlayer(playerTransform);
     }
     public void SetPlayer(Transform player)
     {
