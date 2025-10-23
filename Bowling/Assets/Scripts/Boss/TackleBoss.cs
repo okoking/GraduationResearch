@@ -1,65 +1,85 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class TackleBoss : MonoBehaviour
 {
-    public float speed = 3f;               // ’Êí‚ÌˆÚ“®‘¬“x
-    public float tackleSpeed = 10f;        // ƒ^ƒbƒNƒ‹‚Ì‘¬“x
-    public float stopDistance = 10f;      // ‹ß‚Ã‚­‹——£
-    public float tackleDuration = 1.0f;    // ƒ^ƒbƒNƒ‹‚Ì‘±ŠÔ
-    public float stunTime = 2.0f;          // ƒXƒ^ƒ“ŠÔ
-    public float tackleCooldown = 3.0f;    // ƒ^ƒbƒNƒ‹‚ÌÄg—p‚Ü‚Å‚ÌŠÔ
+    public float speed = 3f;               //é€šå¸¸é€Ÿåº¦
+    public float tackleSpeed = 10f;        //ã‚¿ãƒƒã‚¯ãƒ«é€Ÿåº¦
+    public float stopDistance = 1.5f;      //ã©ã“ã¾ã§è¿‘ã¥ãã‹
+    public float tackleDuration = 1.0f;    //ã‚¿ãƒƒã‚¯ãƒ«ã®æŒç¶šæ™‚é–“
+    public float stunTime = 2.0f;          //ã‚¹ã‚¿ãƒ³æ™‚é–“
+    public float tackleCooldown = 3.0f;    //ã‚¿ãƒƒã‚¯ãƒ«å†ä½¿ç”¨ã¾ã§ã®æ™‚é–“
+    public float warnTime = 1.0f;          //ã‚¿ãƒƒã‚¯ãƒ«å‰ã®è­¦å‘Šæ™‚é–“
 
     private Transform target;
-    private bool isTackling = false;
-    private bool isStunned = false;
-    private bool isOnCooldown = false;
+    private bool isTackling = false;    //ã‚¿ãƒƒã‚¯ãƒ«ä¸­ã‹
+    private bool isStunned = false;     //ã‚¹ã‚¿ãƒ³ä¸­ã‹
+    private bool isOnCooldown = false;  //ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ä¸­ã‹
+    private bool isWarning = false;     //äºˆå…†ä¸­ãƒ•ãƒ©ã‚°
+
     private float tackleTimer = 0f;
     private float stunTimer = 0f;
     private float cooldownTimer = 0f;
+    private float warnTimer = 0f;
 
-    //‘Ì—Í
-    public int hitPoint = 1;
+    private LineRenderer line; //äºˆæ¸¬ç·šè¡¨ç¤ºç”¨
 
     void Start()
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
-        {
             target = playerObj.transform;
-        }
         else
-        {
-            Debug.LogWarning("Playerƒ^ƒO‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½");
-        }
+            Debug.LogWarning("Playerã‚¿ã‚°ã‚’æŒã¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸ");
+
+        //LineRendererã®è¨­å®š
+        line = gameObject.AddComponent<LineRenderer>();
+        line.startWidth = 0.1f;
+        line.endWidth = 0.1f;
+        line.material = new Material(Shader.Find("Sprites/Default"));
+        line.startColor = Color.red;
+        line.endColor = Color.red;
+        line.enabled = false;
     }
 
     void Update()
     {
         if (target == null) return;
 
+        //ã‚¹ã‚¿ãƒ³ä¸­
         if (isStunned)
         {
             stunTimer -= Time.deltaTime;
-            if (stunTimer <= 0)
-                isStunned = false;
+            if (stunTimer <= 0) isStunned = false;
             return;
         }
 
+        //ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ä¸­
         if (isOnCooldown)
         {
             cooldownTimer -= Time.deltaTime;
-            if (cooldownTimer <= 0)
-                isOnCooldown = false;
+            if (cooldownTimer <= 0) isOnCooldown = false;
         }
 
-        //===== ƒ^ƒbƒNƒ‹’† =====
+        //äºˆå…†ä¸­
+        if (isWarning)
+        {
+            warnTimer -= Time.deltaTime;
+            if (warnTimer <= 0)
+            {
+                line.enabled = false;
+                //è­¦å‘Šã‚’å‡ºã—ãŸã‚‰ã‚¿ãƒƒã‚¯ãƒ«
+                StartTackle();
+            }
+            return;
+        }
+
+        //ã‚¿ãƒƒã‚¯ãƒ«ä¸­
         if (isTackling)
         {
             tackleTimer -= Time.deltaTime;
 
-            // forward•ûŒü‚Éi‚Ş‚¯‚ÇAY²‚ÍŒÅ’è
             Vector3 moveDir = transform.forward;
-            moveDir.y = 0; // Y•ûŒü‚Ì“®‚«‚ğÁ‚·
+            moveDir.y = 0;
             transform.position += moveDir.normalized * tackleSpeed * Time.deltaTime;
 
             if (tackleTimer <= 0)
@@ -68,43 +88,58 @@ public class TackleBoss : MonoBehaviour
             return;
         }
 
-        // ===== ’Êí’ÇÕ =====
+        //é€šå¸¸è¿½è·¡
         float distance = Vector3.Distance(transform.position, target.position);
         if (distance > stopDistance)
         {
-            // ƒvƒŒƒCƒ„[‚ÌY‚ğ–³‹‚µ‚Ä…•½‚ÉŒü‚­
             Vector3 lookPos = new Vector3(target.position.x, transform.position.y, target.position.z);
             transform.LookAt(lookPos);
 
-            // ˆÚ“®æ‚ÌY‚ğŒÅ’è
             Vector3 nextPos = Vector3.MoveTowards(transform.position, lookPos, speed * Time.deltaTime);
             nextPos.y = transform.position.y;
             transform.position = nextPos;
         }
         else
         {
-            if (!isOnCooldown)
-                StartTackle();
+            if (!isOnCooldown && !isWarning)
+                StartWarning();
         }
-
-        //HP0ˆÈ‰º‚É‚È‚Á‚½‚ç
-        Death();
     }
 
-    void StartTackle()
+    //äºˆå…†ãƒ•ã‚§ãƒ¼ã‚º
+    void StartWarning()
     {
-        isTackling = true;
-        tackleTimer = tackleDuration;
+        isWarning = true;
+        warnTimer = warnTime;
         isOnCooldown = true;
         cooldownTimer = tackleCooldown;
-        transform.LookAt(target);
-        Debug.Log("ƒ^ƒbƒNƒ‹ŠJnI");
+
+        // å‘ãã‚’å›ºå®š
+        Vector3 lookPos = new Vector3(target.position.x, transform.position.y, target.position.z);
+        transform.LookAt(lookPos);
+
+        // äºˆæ¸¬ç·šã‚’å‡ºã™
+        line.enabled = true;
+        line.SetPosition(0, transform.position);
+        line.SetPosition(1, transform.position + transform.forward * 10f); //é•·ã•10mã®èµ¤ç·š
+
+        Debug.Log("ã‚¿ãƒƒã‚¯ãƒ«äºˆå…†ä¸­ï¼");
     }
 
+    //ã‚¿ãƒƒã‚¯ãƒ«é–‹å§‹
+    void StartTackle()
+    {
+        isWarning = false;
+        isTackling = true;
+        tackleTimer = tackleDuration;
+        Debug.Log("ã‚¿ãƒƒã‚¯ãƒ«é–‹å§‹ï¼");
+    }
+
+    //ã‚¿ãƒƒã‚¯ãƒ«çµ‚äº†
     void EndTackle()
     {
         isTackling = false;
-        Debug.Log("ƒ^ƒbƒNƒ‹I—¹");
+        Debug.Log("ã‚¿ãƒƒã‚¯ãƒ«çµ‚äº†");
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -113,22 +148,15 @@ public class TackleBoss : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                Debug.Log("ƒvƒŒƒCƒ„[‚É–½’†I");
-                //ƒvƒŒƒCƒ„[‚Éƒ_ƒ[ƒW
+                Debug.Log("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«å‘½ä¸­ï¼");
+                //ãƒ€ãƒ¡ãƒ¼ã‚¸å‡¦ç†
             }
-            if (collision.gameObject.CompareTag("Wall"))
+            else
             {
-                Debug.Log("•Ç‚È‚Ç‚ÉÕ“Ë ¨ ƒXƒ^ƒ“");
+                Debug.Log("å£ãªã©ã«è¡çª â†’ ã‚¹ã‚¿ãƒ³");
                 StartStun();
             }
-
             EndTackle();
-        }
-
-        //ƒvƒŒƒCƒ„[‚ÌUŒ‚‚Æ‚Ì“–‚½‚è”»’è//š//
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            TakeDamage();
         }
     }
 
@@ -136,30 +164,13 @@ public class TackleBoss : MonoBehaviour
     {
         isStunned = true;
         stunTimer = stunTime;
-        Debug.Log("ƒXƒ^ƒ“ó‘Ô");
-    }
-
-    //ƒ_ƒ[ƒW‚ğó‚¯‚é
-    void TakeDamage()
-    {
-        //ƒXƒ^ƒ“’†‚Å‚ ‚ê‚Îƒ_ƒ[ƒW‚ª’Ê‚é
-        if (isStunned)
-        {
-            hitPoint--;
-        }
-    }
-
-    void Death()
-    {
-        if(hitPoint <= 0)
-        {
-            Destroy(gameObject);
-        }
+        Debug.Log("ã‚¹ã‚¿ãƒ³çŠ¶æ…‹");
     }
 }
 
-//ƒvƒŒƒCƒ„[‚É‹ß‚Ã‚­
-//‹ß‚Ã‚¢‚½‚çƒ^ƒbƒNƒ‹
-//ƒvƒŒƒCƒ„[‚É“–‚½‚ê‚Îƒ_ƒ[ƒW
-//ƒvƒŒƒCƒ„[‚É‚æ‚¯‚ç‚ê‚ÄA•Ç‚âáŠQ•¨‚É‚Ô‚Â‚©‚ê‚ÎƒXƒ^ƒ“‚µ‚Äƒ_ƒ[ƒW‚ª’Ê‚é‚æ‚¤‚É‚È‚é
-//¦•’i‚Íƒ_ƒ[ƒW‚ª’Ê‚ç‚È‚¢
+
+//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«è¿‘ã¥ã
+//è¿‘ã¥ã„ãŸã‚‰ã‚¿ãƒƒã‚¯ãƒ«
+//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«å½“ãŸã‚Œã°ãƒ€ãƒ¡ãƒ¼ã‚¸
+//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ã‚ˆã‘ã‚‰ã‚Œã¦ã€å£ã‚„éšœå®³ç‰©ã«ã¶ã¤ã‹ã‚Œã°ã‚¹ã‚¿ãƒ³ã—ã¦ãƒ€ãƒ¡ãƒ¼ã‚¸ãŒé€šã‚‹ã‚ˆã†ã«ãªã‚‹
+//â€»æ™®æ®µã¯ãƒ€ãƒ¡ãƒ¼ã‚¸ãŒé€šã‚‰ãªã„
