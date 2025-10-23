@@ -1,31 +1,49 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
+    //çŠ¶æ…‹ç®¡ç†é–¢é€£
     public enum EnemyState { Idle, Patrol, Chase, Attack }
-    public EnemyState state = EnemyState.Idle;
+    public EnemyState state;
 
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åº§æ¨™
     private Transform player;
+    //NavMeshAgentã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
     private NavMeshAgent agent;
 
-    //Patrol
+    //å·¡å›çŠ¶æ…‹é–¢é€£
     private Vector3 patrolTarget;
-    private float patrolRadius = 8f;
-    private float patrolWaitTime = 2f;
+    //å·¡å›åœ°ç‚¹ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«é¸ã¶ç¯„å›²ã®åŠå¾„
+    [SerializeField] private float patrolRadius = 10f;
+    //å¾…æ©ŸçŠ¶æ…‹ã§æ­¢ã¾ã‚‹æ™‚é–“
+    [SerializeField] private float patrolWaitTime = 2f;
+    //å¾…æ©Ÿä¸­ã®çµŒéæ™‚é–“ãƒ•ãƒ¬ãƒ¼ãƒ 
     private float patrolTimer = 0f;
+    [SerializeField] private Vector3 patrolCenter; //å·¡å›ã®ä¸­å¿ƒç‚¹
+    [SerializeField] private float patrolAreaRadius = 80f; //ã“ã®ç¯„å›²ã‹ã‚‰å‡ºãªã„
 
-    //Boids
+    //Boidsç¾¤ã‚Œåˆ¶å¾¡é–¢é€£
     [Header("Boids")]
-    //“G“¯m‚Ì‹——£
-    [SerializeField] private float separationWeight = 0.4f;
-    [SerializeField] private float alignmentWeight = 1.0f;
-    [SerializeField] private float cohesionWeight = 1.0f;
+    //ä»–ã®æ•µã¨ã®è·é›¢ã‚’ä¿ã¤åŠ›ã®é‡ã¿
+    [SerializeField] private float separationWeight = 1.0f;
+    //è¿‘ãã®æ•µã¨é€Ÿåº¦ã‚’åˆã‚ã›ã‚‹åŠ›ã®é‡ã¿
+    [SerializeField] private float alignmentWeight = 0.5f;
+    //ç¾¤ã‚Œã®ä¸­å¿ƒã«å‘ã‹ã†åŠ›ã®é‡ã¿
+    [SerializeField] private float cohesionWeight = 0.7f;
+    //Boids è¨ˆç®—ã«å‚åŠ ã™ã‚‹è¿‘ãã®æ•µã®ç¯„å›²
     [SerializeField] private float neighborRadius = 3.5f;
-    [SerializeField] private float maxBoidsForce = 3f;
+    //Boids åŠ›ã®æœ€å¤§å€¤
+    [SerializeField] private float maxBoidsForce = 8f;
+    //Boids è¨ˆç®—ã®æ›´æ–°é–“éš”
     [SerializeField] private int boidsUpdateInterval = 3;
+    //ãƒ•ãƒ¬ãƒ¼ãƒ ã‚«ã‚¦ãƒ³ã‚¿
     private int frameCounter = 0;
+    //å‰å›ã® Boids åŠ›ã‚’ä¿æŒã—ã€æ›´æ–°é–“éš”ä¸­ã¯å†åˆ©ç”¨
     private Vector3 lastBoidsForce;
+
+    //ç§»å‹•ç·š
+    private LineRenderer line;
 
     //Alert
     [Header("Alert")]
@@ -36,18 +54,38 @@ public class EnemyAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         player = EnemyManager.Instance.GetPlayerTransform();
         EnemyManager.Instance.Register(this);
+        state = EnemyState.Idle;
+        Debug.Log("æœ€åˆã¯å¾…æ©ŸçŠ¶æ…‹ã¸");
+        //LineRenderer è¨­å®š
+        line = gameObject.AddComponent<LineRenderer>();
+        line.startWidth = 0.05f;
+        line.endWidth = 0.05f;
+        line.material = new Material(Shader.Find("Sprites/Default"));
+        line.positionCount = 2;
+        line.startColor = Color.red;
+        line.endColor = Color.red;
+        patrolWaitTime = Random.Range(2, 10);
+        agent = GetComponent<NavMeshAgent>();
+        agent.avoidancePriority = Random.Range(10, 90); // 0ã€œ99 ã®ç¯„å›²ï¼ˆå°ã•ã„ã»ã©å„ªå…ˆï¼‰
     }
     void Update()
     {
-        //ƒfƒoƒbƒO•\¦iÀÛ‚ÌƒQ[ƒ€‰æ–Ê‚Å‚ÍŒ©‚¦‚È‚¢‚ªSceneƒrƒ…[‚ÅŒ©‚¦‚éj
-        Debug.DrawLine(transform.position, patrolTarget, Color.yellow);
-        Debug.DrawRay(patrolTarget, Vector3.up * 0.5f, Color.yellow);
+        ////ãƒ‡ãƒãƒƒã‚°è¡¨ç¤ºï¼ˆå®Ÿéš›ã®ã‚²ãƒ¼ãƒ ç”»é¢ã§ã¯è¦‹ãˆãªã„ãŒSceneãƒ“ãƒ¥ãƒ¼ã§è¦‹ãˆã‚‹ï¼‰
+        //Debug.DrawLine(transform.position, patrolTarget, Color.yellow);
+        //Debug.DrawRay(patrolTarget, Vector3.up * 0.5f, Color.yellow);
+
+        // å·¡å›ç›®çš„åœ°ã¸ã®ç·šã‚’ã‚²ãƒ¼ãƒ å†…ã§è¡¨ç¤º
+        if (patrolTarget != Vector3.zero)
+        {
+            line.SetPosition(0, transform.position + Vector3.up * 0.1f);
+            line.SetPosition(1, patrolTarget + Vector3.up * 0.1f);
+        }
     }
 
-    //ó‘ÔŠÇ——p‚ÌUpdateiEnemyManager‚©‚çŒÄ‚Î‚ê‚éj
+    //çŠ¶æ…‹ç®¡ç†ç”¨ã®Updateï¼ˆEnemyManagerã‹ã‚‰å‘¼ã°ã‚Œã‚‹ï¼‰
     public void ManagedUpdate()
     {
-        //ó‘Ô‚²‚Æ‚Ìˆ—
+        //çŠ¶æ…‹ã”ã¨ã®å‡¦ç†
         switch (state)
         {
             case EnemyState.Idle: Idle(); break;
@@ -56,69 +94,88 @@ public class EnemyAI : MonoBehaviour
             //case EnemyState.Attack: Attack(); break;
         }
     }
-    //‘Ò‹@ó‘Ô
+    //å¾…æ©ŸçŠ¶æ…‹
     void Idle()
     {
-        //‘Ò‹@ƒ^ƒCƒ}[XV
+        //å¾…æ©Ÿã‚¿ã‚¤ãƒãƒ¼æ›´æ–°
         patrolTimer += Time.deltaTime;
 
-        ////Player”­Œ©‚Å’ÇÕ‚Ö
+        ////Playerç™ºè¦‹ã§è¿½è·¡ã¸
         //if (CanSeePlayer())
         //{
         //    SetChase();
         //    return;
         //}
 
-        //‘Ò‹@ó‘Ô‚Åˆê’èŠÔŒo‰ß‚µ‚½‚ç„‰ñ‚Ö
+        ////å¾…æ©Ÿä¸­ã¯é€Ÿåº¦ã‚’ã‚¼ãƒ­ã«(æ…£æ€§ã‚’ãƒªã‚»ãƒƒãƒˆï¼‰
+        //agent.velocity = Vector3.zero;
+
+        //å¾…æ©ŸçŠ¶æ…‹ã§ä¸€å®šæ™‚é–“çµŒéã—ãŸã‚‰å·¡å›ã¸
         if (patrolTimer > patrolWaitTime)
         {
             SetRandomPatrolPoint();
             state = EnemyState.Patrol;
-            Debug.Log("„‰ñó‘Ô‚Ö");
             patrolTimer = 0f;
+            patrolWaitTime = Random.Range(2, 10);
+            Debug.Log("å·¡å›çŠ¶æ…‹ã¸");
         }
 
     }
-    //„‰ñó‘Ô
+    //å·¡å›çŠ¶æ…‹
     void Patrol()
     {
-        ////Player”­Œ©‚Å’ÇÕ‚Ö
+        ////Playerç™ºè¦‹ã§è¿½è·¡ã¸
         //if (CanSeePlayer())
         //{
         //    SetChase();
         //    return;
         //}
 
-        //Boids‚Å©‘R‚ÉŒQ‚ê‚È‚ª‚çPatrol
-        Vector3 toTarget = (patrolTarget - transform.position).normalized;
-        Vector3 boidsForce = GetBoidsForceOptimized();/* * 0.5f; //Patrol’†‚Íã‚ß*/
-        Vector3 moveDir = (toTarget + boidsForce).normalized;
+        //çµŒè·¯è¨ˆç®—ä¸­ã¯å¾…æ©Ÿ
+        if (agent.pathPending) return;
 
-        //ˆÚ“®
-        ApplyMovement(moveDir);
-
-        //–Ú“I’n‚É“’B‚µ‚½‚çIdle‚Å‘Ò‹@
-        if (!agent.pathPending && Vector3.Distance(transform.position, patrolTarget) < 0.5f)
+        //ç›®çš„åœ°ã«åˆ°é”ã—ãŸã‚‰ Idle ã«æˆ»ã‚‹
+        if (agent.remainingDistance <= agent.stoppingDistance)
         {
             state = EnemyState.Idle;
-            Debug.Log("‘Ò‹@ó‘Ô‚Ö");
             patrolTimer = 0f;
+            Debug.Log("å¾…æ©ŸçŠ¶æ…‹ã¸");
+            return;
+        }
+
+        //Boidsè£œæ­£
+        Vector3 boidsForce = GetBoidsForceOptimized() * 0.8f;
+
+        ////NavMeshAgentãŒç›®æŒ‡ã™ç›®æ¨™æ–¹å‘ã‚’è£œæ­£
+        //Vector3 targetDir = (patrolTarget - transform.position).normalized;
+        //Vector3 adjustedTarget = transform.position + (targetDir + boidsForce).normalized * 2f;
+
+        //agent.SetDestination(adjustedTarget);
+
+        // æ¬¡ã®ç›®æ¨™ä½ç½®ã‚’Boidsè£œæ­£ã§å¾®èª¿æ•´
+        Vector3 direction = (patrolTarget - transform.position).normalized + boidsForce;
+        Vector3 adjustedPos = transform.position + direction.normalized * 2f;
+
+        if (NavMesh.SamplePosition(adjustedPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
         }
     }
-    //„‰ñ”ÍˆÍ‚Æ–Ú“I’n‚ğGizmos‚Å‰Â‹‰»
+    //å·¡å›ç¯„å›²ã¨ç›®çš„åœ°ã‚’Gizmosã§å¯è¦–åŒ–
     void OnDrawGizmosSelected()
     {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(patrolCenter, patrolAreaRadius); // å·¡å›ã‚¨ãƒªã‚¢
+
         Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, patrolRadius); // 1å›åˆ†ã®ãƒ©ãƒ³ãƒ€ãƒ åŠå¾„
 
-        //Œ»İ‚Ì–Ú“I’n
-        Gizmos.DrawSphere(patrolTarget, 0.3f);
-
-        //“G‚ÌˆÊ’u ¨ –Ú“I’n‚Ö‚Ìƒ‰ƒCƒ“
-        Gizmos.DrawLine(transform.position, patrolTarget);
-
-        //„‰ñ”¼Œa‚ğ‰Â‹‰»
-        Gizmos.color = new Color(1f, 1f, 0f, 0.2f);
-        Gizmos.DrawWireSphere(transform.position, patrolRadius);
+        if (patrolTarget != Vector3.zero)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(patrolTarget, 0.3f);
+            Gizmos.DrawLine(transform.position, patrolTarget);
+        }
     }
     void Chase()
     {
@@ -128,71 +185,72 @@ public class EnemyAI : MonoBehaviour
         float distance = toPlayer.magnitude;
         Vector3 toPlayerDir = toPlayer.normalized;
 
-        //ƒvƒŒƒCƒ„[‚Æ‚Ì‹——£‚É‰‚¶‚Ä•ïˆÍ or Ú‹ß
-        Vector3 encircleDir = Quaternion.Euler(0, 90f, 0) * toPlayerDir; //ƒvƒŒƒCƒ„[‚ÌüˆÍ‚ğ‰ñ‚é•ûŒü
+        //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®è·é›¢ã«å¿œã˜ã¦åŒ…å›² or æ¥è¿‘
+        Vector3 encircleDir = Quaternion.Euler(0, 90f, 0) * toPlayerDir; //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å‘¨å›²ã‚’å›ã‚‹æ–¹å‘
         Vector3 desiredPos;
 
         if (distance > 4f)
         {
-            //—£‚ê‚·‚¬ ¨ Ú‹ß
+            //é›¢ã‚Œã™ã â†’ æ¥è¿‘
             desiredPos = toPlayerDir;
         }
         else if (distance < 2.5f)
         {
-            //‹ß‚·‚¬ ¨ ­‚µ—£‚ê‚é
+            //è¿‘ã™ã â†’ å°‘ã—é›¢ã‚Œã‚‹
             desiredPos = -toPlayerDir * 0.5f + encircleDir * 0.5f;
         }
         else
         {
-            //“K‹——£ ¨ •ïˆÍs“®
+            //é©è·é›¢ â†’ åŒ…å›²è¡Œå‹•
             desiredPos = encircleDir * 0.8f + toPlayerDir * 0.2f;
         }
 
-        //Boids•â³iŒQ‚ê§Œäj
+        //Boidsè£œæ­£ï¼ˆç¾¤ã‚Œåˆ¶å¾¡ï¼‰
         Vector3 boidsForce = GetBoidsForceOptimized() * 0.3f;
 
-        //ÅIˆÚ“®•ûŒü
+        //æœ€çµ‚ç§»å‹•æ–¹å‘
         Vector3 moveDir = (desiredPos.normalized + boidsForce).normalized;
 
         ApplyMovement(moveDir);
 
-        //ƒvƒŒƒCƒ„[‚ª‹ß‚¢ ¨ UŒ‚‚Ö
+        //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒè¿‘ã„ â†’ æ”»æ’ƒã¸
         if (distance < 1.8f)
         {
             state = EnemyState.Attack;
-            Debug.Log("UŒ‚ó‘Ô‚Ö");
+            Debug.Log("æ”»æ’ƒçŠ¶æ…‹ã¸");
         }
 
-        //Œ©¸‚Á‚½‚çIdle
-        if (!CanSeePlayer())
-        {
-            state = EnemyState.Idle;
-            Debug.Log("Œ©¸‚Á‚½‚Ì‚Å‘Ò‹@ó‘Ô‚Ö");
-        }
+        ////è¦‹å¤±ã£ãŸã‚‰Idle
+        //if (!CanSeePlayer())
+        //{
+        //    state = EnemyState.Idle;
+        //    Debug.Log("è¦‹å¤±ã£ãŸã®ã§å¾…æ©ŸçŠ¶æ…‹ã¸");
+        //}
     }
     void Attack()
     {
         //transform.LookAt(player);
 
-        ////UŒ‚ˆ—‚Í‚±‚±‚É
+        ////æ”»æ’ƒå‡¦ç†ã¯ã“ã“ã«
         //if (Vector3.Distance(transform.position, player.position) > 3f)
         //    SetChase();
     }
-    //ƒ‰ƒ“ƒ_ƒ€‚Èƒpƒgƒ[ƒ‹’n“_‚ğİ’è
+    //ãƒ©ãƒ³ãƒ€ãƒ ãªãƒ‘ãƒˆãƒ­ãƒ¼ãƒ«åœ°ç‚¹ã‚’è¨­å®š
     void SetRandomPatrolPoint()
     {
-        Vector3 randomDirection = Random.insideUnitSphere * patrolRadius;
-        randomDirection += transform.position;
+        //ä¸­å¿ƒã‹ã‚‰ãƒ©ãƒ³ãƒ€ãƒ ã«å–å¾—
+        Vector3 randomDirection = Random.insideUnitSphere * patrolRadius + patrolCenter;
+        randomDirection.y = transform.position.y; // é«˜ã•ã‚’å›ºå®šï¼ˆåœ°é¢å¯¾å¿œï¼‰
 
         if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, patrolRadius, NavMesh.AllAreas))
         {
             patrolTarget = hit.position;
-            agent.SetDestination(patrolTarget);
-            Debug.Log($"[EnemyAI] V‚µ‚¢ƒpƒgƒ[ƒ‹’n“_‚ğİ’è‚µ‚Ü‚µ‚½: {patrolTarget}");
+            agent.SetDestination(patrolTarget); //ã“ã“ã§ä¸€åº¦ã ã‘ã‚»ãƒƒãƒˆ
+            Debug.Log($"æ–°ã—ã„ãƒ‘ãƒˆãƒ­ãƒ¼ãƒ«åœ°ç‚¹: {patrolTarget}");
         }
         else
         {
-            Debug.LogWarning($"[EnemyAI] NavMeshã‚É—LŒø‚Èƒpƒgƒ[ƒ‹’n“_‚ğŒ©‚Â‚¯‚ç‚ê‚Ü‚¹‚ñ‚Å‚µ‚½ ({transform.position})");
+            Debug.LogWarning("æœ‰åŠ¹ãªãƒ‘ãƒˆãƒ­ãƒ¼ãƒ«åœ°ç‚¹ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“");
         }
     }
     bool CanSeePlayer()
@@ -202,22 +260,22 @@ public class EnemyAI : MonoBehaviour
         Vector3 dir = player.position - transform.position;
         float distance = dir.magnitude;
 
-        //‹——£‚Æ‹–ìŠp‚ÌğŒ‚ğ–‚½‚µ‚½ê‡‚Ì‚İ
+        //è·é›¢ã¨è¦–é‡è§’ã®æ¡ä»¶ã‚’æº€ãŸã—ãŸå ´åˆã®ã¿
         if (distance < 10f && Vector3.Angle(transform.forward, dir) < 60f)
         {
-            //ƒŒƒCƒLƒƒƒXƒg‚ÅÕ•Á•¨ƒ`ƒFƒbƒNiƒvƒŒƒCƒ„[‚ÌŒ©‚¦‚éEŒ©‚¦‚È‚¢‚ğ‚æ‚è³Šm‚Éj
+            //ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆã§é®è”½ç‰©ãƒã‚§ãƒƒã‚¯ï¼ˆãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¦‹ãˆã‚‹ãƒ»è¦‹ãˆãªã„ã‚’ã‚ˆã‚Šæ­£ç¢ºã«ï¼‰
             if (Physics.Raycast(transform.position + Vector3.up, dir.normalized, out RaycastHit hit, distance))
             {
                 if (hit.transform == player)
                 {
-                    Debug.Log($"{name} ‚ªƒvƒŒƒCƒ„[‚ğ”­Œ©I");
+                    Debug.Log($"{name} ãŒãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ç™ºè¦‹ï¼");
                     return true;
                 }
             }
         }
         return false;
     }
-    //BoidsŒvZiƒtƒŒ[ƒ€ƒXƒLƒbƒv•t‚«j
+    //Boidsè¨ˆç®—ï¼ˆãƒ•ãƒ¬ãƒ¼ãƒ ã‚¹ã‚­ãƒƒãƒ—ä»˜ãï¼‰
     Vector3 GetBoidsForceOptimized()
     {
         frameCounter++;
@@ -228,14 +286,15 @@ public class EnemyAI : MonoBehaviour
         }
         return lastBoidsForce;
     }
+    //ç¾¤ã‚Œã®è¿‘ãã®æ•µã‹ã‚‰
     Vector3 CalculateBoidsForce()
     {
         var neighbors = EnemyManager.Instance.GetNearbyEnemies(this, neighborRadius);
         if (neighbors.Count == 0) return Vector3.zero;
 
-        Vector3 separation = Vector3.zero;
-        Vector3 alignment = Vector3.zero;
-        Vector3 cohesion = Vector3.zero;
+        Vector3 separation = Vector3.zero;//ï¼ˆè·é›¢ä¿æŒï¼‰
+        Vector3 alignment = Vector3.zero;//ï¼ˆé€Ÿåº¦åˆã‚ã›ï¼‰
+        Vector3 cohesion = Vector3.zero;//ï¼ˆç¾¤ã‚Œä¸­å¿ƒã¸ï¼‰
 
         foreach (var other in neighbors)
         {
@@ -258,7 +317,7 @@ public class EnemyAI : MonoBehaviour
     }
     void ApplyMovement(Vector3 moveDir)
     {
-        //NavMeshAgent‚ÌˆÚ“®æ‚ğ’¼Ú§Œä
+        //NavMeshAgentã®ç§»å‹•å…ˆã‚’ç›´æ¥åˆ¶å¾¡
         Vector3 nextPos = transform.position + moveDir * agent.speed * Time.deltaTime;
 
         if (NavMesh.SamplePosition(nextPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
@@ -269,20 +328,20 @@ public class EnemyAI : MonoBehaviour
     void SetChase()
     {
         state = EnemyState.Chase;
-        Debug.Log("’ÇÕó‘Ô‚Ö");
+        Debug.Log("è¿½è·¡çŠ¶æ…‹ã¸");
         EnemyManager.Instance.AlertNearbyEnemies(this, alertRadius);
     }
-    //Œx•ñ‹¤—L‚ÅŒÄ‚Î‚ê‚é
+    //è­¦å ±å…±æœ‰ã§å‘¼ã°ã‚Œã‚‹
     public void OnAlerted()
     {
         if (state == EnemyState.Idle || state == EnemyState.Patrol)
         { 
-            //‚Ù‚©‚Ì“G‚à’ÇÕó‘Ô‚Ö
+            //ã»ã‹ã®æ•µã‚‚è¿½è·¡çŠ¶æ…‹ã¸
             state = EnemyState.Chase;
-           Debug.Log("Œx•ñ‚ğó‚¯‚Ä’ÇÕó‘Ô‚Ö");
+           Debug.Log("è­¦å ±ã‚’å—ã‘ã¦è¿½è·¡çŠ¶æ…‹ã¸");
         }
     }
-    //Player ‚ğŒã‚©‚çƒZƒbƒg‚Å‚«‚é
+    //Player ã‚’å¾Œã‹ã‚‰ã‚»ãƒƒãƒˆã§ãã‚‹
     public void SetPlayer(Transform p)
     {
         player = p;

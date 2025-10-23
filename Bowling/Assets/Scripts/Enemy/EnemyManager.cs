@@ -61,7 +61,17 @@ public class EnemyManager : MonoBehaviour
 
     void Update()
     {
-        if (playerTransform == null) return;
+        if (playerTransform == null)
+        {
+            Debug.Log("プレイヤー情報がないため処理を終了しました");
+            SetPlayer(GameObject.Find("Player").transform);
+
+            if(playerTransform != null)
+                Debug.Log("プレイヤー情報を取得しました");
+            else
+                Debug.Log("プレイヤー情報を取得できませんでした");
+            return;
+        }
 
         foreach (var e in enemies)
         {
