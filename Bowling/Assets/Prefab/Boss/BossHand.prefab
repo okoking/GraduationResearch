@@ -101,9 +101,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bossHandSpawn: {fileID: 8563033403297202376, guid: bc6473a9d7be48f4a9815f1ce2299852, type: 3}
   beamSweepPrefab: {fileID: 5384188851145259235, guid: a621a8553b4ca1249a1b6701036e4a06, type: 3}
+  aimLinePrefab: {fileID: 3338673805677368855, guid: eb9f23a8cbe6ed943a3dcda0a48d71ac, type: 3}
   orbitRadius: 5
   orbitSpeed: 30
   floatAmplitude: 1
   floatSpeed: 1
   beamInterval: 5
-  beamSpeed: 10
+  beamWarningTime: 1.5
+  sweepAngle: 90
+  sweepSpeed: 60
