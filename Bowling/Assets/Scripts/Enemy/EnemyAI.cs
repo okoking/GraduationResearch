@@ -15,26 +15,26 @@ public class EnemyAI : MonoBehaviour
     //巡回状態関連
     private Vector3 patrolTarget;
     //巡回地点をランダムに選ぶ範囲の半径
-    [SerializeField] private float patrolRadius = 10f;
+    [SerializeField] private float patrolRadius = 50f;
     //待機状態で止まる時間
-    [SerializeField] private float patrolWaitTime = 2f;
+    [SerializeField] private float patrolWaitTime = 3f;
     //待機中の経過時間フレーム
     private float patrolTimer = 0f;
     [SerializeField] private Vector3 patrolCenter; //巡回の中心点
-    [SerializeField] private float patrolAreaRadius = 80f; //この範囲から出ない
+    [SerializeField] private float patrolAreaRadius = 200f; //この範囲から出ない
 
     //Boids群れ制御関連
     [Header("Boids")]
     //他の敵との距離を保つ力の重み
-    [SerializeField] private float separationWeight = 1.0f;
+    [SerializeField] private float separationWeight = 2.5f;
     //近くの敵と速度を合わせる力の重み
-    [SerializeField] private float alignmentWeight = 0.5f;
+    [SerializeField] private float alignmentWeight = 0.1f;
     //群れの中心に向かう力の重み
-    [SerializeField] private float cohesionWeight = 0.7f;
+    [SerializeField] private float cohesionWeight = 0.1f;
     //Boids 計算に参加する近くの敵の範囲
-    [SerializeField] private float neighborRadius = 3.5f;
+    [SerializeField] private float neighborRadius = 1.5f;
     //Boids 力の最大値
-    [SerializeField] private float maxBoidsForce = 8f;
+    [SerializeField] private float maxBoidsForce = 7f;
     //Boids 計算の更新間隔
     [SerializeField] private int boidsUpdateInterval = 3;
     //フレームカウンタ
@@ -47,7 +47,7 @@ public class EnemyAI : MonoBehaviour
 
     //Alert
     [Header("Alert")]
-    [SerializeField] private float alertRadius = 8f;
+    [SerializeField] private float alertRadius = 5f;
 
     void Start()
     {
@@ -56,6 +56,7 @@ public class EnemyAI : MonoBehaviour
         EnemyManager.Instance.Register(this);
         state = EnemyState.Idle;
         Debug.Log("最初は待機状態へ");
+
         //LineRenderer 設定
         line = gameObject.AddComponent<LineRenderer>();
         line.startWidth = 0.05f;
@@ -64,17 +65,14 @@ public class EnemyAI : MonoBehaviour
         line.positionCount = 2;
         line.startColor = Color.red;
         line.endColor = Color.red;
-        patrolWaitTime = Random.Range(2, 10);
+
+        patrolWaitTime = Random.Range(2, 5);
         agent = GetComponent<NavMeshAgent>();
-        agent.avoidancePriority = Random.Range(10, 90); // 0〜99 の範囲（小さいほど優先）
+        agent.avoidancePriority = Random.Range(10, 90); //0〜99 の範囲（小さいほど優先）
     }
     void Update()
     {
-        ////デバッグ表示（実際のゲーム画面では見えないがSceneビューで見える）
-        //Debug.DrawLine(transform.position, patrolTarget, Color.yellow);
-        //Debug.DrawRay(patrolTarget, Vector3.up * 0.5f, Color.yellow);
-
-        // 巡回目的地への線をゲーム内で表示
+        //巡回目的地への線をゲーム内で表示
         if (patrolTarget != Vector3.zero)
         {
             line.SetPosition(0, transform.position + Vector3.up * 0.1f);
@@ -90,8 +88,8 @@ public class EnemyAI : MonoBehaviour
         {
             case EnemyState.Idle: Idle(); break;
             case EnemyState.Patrol: Patrol(); break;
-            //case EnemyState.Chase: Chase(); break;
-            //case EnemyState.Attack: Attack(); break;
+            case EnemyState.Chase: Chase(); break;
+                //case EnemyState.Attack: Attack(); break;
         }
     }
     //待機状態
@@ -100,15 +98,18 @@ public class EnemyAI : MonoBehaviour
         //待機タイマー更新
         patrolTimer += Time.deltaTime;
 
-        ////Player発見で追跡へ
-        //if (CanSeePlayer())
-        //{
-        //    SetChase();
-        //    return;
-        //}
+        //追跡中は
+        if (state == EnemyState.Chase)
+        {
+            return;
+        }
 
-        ////待機中は速度をゼロに(慣性をリセット）
-        //agent.velocity = Vector3.zero;
+        //Player発見で追跡へ
+        if (CanSeePlayer())
+        {
+            SetChase();
+            return;
+        }
 
         //待機状態で一定時間経過したら巡回へ
         if (patrolTimer > patrolWaitTime)
@@ -116,7 +117,7 @@ public class EnemyAI : MonoBehaviour
             SetRandomPatrolPoint();
             state = EnemyState.Patrol;
             patrolTimer = 0f;
-            patrolWaitTime = Random.Range(2, 10);
+            patrolWaitTime = Random.Range(3, 8);
             Debug.Log("巡回状態へ");
         }
 
@@ -124,12 +125,18 @@ public class EnemyAI : MonoBehaviour
     //巡回状態
     void Patrol()
     {
-        ////Player発見で追跡へ
-        //if (CanSeePlayer())
-        //{
-        //    SetChase();
-        //    return;
-        //}
+        //追跡中は
+        if(state == EnemyState.Chase)
+        {
+            return;
+        }
+
+        //Player発見で追跡へ
+        if (CanSeePlayer())
+        {
+            SetChase();
+            return;
+        }
 
         //経路計算中は待機
         if (agent.pathPending) return;
@@ -144,7 +151,7 @@ public class EnemyAI : MonoBehaviour
         }
 
         //Boids補正
-        Vector3 boidsForce = GetBoidsForceOptimized() * 0.8f;
+        Vector3 boidsForce = GetBoidsForceOptimized() * 0.9f;
 
         ////NavMeshAgentが目指す目標方向を補正
         //Vector3 targetDir = (patrolTarget - transform.position).normalized;
@@ -177,55 +184,112 @@ public class EnemyAI : MonoBehaviour
             Gizmos.DrawLine(transform.position, patrolTarget);
         }
     }
+    //敵の視界を可視化
+    void OnDrawGizmos()
+    {
+        //視界距離（CanSeePlayerの距離と合わせる）
+        float viewDistance = 10f;
+        //視界角（CanSeePlayerの角度と合わせる）
+        float viewAngle = 60f;
+
+        //敵の向き
+        Vector3 forward = transform.forward;
+
+        //扇形を描画
+        Gizmos.color = new Color(1f, 1f, 0f, 0.3f); //半透明黄色
+        DrawViewGizmo(transform.position + Vector3.up * 0.5f, forward, viewAngle, viewDistance);
+
+        //レイキャスト方向の可視化
+        Debug.DrawRay(transform.position + Vector3.up * 0.5f, forward * viewDistance, Color.yellow);
+
+        //実際にプレイヤーが視界内にいる場合、赤い線を引く
+        if (player != null)
+        {
+            Vector3 dirToPlayer = (player.position - transform.position).normalized;
+            float distance = Vector3.Distance(transform.position, player.position);
+            float angle = Vector3.Angle(forward, dirToPlayer);
+
+            if (distance < viewDistance && angle < viewAngle)
+            {
+                Debug.DrawLine(transform.position + Vector3.up, player.position, Color.red);
+            }
+        }
+    }
+
+    //扇形を描画する補助関数
+    void DrawViewGizmo(Vector3 position, Vector3 forward, float angle, float distance)
+    {
+        int segmentCount = 20; //扇形の分割数
+        float step = angle * 2 / segmentCount;
+
+        Vector3 oldPoint = position;
+        for (int i = 0; i <= segmentCount; i++)
+        {
+            float currentAngle = -angle + step * i;
+            Quaternion rot = Quaternion.Euler(0, currentAngle, 0);
+            Vector3 dir = rot * forward;
+            Vector3 nextPoint = position + dir * distance;
+            if (i > 0) Gizmos.DrawLine(oldPoint, nextPoint);
+            oldPoint = nextPoint;
+        }
+
+        // 扇形の外周線
+        Gizmos.DrawLine(position, position + Quaternion.Euler(0, -angle, 0) * forward * distance);
+        Gizmos.DrawLine(position, position + Quaternion.Euler(0, angle, 0) * forward * distance);
+    }
     void Chase()
     {
         if (player == null) return;
 
-        Vector3 toPlayer = (player.position - transform.position);
+        //プレイヤー方向ベクトルと距離
+        Vector3 toPlayer = player.position - transform.position;
         float distance = toPlayer.magnitude;
         Vector3 toPlayerDir = toPlayer.normalized;
 
-        //プレイヤーとの距離に応じて包囲 or 接近
-        Vector3 encircleDir = Quaternion.Euler(0, 90f, 0) * toPlayerDir; //プレイヤーの周囲を回る方向
+        //プレイヤーの右側方向（包囲用）
+        Vector3 encircleDir = Quaternion.Euler(0, 90f, 0) * toPlayerDir;
         Vector3 desiredPos;
 
-        if (distance > 4f)
+        if (distance > 10f)
         {
-            //離れすぎ → 接近
+            //離れすぎ：接近行動
             desiredPos = toPlayerDir;
         }
-        else if (distance < 2.5f)
+        else if (distance < 5f)
         {
-            //近すぎ → 少し離れる
+            //近すぎ：後退しながら包囲
             desiredPos = -toPlayerDir * 0.5f + encircleDir * 0.5f;
         }
         else
         {
-            //適距離 → 包囲行動
-            desiredPos = encircleDir * 0.8f + toPlayerDir * 0.2f;
+            //適距離：包囲行動
+            desiredPos = encircleDir * 0.7f + toPlayerDir * 0.3f;
         }
 
-        //Boids補正（群れ制御）
-        Vector3 boidsForce = GetBoidsForceOptimized() * 0.3f;
-
-        //最終移動方向
+        //Boids補正
+        Vector3 boidsForce = GetBoidsForceOptimized() * 0.8f;
         Vector3 moveDir = (desiredPos.normalized + boidsForce).normalized;
 
-        ApplyMovement(moveDir);
-
-        //プレイヤーが近い → 攻撃へ
-        if (distance < 1.8f)
+        //NavMesh上の有効な地点を探して移動
+        Vector3 targetPos = transform.position + moveDir * 2.0f; // 3m 先を目標にする
+        if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
         {
-            state = EnemyState.Attack;
-            Debug.Log("攻撃状態へ");
+            agent.SetDestination(hit.position);
         }
 
-        ////見失ったらIdle
-        //if (!CanSeePlayer())
+        //// 攻撃・見失い処理（任意で再有効化）
+        //if (distance < 1.8f)
         //{
-        //    state = EnemyState.Idle;
-        //    Debug.Log("見失ったので待機状態へ");
+        //    state = EnemyState.Attack;
+        //    Debug.Log("攻撃状態へ");
         //}
+
+        //一定距離離れたら追跡終了
+        if (distance < 20.0f)
+        {
+            state = EnemyState.Idle;
+            Debug.Log("見失ったので待機状態へ");
+        }
     }
     void Attack()
     {
@@ -238,24 +302,49 @@ public class EnemyAI : MonoBehaviour
     //ランダムなパトロール地点を設定
     void SetRandomPatrolPoint()
     {
-        //中心からランダムに取得
-        Vector3 randomDirection = Random.insideUnitSphere * patrolRadius + patrolCenter;
-        randomDirection.y = transform.position.y; // 高さを固定（地面対応）
+        ////中心からランダムに取得
+        //Vector3 randomDirection = Random.insideUnitSphere * patrolRadius + patrolCenter;
+        //randomDirection.y = transform.position.y; // 高さを固定（地面対応）
 
-        if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, patrolRadius, NavMesh.AllAreas))
+        //if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, patrolRadius, NavMesh.AllAreas))
+        //{
+        //    patrolTarget = hit.position;
+        //    agent.SetDestination(patrolTarget); //ここで一度だけセット
+        //    Debug.Log($"新しいパトロール地点: {patrolTarget}");
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("有効なパトロール地点が見つかりません");
+        //}
+
+        for (int i = 0; i < 10; i++) // 最大10回試行して安全な地点を探す
         {
-            patrolTarget = hit.position;
-            agent.SetDestination(patrolTarget); //ここで一度だけセット
-            Debug.Log($"新しいパトロール地点: {patrolTarget}");
+            // 中心からランダムに取得
+            Vector3 randomDirection = Random.insideUnitSphere * patrolRadius + patrolCenter;
+            randomDirection.y = transform.position.y;
+
+            if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, patrolRadius, NavMesh.AllAreas))
+            {
+                // 範囲チェック：巡回エリア外は無効
+                if (Vector3.Distance(hit.position, patrolCenter) <= patrolAreaRadius)
+                {
+                    patrolTarget = hit.position;
+                    agent.SetDestination(patrolTarget);
+                    Debug.Log($"新しいパトロール地点: {patrolTarget}");
+                    return;
+                }
+            }
         }
-        else
-        {
-            Debug.LogWarning("有効なパトロール地点が見つかりません");
-        }
+
+        Debug.LogWarning("有効なパトロール地点が見つかりません");
     }
     bool CanSeePlayer()
     {
+        //プレイヤー情報がなかったら
         if (player == null) return false;
+
+        //すでに追跡状態なら
+        if (state == EnemyState.Chase) return false;
 
         Vector3 dir = player.position - transform.position;
         float distance = dir.magnitude;
@@ -351,4 +440,12 @@ public class EnemyAI : MonoBehaviour
         if (EnemyManager.Instance != null)
             EnemyManager.Instance.Unregister(this);
     }
+
+    //===== Boids Debug 用プロパティ =====
+    public float SeparationWeight { get => separationWeight; set => separationWeight = value; }
+    public float AlignmentWeight { get => alignmentWeight; set => alignmentWeight = value; }
+    public float CohesionWeight { get => cohesionWeight; set => cohesionWeight = value; }
+    public float NeighborRadius { get => neighborRadius; set => neighborRadius = value; }
+    public float MaxBoidsForce { get => maxBoidsForce; set => maxBoidsForce = value; }
 }
+
