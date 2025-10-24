@@ -155,5 +155,8 @@ MonoBehaviour:
   duration: 2
   sweepAngle: 90
   sweepSpeed: 90
-  beamLength: 50
+  beamLength: 100
   beamWidth: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0

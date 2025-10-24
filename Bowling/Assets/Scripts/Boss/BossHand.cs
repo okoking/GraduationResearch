@@ -76,29 +76,29 @@ public class BossHand : MonoBehaviour
             float t = (float)i / (segmentCount - 1);
             float yaw = Mathf.Lerp(-halfAngle, halfAngle, t);
             Quaternion rot = Quaternion.Euler(0, yaw, 0);
-            Vector3 dir = rot * flatForward;
 
-            // Rayを少し下向きにして、地面まで届かせる
-            Vector3 rayOrigin = origin + Vector3.up * 5f;
-            Vector3 rayDir = (dir + Vector3.down * 0.2f).normalized;
+            // ビームの方向（地面に対して少し下向き）
+            Vector3 dir = rot * transform.forward;
+            Vector3 start = transform.position;
 
-            if (Physics.Raycast(rayOrigin, rayDir, out RaycastHit hit, beamRange))
+            if (Physics.Raycast(start, dir, out RaycastHit hit, beamRange, LayerMask.GetMask("Ground")))
             {
-                line.SetPosition(i, hit.point + Vector3.up * 0.02f);
+                // 地面から少し上にオフセット
+                line.SetPosition(i, hit.point + Vector3.up * 0.05f);
             }
             else
             {
-                // 地面まで届かなかったら、beamRange先を下にもう一度探す
-                if (Physics.Raycast(rayOrigin + rayDir * beamRange, Vector3.down, out RaycastHit downHit, 100f))
+                if (Physics.Raycast(start + dir * beamRange, Vector3.down, out RaycastHit downHit, 100f, LayerMask.GetMask("Ground")))
                 {
-                    line.SetPosition(i, downHit.point + Vector3.up * 0.02f);
+                    line.SetPosition(i, downHit.point + Vector3.up * 0.05f);
                 }
                 else
                 {
-                    line.SetPosition(i, origin + dir * beamRange);
+                    line.SetPosition(i, start + dir * beamRange);
                 }
             }
         }
+
 
         // 見た目設定
         line.startWidth = 0.15f;
@@ -116,54 +116,5 @@ public class BossHand : MonoBehaviour
 
         Destroy(line.gameObject);
         isFiringBeam = false;
-    }
-
-    void DrawWarningLine(LineRenderer line, Vector3 dir)
-    {
-        // LineRendererの基本設定
-        line.positionCount = 20;
-        line.useWorldSpace = true;
-        line.enabled = true;
-
-        // 地面にRayを飛ばして「薙ぎ払い軌道」を描く
-        float startAngle = -sweepAngle / 2;
-        float endAngle = sweepAngle / 2;
-
-        for (int i = 0; i < line.positionCount; i++)
-        {
-            float t = (float)i / (line.positionCount - 1);
-            float currentAngle = Mathf.Lerp(startAngle, endAngle, t);
-            Quaternion rot = Quaternion.AngleAxis(currentAngle, Vector3.up);
-            Vector3 sweepDir = rot * dir;
-
-            // 地面ヒット位置をRaycastで求める
-            if (Physics.Raycast(transform.position, sweepDir, out RaycastHit hit, 100f, LayerMask.GetMask("Ground")))
-            {
-                line.SetPosition(i, hit.point + Vector3.up * 0.05f);
-            }
-            else
-            {
-                // ヒットしなかったら少し前方
-                line.SetPosition(i, transform.position + sweepDir * 10f);
-            }
-        }
-    }
-
-    IEnumerator SweepBeam(GameObject beam, Vector3 dir)
-    {
-        float currentAngle = -sweepAngle / 2;
-
-        while (currentAngle <= sweepAngle / 2)
-        {
-            Quaternion rotation = Quaternion.AngleAxis(currentAngle, Vector3.up);
-            Vector3 sweepDir = rotation * dir;
-
-            transform.rotation = Quaternion.LookRotation(sweepDir);
-            beam.transform.position = transform.position;
-            beam.transform.rotation = transform.rotation;
-
-            currentAngle += sweepSpeed * Time.deltaTime;
-            yield return null;
-        }
     }
 }
