@@ -59,7 +59,8 @@ public class PlayerMovement : MonoBehaviour
             Vector3 targetVelocity = moveDir * moveSpeed;
             currentVelocity = Vector3.MoveTowards(currentVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
 
-            // キャラ回転
+            // キャラ回転(ビーム打つときは変えないようにする)
+
             Quaternion targetRot = Quaternion.LookRotation(moveDir);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime);
         }

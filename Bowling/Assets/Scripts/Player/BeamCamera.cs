@@ -1,17 +1,16 @@
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.Rendering.Universal;
 
 public class BeamCamera : MonoBehaviour
 {
     [SerializeField] private Transform cameraTransform;
-
+    [SerializeField] private Canvas reticle;
     [SerializeField] private CinemachineCamera normalCam;
     [SerializeField] private CinemachineCamera beamCam;
-    bool isSootBeam = false;
+    public bool isSootBeam = false;
 
     private Rigidbody rb;
-
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,6 +27,8 @@ public class BeamCamera : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.JoystickButton2))
         {
             isSootBeam = !isSootBeam;
+            reticle.gameObject.SetActive(isSootBeam);
+
             normalCam.gameObject.SetActive(!isSootBeam);
             beamCam.gameObject.SetActive(isSootBeam);
             Debug.Log("X");
