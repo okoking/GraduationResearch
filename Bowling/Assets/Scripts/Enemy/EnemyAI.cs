@@ -1,30 +1,49 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
+    //状態管理関連
     public enum EnemyState { Idle, Patrol, Chase, Attack }
-    public EnemyState state = EnemyState.Idle;
+    public EnemyState state;
 
+    //プレイヤーの座標
     private Transform player;
+    //NavMeshAgentコンポーネント
     private NavMeshAgent agent;
 
-    //Patrol
+    //巡回状態関連
     private Vector3 patrolTarget;
-    private float patrolRadius = 8f;
-    private float patrolWaitTime = 2f;
+    //巡回地点をランダムに選ぶ範囲の半径
+    [SerializeField] private float patrolRadius = 10f;
+    //待機状態で止まる時間
+    [SerializeField] private float patrolWaitTime = 2f;
+    //待機中の経過時間フレーム
     private float patrolTimer = 0f;
+    [SerializeField] private Vector3 patrolCenter; //巡回の中心点
+    [SerializeField] private float patrolAreaRadius = 80f; //この範囲から出ない
 
-    //Boids
+    //Boids群れ制御関連
     [Header("Boids")]
-    [SerializeField] private float separationWeight = 1.5f;
-    [SerializeField] private float alignmentWeight = 1.0f;
-    [SerializeField] private float cohesionWeight = 1.0f;
-    [SerializeField] private float neighborRadius = 5f;
-    [SerializeField] private float maxBoidsForce = 3f;
+    //他の敵との距離を保つ力の重み
+    [SerializeField] private float separationWeight = 1.0f;
+    //近くの敵と速度を合わせる力の重み
+    [SerializeField] private float alignmentWeight = 0.5f;
+    //群れの中心に向かう力の重み
+    [SerializeField] private float cohesionWeight = 0.7f;
+    //Boids 計算に参加する近くの敵の範囲
+    [SerializeField] private float neighborRadius = 3.5f;
+    //Boids 力の最大値
+    [SerializeField] private float maxBoidsForce = 8f;
+    //Boids 計算の更新間隔
     [SerializeField] private int boidsUpdateInterval = 3;
+    //フレームカウンタ
     private int frameCounter = 0;
+    //前回の Boids 力を保持し、更新間隔中は再利用
     private Vector3 lastBoidsForce;
+
+    //移動線
+    private LineRenderer line;
 
     //Alert
     [Header("Alert")]
@@ -35,99 +54,228 @@ public class EnemyAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         player = EnemyManager.Instance.GetPlayerTransform();
         EnemyManager.Instance.Register(this);
+        state = EnemyState.Idle;
+        Debug.Log("最初は待機状態へ");
+        //LineRenderer 設定
+        line = gameObject.AddComponent<LineRenderer>();
+        line.startWidth = 0.05f;
+        line.endWidth = 0.05f;
+        line.material = new Material(Shader.Find("Sprites/Default"));
+        line.positionCount = 2;
+        line.startColor = Color.red;
+        line.endColor = Color.red;
+        patrolWaitTime = Random.Range(2, 10);
+        agent = GetComponent<NavMeshAgent>();
+        agent.avoidancePriority = Random.Range(10, 90); // 0〜99 の範囲（小さいほど優先）
     }
+    void Update()
+    {
+        ////デバッグ表示（実際のゲーム画面では見えないがSceneビューで見える）
+        //Debug.DrawLine(transform.position, patrolTarget, Color.yellow);
+        //Debug.DrawRay(patrolTarget, Vector3.up * 0.5f, Color.yellow);
+
+        // 巡回目的地への線をゲーム内で表示
+        if (patrolTarget != Vector3.zero)
+        {
+            line.SetPosition(0, transform.position + Vector3.up * 0.1f);
+            line.SetPosition(1, patrolTarget + Vector3.up * 0.1f);
+        }
+    }
+
+    //状態管理用のUpdate（EnemyManagerから呼ばれる）
     public void ManagedUpdate()
     {
+        //状態ごとの処理
         switch (state)
         {
             case EnemyState.Idle: Idle(); break;
             case EnemyState.Patrol: Patrol(); break;
-            case EnemyState.Chase: Chase(); break;
-            case EnemyState.Attack: Attack(); break;
+            //case EnemyState.Chase: Chase(); break;
+            //case EnemyState.Attack: Attack(); break;
         }
     }
+    //待機状態
     void Idle()
     {
+        //待機タイマー更新
         patrolTimer += Time.deltaTime;
 
-        if (CanSeePlayer())
-        {
-            SetChase();
-            return;
-        }
+        ////Player発見で追跡へ
+        //if (CanSeePlayer())
+        //{
+        //    SetChase();
+        //    return;
+        //}
 
+        ////待機中は速度をゼロに(慣性をリセット）
+        //agent.velocity = Vector3.zero;
+
+        //待機状態で一定時間経過したら巡回へ
         if (patrolTimer > patrolWaitTime)
         {
             SetRandomPatrolPoint();
             state = EnemyState.Patrol;
             patrolTimer = 0f;
+            patrolWaitTime = Random.Range(2, 10);
+            Debug.Log("巡回状態へ");
         }
+
     }
+    //巡回状態
     void Patrol()
     {
-        if (CanSeePlayer())
+        ////Player発見で追跡へ
+        //if (CanSeePlayer())
+        //{
+        //    SetChase();
+        //    return;
+        //}
+
+        //経路計算中は待機
+        if (agent.pathPending) return;
+
+        //目的地に到達したら Idle に戻る
+        if (agent.remainingDistance <= agent.stoppingDistance)
         {
-            SetChase();
+            state = EnemyState.Idle;
+            patrolTimer = 0f;
+            Debug.Log("待機状態へ");
             return;
         }
 
-        //Boids�Ŏ��R�ɌQ��Ȃ���Patrol
-        Vector3 toTarget = (patrolTarget - transform.position).normalized;
-        Vector3 boidsForce = GetBoidsForceOptimized() * 0.5f; //Patrol���͎��
-        Vector3 moveDir = (toTarget + boidsForce).normalized;
+        //Boids補正
+        Vector3 boidsForce = GetBoidsForceOptimized() * 0.8f;
 
-        ApplyMovement(moveDir);
+        ////NavMeshAgentが目指す目標方向を補正
+        //Vector3 targetDir = (patrolTarget - transform.position).normalized;
+        //Vector3 adjustedTarget = transform.position + (targetDir + boidsForce).normalized * 2f;
 
-        //�ړI�n�ɓ��B������Idle�őҋ@
-        if (!agent.pathPending && Vector3.Distance(transform.position, patrolTarget) < 0.5f)
+        //agent.SetDestination(adjustedTarget);
+
+        // 次の目標位置をBoids補正で微調整
+        Vector3 direction = (patrolTarget - transform.position).normalized + boidsForce;
+        Vector3 adjustedPos = transform.position + direction.normalized * 2f;
+
+        if (NavMesh.SamplePosition(adjustedPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
         {
-            state = EnemyState.Idle;
-            Debug.Log("�ҋ@��Ԃ�");
-            patrolTimer = 0f;
+            agent.SetDestination(hit.position);
+        }
+    }
+    //巡回範囲と目的地をGizmosで可視化
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(patrolCenter, patrolAreaRadius); // 巡回エリア
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, patrolRadius); // 1回分のランダム半径
+
+        if (patrolTarget != Vector3.zero)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(patrolTarget, 0.3f);
+            Gizmos.DrawLine(transform.position, patrolTarget);
         }
     }
     void Chase()
     {
-        Vector3 toPlayer = (player.position - transform.position).normalized;
-        Vector3 boidsForce = GetBoidsForceOptimized();
-        Vector3 moveDir = (toPlayer + boidsForce).normalized;
+        if (player == null) return;
+
+        Vector3 toPlayer = (player.position - transform.position);
+        float distance = toPlayer.magnitude;
+        Vector3 toPlayerDir = toPlayer.normalized;
+
+        //プレイヤーとの距離に応じて包囲 or 接近
+        Vector3 encircleDir = Quaternion.Euler(0, 90f, 0) * toPlayerDir; //プレイヤーの周囲を回る方向
+        Vector3 desiredPos;
+
+        if (distance > 4f)
+        {
+            //離れすぎ → 接近
+            desiredPos = toPlayerDir;
+        }
+        else if (distance < 2.5f)
+        {
+            //近すぎ → 少し離れる
+            desiredPos = -toPlayerDir * 0.5f + encircleDir * 0.5f;
+        }
+        else
+        {
+            //適距離 → 包囲行動
+            desiredPos = encircleDir * 0.8f + toPlayerDir * 0.2f;
+        }
+
+        //Boids補正（群れ制御）
+        Vector3 boidsForce = GetBoidsForceOptimized() * 0.3f;
+
+        //最終移動方向
+        Vector3 moveDir = (desiredPos.normalized + boidsForce).normalized;
 
         ApplyMovement(moveDir);
 
-        if (Vector3.Distance(transform.position, player.position) < 2f)
+        //プレイヤーが近い → 攻撃へ
+        if (distance < 1.8f)
+        {
             state = EnemyState.Attack;
+            Debug.Log("攻撃状態へ");
+        }
 
-        if (!CanSeePlayer())
-            state = EnemyState.Idle;
+        ////見失ったらIdle
+        //if (!CanSeePlayer())
+        //{
+        //    state = EnemyState.Idle;
+        //    Debug.Log("見失ったので待機状態へ");
+        //}
     }
     void Attack()
     {
-        transform.LookAt(player);
+        //transform.LookAt(player);
 
-        //�U�������͂�����
-        if (Vector3.Distance(transform.position, player.position) > 3f)
-            SetChase();
+        ////攻撃処理はここに
+        //if (Vector3.Distance(transform.position, player.position) > 3f)
+        //    SetChase();
     }
+    //ランダムなパトロール地点を設定
     void SetRandomPatrolPoint()
     {
-        Vector3 randomDir = Random.insideUnitSphere * patrolRadius + transform.position;
-        if (NavMesh.SamplePosition(randomDir, out NavMeshHit hit, patrolRadius, NavMesh.AllAreas))
+        //中心からランダムに取得
+        Vector3 randomDirection = Random.insideUnitSphere * patrolRadius + patrolCenter;
+        randomDirection.y = transform.position.y; // 高さを固定（地面対応）
+
+        if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, patrolRadius, NavMesh.AllAreas))
         {
             patrolTarget = hit.position;
-            agent.SetDestination(patrolTarget);
+            agent.SetDestination(patrolTarget); //ここで一度だけセット
+            Debug.Log($"新しいパトロール地点: {patrolTarget}");
         }
-    }
-    //Player ���ォ��Z�b�g�ł���
-    public void SetPlayer(Transform p)
-    {
-        player = p;
+        else
+        {
+            Debug.LogWarning("有効なパトロール地点が見つかりません");
+        }
     }
     bool CanSeePlayer()
     {
+        if (player == null) return false;
+
         Vector3 dir = player.position - transform.position;
-        return dir.magnitude < 10f && Vector3.Angle(transform.forward, dir) < 60f;
+        float distance = dir.magnitude;
+
+        //距離と視野角の条件を満たした場合のみ
+        if (distance < 10f && Vector3.Angle(transform.forward, dir) < 60f)
+        {
+            //レイキャストで遮蔽物チェック（プレイヤーの見える・見えないをより正確に）
+            if (Physics.Raycast(transform.position + Vector3.up, dir.normalized, out RaycastHit hit, distance))
+            {
+                if (hit.transform == player)
+                {
+                    Debug.Log($"{name} がプレイヤーを発見！");
+                    return true;
+                }
+            }
+        }
+        return false;
     }
-    //Boids�v�Z�i�t���[���X�L�b�v�t���j
+    //Boids計算（フレームスキップ付き）
     Vector3 GetBoidsForceOptimized()
     {
         frameCounter++;
@@ -138,14 +286,15 @@ public class EnemyAI : MonoBehaviour
         }
         return lastBoidsForce;
     }
+    //群れの近くの敵から
     Vector3 CalculateBoidsForce()
     {
         var neighbors = EnemyManager.Instance.GetNearbyEnemies(this, neighborRadius);
         if (neighbors.Count == 0) return Vector3.zero;
 
-        Vector3 separation = Vector3.zero;
-        Vector3 alignment = Vector3.zero;
-        Vector3 cohesion = Vector3.zero;
+        Vector3 separation = Vector3.zero;//（距離保持）
+        Vector3 alignment = Vector3.zero;//（速度合わせ）
+        Vector3 cohesion = Vector3.zero;//（群れ中心へ）
 
         foreach (var other in neighbors)
         {
@@ -168,20 +317,34 @@ public class EnemyAI : MonoBehaviour
     }
     void ApplyMovement(Vector3 moveDir)
     {
-        Vector3 targetVelocity = moveDir * agent.speed;
-        agent.velocity = Vector3.Lerp(agent.velocity, targetVelocity, Time.deltaTime * 5f);
-        agent.Move(agent.velocity * Time.deltaTime);
+        //NavMeshAgentの移動先を直接制御
+        Vector3 nextPos = transform.position + moveDir * agent.speed * Time.deltaTime;
+
+        if (NavMesh.SamplePosition(nextPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
+        }
     }
     void SetChase()
     {
         state = EnemyState.Chase;
+        Debug.Log("追跡状態へ");
         EnemyManager.Instance.AlertNearbyEnemies(this, alertRadius);
     }
-    //�x�񋤗L�ŌĂ΂��
+    //警報共有で呼ばれる
     public void OnAlerted()
     {
         if (state == EnemyState.Idle || state == EnemyState.Patrol)
+        { 
+            //ほかの敵も追跡状態へ
             state = EnemyState.Chase;
+           Debug.Log("警報を受けて追跡状態へ");
+        }
+    }
+    //Player を後からセットできる
+    public void SetPlayer(Transform p)
+    {
+        player = p;
     }
     void OnDestroy()
     {

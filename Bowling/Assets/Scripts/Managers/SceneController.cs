@@ -197,7 +197,9 @@ public class SceneController : MonoBehaviour
 
         CameraManager.Instance.RegisterCameras();
         CameraManager.Instance.SwitchCamera(CameraMode.Play);
+
         Debug.Log("ゲーム開始！");
+
     }
 
     private async Task OnEnterResult()

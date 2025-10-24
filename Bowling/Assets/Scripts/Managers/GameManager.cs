@@ -22,5 +22,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("[GameManager] プレイフェーズ開始！");
         // ボールをセットする処理など
         // 例: BowlingThrow.Instance.ResetBall();
+       
     }
 }

@@ -155,5 +155,5 @@ MonoBehaviour:
   duration: 2
   sweepAngle: 90
   sweepSpeed: 90
-  beamLength: 10
-  beamWidth: 0.3
+  beamLength: 50
+  beamWidth: 1
