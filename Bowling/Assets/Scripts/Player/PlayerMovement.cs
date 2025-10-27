@@ -13,10 +13,11 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private Vector3 currentVelocity;
     private bool isGrounded;
-
+    private BeamCamera beamCamera;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        beamCamera = GetComponent<BeamCamera>();
     }
 
     void FixedUpdate()
@@ -60,9 +61,11 @@ public class PlayerMovement : MonoBehaviour
             currentVelocity = Vector3.MoveTowards(currentVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
 
             // ÉLÉÉÉââÒì](ÉrÅ[ÉÄë≈Ç¬Ç∆Ç´ÇÕïœÇ¶Ç»Ç¢ÇÊÇ§Ç…Ç∑ÇÈ)
-
-            Quaternion targetRot = Quaternion.LookRotation(moveDir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime);
+            if (!beamCamera.isSootBeam)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(moveDir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime);
+            }
         }
         else
         {

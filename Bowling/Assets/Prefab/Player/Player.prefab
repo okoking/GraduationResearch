@@ -161,6 +161,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100326, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
       insertIndex: -1
       addedObject: {fileID: -6718976907056631682}
+    - targetCorrespondingSourceObject: {fileID: 100326, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -586780153246033851}
   m_SourcePrefab: {fileID: 100100000, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
 --- !u!1 &6221603189137431482 stripped
 GameObject:
@@ -224,5 +227,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36ad878381ddcd04e955c763779681e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 0}
+  reticle: {fileID: 0}
   normalCam: {fileID: 0}
-  adsCam: {fileID: 0}
+  beamCam: {fileID: 0}
+  isSootBeam: 0
+--- !u!114 &-586780153246033851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6221603189137431482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edbb3752f8992047a691caf53694f2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beamPrefab: {fileID: 5927110842540946544, guid: 77c2ddc63cf6f144c9b9ea13a3a8e34d, type: 3}
+  playerCamera: {fileID: 0}

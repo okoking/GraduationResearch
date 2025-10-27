@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &26847309
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -745,6 +745,14 @@ PrefabInstance:
       propertyPath: cameraTransform
       value: 
       objectReference: {fileID: 167591190}
+    - target: {fileID: -586780153246033851, guid: aa29170b5d2b04a428ae888aa3edcbe0, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -586780153246033851, guid: aa29170b5d2b04a428ae888aa3edcbe0, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 167591189}
     - target: {fileID: 355564845894018, guid: aa29170b5d2b04a428ae888aa3edcbe0, type: 3}
       propertyPath: jumpForce
       value: 5
