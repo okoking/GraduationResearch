@@ -168,7 +168,6 @@ public class TackleBoss : MonoBehaviour
     }
 }
 
-
 //プレイヤーに近づく
 //近づいたらタックル
 //プレイヤーに当たればダメージ
