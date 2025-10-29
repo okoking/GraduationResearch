@@ -24,7 +24,8 @@ public class BossHand : MonoBehaviour
     private float beamTimer;
     private bool isFiringBeam = false;
 
-    public bool booa;
+    private float floorAttackTimer;
+    private bool isFloorAtack = false;
 
     void Start()
     {
@@ -54,6 +55,14 @@ public class BossHand : MonoBehaviour
         {
             beamTimer = 0f;
             StartCoroutine(ShootSweepBeam());
+        }
+
+        floorAttackTimer += Time.deltaTime;
+        if (floorAttackTimer >= 5f && !isFloorAtack)
+        {
+            Debug.Log("a");
+            RoundFloorAttack();
+            floorAttackTimer = 0f;
         }
     }
 
@@ -102,7 +111,6 @@ public class BossHand : MonoBehaviour
             }
         }
 
-
         // 見た目設定
         line.startWidth = 0.15f;
         line.endWidth = 0.15f;
@@ -121,11 +129,10 @@ public class BossHand : MonoBehaviour
         isFiringBeam = false;
     }
 
-    private IEnumerator RoundFloorAttack()
+    private void RoundFloorAttack()
     {
-        GameObject beam = Instantiate(beamSweepPrefab, transform.position, transform.rotation);
-        float beamDuration = beam.GetComponent<BeamSweepController>().duration;
-
-        yield return new WaitForSeconds(beamDuration);
+        isFloorAtack = true;
+        Instantiate(floorAttackPrefab, new Vector3(0f, 0f, 0f), new Quaternion(0f, 0f, 0f, 0f));
+        isFloorAtack = false;
     }
 }
