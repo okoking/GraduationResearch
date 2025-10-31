@@ -45,17 +45,6 @@ public class EnemyAI : MonoBehaviour
     //移動線
     private LineRenderer line;
 
-    //包囲ポジションの種類
-    enum FlankRole { Front, Left, Right, Back }
-    FlankRole flankRole;
-    bool hasAssignedFlank = false;
-
-    //各距離パラメータ
-    float engageDistance = 15f;
-    float optimalDistance = 7f;
-    float loseSightDistance = 25f;
-    float attackDistance = 2.5f;
-
     //Alert
     [Header("Alert")]
     [SerializeField] private float alertRadius = 5f;
@@ -68,14 +57,14 @@ public class EnemyAI : MonoBehaviour
         state = EnemyState.Idle;
         Debug.Log("最初は待機状態へ");
 
-        ////LineRenderer 設定
-        //line = gameObject.AddComponent<LineRenderer>();
-        //line.startWidth = 0.05f;
-        //line.endWidth = 0.05f;
-        //line.material = new Material(Shader.Find("Sprites/Default"));
-        //line.positionCount = 2;
-        //line.startColor = Color.red;
-        //line.endColor = Color.red;
+        //LineRenderer 設定
+        line = gameObject.AddComponent<LineRenderer>();
+        line.startWidth = 0.05f;
+        line.endWidth = 0.05f;
+        line.material = new Material(Shader.Find("Sprites/Default"));
+        line.positionCount = 2;
+        line.startColor = Color.red;
+        line.endColor = Color.red;
 
         patrolWaitTime = Random.Range(2, 5);
         agent = GetComponent<NavMeshAgent>();
@@ -100,7 +89,7 @@ public class EnemyAI : MonoBehaviour
             case EnemyState.Idle: Idle(); break;
             case EnemyState.Patrol: Patrol(); break;
             case EnemyState.Chase: Chase(); break;
-                //case EnemyState.Attack: Attack(); break;
+            case EnemyState.Attack: Attack(); break;
         }
     }
     //待機状態
@@ -257,89 +246,53 @@ public class EnemyAI : MonoBehaviour
         float distance = toPlayer.magnitude;
         Vector3 toPlayerDir = toPlayer.normalized;
 
-        //敵ごとの包囲方向決定（初回のみ）
-        if (!hasAssignedFlank)
-        {
-            AssignFlankRole();
-            hasAssignedFlank = true;
-        }
+        //プレイヤーの右側方向（包囲用）
+        Vector3 encircleDir = Quaternion.Euler(0, 90f, 0) * toPlayerDir;
+        Vector3 desiredPos;
 
-        //包囲方向に応じたターゲット方向を決定
-        Vector3 flankDir = GetFlankDirection(toPlayerDir);
-        Vector3 desiredDir;
-
-        //戦略的移動パターン
-        if (distance > engageDistance)
+        if (distance > 10f)
         {
-            //遠距離 → 接近しながら配置へ
-            desiredDir = (toPlayerDir + flankDir * 0.3f).normalized;
+            //離れすぎ：接近行動
+            desiredPos = toPlayerDir;
         }
-        else if (distance > optimalDistance)
+        else if (distance < 5f)
         {
-            //中距離 → 包囲重視
-            desiredDir = (flankDir * 0.7f + toPlayerDir * 0.3f).normalized;
+            //近すぎ：後退しながら包囲
+            desiredPos = -toPlayerDir * 0.5f + encircleDir * 0.5f;
         }
         else
         {
-            //近距離 → 後退しつつポジション維持
-            desiredDir = (-toPlayerDir * 0.5f + flankDir * 0.5f).normalized;
+            //適距離：包囲行動
+            desiredPos = encircleDir * 0.7f + toPlayerDir * 0.3f;
         }
 
-        //Boids補正（少し弱めに）
-        Vector3 boidsForce = GetBoidsForceOptimized() * 0.5f;
-        Vector3 moveDir = (desiredDir + boidsForce).normalized;
+        //Boids補正
+        Vector3 boidsForce = GetBoidsForceOptimized() * 0.8f;
+        Vector3 moveDir = (desiredPos.normalized + boidsForce).normalized;
 
-        //NavMesh移動処理
-        Vector3 targetPos = transform.position + moveDir * 2.5f;
+        //NavMesh上の有効な地点を探して移動
+        Vector3 targetPos = transform.position + moveDir * 2.0f; //3m 先を目標にする
         if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
         {
-            agent.SetDestination(Vector3.Lerp(agent.destination, hit.position, 0.2f));
+            agent.SetDestination(hit.position);
         }
 
-        //状態遷移チェック
-        if (distance > loseSightDistance)
+        //プレイヤーを見失った or 離れすぎた場合は巡回状態に戻す
+        if (distance > 20f/* || !CanSeePlayer()*/)
         {
             state = EnemyState.Patrol;
             SetRandomPatrolPoint();
-            hasAssignedFlank = false;
+            Debug.Log($"{name}：プレイヤーを見失い、巡回に戻る");
             return;
         }
 
-        ////攻撃距離
-        //if (distance < attackDistance)
-        //{
-        //    state = EnemyState.Attack;
-        //    return;
-        //}
-
-    }
-    //包囲方向（左・右・前・後）をランダムに割り当て
-    void AssignFlankRole()
-    {
-        int rand = Random.Range(0, 4);
-        switch (rand)
+        // 攻撃・見失い処理（任意で再有効化）
+        if (distance < 1.8f)
         {
-            case 0: flankRole = FlankRole.Left; break;
-            case 1: flankRole = FlankRole.Right; break;
-            case 2: flankRole = FlankRole.Front; break;
-            case 3: flankRole = FlankRole.Back; break;
+            state = EnemyState.Attack;
+            Debug.Log("攻撃状態へ");
         }
-    }
 
-    //包囲方向のベクトルを返す
-    Vector3 GetFlankDirection(Vector3 toPlayerDir)
-    {
-        switch (flankRole)
-        {
-            case FlankRole.Left:
-                return Quaternion.Euler(0, -90f, 0) * toPlayerDir;
-            case FlankRole.Right:
-                return Quaternion.Euler(0, 90f, 0) * toPlayerDir;
-            case FlankRole.Back:
-                return -toPlayerDir;
-            default:
-                return toPlayerDir;
-        }
     }
     void Attack()
     {
