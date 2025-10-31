@@ -45,6 +45,17 @@ public class EnemyAI : MonoBehaviour
     //移動線
     private LineRenderer line;
 
+    //包囲ポジションの種類
+    enum FlankRole { Front, Left, Right, Back }
+    FlankRole flankRole;
+    bool hasAssignedFlank = false;
+
+    //各距離パラメータ
+    float engageDistance = 15f;
+    float optimalDistance = 7f;
+    float loseSightDistance = 25f;
+    float attackDistance = 2.5f;
+
     //Alert
     [Header("Alert")]
     [SerializeField] private float alertRadius = 5f;
@@ -57,14 +68,14 @@ public class EnemyAI : MonoBehaviour
         state = EnemyState.Idle;
         Debug.Log("最初は待機状態へ");
 
-        //LineRenderer 設定
-        line = gameObject.AddComponent<LineRenderer>();
-        line.startWidth = 0.05f;
-        line.endWidth = 0.05f;
-        line.material = new Material(Shader.Find("Sprites/Default"));
-        line.positionCount = 2;
-        line.startColor = Color.red;
-        line.endColor = Color.red;
+        ////LineRenderer 設定
+        //line = gameObject.AddComponent<LineRenderer>();
+        //line.startWidth = 0.05f;
+        //line.endWidth = 0.05f;
+        //line.material = new Material(Shader.Find("Sprites/Default"));
+        //line.positionCount = 2;
+        //line.startColor = Color.red;
+        //line.endColor = Color.red;
 
         patrolWaitTime = Random.Range(2, 5);
         agent = GetComponent<NavMeshAgent>();
@@ -72,12 +83,12 @@ public class EnemyAI : MonoBehaviour
     }
     void Update()
     {
-        //巡回目的地への線をゲーム内で表示
-        if (patrolTarget != Vector3.zero)
-        {
-            line.SetPosition(0, transform.position + Vector3.up * 0.1f);
-            line.SetPosition(1, patrolTarget + Vector3.up * 0.1f);
-        }
+        ////巡回目的地への線をゲーム内で表示
+        //if (patrolTarget != Vector3.zero)
+        //{
+        //    line.SetPosition(0, transform.position + Vector3.up * 0.1f);
+        //    line.SetPosition(1, patrolTarget + Vector3.up * 0.1f);
+        //}
     }
 
     //状態管理用のUpdate（EnemyManagerから呼ばれる）
@@ -246,49 +257,88 @@ public class EnemyAI : MonoBehaviour
         float distance = toPlayer.magnitude;
         Vector3 toPlayerDir = toPlayer.normalized;
 
-        //プレイヤーの右側方向（包囲用）
-        Vector3 encircleDir = Quaternion.Euler(0, 90f, 0) * toPlayerDir;
-        Vector3 desiredPos;
-
-        if (distance > 10f)
+        //敵ごとの包囲方向決定（初回のみ）
+        if (!hasAssignedFlank)
         {
-            //離れすぎ：接近行動
-            desiredPos = toPlayerDir;
+            AssignFlankRole();
+            hasAssignedFlank = true;
         }
-        else if (distance < 5f)
+
+        //包囲方向に応じたターゲット方向を決定
+        Vector3 flankDir = GetFlankDirection(toPlayerDir);
+        Vector3 desiredDir;
+
+        //戦略的移動パターン
+        if (distance > engageDistance)
         {
-            //近すぎ：後退しながら包囲
-            desiredPos = -toPlayerDir * 0.5f + encircleDir * 0.5f;
+            //遠距離 → 接近しながら配置へ
+            desiredDir = (toPlayerDir + flankDir * 0.3f).normalized;
+        }
+        else if (distance > optimalDistance)
+        {
+            //中距離 → 包囲重視
+            desiredDir = (flankDir * 0.7f + toPlayerDir * 0.3f).normalized;
         }
         else
         {
-            //適距離：包囲行動
-            desiredPos = encircleDir * 0.7f + toPlayerDir * 0.3f;
+            //近距離 → 後退しつつポジション維持
+            desiredDir = (-toPlayerDir * 0.5f + flankDir * 0.5f).normalized;
         }
 
-        //Boids補正
-        Vector3 boidsForce = GetBoidsForceOptimized() * 0.8f;
-        Vector3 moveDir = (desiredPos.normalized + boidsForce).normalized;
+        //Boids補正（少し弱めに）
+        Vector3 boidsForce = GetBoidsForceOptimized() * 0.5f;
+        Vector3 moveDir = (desiredDir + boidsForce).normalized;
 
-        //NavMesh上の有効な地点を探して移動
-        Vector3 targetPos = transform.position + moveDir * 2.0f; // 3m 先を目標にする
+        //NavMesh移動処理
+        Vector3 targetPos = transform.position + moveDir * 2.5f;
         if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
         {
-            agent.SetDestination(hit.position);
+            agent.SetDestination(Vector3.Lerp(agent.destination, hit.position, 0.2f));
         }
 
-        //// 攻撃・見失い処理（任意で再有効化）
-        //if (distance < 1.8f)
+        //状態遷移チェック
+        if (distance > loseSightDistance)
+        {
+            state = EnemyState.Patrol;
+            SetRandomPatrolPoint();
+            hasAssignedFlank = false;
+            return;
+        }
+
+        ////攻撃距離
+        //if (distance < attackDistance)
         //{
         //    state = EnemyState.Attack;
-        //    Debug.Log("攻撃状態へ");
+        //    return;
         //}
 
-        //一定距離離れたら追跡終了
-        if (distance < 20.0f)
+    }
+    //包囲方向（左・右・前・後）をランダムに割り当て
+    void AssignFlankRole()
+    {
+        int rand = Random.Range(0, 4);
+        switch (rand)
         {
-            state = EnemyState.Idle;
-            Debug.Log("見失ったので待機状態へ");
+            case 0: flankRole = FlankRole.Left; break;
+            case 1: flankRole = FlankRole.Right; break;
+            case 2: flankRole = FlankRole.Front; break;
+            case 3: flankRole = FlankRole.Back; break;
+        }
+    }
+
+    //包囲方向のベクトルを返す
+    Vector3 GetFlankDirection(Vector3 toPlayerDir)
+    {
+        switch (flankRole)
+        {
+            case FlankRole.Left:
+                return Quaternion.Euler(0, -90f, 0) * toPlayerDir;
+            case FlankRole.Right:
+                return Quaternion.Euler(0, 90f, 0) * toPlayerDir;
+            case FlankRole.Back:
+                return -toPlayerDir;
+            default:
+                return toPlayerDir;
         }
     }
     void Attack()
@@ -302,30 +352,15 @@ public class EnemyAI : MonoBehaviour
     //ランダムなパトロール地点を設定
     void SetRandomPatrolPoint()
     {
-        ////中心からランダムに取得
-        //Vector3 randomDirection = Random.insideUnitSphere * patrolRadius + patrolCenter;
-        //randomDirection.y = transform.position.y; // 高さを固定（地面対応）
-
-        //if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, patrolRadius, NavMesh.AllAreas))
-        //{
-        //    patrolTarget = hit.position;
-        //    agent.SetDestination(patrolTarget); //ここで一度だけセット
-        //    Debug.Log($"新しいパトロール地点: {patrolTarget}");
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("有効なパトロール地点が見つかりません");
-        //}
-
-        for (int i = 0; i < 10; i++) // 最大10回試行して安全な地点を探す
+        for (int i = 0; i < 10; i++) //最大10回試行して安全な地点を探す
         {
-            // 中心からランダムに取得
+            //中心からランダムに取得
             Vector3 randomDirection = Random.insideUnitSphere * patrolRadius + patrolCenter;
             randomDirection.y = transform.position.y;
 
             if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, patrolRadius, NavMesh.AllAreas))
             {
-                // 範囲チェック：巡回エリア外は無効
+                //範囲チェック：巡回エリア外は無効
                 if (Vector3.Distance(hit.position, patrolCenter) <= patrolAreaRadius)
                 {
                     patrolTarget = hit.position;
@@ -381,9 +416,9 @@ public class EnemyAI : MonoBehaviour
         var neighbors = EnemyManager.Instance.GetNearbyEnemies(this, neighborRadius);
         if (neighbors.Count == 0) return Vector3.zero;
 
-        Vector3 separation = Vector3.zero;//（距離保持）
-        Vector3 alignment = Vector3.zero;//（速度合わせ）
-        Vector3 cohesion = Vector3.zero;//（群れ中心へ）
+        Vector3 separation = Vector3.zero;  //（距離保持）
+        Vector3 alignment = Vector3.zero;   //（速度合わせ）
+        Vector3 cohesion = Vector3.zero;    //（群れ中心へ）
 
         foreach (var other in neighbors)
         {
@@ -441,7 +476,7 @@ public class EnemyAI : MonoBehaviour
             EnemyManager.Instance.Unregister(this);
     }
 
-    //===== Boids Debug 用プロパティ =====
+    //Boids Debug 用プロパティ
     public float SeparationWeight { get => separationWeight; set => separationWeight = value; }
     public float AlignmentWeight { get => alignmentWeight; set => alignmentWeight = value; }
     public float CohesionWeight { get => cohesionWeight; set => cohesionWeight = value; }
