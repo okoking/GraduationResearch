@@ -72,12 +72,12 @@ public class EnemyAI : MonoBehaviour
     }
     void Update()
     {
-        //巡回目的地への線をゲーム内で表示
-        if (patrolTarget != Vector3.zero)
-        {
-            line.SetPosition(0, transform.position + Vector3.up * 0.1f);
-            line.SetPosition(1, patrolTarget + Vector3.up * 0.1f);
-        }
+        ////巡回目的地への線をゲーム内で表示
+        //if (patrolTarget != Vector3.zero)
+        //{
+        //    line.SetPosition(0, transform.position + Vector3.up * 0.1f);
+        //    line.SetPosition(1, patrolTarget + Vector3.up * 0.1f);
+        //}
     }
 
     //状態管理用のUpdate（EnemyManagerから呼ばれる）
@@ -89,7 +89,7 @@ public class EnemyAI : MonoBehaviour
             case EnemyState.Idle: Idle(); break;
             case EnemyState.Patrol: Patrol(); break;
             case EnemyState.Chase: Chase(); break;
-                //case EnemyState.Attack: Attack(); break;
+            case EnemyState.Attack: Attack(); break;
         }
     }
     //待機状態
@@ -271,25 +271,28 @@ public class EnemyAI : MonoBehaviour
         Vector3 moveDir = (desiredPos.normalized + boidsForce).normalized;
 
         //NavMesh上の有効な地点を探して移動
-        Vector3 targetPos = transform.position + moveDir * 2.0f; // 3m 先を目標にする
+        Vector3 targetPos = transform.position + moveDir * 2.0f; //3m 先を目標にする
         if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
         {
             agent.SetDestination(hit.position);
         }
 
-        //// 攻撃・見失い処理（任意で再有効化）
-        //if (distance < 1.8f)
-        //{
-        //    state = EnemyState.Attack;
-        //    Debug.Log("攻撃状態へ");
-        //}
-
-        //一定距離離れたら追跡終了
-        if (distance < 20.0f)
+        //プレイヤーを見失った or 離れすぎた場合は巡回状態に戻す
+        if (distance > 20f/* || !CanSeePlayer()*/)
         {
-            state = EnemyState.Idle;
-            Debug.Log("見失ったので待機状態へ");
+            state = EnemyState.Patrol;
+            SetRandomPatrolPoint();
+            Debug.Log($"{name}：プレイヤーを見失い、巡回に戻る");
+            return;
         }
+
+        // 攻撃・見失い処理（任意で再有効化）
+        if (distance < 1.8f)
+        {
+            state = EnemyState.Attack;
+            Debug.Log("攻撃状態へ");
+        }
+
     }
     void Attack()
     {
@@ -302,30 +305,15 @@ public class EnemyAI : MonoBehaviour
     //ランダムなパトロール地点を設定
     void SetRandomPatrolPoint()
     {
-        ////中心からランダムに取得
-        //Vector3 randomDirection = Random.insideUnitSphere * patrolRadius + patrolCenter;
-        //randomDirection.y = transform.position.y; // 高さを固定（地面対応）
-
-        //if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, patrolRadius, NavMesh.AllAreas))
-        //{
-        //    patrolTarget = hit.position;
-        //    agent.SetDestination(patrolTarget); //ここで一度だけセット
-        //    Debug.Log($"新しいパトロール地点: {patrolTarget}");
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("有効なパトロール地点が見つかりません");
-        //}
-
-        for (int i = 0; i < 10; i++) // 最大10回試行して安全な地点を探す
+        for (int i = 0; i < 10; i++) //最大10回試行して安全な地点を探す
         {
-            // 中心からランダムに取得
+            //中心からランダムに取得
             Vector3 randomDirection = Random.insideUnitSphere * patrolRadius + patrolCenter;
             randomDirection.y = transform.position.y;
 
             if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, patrolRadius, NavMesh.AllAreas))
             {
-                // 範囲チェック：巡回エリア外は無効
+                //範囲チェック：巡回エリア外は無効
                 if (Vector3.Distance(hit.position, patrolCenter) <= patrolAreaRadius)
                 {
                     patrolTarget = hit.position;
@@ -381,9 +369,9 @@ public class EnemyAI : MonoBehaviour
         var neighbors = EnemyManager.Instance.GetNearbyEnemies(this, neighborRadius);
         if (neighbors.Count == 0) return Vector3.zero;
 
-        Vector3 separation = Vector3.zero;//（距離保持）
-        Vector3 alignment = Vector3.zero;//（速度合わせ）
-        Vector3 cohesion = Vector3.zero;//（群れ中心へ）
+        Vector3 separation = Vector3.zero;  //（距離保持）
+        Vector3 alignment = Vector3.zero;   //（速度合わせ）
+        Vector3 cohesion = Vector3.zero;    //（群れ中心へ）
 
         foreach (var other in neighbors)
         {
@@ -441,7 +429,7 @@ public class EnemyAI : MonoBehaviour
             EnemyManager.Instance.Unregister(this);
     }
 
-    //===== Boids Debug 用プロパティ =====
+    //Boids Debug 用プロパティ
     public float SeparationWeight { get => separationWeight; set => separationWeight = value; }
     public float AlignmentWeight { get => alignmentWeight; set => alignmentWeight = value; }
     public float CohesionWeight { get => cohesionWeight; set => cohesionWeight = value; }

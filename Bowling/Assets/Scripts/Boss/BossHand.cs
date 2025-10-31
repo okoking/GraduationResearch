@@ -6,8 +6,9 @@ public class BossHand : MonoBehaviour
     Transform player;
     public Transform bossHandSpawn;
 
-    public GameObject beamSweepPrefab;     // 実際のビーム
-    public LineRenderer aimLinePrefab;     // 地面に出す予兆線
+    public GameObject beamSweepPrefab;     //実際のビーム
+    public GameObject floorAttackPrefab;   //床攻撃
+    public LineRenderer aimLinePrefab;     //地面に出す予兆線
 
     public float orbitRadius = 5f;
     public float orbitSpeed = 30f;
@@ -15,13 +16,16 @@ public class BossHand : MonoBehaviour
     public float floatSpeed = 2f;
 
     public float beamInterval = 5f;
-    public float beamWarningTime = 1.5f;   // 予兆線を表示しておく時間
-    public float sweepAngle = 90f;         // 薙ぎ払い角度
+    public float beamWarningTime = 1.5f;   //予兆線を表示しておく時間
+    public float sweepAngle = 90f;         //薙ぎ払い角度
     public float sweepSpeed = 60f;
 
     private float angle;
     private float beamTimer;
     private bool isFiringBeam = false;
+
+    private float floorAttackTimer;
+    private bool isFloorAtack = false;
 
     void Start()
     {
@@ -51,6 +55,14 @@ public class BossHand : MonoBehaviour
         {
             beamTimer = 0f;
             StartCoroutine(ShootSweepBeam());
+        }
+
+        floorAttackTimer += Time.deltaTime;
+        if (floorAttackTimer >= 5f && !isFloorAtack)
+        {
+            Debug.Log("a");
+            RoundFloorAttack();
+            floorAttackTimer = 0f;
         }
     }
 
@@ -99,7 +111,6 @@ public class BossHand : MonoBehaviour
             }
         }
 
-
         // 見た目設定
         line.startWidth = 0.15f;
         line.endWidth = 0.15f;
@@ -116,5 +127,12 @@ public class BossHand : MonoBehaviour
 
         Destroy(line.gameObject);
         isFiringBeam = false;
+    }
+
+    private void RoundFloorAttack()
+    {
+        isFloorAtack = true;
+        Instantiate(floorAttackPrefab, new Vector3(0f, 0f, 0f), new Quaternion(0f, 0f, 0f, 0f));
+        isFloorAtack = false;
     }
 }

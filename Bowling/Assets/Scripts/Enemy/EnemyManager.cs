@@ -15,6 +15,10 @@ public class EnemyManager : MonoBehaviour
         if (playerTransform == null)
         {
             Debug.Log("プレイヤーがありません");
+
+           // Debug.Log("プレイヤーを取得します");
+           // Instance.SetPlayer(
+           //GameObject.Find("Player").transform);
         }
         //プレイヤーが既に存在していれば EnemyAI にセット
         if (playerTransform != null)
