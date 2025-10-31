@@ -823,7 +823,55 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6221603189137431482, guid: aa29170b5d2b04a428ae888aa3edcbe0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1691375088}
+    - targetCorrespondingSourceObject: {fileID: 6221603189137431482, guid: aa29170b5d2b04a428ae888aa3edcbe0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1691375089}
   m_SourcePrefab: {fileID: 100100000, guid: aa29170b5d2b04a428ae888aa3edcbe0, type: 3}
+--- !u!1 &1402032432
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1402032434}
+  - component: {fileID: 1402032433}
+  m_Layer: 0
+  m_Name: LockOn3DMaker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1402032433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1402032432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da639f122fe4334494199f1b42d1b46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  markerPrefab: {fileID: 1121192042590650, guid: 754e9207703250c42b142e805fb17c6f, type: 3}
+--- !u!4 &1402032434
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1402032432}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.44319, y: -2.9275596, z: 10.414736}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1513916720
 GameObject:
   m_ObjectHideFlags: 0
@@ -1076,10 +1124,26 @@ MonoBehaviour:
   lineRenderer: {fileID: 1948414629}
   beamLength: 50
   beamWidth: 1.3
-  beamDuration: 3
+  MegabeamDuration: 3
+  MinibeamDuration: 0.1
   hitMask:
     serializedVersion: 2
     m_Bits: 0
+  mainCam: {fileID: 167591189}
+--- !u!114 &1691375089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1691375078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 661d0d9bb37e15840a90768e38dc2e53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lockOnTarget: {fileID: 0}
+  lockOnRange: 20
 --- !u!1 &1925360810
 GameObject:
   m_ObjectHideFlags: 0
@@ -1455,3 +1519,4 @@ SceneRoots:
   - {fileID: 1962857279}
   - {fileID: 1513916723}
   - {fileID: 1948414630}
+  - {fileID: 1402032434}

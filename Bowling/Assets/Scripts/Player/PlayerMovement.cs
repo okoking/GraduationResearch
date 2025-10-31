@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         Move();
+
     }
 
     void Update()
@@ -31,6 +32,11 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.JoystickButton3) && isGrounded)
         {
             Jump();
+        }
+
+        if (transform.position.y < -5f)
+        {
+            transform.position = new(0, 0, 0);
         }
     }
 

@@ -6,11 +6,13 @@ public class BeamShooter : MonoBehaviour
     //[SerializeField] private Transform beamOrigin;    // 手の位置など発射位置
     [SerializeField] private Camera playerCamera;     // メインカメラ
     private BeamCamera beamCamera;
+    private LockOnSystem lockOn;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         beamCamera = GetComponent<BeamCamera>();
+        lockOn = GetComponent<LockOnSystem>();
     }
 
     // Update is called once per frame
@@ -18,7 +20,14 @@ public class BeamShooter : MonoBehaviour
     {
         if (Input.GetKeyDown("joystick button 5"))
         {
-            ShootBeam();
+            if (beamCamera)
+            {
+                ShootBeam();
+            }
+            else
+            {
+                ShootMiniBeam();
+            }
         }
     }
 
@@ -37,5 +46,21 @@ public class BeamShooter : MonoBehaviour
 
         // 発射方向を設定
         beam.transform.rotation = Quaternion.LookRotation(ray.direction);
+    }
+
+    void ShootMiniBeam()
+    {
+        Vector3 targetDir;
+
+        if (lockOn.lockOnTarget != null)
+        {
+            targetDir = (lockOn.lockOnTarget.position - transform.position).normalized;
+        }
+        else
+        {
+            targetDir = transform.forward; // ロックオンしていなければ正面
+        }
+
+        var beam = Instantiate(beamPrefab, transform.position, Quaternion.LookRotation(targetDir));
     }
 }
