@@ -16,3 +16,4 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 4638c79e54b5f3c4cb703dac4096635b, type: 3}
   weight: 7
   speed: 7
+  ThrowNum: 4

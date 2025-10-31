@@ -15,13 +15,13 @@ public class EnemyAI : MonoBehaviour
     //巡回状態関連
     private Vector3 patrolTarget;
     //巡回地点をランダムに選ぶ範囲の半径
-    [SerializeField] private float patrolRadius = 50f;
+    [SerializeField] private float patrolRadius = 10f;
     //待機状態で止まる時間
     [SerializeField] private float patrolWaitTime = 3f;
     //待機中の経過時間フレーム
     private float patrolTimer = 0f;
     [SerializeField] private Vector3 patrolCenter; //巡回の中心点
-    [SerializeField] private float patrolAreaRadius = 200f; //この範囲から出ない
+    [SerializeField] private float patrolAreaRadius = 20f; //この範囲から出ない
 
     //Boids群れ制御関連
     [Header("Boids")]
@@ -45,6 +45,12 @@ public class EnemyAI : MonoBehaviour
     //移動線
     private LineRenderer line;
 
+    private bool hasEncircleDir = false;
+    private float encircleSign = 1f;
+    public enum EnemyRole { Front, Side, Back }
+    [SerializeField] private EnemyRole role = EnemyRole.Front;
+
+    
     //Alert
     [Header("Alert")]
     [SerializeField] private float alertRadius = 5f;
@@ -54,8 +60,25 @@ public class EnemyAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         player = EnemyManager.Instance.GetPlayerTransform();
         EnemyManager.Instance.Register(this);
-        state = EnemyState.Idle;
-        Debug.Log("最初は待機状態へ");
+
+        //追跡方向の左右をランダム化
+        encircleSign = Random.value > 0.5f ? 1f : -1f;
+        hasEncircleDir = true;
+
+        //各敵に「役割」を割り当て（0=前、1=側面、2=後衛）
+        int r = Random.Range(0, 3);
+        role = (EnemyRole)r;
+
+        //個体差パラメータ
+        agent.speed += Random.Range(-0.5f, 0.5f);        //速度差
+        separationWeight += Random.Range(-0.5f, 0.5f);   //離反力の差
+        cohesionWeight += Random.Range(-0.05f, 0.05f);   //群れ集まり具合の差
+        alignmentWeight += Random.Range(-0.05f, 0.05f);  //方向一致の差
+        agent.avoidancePriority = Random.Range(40, 90);  //NavMesh回避の優先度
+        agent.radius = 0.6f;             //半径を少し小さく
+        agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+
+        patrolWaitTime = Random.Range(1.5f, 3.5f);
 
         //LineRenderer 設定
         line = gameObject.AddComponent<LineRenderer>();
@@ -65,10 +88,6 @@ public class EnemyAI : MonoBehaviour
         line.positionCount = 2;
         line.startColor = Color.red;
         line.endColor = Color.red;
-
-        patrolWaitTime = Random.Range(2, 5);
-        agent = GetComponent<NavMeshAgent>();
-        agent.avoidancePriority = Random.Range(10, 90); //0〜99 の範囲（小さいほど優先）
     }
     void Update()
     {
@@ -246,29 +265,41 @@ public class EnemyAI : MonoBehaviour
         float distance = toPlayer.magnitude;
         Vector3 toPlayerDir = toPlayer.normalized;
 
-        //プレイヤーの右側方向（包囲用）
-        Vector3 encircleDir = Quaternion.Euler(0, 90f, 0) * toPlayerDir;
-        Vector3 desiredPos;
+        //左右方向
+        Vector3 encircleDir = Quaternion.Euler(0, 90f * encircleSign, 0) * toPlayerDir;
+
+        Vector3 desiredPos = Vector3.zero;
 
         if (distance > 10f)
         {
-            //離れすぎ：接近行動
-            desiredPos = toPlayerDir;
+            switch (role)
+            {
+                case EnemyRole.Front:
+                    // 前衛 → 直接突撃
+                    desiredPos = toPlayerDir;
+                    break;
+
+                case EnemyRole.Side:
+                    // 側面 → 斜めに包囲
+                    desiredPos = encircleDir * 0.8f + toPlayerDir * 0.3f;
+                    break;
+
+                case EnemyRole.Back:
+                    // 後衛 → 少し距離をとって包囲
+                    desiredPos = -toPlayerDir * 0.4f + encircleDir * 0.6f;
+                    break;
+            }
         }
-        else if (distance < 5f)
-        {
-            //近すぎ：後退しながら包囲
-            desiredPos = -toPlayerDir * 0.5f + encircleDir * 0.5f;
-        }
-        else
-        {
-            //適距離：包囲行動
-            desiredPos = encircleDir * 0.7f + toPlayerDir * 0.3f;
-        }
+        //else if (distance < 5f)
+        //{
+        //    //近すぎ：後退しながら包囲
+        //    desiredPos = -toPlayerDir * 0.5f + encircleDir * 0.5f;
+        //}
 
         //Boids補正
         Vector3 boidsForce = GetBoidsForceOptimized() * 0.8f;
-        Vector3 moveDir = (desiredPos.normalized + boidsForce).normalized;
+        //方向補正（急な方向転換を防ぐ）
+        Vector3 moveDir = Vector3.Slerp(transform.forward, (desiredPos + boidsForce).normalized, 0.2f);
 
         //NavMesh上の有効な地点を探して移動
         Vector3 targetPos = transform.position + moveDir * 2.0f; //3m 先を目標にする
@@ -287,7 +318,7 @@ public class EnemyAI : MonoBehaviour
         }
 
         // 攻撃・見失い処理（任意で再有効化）
-        if (distance < 1.8f)
+        if (distance < 5f)
         {
             state = EnemyState.Attack;
             Debug.Log("攻撃状態へ");
@@ -296,7 +327,18 @@ public class EnemyAI : MonoBehaviour
     }
     void Attack()
     {
-        //transform.LookAt(player);
+        transform.LookAt(player);
+
+        if (player == null) return;
+
+        //プレイヤー方向ベクトルと距離
+        Vector3 toPlayer = player.position - transform.position;
+        float distance = toPlayer.magnitude;
+        Vector3 toPlayerDir = toPlayer.normalized;
+
+        Vector3 desiredPos = Vector3.zero;
+        //適距離：包囲行動
+        desiredPos = /*encircleDir * 0.7f + */toPlayerDir * 0.3f;
 
         ////攻撃処理はここに
         //if (Vector3.Distance(transform.position, player.position) > 3f)

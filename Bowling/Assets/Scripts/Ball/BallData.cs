@@ -7,4 +7,5 @@ public class BallData : ScriptableObject
     public Sprite icon;
     public float weight;
     public float speed;
+    public float ThrowNum;
 }
