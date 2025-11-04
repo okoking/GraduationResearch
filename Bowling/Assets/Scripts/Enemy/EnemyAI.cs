@@ -24,7 +24,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float patrolAreaRadius = 20f; //この範囲から出ない
 
     //Boids群れ制御関連
-    [Header("Boids")]
+    [Header("Boids群れ制御関連")]
     //他の敵との距離を保つ力の重み
     [SerializeField] private float separationWeight = 2.5f;
     //近くの敵と速度を合わせる力の重み
@@ -42,6 +42,15 @@ public class EnemyAI : MonoBehaviour
     //前回の Boids 力を保持し、更新間隔中は再利用
     private Vector3 lastBoidsForce;
 
+    //攻撃間隔関連
+    [Header("攻撃間隔関連")]
+    [SerializeField] private float attackInterval = 2.5f;   //攻撃間隔
+    private float attackTimer = 0f;
+    [SerializeField] private float attackRange = 2.5f;      //攻撃範囲
+    [SerializeField] private float keepDistance = 2.0f;     //適正距離
+    [SerializeField] private float retreatDistance = 1.2f;  //近すぎると下がる距離
+    [SerializeField] private float attackMoveSpeed = 2.0f;  //攻撃時の移動速度
+
     //移動線
     private LineRenderer line;
 
@@ -50,7 +59,6 @@ public class EnemyAI : MonoBehaviour
     public enum EnemyRole { Front, Side, Back }
     [SerializeField] private EnemyRole role = EnemyRole.Front;
 
-    
     //Alert
     [Header("Alert")]
     [SerializeField] private float alertRadius = 5f;
@@ -75,7 +83,7 @@ public class EnemyAI : MonoBehaviour
         cohesionWeight += Random.Range(-0.05f, 0.05f);   //群れ集まり具合の差
         alignmentWeight += Random.Range(-0.05f, 0.05f);  //方向一致の差
         agent.avoidancePriority = Random.Range(40, 90);  //NavMesh回避の優先度
-        agent.radius = 0.6f;             //半径を少し小さく
+        agent.radius = 0.6f;                             //半径を少し小さく
         agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
 
         patrolWaitTime = Random.Range(1.5f, 3.5f);
@@ -178,7 +186,7 @@ public class EnemyAI : MonoBehaviour
 
         //agent.SetDestination(adjustedTarget);
 
-        // 次の目標位置をBoids補正で微調整
+        //次の目標位置をBoids補正で微調整
         Vector3 direction = (patrolTarget - transform.position).normalized + boidsForce;
         Vector3 adjustedPos = transform.position + direction.normalized * 2f;
 
@@ -260,6 +268,11 @@ public class EnemyAI : MonoBehaviour
     {
         if (player == null) return;
 
+        //プレイヤーを注視
+        Vector3 lookPos = player.position;
+        lookPos.y = transform.position.y;
+        transform.LookAt(lookPos);
+
         //プレイヤー方向ベクトルと距離
         Vector3 toPlayer = player.position - transform.position;
         float distance = toPlayer.magnitude;
@@ -270,7 +283,7 @@ public class EnemyAI : MonoBehaviour
 
         Vector3 desiredPos = Vector3.zero;
 
-        if (distance > 10f)
+        if (distance > 8f)
         {
             switch (role)
             {
@@ -280,7 +293,7 @@ public class EnemyAI : MonoBehaviour
                     break;
 
                 case EnemyRole.Side:
-                    // 側面 → 斜めに包囲
+                    //側面 → 斜めに包囲
                     desiredPos = encircleDir * 0.8f + toPlayerDir * 0.3f;
                     break;
 
@@ -290,14 +303,9 @@ public class EnemyAI : MonoBehaviour
                     break;
             }
         }
-        //else if (distance < 5f)
-        //{
-        //    //近すぎ：後退しながら包囲
-        //    desiredPos = -toPlayerDir * 0.5f + encircleDir * 0.5f;
-        //}
-
+       
         //Boids補正
-        Vector3 boidsForce = GetBoidsForceOptimized() * 0.8f;
+        Vector3 boidsForce = GetBoidsForceOptimized() * 0.6f;
         //方向補正（急な方向転換を防ぐ）
         Vector3 moveDir = Vector3.Slerp(transform.forward, (desiredPos + boidsForce).normalized, 0.2f);
 
@@ -317,7 +325,7 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
-        // 攻撃・見失い処理（任意で再有効化）
+        //攻撃・見失い処理（任意で再有効化）
         if (distance < 5f)
         {
             state = EnemyState.Attack;
@@ -327,22 +335,91 @@ public class EnemyAI : MonoBehaviour
     }
     void Attack()
     {
-        transform.LookAt(player);
-
         if (player == null) return;
 
-        //プレイヤー方向ベクトルと距離
+        //攻撃タイマー更新
+        attackTimer += Time.deltaTime;
+
+        //プレイヤーへの方向と距離を計算
         Vector3 toPlayer = player.position - transform.position;
         float distance = toPlayer.magnitude;
         Vector3 toPlayerDir = toPlayer.normalized;
 
-        Vector3 desiredPos = Vector3.zero;
-        //適距離：包囲行動
-        desiredPos = /*encircleDir * 0.7f + */toPlayerDir * 0.3f;
+        //プレイヤーを注視
+        Vector3 lookPos = player.position;
+        lookPos.y = transform.position.y;
+        transform.LookAt(lookPos);
 
-        ////攻撃処理はここに
-        //if (Vector3.Distance(transform.position, player.position) > 3f)
-        //    SetChase();
+        //距離に応じて微妙に移動
+        Vector3 moveDir = Vector3.zero;
+
+        if (distance > keepDistance)
+        {
+            //少し遠い → 接近
+            moveDir = toPlayerDir;
+        }
+        else if (distance < retreatDistance)
+        {
+            //近すぎる → 後退
+            moveDir = -toPlayerDir;
+        }
+        else
+        {
+            //適距離 → その場で包囲行動
+            Vector3 encircleDir = Quaternion.Euler(0, 90f * encircleSign, 0) * toPlayerDir;
+            moveDir = encircleDir * 0.6f + toPlayerDir * 0.2f;
+        }
+
+        //Boids補正を加える（味方との位置調整）
+        Vector3 boidsForce = GetBoidsForceOptimized() * 0.5f;
+        Vector3 finalDir = (moveDir + boidsForce).normalized;
+
+        //NavMesh上の移動
+        Vector3 targetPos = transform.position + finalDir * attackMoveSpeed * Time.deltaTime * 10f;
+        if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
+        }
+
+        //攻撃条件（範囲内かつクールダウン経過）
+        if (distance < attackRange && attackTimer >= attackInterval)
+        {
+            attackTimer = 0f;
+            PerformAttack();
+        }
+
+        //距離が離れたら追跡へ戻る
+        if (distance > 6f)
+        {
+            state = EnemyState.Chase;
+            Debug.Log($"{name}: プレイヤーが離れたため追跡へ戻る");
+        }
+
+        //if (hp < maxHp * 0.3f || EnemyManager.Instance.GetActiveEnemyCount() < 3)
+        //{
+        //    // 退避行動
+        //    Vector3 retreatDir = -toPlayerDir + Random.insideUnitSphere * 0.3f;
+        //    agent.SetDestination(transform.position + retreatDir * 3f);
+        //    state = EnemyState.Patrol;
+        //}
+    }
+    void PerformAttack()
+    {
+        // アニメーション再生（Animator がある場合）
+        // animator.SetTrigger("Attack");
+
+        Debug.Log($"{name} が攻撃！");
+
+        // 簡易的な攻撃判定例（SphereCast）
+        if (Physics.SphereCast(transform.position + Vector3.up * 1.0f, 0.5f, transform.forward, out RaycastHit hit, attackRange))
+        {
+            if (hit.transform.CompareTag("Player"))
+            {
+                Debug.Log($"{name} がプレイヤーに命中！");
+                // PlayerHealth コンポーネントがある場合
+                // hit.transform.GetComponent<PlayerHealth>()?.TakeDamage(attackPower);
+            }
+        }
     }
     //ランダムなパトロール地点を設定
     void SetRandomPatrolPoint()
