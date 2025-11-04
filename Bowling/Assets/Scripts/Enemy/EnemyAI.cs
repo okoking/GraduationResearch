@@ -275,7 +275,7 @@ public class EnemyAI : MonoBehaviour
             switch (role)
             {
                 case EnemyRole.Front:
-                    // 前衛 → 直接突撃
+                    //前衛 → 直接突撃
                     desiredPos = toPlayerDir;
                     break;
 
@@ -285,7 +285,7 @@ public class EnemyAI : MonoBehaviour
                     break;
 
                 case EnemyRole.Back:
-                    // 後衛 → 少し距離をとって包囲
+                    //後衛 → 少し距離をとって包囲
                     desiredPos = -toPlayerDir * 0.4f + encircleDir * 0.6f;
                     break;
             }
