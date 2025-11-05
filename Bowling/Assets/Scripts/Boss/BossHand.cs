@@ -7,6 +7,7 @@ public class BossHand : MonoBehaviour
     public Transform bossHandSpawn;
 
     public GameObject beamSweepPrefab;     //実際のビーム
+    public GameObject floorAttackSubPrefab;//床攻撃
     public GameObject floorAttackPrefab;   //床攻撃
     public LineRenderer aimLinePrefab;     //地面に出す予兆線
 
@@ -24,8 +25,18 @@ public class BossHand : MonoBehaviour
     private float beamTimer;
     private bool isFiringBeam = false;
 
+    private float floorAttackDispTimer;
+    private bool isFloorAtackDisp = false;
     private float floorAttackTimer;
     private bool isFloorAtack = false;
+    private float FloorAtackFinTimer;
+    private bool isFloorAtackFin = true;
+
+    bool isAttttttack = false;          //神の一手
+
+    GameObject floorAttackSub;
+
+    GameObject floorAttack;
 
     void Start()
     {
@@ -57,12 +68,54 @@ public class BossHand : MonoBehaviour
             StartCoroutine(ShootSweepBeam());
         }
 
-        floorAttackTimer += Time.deltaTime;
-        if (floorAttackTimer >= 5f && !isFloorAtack)
+        //攻撃予測表示処理
+        if (!isFloorAtackDisp && isFloorAtackFin) {
+            floorAttackTimer += Time.deltaTime;
+        }
+        
+        if (floorAttackTimer >= 5f)
         {
-            Debug.Log("a");
             RoundFloorAttack();
+            isFloorAtackFin = false;
             floorAttackTimer = 0f;
+        }
+
+        // 攻撃予測表示中なら
+        if (isFloorAtackDisp)
+        {
+            floorAttackDispTimer += Time.deltaTime;
+            if(floorAttackDispTimer > 2f)
+            {
+                floorAttackDispTimer = 0f;
+                Destroy(floorAttackSub);
+                isFloorAtack = true;
+                isFloorAtackDisp = false;
+            }
+        }
+
+        if (isFloorAtack)
+        {
+            //ここで攻撃本体を生成
+            floorAttack = Instantiate(floorAttackPrefab, new Vector3(0f, 0f, 0f), new Quaternion(0f, 0f, 0f, 0f));
+
+            isFloorAtack = false;
+            isAttttttack = true;
+        }
+
+        if (isAttttttack)
+        {
+            //ここでデストロイまでのタイマーを回す
+            FloorAtackFinTimer += Time.deltaTime;
+        }
+
+        if(FloorAtackFinTimer > 5f)
+        {
+            //攻撃本体を殺す
+            Destroy(floorAttack);
+            FloorAtackFinTimer = 0f;
+            //攻撃終了したことを伝える
+            isFloorAtackFin = true;
+            isAttttttack = false;
         }
     }
 
@@ -131,8 +184,7 @@ public class BossHand : MonoBehaviour
 
     private void RoundFloorAttack()
     {
-        isFloorAtack = true;
-        Instantiate(floorAttackPrefab, new Vector3(0f, 0f, 0f), new Quaternion(0f, 0f, 0f, 0f));
-        isFloorAtack = false;
+        isFloorAtackDisp = true;
+        floorAttackSub = Instantiate(floorAttackSubPrefab, new Vector3(0f, 0f, 0f), new Quaternion(0f, 0f, 0f, 0f));
     }
 }
