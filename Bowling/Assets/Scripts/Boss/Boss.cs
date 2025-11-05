@@ -11,6 +11,13 @@ public class Boss : MonoBehaviour
     //–³“GŽžŠÔ
     float isInvincibleTime;
 
+    int hp = 50;
+
+    public void FalseIsPerfectInvincible()
+    {
+        isPerfectInvincible = false;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -30,6 +37,11 @@ public class Boss : MonoBehaviour
             isInvincibleTime = 0f;
             isPerfect = false;
         }
+
+        if(hp <= 0)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -42,7 +54,8 @@ public class Boss : MonoBehaviour
             //–³“G’†‚Å‚È‚¯‚ê‚ÎUŒ‚‚ª—˜‚­
             if (!isPerfect)
             {
-                Debug.Log("aaaaaaaaa");
+                hp--;
+                Debug.Log(hp);
                 isPerfect = true;
             }
         }

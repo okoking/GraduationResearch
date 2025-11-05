@@ -112,3 +112,4 @@ MonoBehaviour:
   beamWarningTime: 1.5
   sweepAngle: 90
   sweepSpeed: 60
+  boss: {fileID: 297866073283056106, guid: ce93e6f3f4525aa40a1e470fba8f6999, type: 3}

@@ -38,8 +38,17 @@ public class BossHand : MonoBehaviour
 
     GameObject floorAttack;
 
+    private Boss boss;
+
+    public int hp = 50;
+
+    private bool death = false;
+
     void Start()
     {
+
+        boss = FindAnyObjectByType<Boss>();
+
         if (player == null)
             player = GameObject.FindWithTag("Player")?.transform;
     }
@@ -116,6 +125,22 @@ public class BossHand : MonoBehaviour
             //攻撃終了したことを伝える
             isFloorAtackFin = true;
             isAttttttack = false;
+        }
+
+        if (Input.GetKeyUp(KeyCode.H))
+        {
+            hp--;
+            Debug.Log(hp);
+        }
+
+        if(hp < 0)
+        {
+            death = true;
+        }
+
+        if (death)
+        {
+            boss.FalseIsPerfectInvincible();
         }
     }
 
