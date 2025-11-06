@@ -34,15 +34,17 @@ public class BossHand : MonoBehaviour
 
     bool isAttttttack = false;          //神の一手
 
-    GameObject floorAttackSub;
+    GameObject floorAttackSub;      //床攻撃前の危険表示
 
-    GameObject floorAttack;
+    GameObject floorAttack;         //床攻撃
 
     private Boss boss;
 
     public int hp = 50;
 
     private bool death = false;
+
+    Vector3 PPos;
 
     void Start()
     {
@@ -57,8 +59,10 @@ public class BossHand : MonoBehaviour
     {
         if (bossHandSpawn == null || player == null) return;
 
+        //ビーム中でなければ動く
         if (!isFiringBeam)
         {
+            //手は軌道を描きながら動く、プレイヤーを向き続ける
             angle += orbitSpeed * Time.deltaTime;
             float rad = angle * Mathf.Deg2Rad;
             Vector3 offset = new Vector3(
@@ -66,6 +70,7 @@ public class BossHand : MonoBehaviour
                 Mathf.Sin(Time.time * floatSpeed) * floatAmplitude,
                 Mathf.Sin(rad) * orbitRadius
             );
+            //スポーン座標を基準に回る
             transform.position = bossHandSpawn.position + offset;
             transform.LookAt(player);
         }
@@ -105,7 +110,7 @@ public class BossHand : MonoBehaviour
         if (isFloorAtack)
         {
             //ここで攻撃本体を生成
-            floorAttack = Instantiate(floorAttackPrefab, new Vector3(0f, 0f, 0f), new Quaternion(0f, 0f, 0f, 0f));
+            floorAttack = Instantiate(floorAttackPrefab, PPos, new Quaternion(0f, 0f, 0f, 0f));
 
             isFloorAtack = false;
             isAttttttack = true;
@@ -127,19 +132,23 @@ public class BossHand : MonoBehaviour
             isAttttttack = false;
         }
 
+        //手を殺すための仮コード
         if (Input.GetKeyUp(KeyCode.H))
         {
             hp--;
             Debug.Log(hp);
         }
 
+        //手のHPが0以下なら死んだフラグを立てる
         if(hp < 0)
         {
             death = true;
         }
 
+        //死んだフラグがたったら
         if (death)
         {
+            //ボスの完全無敵状態を解除する
             boss.FalseIsPerfectInvincible();
         }
     }
@@ -192,7 +201,7 @@ public class BossHand : MonoBehaviour
         // 見た目設定
         line.startWidth = 0.15f;
         line.endWidth = 0.15f;
-        line.material.color = new Color(1, 0, 0, 0.8f);
+        line.material.color = new Color(1, 1, 0, 1f);
 
         // 警告時間待ち
         yield return new WaitForSeconds(displayTime);
@@ -209,7 +218,9 @@ public class BossHand : MonoBehaviour
 
     private void RoundFloorAttack()
     {
+        //プレイヤーの座標に出す
+        PPos = new Vector3(player.position.x, 0.0f, player.position.z);
         isFloorAtackDisp = true;
-        floorAttackSub = Instantiate(floorAttackSubPrefab, new Vector3(0f, 0f, 0f), new Quaternion(0f, 0f, 0f, 0f));
+        floorAttackSub = Instantiate(floorAttackSubPrefab, PPos, new Quaternion(0f, 0f, 0f, 0f));
     }
 }
