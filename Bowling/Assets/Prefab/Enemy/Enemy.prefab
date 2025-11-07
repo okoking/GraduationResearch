@@ -156,11 +156,11 @@ MonoBehaviour:
   patrolWaitTime: 2
   patrolCenter: {x: 0, y: 0, z: 0}
   patrolAreaRadius: 80
-  separationWeight: 30
+  separationWeight: 15
   alignmentWeight: 0.2
   cohesionWeight: 0.3
-  neighborRadius: 8
-  maxBoidsForce: 10
+  neighborRadius: 6
+  maxBoidsForce: 8
   boidsUpdateInterval: 3
   attackInterval: 2.5
   attackRange: 4

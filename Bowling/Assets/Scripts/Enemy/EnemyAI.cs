@@ -304,6 +304,16 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
+        //前方に敵がいれば横回避を抑制 ---
+        bool frontBlocked = EnemyManager.Instance.IsFrontEnemyAttacking(transform, player);
+        if (frontBlocked)
+        {
+            //横回りを抑えて後方で待機
+            desiredPos = -toPlayerDir * 0.5f;
+            //// 軽くランダムな揺れ（完全停止防止）
+            //desiredPos += Random.insideUnitSphere * 0.2f;
+        }
+
         //Boids補正
         Vector3 boidsForce = GetBoidsForceOptimized() * 0.9f;
         //方向補正（急な方向転換を防ぐ）
@@ -325,11 +335,18 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
+        float attackdistance = 5f;
+
+        if (EnemyManager.Instance.IsEnemyAttacking(transform, player) >= 10)
+        {
+            attackdistance += 5f;
+        }
         //攻撃・見失い処理（任意で再有効化）
-        if (/*!frontBlocked && */distance < 5f)
+        if (/*frontBlocked && */distance < attackdistance)
         {
             state = EnemyState.Attack;
             Debug.Log("攻撃状態へ");
+            
         }
 
     }
@@ -370,12 +387,12 @@ public class EnemyAI : MonoBehaviour
             moveDir = encircleDir * 0.6f + toPlayerDir * 0.2f;
         }
 
-        bool frontBlocked = EnemyManager.Instance.IsFrontEnemyAttacking(transform, player);
-        if (frontBlocked)
-        {
-            //後列は無理に攻めず距離を保つ
-            moveDir = -toPlayerDir * 0.3f;
-        }
+        //bool frontBlocked = EnemyManager.Instance.IsFrontEnemyAttacking(transform, player);
+        //if (frontBlocked)
+        //{
+        //    //後列は無理に攻めず距離を保つ
+        //    moveDir = -toPlayerDir * 0.3f;
+        //}
 
         //Boids補正を加える（味方との位置調整）
         Vector3 boidsForce = GetBoidsForceOptimized() * 0.5f;
