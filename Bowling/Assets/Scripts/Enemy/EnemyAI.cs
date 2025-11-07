@@ -303,11 +303,11 @@ public class EnemyAI : MonoBehaviour
                     break;
             }
         }
-       
+
         //Boids補正
-        Vector3 boidsForce = GetBoidsForceOptimized() * 0.6f;
+        Vector3 boidsForce = GetBoidsForceOptimized() * 0.9f;
         //方向補正（急な方向転換を防ぐ）
-        Vector3 moveDir = Vector3.Slerp(transform.forward, (desiredPos + boidsForce).normalized, 0.2f);
+        Vector3 moveDir = Vector3.Slerp(transform.forward, (desiredPos + boidsForce).normalized, 0.4f);
 
         //NavMesh上の有効な地点を探して移動
         Vector3 targetPos = transform.position + moveDir * 2.0f; //3m 先を目標にする
@@ -326,7 +326,7 @@ public class EnemyAI : MonoBehaviour
         }
 
         //攻撃・見失い処理（任意で再有効化）
-        if (distance < 5f)
+        if (/*!frontBlocked && */distance < 5f)
         {
             state = EnemyState.Attack;
             Debug.Log("攻撃状態へ");
@@ -368,6 +368,13 @@ public class EnemyAI : MonoBehaviour
             //適距離 → その場で包囲行動
             Vector3 encircleDir = Quaternion.Euler(0, 90f * encircleSign, 0) * toPlayerDir;
             moveDir = encircleDir * 0.6f + toPlayerDir * 0.2f;
+        }
+
+        bool frontBlocked = EnemyManager.Instance.IsFrontEnemyAttacking(transform, player);
+        if (frontBlocked)
+        {
+            //後列は無理に攻めず距離を保つ
+            moveDir = -toPlayerDir * 0.3f;
         }
 
         //Boids補正を加える（味方との位置調整）
@@ -496,7 +503,7 @@ public class EnemyAI : MonoBehaviour
         {
             Vector3 diff = transform.position - other.transform.position;
             float dist = diff.magnitude;
-            if (dist > 0) separation += diff.normalized / dist;
+            if (dist > 0) separation += diff.normalized / (dist * dist);
             alignment += other.agent.velocity;
             cohesion += other.transform.position;
         }
@@ -547,12 +554,5 @@ public class EnemyAI : MonoBehaviour
         if (EnemyManager.Instance != null)
             EnemyManager.Instance.Unregister(this);
     }
-
-    //Boids Debug 用プロパティ
-    public float SeparationWeight { get => separationWeight; set => separationWeight = value; }
-    public float AlignmentWeight { get => alignmentWeight; set => alignmentWeight = value; }
-    public float CohesionWeight { get => cohesionWeight; set => cohesionWeight = value; }
-    public float NeighborRadius { get => neighborRadius; set => neighborRadius = value; }
-    public float MaxBoidsForce { get => maxBoidsForce; set => maxBoidsForce = value; }
 }
 
