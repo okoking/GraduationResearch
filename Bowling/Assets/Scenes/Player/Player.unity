@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &26847309
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -702,7 +702,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 401423472}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.016718347, y: 0.20952, z: 0.0035828876, w: 0.9776549}
+  m_LocalRotation: {x: -0.016567508, y: 0.2471145, z: 0.0042257654, w: 0.9688355}
   m_LocalPosition: {x: 0, y: 0.804235, z: -5.7223015}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -856,7 +856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2da639f122fe4334494199f1b42d1b46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  markerPrefab: {fileID: 1121192042590650, guid: 754e9207703250c42b142e805fb17c6f, type: 3}
+  markerPrefab: {fileID: 1687094529250360134, guid: 7f9d84a6757738742adb04bb35930953, type: 3}
 --- !u!4 &1402032434
 Transform:
   m_ObjectHideFlags: 0
@@ -866,7 +866,7 @@ Transform:
   m_GameObject: {fileID: 1402032432}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.44319, y: -2.9275596, z: 10.414736}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1124,7 +1124,7 @@ MonoBehaviour:
   lineRenderer: {fileID: 1948414629}
   beamLength: 50
   beamWidth: 1.3
-  MegabeamDuration: 3
+  MegabeamDuration: 5
   MinibeamDuration: 0.1
   hitMask:
     serializedVersion: 2
@@ -1143,7 +1143,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lockOnTarget: {fileID: 0}
-  lockOnRange: 20
+  lockOnRange: 5
+  markerSystem: {fileID: 1402032433}
 --- !u!1 &1925360810
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,5 @@
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class BeamCamera : MonoBehaviour
 {
@@ -31,10 +30,8 @@ public class BeamCamera : MonoBehaviour
 
             normalCam.gameObject.SetActive(!isSootBeam);
             beamCam.gameObject.SetActive(isSootBeam);
-            Debug.Log("X");
         }
     }
-
 
     void FixedUpdate()
     {

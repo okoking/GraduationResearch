@@ -7,7 +7,7 @@ public class KariBeam : MonoBehaviour
     [SerializeField] private float beamLength = 50f;
     [SerializeField] private float beamWidth = 0.2f;
     [SerializeField] private float MegabeamDuration = 3f; // 何秒間出し続けるか
-    [SerializeField] private float MinibeamDuration = 0.1f; // 何秒間出し続けるか
+    [SerializeField] private float MinibeamDuration = 1.5f; // 何秒間出し続けるか
     [SerializeField] private LayerMask hitMask;
     [SerializeField] private Camera mainCam;
 
@@ -78,37 +78,39 @@ public class KariBeam : MonoBehaviour
     
     IEnumerator FireLockOnBeam()
     {
-        isFiring = true;
-        lineRenderer.enabled = true;
-
-        float timer = 0f;
-        while (timer < MinibeamDuration)
+        if (lockOn != null && lockOn.lockOnTarget != null)
         {
-            Vector3 start = transform.position;
-            start.y += 1;
-            Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // 中央(0.5,0.5)
-            Vector3 end = lockOn.lockOnTarget.position;
+            isFiring = true;
+            lineRenderer.enabled = true;
 
-            //// Raycastで命中判定
-            //if (Physics.Raycast(start, transform.forward, out RaycastHit hit, beamLength, hitMask))
-            //{
-            //    end = hit.point;
-            //    // 当たった敵に処理
-            //    if (hit.collider.CompareTag("Enemy"))
-            //    {
-            //        // EnemyスクリプトのTakeDamageを呼ぶなど
-            //        // hit.collider.GetComponent<Enemy>()?.TakeDamage(10);
-            //    }
-            //}
+            float timer = 0f;
+            while (timer < MinibeamDuration)
+            {
+                Vector3 start = transform.position;
+                start.y += 1;
+                Vector3 end = lockOn.lockOnTarget.position;
 
-            lineRenderer.SetPosition(0, start);
-            lineRenderer.SetPosition(1, end);
+                //// Raycastで命中判定
+                //if (Physics.Raycast(start, transform.forward, out RaycastHit hit, beamLength, hitMask))
+                //{
+                //    end = hit.point;
+                //    // 当たった敵に処理
+                //    if (hit.collider.CompareTag("Enemy"))
+                //    {
+                //        // EnemyスクリプトのTakeDamageを呼ぶなど
+                //        // hit.collider.GetComponent<Enemy>()?.TakeDamage(10);
+                //    }
+                //}
 
-            timer += Time.deltaTime;
-            yield return null;
+                lineRenderer.SetPosition(0, start);
+                lineRenderer.SetPosition(1, end);
+
+                timer += Time.deltaTime;
+                yield return null;
+            }
+
+            lineRenderer.enabled = false;
+            isFiring = false;
         }
-
-        lineRenderer.enabled = false;
-        isFiring = false;
     }
 }

@@ -2,14 +2,29 @@ using UnityEngine;
 
 public class LockOn3DMarker : MonoBehaviour
 {
-    public GameObject markerPrefab;
+    public  GameObject markerPrefab;
     private GameObject currentMarker;
+    private Transform  oldMarker;
+
+
+    private void Update()
+    {
+        if(currentMarker != null)
+        {
+            currentMarker.transform.position = oldMarker.position + Vector3.up * 1.5f;
+        }
+    }
 
     public void SetLockOn(Transform enemy)
     {
-        if (currentMarker != null) Destroy(currentMarker);
-        currentMarker = Instantiate(markerPrefab, enemy.position + Vector3.up * 2f, Quaternion.identity);
-        currentMarker.transform.SetParent(enemy); // “G‚Ìq‚É‚µ‚Ä’Ç]
+        //if (currentMarker != null) Destroy(currentMarker);
+        
+        if(oldMarker != enemy)
+        {
+            ClearLockOn();
+            currentMarker = Instantiate(markerPrefab, enemy.position + Vector3.up * 1.5f, Quaternion.identity);
+            oldMarker = enemy;
+        }
     }
 
     public void ClearLockOn()
