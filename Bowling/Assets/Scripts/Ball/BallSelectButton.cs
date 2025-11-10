@@ -6,6 +6,7 @@ public class BallSelectButton : MonoBehaviour
 {
     [SerializeField] private Image iconImage;
     [SerializeField] private TMP_Text nameText;
+    [SerializeField] private TMP_Text ThrowNumText;
 
     private BallData ballData;
 
@@ -16,6 +17,9 @@ public class BallSelectButton : MonoBehaviour
 
         if (nameText == null)
             nameText = GetComponentInChildren<TMP_Text>();
+
+        if (ThrowNumText == null)
+            ThrowNumText = GetComponentInChildren<TMP_Text>();
     }
 
     public void Setup(BallData data)
@@ -41,19 +45,18 @@ public class BallSelectButton : MonoBehaviour
 
         iconImage.sprite = data.icon;
         nameText.text = data.ballName;
+        ThrowNumText.text = data.ThrowNum.ToString();
 
-        Debug.Log($"ボタン生成: {data.ballName}, アイコン={(data.icon != null ? data.icon.name : "なし")}, テキスト={nameText.text}");
+        Debug.Log($"ボタン生成: {data.ballName}, アイコン={(data.icon != null ? data.icon.name : "なし")}, テキスト={nameText.text}, 回数={ThrowNumText.text}");
     }
 
     public BallData GetBallData() => ballData;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         

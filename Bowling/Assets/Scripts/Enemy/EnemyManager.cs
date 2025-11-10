@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static EnemyAI;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -84,5 +85,44 @@ public class EnemyManager : MonoBehaviour
             else if (dist < 30f) { if (Time.frameCount % 2 == 0) e.ManagedUpdate(); }  //中距離
             else { if (Time.frameCount % 5 == 0) e.ManagedUpdate(); }                  //遠距離
         }
+    }
+    public bool IsFrontEnemyAttacking(Transform enemy, Transform player, float frontAngle = 1f)
+    {
+        foreach (var e in enemies)
+        {
+            if (e == null || e == enemy) continue;
+            if (e.state != EnemyAI.EnemyState.Attack) continue;
+
+            //この敵が player 方向の前方にいるかチェック
+            Vector3 toThisEnemy = e.transform.position - player.position;
+            Vector3 toQuery = enemy.position - player.position;
+
+            float angle = Vector3.Angle(toThisEnemy, toQuery);
+            if (angle < frontAngle)
+            {
+                //同じ方向（前方ライン上）に攻撃中の敵がいる
+                return true;
+            }
+        }
+        return false;
+    }
+    public int IsEnemyAttacking(Transform enemy, Transform player)
+    {
+        int attackingEnemyCount = 0;
+
+        foreach (var e in enemies)
+        {
+            if (e == null) continue;
+
+            //e.ManagedUpdate();
+
+            // 攻撃状態の敵をカウント
+            if (e.state == EnemyState.Attack)
+            {
+                attackingEnemyCount++;
+            }
+        }
+
+        return attackingEnemyCount;
     }
 }

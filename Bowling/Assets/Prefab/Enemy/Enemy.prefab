@@ -156,12 +156,18 @@ MonoBehaviour:
   patrolWaitTime: 2
   patrolCenter: {x: 0, y: 0, z: 0}
   patrolAreaRadius: 80
-  separationWeight: 0.8
+  separationWeight: 15
   alignmentWeight: 0.2
   cohesionWeight: 0.3
-  neighborRadius: 4
+  neighborRadius: 6
   maxBoidsForce: 8
-  boidsUpdateInterval: 5
+  boidsUpdateInterval: 3
+  attackInterval: 2.5
+  attackRange: 4
+  keepDistance: 4
+  retreatDistance: 4
+  attackMoveSpeed: 2
+  role: 0
   alertRadius: 2
 --- !u!195 &-2953616013130259206
 NavMeshAgent:
