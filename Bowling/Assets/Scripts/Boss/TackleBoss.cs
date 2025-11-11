@@ -21,7 +21,7 @@ public class TackleBoss : MonoBehaviour
     private float cooldownTimer = 0f;
     private float warnTimer = 0f;
 
-    private LineRenderer line; //予測線表示用
+    private LineRenderer line;          //予測線表示用
 
     void Start()
     {
@@ -114,11 +114,11 @@ public class TackleBoss : MonoBehaviour
         isOnCooldown = true;
         cooldownTimer = tackleCooldown;
 
-        // 向きを固定
+        //向きを固定
         Vector3 lookPos = new Vector3(target.position.x, transform.position.y, target.position.z);
         transform.LookAt(lookPos);
 
-        // 予測線を出す
+        //予測線を出す
         line.enabled = true;
         line.SetPosition(0, transform.position);
         line.SetPosition(1, transform.position + transform.forward * 10f); //長さ10mの赤線
