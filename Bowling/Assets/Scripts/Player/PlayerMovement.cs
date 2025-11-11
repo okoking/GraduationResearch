@@ -89,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         // 接地判定（地面タグを使うなら "Ground" に変更）
-        if (collision.contacts[0].normal.y > 0.5f)
+        if (collision.contacts[0].normal.y > 0f)
         {
             isGrounded = true;
         }
