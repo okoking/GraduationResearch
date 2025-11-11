@@ -15,6 +15,7 @@ TagManager:
   - Boss
   - BossHandSpawn
   - Pillar
+  - UltBeam
   layers:
   - Default
   - TransparentFX

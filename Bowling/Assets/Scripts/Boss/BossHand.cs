@@ -7,9 +7,9 @@ public class BossHand : MonoBehaviour
     public Transform bossHandSpawn;
 
     public GameObject beamSweepPrefab;     //実際のビーム
+    public LineRenderer aimLinePrefab;     //地面に出す予兆線
     public GameObject floorAttackSubPrefab;//床攻撃
     public GameObject floorAttackPrefab;   //床攻撃
-    public LineRenderer aimLinePrefab;     //地面に出す予兆線
 
     public float orbitRadius = 5f;
     public float orbitSpeed = 30f;
@@ -34,9 +34,9 @@ public class BossHand : MonoBehaviour
 
     bool isAttttttack = false;          //神の一手
 
-    GameObject floorAttackSub;      //床攻撃前の危険表示
+    GameObject floorAttackSub;          //床攻撃前の危険表示
 
-    GameObject floorAttack;         //床攻撃
+    GameObject floorAttack;             //床攻撃
 
     private Boss boss;
 
@@ -83,10 +83,11 @@ public class BossHand : MonoBehaviour
         }
 
         //攻撃予測表示処理
-        if (!isFloorAtackDisp && isFloorAtackFin) {
+        if (!isFloorAtackDisp && isFloorAtackFin)
+        {
             floorAttackTimer += Time.deltaTime;
         }
-        
+
         if (floorAttackTimer >= 5f)
         {
             RoundFloorAttack();
@@ -98,7 +99,7 @@ public class BossHand : MonoBehaviour
         if (isFloorAtackDisp)
         {
             floorAttackDispTimer += Time.deltaTime;
-            if(floorAttackDispTimer > 2f)
+            if (floorAttackDispTimer > 2f)
             {
                 floorAttackDispTimer = 0f;
                 Destroy(floorAttackSub);
@@ -109,11 +110,11 @@ public class BossHand : MonoBehaviour
 
         if (isFloorAtack)
         {
-            //ここで攻撃本体を生成
-            floorAttack = Instantiate(floorAttackPrefab, PPos, new Quaternion(0f, 0f, 0f, 0f));
+            //////ここで攻撃本体を生成
+            ////floorAttack = Instantiate(floorAttackPrefab, PPos, new Quaternion(0f, 0f, 0f, 0f));
 
-            isFloorAtack = false;
-            isAttttttack = true;
+            ////isFloorAtack = false;
+            ////isAttttttack = true;
         }
 
         if (isAttttttack)
@@ -122,7 +123,7 @@ public class BossHand : MonoBehaviour
             FloorAtackFinTimer += Time.deltaTime;
         }
 
-        if(FloorAtackFinTimer > 5f)
+        if (FloorAtackFinTimer > 5f)
         {
             //攻撃本体を殺す
             Destroy(floorAttack);
@@ -222,5 +223,14 @@ public class BossHand : MonoBehaviour
         PPos = new Vector3(player.position.x, 0.0f, player.position.z);
         isFloorAtackDisp = true;
         floorAttackSub = Instantiate(floorAttackSubPrefab, PPos, new Quaternion(0f, 0f, 0f, 0f));
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("UltBeam"))
+        {
+            hp--;
+            Debug.Log(hp);
+        }
     }
 }
