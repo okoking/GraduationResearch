@@ -53,17 +53,17 @@ public class KariBeam : MonoBehaviour
             Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // 中央(0.5,0.5)
             Vector3 end = ray.origin + ray.direction * beamLength;
 
-            //// Raycastで命中判定
-            //if (Physics.Raycast(start, transform.forward, out RaycastHit hit, beamLength, hitMask))
-            //{
-            //    end = hit.point;
-            //    // 当たった敵に処理
-            //    if (hit.collider.CompareTag("Enemy"))
-            //    {
-            //        // EnemyスクリプトのTakeDamageを呼ぶなど
-            //        // hit.collider.GetComponent<Enemy>()?.TakeDamage(10);
-            //    }
-            //}
+            // Raycastで命中判定
+            if (Physics.SphereCast(start, beamWidth,transform.forward, out RaycastHit hit, beamLength))
+            {
+                // 当たった敵に処理
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    Debug.Log("敵にヒット！: " + hit.collider.name);
+                    // EnemyスクリプトのTakeDamageを呼ぶなど
+                    // hit.collider.GetComponent<Enemy>()?.TakeDamage(10);
+                }
+            }
 
             lineRenderer.SetPosition(0, start);
             lineRenderer.SetPosition(1, end);
@@ -90,17 +90,18 @@ public class KariBeam : MonoBehaviour
                 start.y += 1;
                 Vector3 end = lockOn.lockOnTarget.position;
 
-                //// Raycastで命中判定
-                //if (Physics.Raycast(start, transform.forward, out RaycastHit hit, beamLength, hitMask))
-                //{
-                //    end = hit.point;
-                //    // 当たった敵に処理
-                //    if (hit.collider.CompareTag("Enemy"))
-                //    {
-                //        // EnemyスクリプトのTakeDamageを呼ぶなど
-                //        // hit.collider.GetComponent<Enemy>()?.TakeDamage(10);
-                //    }
-                //}
+                // Raycastで命中判定
+                if (Physics.SphereCast(start, beamWidth, transform.forward, out RaycastHit hit, beamLength))
+                {
+                    //end = hit.point;
+                    // 当たった敵に処理
+                    if (hit.collider.CompareTag("Enemy"))
+                    {
+                        Debug.Log("敵にヒット！: " + hit.collider.name);
+                        // EnemyスクリプトのTakeDamageを呼ぶなど
+                        // hit.collider.GetComponent<Enemy>()?.TakeDamage(10);
+                    }
+                }
 
                 lineRenderer.SetPosition(0, start);
                 lineRenderer.SetPosition(1, end);
@@ -113,4 +114,35 @@ public class KariBeam : MonoBehaviour
             isFiring = false;
         }
     }
+
+    //void CollisionBeam()
+    //{
+    //    // Ray（始点、方向）
+    //    Ray ray = new Ray(transform.position, transform.forward);
+    //    RaycastHit hit;
+
+    //    // LineRendererの始点設定
+    //    lineRenderer.SetPosition(0, transform.position);
+
+    //    // もし何かに当たったら
+    //    if (Physics.Raycast(ray, out hit, beamLength, hitMask))
+    //    {
+    //        // LineRendererの終点を当たった位置に
+    //        lineRenderer.SetPosition(1, hit.point);
+
+    //        // 敵に当たった場合の処理
+    //        if (hit.collider.CompareTag("Enemy"))
+    //        {
+    //            Debug.Log("敵にヒット！: " + hit.collider.name);
+    //            // 例：敵のHPを減らす処理など
+    //            // hit.collider.GetComponent<Enemy>().TakeDamage(10);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        // 何にも当たらなかった場合は最大距離まで
+    //        lineRenderer.SetPosition(1, transform.position + transform.forward * beamLength);
+    //    }
+    //}
 }
+
