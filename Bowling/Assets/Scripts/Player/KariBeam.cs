@@ -97,7 +97,6 @@ public class KariBeam : MonoBehaviour
 
                 float Distance = Vector3.Distance(end, start);
 
-
                 RaycastHit[] hits = Physics.SphereCastAll(start, beamWidth, direction, Distance);
                 foreach (var h in hits)
                 {
@@ -116,7 +115,6 @@ public class KariBeam : MonoBehaviour
                 //    //    // EnemyスクリプトのTakeDamageを呼ぶなど
                 //    //    // hit.collider.GetComponent<Enemy>()?.TakeDamage(10);
                 //    //}
-
                 //}
 
                 lineRenderer.SetPosition(0, start);
