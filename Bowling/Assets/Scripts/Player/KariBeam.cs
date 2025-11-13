@@ -97,25 +97,27 @@ public class KariBeam : MonoBehaviour
 
                 float Distance = Vector3.Distance(end, start);
 
-                // Raycastで命中判定
-                if (Physics.SphereCast(start, beamWidth, direction, out RaycastHit hit, Distance))
-                {
-                    // end = hit.point;
-                    // 当たった敵に処理
-                    //if (hit.collider.CompareTag("Enemy"))
-                    //{
-                    //    Debug.Log("敵にヒット！: " + hit.collider.name);
-                    //    // EnemyスクリプトのTakeDamageを呼ぶなど
-                    //    // hit.collider.GetComponent<Enemy>()?.TakeDamage(10);
-                    //}
-                    RaycastHit[] hits = Physics.SphereCastAll(start, beamWidth, direction, Distance);
-                    foreach (var h in hits)
-                    {
-                        if (h.collider.CompareTag("Enemy"))
-                            Debug.Log("敵に貫通ヒット: " + h.collider.name);
-                    }
 
+                RaycastHit[] hits = Physics.SphereCastAll(start, beamWidth, direction, Distance);
+                foreach (var h in hits)
+                {
+                    if (h.collider.CompareTag("Enemy"))
+                        Debug.Log("敵に貫通ヒット: " + h.collider.name);
                 }
+
+                //// Raycastで命中判定
+                //if (Physics.SphereCast(start, beamWidth, direction, out RaycastHit hit, Distance))
+                //{
+                //    // end = hit.point;
+                //    // 当たった敵に処理
+                //    //if (hit.collider.CompareTag("Enemy"))
+                //    //{
+                //    //    Debug.Log("敵にヒット！: " + hit.collider.name);
+                //    //    // EnemyスクリプトのTakeDamageを呼ぶなど
+                //    //    // hit.collider.GetComponent<Enemy>()?.TakeDamage(10);
+                //    //}
+
+                //}
 
                 lineRenderer.SetPosition(0, start);
                 lineRenderer.SetPosition(1, end);
