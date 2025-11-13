@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using static UnityEngine.UI.Image;
+using static Unity.Cinemachine.IInputAxisOwner.AxisDescriptor;
 
 public class KariBeam : MonoBehaviour
 {
@@ -56,6 +58,7 @@ public class KariBeam : MonoBehaviour
             // Raycastで命中判定
             if (Physics.SphereCast(start, beamWidth,transform.forward, out RaycastHit hit, beamLength))
             {
+                // end = hit.point;
                 // 当たった敵に処理
                 if (hit.collider.CompareTag("Enemy"))
                 {
@@ -90,17 +93,28 @@ public class KariBeam : MonoBehaviour
                 start.y += 1;
                 Vector3 end = lockOn.lockOnTarget.position;
 
+                Vector3 direction = (end - start).normalized;
+
+                float Distance = Vector3.Distance(end, start);
+
                 // Raycastで命中判定
-                if (Physics.SphereCast(start, beamWidth, transform.forward, out RaycastHit hit, beamLength))
+                if (Physics.SphereCast(start, beamWidth, direction, out RaycastHit hit, Distance))
                 {
-                    //end = hit.point;
+                    // end = hit.point;
                     // 当たった敵に処理
-                    if (hit.collider.CompareTag("Enemy"))
+                    //if (hit.collider.CompareTag("Enemy"))
+                    //{
+                    //    Debug.Log("敵にヒット！: " + hit.collider.name);
+                    //    // EnemyスクリプトのTakeDamageを呼ぶなど
+                    //    // hit.collider.GetComponent<Enemy>()?.TakeDamage(10);
+                    //}
+                    RaycastHit[] hits = Physics.SphereCastAll(start, beamWidth, direction, Distance);
+                    foreach (var h in hits)
                     {
-                        Debug.Log("敵にヒット！: " + hit.collider.name);
-                        // EnemyスクリプトのTakeDamageを呼ぶなど
-                        // hit.collider.GetComponent<Enemy>()?.TakeDamage(10);
+                        if (h.collider.CompareTag("Enemy"))
+                            Debug.Log("敵に貫通ヒット: " + h.collider.name);
                     }
+
                 }
 
                 lineRenderer.SetPosition(0, start);
