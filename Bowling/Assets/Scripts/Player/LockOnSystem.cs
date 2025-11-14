@@ -3,7 +3,7 @@ using UnityEngine;
 public class LockOnSystem : MonoBehaviour
 {
     public Transform lockOnTarget;
-    [SerializeField] private float lockOnRange = 20f;
+    public float lockOnRange = 20f;
     [SerializeField] private LockOn3DMarker markerSystem;
 
     void Update()

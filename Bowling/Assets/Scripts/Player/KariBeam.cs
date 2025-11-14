@@ -89,6 +89,14 @@ public class KariBeam : MonoBehaviour
             float timer = 0f;
             while (timer < MinibeamDuration)
             {
+                if (lockOn.lockOnTarget == null)
+                {
+                    isFiring = false;                 // ビーム発射フラグをOFF
+                    lineRenderer.enabled = false;     // LineRendererを非表示
+                    StopAllCoroutines();              // 発射中のIEnumeratorを止める
+                    yield break;
+                }
+
                 Vector3 start = transform.position;
                 start.y += 1;
                 Vector3 end = lockOn.lockOnTarget.position;
