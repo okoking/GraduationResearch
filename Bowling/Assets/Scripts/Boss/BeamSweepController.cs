@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
@@ -49,6 +50,24 @@ public class BeamSweepController : MonoBehaviour
         if (Physics.Raycast(start, dir, out RaycastHit hit, beamLength, groundLayer))
         {
             hitPoint = hit.point;
+        }
+
+        //if (Physics.SphereCast(start, beamWidth, transform.forward, out RaycastHit a, beamLength))
+        //{
+        //    //end = hit.point;
+        //    // 当たった敵に処理
+        //    Debug.Log("プレイヤーにヒット！: " + a.collider.name);
+        //}
+
+        RaycastHit[] hits = Physics.SphereCastAll(start, beamWidth, dir, beamLength);
+        foreach (var h in hits)
+        {
+            if (h.collider.CompareTag("Player"))
+            {
+                Debug.Log(h.collider.name);
+                //あとはプレイヤーにダメージ与える
+
+            }
         }
 
         // LineRenderer更新

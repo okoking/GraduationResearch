@@ -110,11 +110,11 @@ public class BossHand : MonoBehaviour
 
         if (isFloorAtack)
         {
-            //////ここで攻撃本体を生成
-            ////floorAttack = Instantiate(floorAttackPrefab, PPos, new Quaternion(0f, 0f, 0f, 0f));
+            //ここで攻撃本体を生成
+            floorAttack = Instantiate(floorAttackPrefab, PPos, new Quaternion(0f, 0f, 0f, 0f));
 
-            ////isFloorAtack = false;
-            ////isAttttttack = true;
+            isFloorAtack = false;
+            isAttttttack = true;
         }
 
         if (isAttttttack)
