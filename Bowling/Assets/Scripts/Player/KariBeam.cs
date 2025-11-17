@@ -1,7 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using static UnityEngine.UI.Image;
-using static Unity.Cinemachine.IInputAxisOwner.AxisDescriptor;
 
 public class KariBeam : MonoBehaviour
 {

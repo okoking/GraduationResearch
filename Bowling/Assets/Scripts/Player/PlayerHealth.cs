@@ -6,6 +6,10 @@ public class PlayerHealth : MonoBehaviour
     public int maxHealth = 1000;   // 最大HP
     public int currentHealth;     // 現在HP
 
+    [Header("デバッグ用")]
+    [SerializeField] private int Damage = 10;
+
+
     void Start()
     {
         currentHealth = maxHealth;  // ゲーム開始時に全回復
@@ -15,6 +19,20 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // 0～maxに制限
+
+        Debug.Log("現在HP：" + currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    [ContextMenu("ダメージ与える")]
+    void DebugTakeDamage()
+    {
+        currentHealth -= Damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // 0～maxに制限
 
         Debug.Log("現在HP：" + currentHealth);
