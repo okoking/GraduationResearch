@@ -112,16 +112,16 @@ public class KariBeam : MonoBehaviour
                         Debug.Log("敵に貫通ヒット: " + h.collider.name);
                 }
 
-                //// Raycastで命中判定
-                //if (Physics.SphereCast(start, beamWidth, direction, out RaycastHit hit, Distance))
+                //// raycastで命中判定
+                //if (physics.spherecast(start, beamwidth, direction, out raycasthit hit, distance))
                 //{
                 //    // end = hit.point;
                 //    // 当たった敵に処理
-                //    //if (hit.collider.CompareTag("Enemy"))
+                //    //if (hit.collider.comparetag("enemy"))
                 //    //{
-                //    //    Debug.Log("敵にヒット！: " + hit.collider.name);
-                //    //    // EnemyスクリプトのTakeDamageを呼ぶなど
-                //    //    // hit.collider.GetComponent<Enemy>()?.TakeDamage(10);
+                //    //    debug.log("敵にヒット！: " + hit.collider.name);
+                //    //    // enemyスクリプトのtakedamageを呼ぶなど
+                //    //    // hit.collider.getcomponent<enemy>()?.takedamage(10);
                 //    //}
                 //}
 
