@@ -110,9 +110,9 @@ MonoBehaviour:
   floatAmplitude: 1
   floatSpeed: 1
   beamInterval: 5
-  beamWarningTime: 1.5
+  beamWarningTime: 1
   sweepAngle: 90
-  sweepSpeed: 60
+  sweepSpeed: 10
   hp: 50
 --- !u!65 &6509926182899686461
 BoxCollider:
