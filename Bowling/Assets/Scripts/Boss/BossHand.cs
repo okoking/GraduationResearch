@@ -7,7 +7,6 @@ public class BossHand : MonoBehaviour
     public Transform bossHandSpawn;
 
     public GameObject beamSweepPrefab;     //実際のビーム
-    public LineRenderer aimLinePrefab;     //地面に出す予兆線
     public GameObject floorAttackSubPrefab;//床攻撃
     public GameObject floorAttackPrefab;   //床攻撃
 
@@ -19,7 +18,6 @@ public class BossHand : MonoBehaviour
     public float beamInterval = 5f;
     public float beamWarningTime = 1.5f;   //予兆線を表示しておく時間
     public float sweepAngle = 90f;         //薙ぎ払い角度
-    public float sweepSpeed = 60f;
 
     private float angle;
     private float beamTimer;
@@ -158,11 +156,8 @@ public class BossHand : MonoBehaviour
     {
         isFiringBeam = true;
 
-        LineRenderer line = Instantiate(aimLinePrefab);
-        int segmentCount = 60;
-        line.positionCount = segmentCount;
+        int segmentCount = 30;
 
-        float beamRange = 50f; // BeamSweepController の beamLength と同じ値に
         float displayTime = beamWarningTime;
         float halfAngle = sweepAngle / 2f;
 
@@ -180,29 +175,7 @@ public class BossHand : MonoBehaviour
             // ビームの方向（地面に対して少し下向き）
             Vector3 dir = rot * transform.forward;
             Vector3 start = transform.position;
-
-            if (Physics.Raycast(start, dir, out RaycastHit hit, beamRange, LayerMask.GetMask("Ground")))
-            {
-                // 地面から少し上にオフセット
-                line.SetPosition(i, hit.point + Vector3.up * 0.05f);
-            }
-            else
-            {
-                if (Physics.Raycast(start + dir * beamRange, Vector3.down, out RaycastHit downHit, 100f, LayerMask.GetMask("Ground")))
-                {
-                    line.SetPosition(i, downHit.point + Vector3.up * 0.05f);
-                }
-                else
-                {
-                    line.SetPosition(i, start + dir * beamRange);
-                }
-            }
         }
-
-        // 見た目設定
-        line.startWidth = 0.15f;
-        line.endWidth = 0.15f;
-        line.material.color = new Color(1, 1, 0, 1f);
 
         // 警告時間待ち
         yield return new WaitForSeconds(displayTime);
@@ -212,8 +185,6 @@ public class BossHand : MonoBehaviour
         float beamDuration = beam.GetComponent<BeamSweepController>().duration;
 
         yield return new WaitForSeconds(beamDuration);
-
-        Destroy(line.gameObject);
         isFiringBeam = false;
     }
 
