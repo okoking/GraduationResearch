@@ -164,8 +164,8 @@ MonoBehaviour:
   boidsUpdateInterval: 3
   attackInterval: 2.5
   attackRange: 4
-  keepDistance: 4
-  retreatDistance: 4
+  keepDistance: 6
+  retreatDistance: 4.5
   attackMoveSpeed: 2
   role: 0
   alertRadius: 2
@@ -179,7 +179,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.75
-  m_Speed: 2
+  m_Speed: 2.5
   m_Acceleration: 12
   avoidancePriority: 50
   m_AngularSpeed: 180
