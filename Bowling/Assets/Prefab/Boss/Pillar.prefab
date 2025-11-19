@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3398991437010691984}
   - component: {fileID: 5283815979387110988}
   - component: {fileID: 6543352987047041303}
-  - component: {fileID: -6764133277516173736}
+  - component: {fileID: -8433940405719016266}
   m_Layer: 0
   m_Name: Pillar
   m_TagString: Pillar
@@ -109,7 +109,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-6764133277516173736
+--- !u!114 &-8433940405719016266
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,6 +118,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7249537406842460803}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7081f1cdf397bf4d92e356af76472a2, type: 3}
+  m_Script: {fileID: 11500000, guid: 7054b27da424caa4386e5020eb51c374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerHealth: {fileID: 0}

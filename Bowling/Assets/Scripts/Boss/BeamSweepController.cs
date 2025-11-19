@@ -16,6 +16,8 @@ public class BeamSweepController : MonoBehaviour
     private float currentAngle;
     private bool sweepingRight = true;
 
+    private PlayerHealth playerHealth;
+
     void Start()
     {
         line = GetComponent<LineRenderer>();
@@ -27,6 +29,8 @@ public class BeamSweepController : MonoBehaviour
         currentAngle = -sweepAngle / 2f;
 
         Destroy(gameObject, duration);
+
+        playerHealth = GameObject.Find("Player").GetComponent<PlayerHealth>();
     }
 
     void Update()
@@ -52,21 +56,13 @@ public class BeamSweepController : MonoBehaviour
             hitPoint = hit.point;
         }
 
-        //if (Physics.SphereCast(start, beamWidth, transform.forward, out RaycastHit a, beamLength))
-        //{
-        //    //end = hit.point;
-        //    // 当たった敵に処理
-        //    Debug.Log("プレイヤーにヒット！: " + a.collider.name);
-        //}
-
         RaycastHit[] hits = Physics.SphereCastAll(start, beamWidth, dir, beamLength);
         foreach (var h in hits)
         {
             if (h.collider.CompareTag("Player"))
             {
                 Debug.Log(h.collider.name);
-                //あとはプレイヤーにダメージ与える
-
+                playerHealth.TakeDamage(1);
             }
         }
 

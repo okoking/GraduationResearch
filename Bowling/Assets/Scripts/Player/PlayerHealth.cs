@@ -52,6 +52,11 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log("‰ñ•œI Œ»İHPF" + currentHealth);
     }
 
+    public int GetHealth()
+    {
+        return currentHealth;
+    }
+
     // €–Sˆ—
     void Die()
     {
