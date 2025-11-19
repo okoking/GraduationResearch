@@ -169,6 +169,7 @@ MonoBehaviour:
   attackMoveSpeed: 2
   role: 0
   alertRadius: 2
+  alertPrefab: {fileID: 4457379341208604167, guid: ab5e076ca4838d6489609e51fd5614a6, type: 3}
 --- !u!195 &-2953616013130259206
 NavMeshAgent:
   m_ObjectHideFlags: 0

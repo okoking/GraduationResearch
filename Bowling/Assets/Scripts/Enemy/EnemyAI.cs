@@ -67,7 +67,9 @@ public class EnemyAI : MonoBehaviour
     private float logCooldown = 0.5f; // 0.5秒のクールタイム
 
     bool[] wasFar = new bool[2];
-   
+
+    public GameObject alertPrefab;     //「！」プレハブ
+    private bool alerted = false;      //1回だけ表示したい
 
     void Start()
     {
@@ -128,14 +130,10 @@ public class EnemyAI : MonoBehaviour
     //待機状態
     void Idle()
     {
+        //追跡中は
+        if (state == EnemyState.Chase) return;
         //待機タイマー更新
         patrolTimer += Time.deltaTime;
-
-        //追跡中は
-        if (state == EnemyState.Chase)
-        {
-            return;
-        }
 
         //Player発見で追跡へ
         if (CanSeePlayer())
@@ -168,6 +166,7 @@ public class EnemyAI : MonoBehaviour
         if (CanSeePlayer())
         {
             SetChase();
+            ShowAlert();
             return;
         }
 
@@ -266,10 +265,11 @@ public class EnemyAI : MonoBehaviour
             oldPoint = nextPoint;
         }
 
-        // 扇形の外周線
+        //扇形の外周線
         Gizmos.DrawLine(position, position + Quaternion.Euler(0, -angle, 0) * forward * distance);
         Gizmos.DrawLine(position, position + Quaternion.Euler(0, angle, 0) * forward * distance);
     }
+    //追跡
     void Chase()
     {
         if (player == null) return;
@@ -310,16 +310,6 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        ////前方に敵がいれば横回避を抑制 ---
-        //bool frontBlocked = EnemyManager.Instance.IsFrontEnemyAttacking(transform, player);
-        //if (frontBlocked)
-        //{
-        //    //横回りを抑えて後方で待機
-        //    desiredPos = -toPlayerDir * 0.5f;
-        //    //// 軽くランダムな揺れ（完全停止防止）
-        //    //desiredPos += Random.insideUnitSphere * 0.2f;
-        //}
-
         //Boids補正
         Vector3 boidsForce = GetBoidsForceOptimized() * 0.9f;
         //方向補正（急な方向転換を防ぐ）
@@ -332,12 +322,14 @@ public class EnemyAI : MonoBehaviour
             agent.SetDestination(hit.position);
         }
 
-        //プレイヤーを見失った or 離れすぎた場合は巡回状態に戻す
-        if (distance > 20f/* || !CanSeePlayer()*/)
+        //離れすぎた場合は巡回状態に戻す
+        if (distance > 20f)
         {
             state = EnemyState.Patrol;
             SetRandomPatrolPoint();
             Debug.Log($"{name}：プレイヤーを見失い、巡回に戻る");
+            wasFar[0] = false;
+            wasFar[1] = false;
             return;
         }
 
@@ -349,7 +341,7 @@ public class EnemyAI : MonoBehaviour
             attackdistance += 10f;
         }
         //攻撃・見失い処理（任意で再有効化）
-        if (/*frontBlocked && */distance < attackdistance)
+        if (distance < attackdistance)
         {
             state = EnemyState.Attack;
             Debug.Log("攻撃状態へ");
@@ -403,6 +395,7 @@ public class EnemyAI : MonoBehaviour
 
             //攻撃タイマー更新
             attackTimer += Time.deltaTime;
+            
         }
 
         //Boids補正
@@ -429,15 +422,8 @@ public class EnemyAI : MonoBehaviour
         {
             state = EnemyState.Chase;
             Debug.Log($"{name}: プレイヤーが離れたため追跡へ戻る");
-        }
 
-        //if (hp < maxHp * 0.3f || EnemyManager.Instance.GetActiveEnemyCount() < 3)
-        //{
-        //    // 退避行動
-        //    Vector3 retreatDir = -toPlayerDir + Random.insideUnitSphere * 0.3f;
-        //    agent.SetDestination(transform.position + retreatDir * 3f);
-        //    state = EnemyState.Patrol;
-        //}
+        }
     }
     void PerformAttack()
     {
@@ -523,7 +509,7 @@ public class EnemyAI : MonoBehaviour
     {
         var neighbors = EnemyManager.Instance.GetNearbyEnemies(this, neighborRadius);
         if (neighbors.Count == 0) return Vector3.zero;
-
+        
         Vector3 separation = Vector3.zero;  //（距離保持）
         Vector3 alignment = Vector3.zero;   //（速度合わせ）
         Vector3 cohesion = Vector3.zero;    //（群れ中心へ）
@@ -547,16 +533,7 @@ public class EnemyAI : MonoBehaviour
 
         return Vector3.ClampMagnitude(boidsForce, maxBoidsForce);
     }
-    void ApplyMovement(Vector3 moveDir)
-    {
-        //NavMeshAgentの移動先を直接制御
-        Vector3 nextPos = transform.position + moveDir * agent.speed * Time.deltaTime;
-
-        if (NavMesh.SamplePosition(nextPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
-        {
-            agent.SetDestination(hit.position);
-        }
-    }
+    //追跡状態へ
     void SetChase()
     {
         state = EnemyState.Chase;
@@ -573,6 +550,18 @@ public class EnemyAI : MonoBehaviour
            Debug.Log("警報を受けて追跡状態へ");
         }
     }
+    void ShowAlert()
+    {
+        if (alertPrefab == null) return;
+
+        // 敵の頭上に生成
+        Vector3 pos = transform.position + Vector3.up * 2.0f;
+        GameObject alert = Instantiate(alertPrefab, pos, Quaternion.identity);
+
+        // フェードアウト（後で記述するスクリプト）
+        Destroy(alert, 1.0f);
+    }
+
     //Player を後からセットできる
     public void SetPlayer(Transform p)
     {
@@ -583,21 +572,13 @@ public class EnemyAI : MonoBehaviour
         if (EnemyManager.Instance != null)
             EnemyManager.Instance.Unregister(this);
     }
-
-    void LogOnce(string message)
-    {
-        if (Time.time - lastLogTime > logCooldown)
-        {
-            Debug.Log(message);
-            lastLogTime = Time.time;
-        }
-    }
+    //条件に入った瞬間だけ trueを返す
     bool CheckOneShot(ref bool flag, bool condition)
     {
         if (condition && !flag)
         {
             flag = true;
-            return true; // 条件に入った瞬間だけ true
+            return true; 
         }
         if (!condition)
         {
