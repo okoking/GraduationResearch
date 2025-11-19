@@ -36,18 +36,10 @@ public class BossHand : MonoBehaviour
 
     GameObject floorAttack;             //床攻撃
 
-    private Boss boss;
-
-    public int hp = 50;
-
-    private bool death = false;
-
     Vector3 PPos;
 
     void Start()
     {
-
-        boss = FindAnyObjectByType<Boss>();
 
         if (player == null)
             player = GameObject.FindWithTag("Player")?.transform;
@@ -130,26 +122,6 @@ public class BossHand : MonoBehaviour
             isFloorAtackFin = true;
             isAttttttack = false;
         }
-
-        //手を殺すための仮コード
-        if (Input.GetKeyUp(KeyCode.H))
-        {
-            hp--;
-            Debug.Log(hp);
-        }
-
-        //手のHPが0以下なら死んだフラグを立てる
-        if(hp < 0)
-        {
-            death = true;
-        }
-
-        //死んだフラグがたったら
-        if (death)
-        {
-            //ボスの完全無敵状態を解除する
-            boss.FalseIsPerfectInvincible();
-        }
     }
 
     private IEnumerator ShootSweepBeam()
@@ -194,14 +166,5 @@ public class BossHand : MonoBehaviour
         PPos = new Vector3(player.position.x, 0.0f, player.position.z);
         isFloorAtackDisp = true;
         floorAttackSub = Instantiate(floorAttackSubPrefab, PPos, new Quaternion(0f, 0f, 0f, 0f));
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("UltBeam"))
-        {
-            hp--;
-            Debug.Log(hp);
-        }
     }
 }
