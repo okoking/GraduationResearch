@@ -554,12 +554,11 @@ public class EnemyAI : MonoBehaviour
     {
         if (alertPrefab == null) return;
 
-        // 敵の頭上に生成
+        //敵の頭上に生成
         Vector3 pos = transform.position + Vector3.up * 2.0f;
         GameObject alert = Instantiate(alertPrefab, pos, Quaternion.identity);
+        alert.GetComponent<BillBoard>().enemy = this.transform;
 
-        // フェードアウト（後で記述するスクリプト）
-        Destroy(alert, 1.0f);
     }
 
     //Player を後からセットできる

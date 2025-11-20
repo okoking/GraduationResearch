@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class AlertEffect : MonoBehaviour
 {
-    private float life = 1.0f;
+    private float life = 0.5f;
+    private float time = 1.0f;
     private float speed = 1.0f;
     private SpriteRenderer sr;
 
@@ -10,21 +11,24 @@ public class AlertEffect : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
     }
-
     
     void Update()
     {
-        life -= Time.deltaTime * 0.5f;
+        time -= Time.deltaTime;
 
         ////上にふわっと動く
         //transform.position += Vector3.up * speed * Time.deltaTime;
 
-        //フェードアウト
-        if (sr != null)
+        if (time <= 0f)
         {
-            Color c = sr.color;
-            c.a = Mathf.Clamp01(life);
-            sr.color = c;
+            life -= Time.deltaTime;
+            //フェードアウト
+            if (sr != null)
+            {
+                Color c = sr.color;
+                c.a = Mathf.Clamp01(life);
+                sr.color = c;
+            }
         }
 
         //最大まで透過したらオブジェクトを削除
