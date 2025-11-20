@@ -17,7 +17,11 @@ public class BossHandHp : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //‰¼
+        if (Input.GetKey(KeyCode.H))
+        {
+            TakeDamage(10);
+        }
     }
 
     public void TakeDamage(int take)

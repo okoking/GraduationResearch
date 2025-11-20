@@ -42,6 +42,13 @@ public class Boss : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        //‰¼
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            TakeDamage();
+        }
+
     }
 
     public void TakeDamage()
