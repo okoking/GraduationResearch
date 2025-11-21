@@ -1,0 +1,27 @@
+using UnityEngine;
+
+public class PillarColl : MonoBehaviour
+{
+
+    private PlayerHealth playerHealth;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        playerHealth = GameObject.Find("Player").GetComponent<PlayerHealth>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            playerHealth.TakeDamage(10);
+        }
+    }
+}

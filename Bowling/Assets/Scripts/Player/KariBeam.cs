@@ -1,7 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using static UnityEngine.UI.Image;
-using static Unity.Cinemachine.IInputAxisOwner.AxisDescriptor;
 
 public class KariBeam : MonoBehaviour
 {
@@ -89,6 +87,14 @@ public class KariBeam : MonoBehaviour
             float timer = 0f;
             while (timer < MinibeamDuration)
             {
+                if (lockOn.lockOnTarget == null)
+                {
+                    isFiring = false;                 // ビーム発射フラグをOFF
+                    lineRenderer.enabled = false;     // LineRendererを非表示
+                    StopAllCoroutines();              // 発射中のIEnumeratorを止める
+                    yield break;
+                }
+
                 Vector3 start = transform.position;
                 start.y += 1;
                 Vector3 end = lockOn.lockOnTarget.position;
@@ -104,16 +110,16 @@ public class KariBeam : MonoBehaviour
                         Debug.Log("敵に貫通ヒット: " + h.collider.name);
                 }
 
-                //// Raycastで命中判定
-                //if (Physics.SphereCast(start, beamWidth, direction, out RaycastHit hit, Distance))
+                //// raycastで命中判定
+                //if (physics.spherecast(start, beamwidth, direction, out raycasthit hit, distance))
                 //{
                 //    // end = hit.point;
                 //    // 当たった敵に処理
-                //    //if (hit.collider.CompareTag("Enemy"))
+                //    //if (hit.collider.comparetag("enemy"))
                 //    //{
-                //    //    Debug.Log("敵にヒット！: " + hit.collider.name);
-                //    //    // EnemyスクリプトのTakeDamageを呼ぶなど
-                //    //    // hit.collider.GetComponent<Enemy>()?.TakeDamage(10);
+                //    //    debug.log("敵にヒット！: " + hit.collider.name);
+                //    //    // enemyスクリプトのtakedamageを呼ぶなど
+                //    //    // hit.collider.getcomponent<enemy>()?.takedamage(10);
                 //    //}
                 //}
 
