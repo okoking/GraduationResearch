@@ -51,6 +51,24 @@ public class BeamSweepController : MonoBehaviour
             hitPoint = hit.point;
         }
 
+<<<<<<< Updated upstream
+=======
+        RaycastHit[] hits = Physics.SphereCastAll(start, beamWidth, dir, beamLength);
+        foreach (var h in hits)
+        {
+            if (h.collider.CompareTag("Player"))
+            {
+                //Debug.Log(h.collider.name);
+                playerHealth.TakeDamage(2);
+                
+                if(EffectInstant == null)
+                {
+                    EffectInstant = Instantiate(effect, h.transform.position, Quaternion.identity);
+                }
+            }
+        }
+
+>>>>>>> Stashed changes
         // LineRendererXV
         line.SetPosition(0, start);
         line.SetPosition(1, hitPoint);
