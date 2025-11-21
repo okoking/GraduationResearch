@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rb;
     private Vector3 currentVelocity;
+    private bool isGrounded;
     private BeamCamera beamCamera;
     void Start()
     {
@@ -27,8 +28,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         // ジャンプ入力（Yボタン）
-        bool isGround = CheckGround();
-        if (Input.GetKeyDown(KeyCode.JoystickButton3) && isGround)
+        if (Input.GetKeyDown(KeyCode.JoystickButton3) && isGrounded)
         {
             Jump();
         }
@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         Vector3 inputDir = new Vector3(h, 0, v).normalized;
-
+        // ★ 動く前にRigidbodyをWakeUpさせる
         if (inputDir.magnitude > 0)
         {
             rb.WakeUp();
@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
             Vector3 targetVelocity = moveDir * moveSpeed;
             currentVelocity = Vector3.MoveTowards(currentVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
 
-            // キャラ回転(ビーム打つときは変えない)
+            // キャラ回転(ビーム打つときは変えないようにする)
             if (!beamCamera.isSootBeam)
             {
                 Quaternion targetRot = Quaternion.LookRotation(moveDir);
@@ -80,29 +80,18 @@ public class PlayerMovement : MonoBehaviour
         rb.MovePosition(rb.position + currentVelocity * Time.fixedDeltaTime);
     }
 
-    bool CheckGround()
-    {
-        float rayLength = 0.1f;
-        return Physics.Raycast(transform.position + Vector3.forward * 0.1f, Vector3.down, rayLength) ||
-               Physics.Raycast(transform.position - Vector3.forward * 0.1f, Vector3.down, rayLength) ||
-               Physics.Raycast(transform.position, Vector3.down, rayLength);
-    }
-
     void Jump()
     {
-        Vector3 v = rb.linearVelocity;
-        v.y = 0;
-        rb.linearVelocity = v;
-
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        isGrounded = false;
     }
 
-    void OnCollisionEnter(Collision col)
+    void OnCollisionEnter(Collision collision)
     {
-        //Vector3 n = col.contacts[0].normal;
-
-        //n.y = 0;
-
-        //rb.AddForce(n * 3f, ForceMode.Impulse);
+        // 接地判定（地面タグを使うなら "Ground" に変更）
+        if (collision.contacts[0].normal.y > 0f)
+        {
+            isGrounded = true;
+        }
     }
 }

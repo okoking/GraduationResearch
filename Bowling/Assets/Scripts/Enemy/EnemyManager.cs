@@ -17,8 +17,8 @@ public class EnemyManager : MonoBehaviour
         {
             Debug.Log("プレイヤーがありません");
 
-           //Debug.Log("プレイヤーを取得します");
-           //Instance.SetPlayer(
+           // Debug.Log("プレイヤーを取得します");
+           // Instance.SetPlayer(
            //GameObject.Find("Player").transform);
         }
         //プレイヤーが既に存在していれば EnemyAI にセット

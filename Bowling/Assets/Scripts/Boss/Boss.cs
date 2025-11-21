@@ -21,7 +21,7 @@ public class Boss : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
@@ -32,36 +32,32 @@ public class Boss : MonoBehaviour
             isInvincibleTime++;
         }
 
-        if (isInvincibleTime > 5f)
+        if(isInvincibleTime > 5f)
         {
             isInvincibleTime = 0f;
             isPerfect = false;
         }
 
-        if (hp <= 0)
+        if(hp <= 0)
         {
             Destroy(this.gameObject);
         }
-
-        //‰¼
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            TakeDamage();
-        }
-
     }
 
-    public void TakeDamage()
+    private void OnCollisionEnter(Collision collision)
     {
-        //–³“G‚Å‚ ‚ê‚ÎˆÈ‰º‚Ìˆ—‚ðs‚í‚È‚¢
-        if (isPerfectInvincible) return;
-
-        //–³“G’†‚Å‚È‚¯‚ê‚ÎUŒ‚‚ª—˜‚­
-        if (!isPerfect)
+        if (collision.gameObject.CompareTag("Player"))
         {
-            hp--;
-            Debug.Log(hp);
-            isPerfect = true;
+            //–³“G‚Å‚ ‚ê‚ÎˆÈ‰º‚Ìˆ—‚ðs‚í‚È‚¢
+            if (isPerfectInvincible) return;
+
+            //–³“G’†‚Å‚È‚¯‚ê‚ÎUŒ‚‚ª—˜‚­
+            if (!isPerfect)
+            {
+                hp--;
+                Debug.Log(hp);
+                isPerfect = true;
+            }
         }
     }
 }
