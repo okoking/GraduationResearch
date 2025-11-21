@@ -101,6 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2dde81d99a6529468d47406e8cb3e65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy: {fileID: 0}
+  offset: {x: 0, y: 2, z: 0}
 --- !u!114 &7985373472761353560
 MonoBehaviour:
   m_ObjectHideFlags: 0

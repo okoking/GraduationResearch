@@ -44,7 +44,7 @@ public class EnemyAI : MonoBehaviour
 
     //攻撃間隔関連
     [Header("攻撃間隔関連")]
-    [SerializeField] private float attackInterval = 2.5f;   //攻撃間隔
+    [SerializeField] private float attackInterval = 5.0f;   //攻撃間隔
     private float attackTimer = 0f;
     [SerializeField] private float attackRange = 2.5f;      //攻撃範囲
     [SerializeField] private float keepDistance = 2.0f;     //適正距離
@@ -70,6 +70,15 @@ public class EnemyAI : MonoBehaviour
 
     public GameObject alertPrefab;     //「！」プレハブ
     private bool alerted = false;      //1回だけ表示したい
+
+    [Header("突進攻撃")]
+    [SerializeField] public float dashSpeed = 8f;      //突進スピード
+    [SerializeField] public float dashTime = 0.4f;     //どれだけ突進するか
+    [SerializeField] public float attackRadius = 0.7f; //当たり判定の半径
+     private bool isDashing = false;                   //突進するか
+     private float dashTimer = 0f;                     //タイマー
+     private Vector3 dashDir;
+    [SerializeField] private int attackPower = 20;     //攻撃力
 
     void Start()
     {
@@ -348,6 +357,7 @@ public class EnemyAI : MonoBehaviour
             attackTimer = 0;
         }
     }
+    //攻撃
     void Attack()
     {
         if (player == null) return;
@@ -376,7 +386,7 @@ public class EnemyAI : MonoBehaviour
                 wasFar[1] = false;
             }
         }
-        else if (distance < retreatDistance)
+        else if (distance < retreatDistance && !isDashing)
         {
             //近すぎる → 後退を強化
             desiredPos = -toPlayerDir;
@@ -389,13 +399,10 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            ////適距離 → その場で包囲行動
-            //Vector3 encircleDir = Quaternion.Euler(0, 90f * encircleSign, 0) * toPlayerDir;
-            //moveDir = encircleDir * 0.6f + toPlayerDir * 0.2f;
 
             //攻撃タイマー更新
             attackTimer += Time.deltaTime;
-            
+            //Debug.Log($"{name}: プレイヤーがちょうどいい距離にいます");
         }
 
         //Boids補正
@@ -411,9 +418,8 @@ public class EnemyAI : MonoBehaviour
         }
 
         //攻撃条件（範囲内かつクールダウン経過）
-        if (distance < attackRange && attackTimer >= attackInterval)
+        if (/*distance < attackRange && */attackTimer >= attackInterval)
         {
-            attackTimer = 0f;
             PerformAttack();
         }
 
@@ -425,23 +431,52 @@ public class EnemyAI : MonoBehaviour
 
         }
     }
+    //攻撃処理
     void PerformAttack()
     {
-        // アニメーション再生（Animator がある場合）
-        // animator.SetTrigger("Attack");
-
-        Debug.Log($"{name} が攻撃！");
-
-        // 簡易的な攻撃判定例（SphereCast）
-        if (Physics.SphereCast(transform.position + Vector3.up * 1.0f, 0.5f, transform.forward, out RaycastHit hit, attackRange))
+        if (!isDashing)
         {
-            if (hit.transform.CompareTag("Player"))
+            //突進方向を決定（最初の1回だけ）
+            dashDir = (player.position - transform.position).normalized;
+            dashDir.y = 0f;
+
+            isDashing = true;
+            dashTimer = 0f;
+
+            Debug.Log($"{name} が突進攻撃を開始！");
+        }
+
+        //突進移動
+        dashTimer += Time.deltaTime;
+        transform.position += dashDir * dashSpeed * Time.deltaTime;
+
+        //衝突判定（SphereCast or OverlapSphere）
+        Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward * 0.5f, attackRadius);
+        foreach (var h in hits)
+        {
+            if (h.CompareTag("Player"))
             {
-                Debug.Log($"{name} がプレイヤーに命中！");
-                // PlayerHealth コンポーネントがある場合
-                // hit.transform.GetComponent<PlayerHealth>()?.TakeDamage(attackPower);
+                Debug.Log($"{name} の突進がプレイヤーに命中！");
+                h.GetComponent<PlayerHealth>()?.TakeDamage(attackPower);
+
+                EndAttack();
+                return;
             }
         }
+
+        //時間で突進終了
+        if (dashTimer > dashTime)
+        {
+            EndAttack();
+        }
+    }
+    //攻撃終了
+    void EndAttack()
+    {
+        isDashing = false;
+        //state = EnemyState.Attack;
+        attackTimer = 0f;
+        //Debug.Log($"{name} の突進終了 → 追跡へ戻る");
     }
     //ランダムなパトロール地点を設定
     void SetRandomPatrolPoint()
