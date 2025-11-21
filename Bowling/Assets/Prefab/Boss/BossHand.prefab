@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 8520311169729658975}
   - component: {fileID: 6880817212927395889}
   - component: {fileID: 6509926182899686461}
+  - component: {fileID: 5693818115903809356}
   m_Layer: 0
   m_Name: BossHand
-  m_TagString: Untagged
+  m_TagString: Bosshand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -102,7 +103,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bossHandSpawn: {fileID: 8563033403297202376, guid: bc6473a9d7be48f4a9815f1ce2299852, type: 3}
   beamSweepPrefab: {fileID: 5384188851145259235, guid: a621a8553b4ca1249a1b6701036e4a06, type: 3}
-  aimLinePrefab: {fileID: 3338673805677368855, guid: eb9f23a8cbe6ed943a3dcda0a48d71ac, type: 3}
   floorAttackSubPrefab: {fileID: 815703356155443534, guid: a5aa4bf307e59a94fb857c32c79ec60b, type: 3}
   floorAttackPrefab: {fileID: 7249537406842460803, guid: 0746cb030e4a2f746af2d49577a55b27, type: 3}
   orbitRadius: 5
@@ -110,10 +110,8 @@ MonoBehaviour:
   floatAmplitude: 1
   floatSpeed: 1
   beamInterval: 5
-  beamWarningTime: 1.5
+  beamWarningTime: 1
   sweepAngle: 90
-  sweepSpeed: 60
-  hp: 50
 --- !u!65 &6509926182899686461
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -135,3 +133,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5693818115903809356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375154224479475916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d776d7276799fa44b18adea109927a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 50

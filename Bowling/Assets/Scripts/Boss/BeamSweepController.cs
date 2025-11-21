@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
@@ -15,6 +16,12 @@ public class BeamSweepController : MonoBehaviour
     private float currentAngle;
     private bool sweepingRight = true;
 
+    private PlayerHealth playerHealth;
+
+    private GameObject effect;
+
+    GameObject EffectInstant;
+
     void Start()
     {
         line = GetComponent<LineRenderer>();
@@ -26,6 +33,10 @@ public class BeamSweepController : MonoBehaviour
         currentAngle = -sweepAngle / 2f;
 
         Destroy(gameObject, duration);
+
+        playerHealth = GameObject.Find("Player").GetComponent<PlayerHealth>();
+
+        effect = Resources.Load<GameObject>("Effects/AoE slash blue");
     }
 
     void Update()
@@ -49,6 +60,21 @@ public class BeamSweepController : MonoBehaviour
         if (Physics.Raycast(start, dir, out RaycastHit hit, beamLength, groundLayer))
         {
             hitPoint = hit.point;
+        }
+
+        RaycastHit[] hits = Physics.SphereCastAll(start, beamWidth, dir, beamLength);
+        foreach (var h in hits)
+        {
+            if (h.collider.CompareTag("Player"))
+            {
+                Debug.Log(h.collider.name);
+                playerHealth.TakeDamage(10);
+                
+                if(EffectInstant == null)
+                {
+                    EffectInstant = Instantiate(effect, h.transform.position, Quaternion.identity);
+                }
+            }
         }
 
         // LineRendererçXêV
