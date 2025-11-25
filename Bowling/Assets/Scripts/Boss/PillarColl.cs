@@ -21,7 +21,7 @@ public class PillarColl : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            playerHealth.TakeDamage(10);
+            playerHealth.TakeDamage(20);
         }
     }
 }

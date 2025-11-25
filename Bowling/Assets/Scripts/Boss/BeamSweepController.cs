@@ -41,44 +41,43 @@ public class BeamSweepController : MonoBehaviour
 
     void Update()
     {
-        timer += Time.deltaTime;
+        //timer += Time.deltaTime;
 
-        // 回転角度更新
-        float step = sweepSpeed * Time.deltaTime * (sweepingRight ? 1 : -1);
-        currentAngle += step;
-        if (Mathf.Abs(currentAngle) >= sweepAngle / 2f)
-            sweepingRight = !sweepingRight;
+        //// 回転角度更新
+        //float step = sweepSpeed * Time.deltaTime * (sweepingRight ? 1 : -1);
+        //currentAngle += step;
+        //if (Mathf.Abs(currentAngle) >= sweepAngle / 2f)
+        //    sweepingRight = !sweepingRight;
 
-        // 回転方向計算
-        Quaternion rot = Quaternion.Euler(0, currentAngle, 0);
-        Vector3 dir = rot * transform.forward;
+        //// 回転方向計算
+        //Quaternion rot = Quaternion.Euler(0, currentAngle, 0);
+        //Vector3 dir = rot * transform.forward;
 
-        // 地面ヒットチェック
-        Vector3 start = transform.position;
-        Vector3 hitPoint = start + dir * beamLength; // デフォルトは最大距離
+        //// 地面ヒットチェック
+        //Vector3 start = transform.position;
+        //Vector3 hitPoint = start + dir * beamLength; // デフォルトは最大距離
 
-        if (Physics.Raycast(start, dir, out RaycastHit hit, beamLength, groundLayer))
-        {
-            hitPoint = hit.point;
-        }
+        //if (Physics.Raycast(start, dir, out RaycastHit hit, beamLength, groundLayer))
+        //{
+        //    hitPoint = hit.point;
+        //}
 
-        RaycastHit[] hits = Physics.SphereCastAll(start, beamWidth, dir, beamLength);
-        foreach (var h in hits)
-        {
-            if (h.collider.CompareTag("Player"))
-            {
-                Debug.Log(h.collider.name);
-                playerHealth.TakeDamage(10);
+        //RaycastHit[] hits = Physics.SphereCastAll(start, beamWidth, dir, beamLength);
+        //foreach (var h in hits)
+        //{
+        //    if (h.collider.CompareTag("Player"))
+        //    {
+        //        playerHealth.TakeDamage(2);
                 
-                if(EffectInstant == null)
-                {
-                    EffectInstant = Instantiate(effect, h.transform.position, Quaternion.identity);
-                }
-            }
-        }
+        //        if(EffectInstant == null)
+        //        {
+        //            EffectInstant = Instantiate(effect, h.transform.position, Quaternion.identity);
+        //        }
+        //    }
+        //}
 
-        // LineRenderer更新
-        line.SetPosition(0, start);
-        line.SetPosition(1, hitPoint);
+        //// LineRenderer更新
+        //line.SetPosition(0, start);
+        //line.SetPosition(1, hitPoint);
     }
 }
