@@ -67,7 +67,7 @@ public class BeamSweepController : MonoBehaviour
         {
             if (h.collider.CompareTag("Player"))
             {
-                playerHealth.TakeDamage(2);
+                playerHealth.TakeDamage(1);
 
                 if (EffectInstant == null)
                 {

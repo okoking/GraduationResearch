@@ -48,7 +48,6 @@ public class Boss : MonoBehaviour
         {
             TakeDamage();
         }
-
     }
 
     public void TakeDamage()
