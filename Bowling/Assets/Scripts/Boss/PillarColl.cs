@@ -21,8 +21,10 @@ public class PillarColl : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            playerHealth.TakeDamage(20);
+            //playerHealth.TakeDamage(20);
             SoundManager.instance.Request("LevelUp", transform.position);
+            SoundManager.instance.Request("PokuPoku", transform.position);
+            Debug.Log(transform.position);
         }
     }
 }
