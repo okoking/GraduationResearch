@@ -1,108 +1,138 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float acceleration = 10f;
-    [SerializeField] private float deceleration = 8f;
     [SerializeField] private float rotationSpeed = 10f;
-    [SerializeField] private float jumpForce = 7f;          // ジャンプ力
-    [SerializeField] private Transform cameraTransform;
+    [SerializeField] private float jumpForce = 7f;
+    [SerializeField] private Transform cam;
+    [SerializeField] private float gravity = -9.81f;
+    [SerializeField] private float acceleration = 10f;    // 加速の速さ
+    [SerializeField] private float deceleration = 10f;    // 減速の速さ
 
-    private Rigidbody rb;
-    private Vector3 currentVelocity;
+    private Vector3 velocity;
     private BeamCamera beamCamera;
+    private CharacterController controller;
+    private Vector3 currentMove = Vector3.zero; // 慣性付きの移動速度
+
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
         beamCamera = GetComponent<BeamCamera>();
-    }
-
-    void FixedUpdate()
-    {
-        Move();
+        controller = GetComponent<CharacterController>();
     }
 
     void Update()
     {
-        // ジャンプ入力（Yボタン）
-        bool isGround = CheckGround();
-        if (Input.GetKeyDown(KeyCode.JoystickButton3) && isGround)
-        {
-            Jump();
-        }
+        // --- 移動 ---
+        Vector3 camForward = cam.forward;
+        camForward.y = 0f;         // 上下成分は消す
+        camForward.Normalize();
 
-        if (transform.position.y < -5f)
-        {
-            transform.position = new(0, 0, 0);
-        }
-    }
-
-    void Move()
-    {
+        Vector3 camRight = cam.right;
+        camRight.y = 0f;
+        camRight.Normalize(); 
+        
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
-        Vector3 inputDir = new Vector3(h, 0, v).normalized;
 
-        if (inputDir.magnitude > 0)
+        Vector3 moveInput = camForward * v + camRight * h;
+        moveInput.Normalize();
+
+
+        // --- 慣性付きの移動ベクトルを計算 ---
+        if (moveInput.magnitude > 0.1f)
         {
-            rb.WakeUp();
-        }
-
-        if (inputDir.magnitude > 0)
-        {
-            // カメラ基準で方向変換
-            Vector3 camForward = cameraTransform.forward;
-            Vector3 camRight = cameraTransform.right;
-            camForward.y = 0;
-            camRight.y = 0;
-            camForward.Normalize();
-            camRight.Normalize();
-
-            Vector3 moveDir = (camForward * v + camRight * h).normalized;
-
-            Vector3 targetVelocity = moveDir * moveSpeed;
-            currentVelocity = Vector3.MoveTowards(currentVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
-
-            // キャラ回転(ビーム打つときは変えない)
-            if (!beamCamera.isSootBeam)
-            {
-                Quaternion targetRot = Quaternion.LookRotation(moveDir);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime);
-            }
+            // 加速
+            currentMove = Vector3.Lerp(
+                currentMove,
+                moveInput.normalized,
+                acceleration * Time.deltaTime
+            );
         }
         else
         {
-            currentVelocity = Vector3.MoveTowards(currentVelocity, Vector3.zero, deceleration * Time.fixedDeltaTime);
+            // 減速（入力が0のときゆっくり止まる）
+            currentMove = Vector3.Lerp(
+                currentMove,
+                Vector3.zero,
+                deceleration * Time.deltaTime
+            );
         }
 
-        rb.MovePosition(rb.position + currentVelocity * Time.fixedDeltaTime);
+        // --- 回転（向き） ---
+        if (currentMove.magnitude > 0.1f)
+        {
+            Quaternion targetRot = Quaternion.LookRotation(currentMove);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRot,
+                rotationSpeed * Time.deltaTime
+            );
+        }
+
+        // --- 接地判定 ---
+        if (controller.isGrounded && velocity.y < 0)
+        {
+            velocity.y = -6f;
+        }
+
+        // --- ジャンプ ---
+        if (Input.GetButtonDown("Jump") && controller.isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
+        }
+
+        // --- 重力 ---
+        velocity.y += gravity * Time.deltaTime;
+
+        // --- 移動適用（慣性を使う！） ---
+        controller.Move(currentMove * moveSpeed * Time.deltaTime);
+        controller.Move(velocity * Time.deltaTime);
+
+        if (transform.position.y < -5f)
+        {
+            Debug.Log("落下");
+            transform.position = Vector3.zero;
+        }
     }
 
-    bool CheckGround()
+    void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        float rayLength = 0.1f;
-        return Physics.Raycast(transform.position + Vector3.forward * 0.1f, Vector3.down, rayLength) ||
-               Physics.Raycast(transform.position - Vector3.forward * 0.1f, Vector3.down, rayLength) ||
-               Physics.Raycast(transform.position, Vector3.down, rayLength);
-    }
+        // 地面（normal.y が大きい）
+        if (hit.normal.y > 0.5f)
+        {
+            // 必要なら接地処理
+            //velocity.y = 0;  // ※Moveでやるならここは不要
+            return;
+        }
 
-    void Jump()
-    {
-        Vector3 v = rb.linearVelocity;
-        v.y = 0;
-        rb.linearVelocity = v;
+        // 天井（normal.y が負）
+        if (hit.normal.y < -0.5f)
+        {
+            // 上昇中なら強制停止
+            if (velocity.y > 0)
+            {
+                velocity.y = 0f;
+                Debug.Log("天井に衝突 → y停止");
+            }
+            return;
+        }
 
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-    }
+        //// 壁（normal.y がほぼ 0）
+        //if (Mathf.Abs(hit.normal.y) < 0.1f)
+        //{
+        //    // 壁方向にめり込む速度を打ち消す
+        //    Vector3 moveDir = velocity;     // 現在の移動方向
+        //    Vector3 normal = hit.normal;    // 壁の法線
 
-    void OnCollisionEnter(Collision col)
-    {
-        //Vector3 n = col.contacts[0].normal;
+        //    // 移動方向を「壁に投影」
+        //    Vector3 horizontalSlide = Vector3.ProjectOnPlane(moveDir, normal);
 
-        //n.y = 0;
+        //    // 壁に向かう成分を消す
+        //    velocity.x = horizontalSlide.x;
+        //    velocity.z = horizontalSlide.z;
 
-        //rb.AddForce(n * 3f, ForceMode.Impulse);
+        //    return;
+        //}
     }
 }

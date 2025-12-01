@@ -9,15 +9,11 @@ public class BeamCamera : MonoBehaviour
     [SerializeField] private CinemachineCamera beamCam;
     public bool isSootBeam = false;
 
-    private Rigidbody rb;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         normalCam.gameObject.SetActive(!isSootBeam);
         beamCam.gameObject.SetActive(isSootBeam);
-
-        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -31,19 +27,17 @@ public class BeamCamera : MonoBehaviour
             normalCam.gameObject.SetActive(!isSootBeam);
             beamCam.gameObject.SetActive(isSootBeam);
         }
-    }
 
-    void FixedUpdate()
-    {
-        if (!isSootBeam) return;
-
-        // カメラの前方向を基準に、Y軸のみで向きを合わせる
-        Vector3 lookDirection = cameraTransform.forward;
-        lookDirection.y = 0f; // 上下は無視して水平回転のみ
-        if (lookDirection.sqrMagnitude > 0.001f)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
-            rb.transform.rotation = Quaternion.Lerp(rb.transform.rotation, targetRotation, Time.deltaTime * 10f);
-        }
+        //if (isSootBeam)
+        //{
+        //    // カメラの前方向を基準に、Y軸のみで向きを合わせる
+        //    Vector3 lookDirection = cameraTransform.forward;
+        //    lookDirection.y = 0f; // 上下は無視して水平回転のみ
+        //    if (lookDirection.sqrMagnitude > 0f)
+        //    {
+        //        Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+        //        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+        //    }
+        //}
     }
 }
