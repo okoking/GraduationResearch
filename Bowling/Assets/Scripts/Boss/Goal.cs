@@ -1,7 +1,11 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Goal : MonoBehaviour
 {
+
+    public string sceneName;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,6 +23,7 @@ public class Goal : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             Debug.Log("NextStage");
+            SceneManager.LoadScene(sceneName);
         }
     }
 }

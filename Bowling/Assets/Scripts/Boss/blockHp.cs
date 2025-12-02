@@ -22,7 +22,7 @@ public class blockHp : MonoBehaviour
             Destroy(this);
         }
 
-        Debug.Log("ブロックの現在HP" + currentHp);
+        //Debug.Log("ブロックの現在HP" + currentHp);
     }
 
     public void HealHp()

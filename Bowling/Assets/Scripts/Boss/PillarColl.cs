@@ -23,8 +23,6 @@ public class PillarColl : MonoBehaviour
         {
             //playerHealth.TakeDamage(20);
             SoundManager.instance.Request("LevelUp", transform.position);
-            SoundManager.instance.Request("PokuPoku", transform.position);
-            Debug.Log(transform.position);
         }
     }
 }
