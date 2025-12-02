@@ -170,6 +170,9 @@ PrefabInstance:
       addedObject: {fileID: 7219271693347843000}
     - targetCorrespondingSourceObject: {fileID: 100326, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
       insertIndex: -1
+      addedObject: {fileID: -1135139322502251934}
+    - targetCorrespondingSourceObject: {fileID: 100326, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
+      insertIndex: -1
       addedObject: {fileID: -8584833441335496031}
   m_SourcePrefab: {fileID: 100100000, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
 --- !u!1 &6221603189137431482 stripped
@@ -249,6 +252,21 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   mainCam: {fileID: 0}
+--- !u!114 &-1135139322502251934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6221603189137431482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c0da93a75478164aa56584feffeb964, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1000
+  currentHealth: 0
+  Damage: 10
 --- !u!143 &-8584833441335496031
 CharacterController:
   m_ObjectHideFlags: 0

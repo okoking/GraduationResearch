@@ -71,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // --- Ú’n”»’è ---
-        if (controller.isGrounded && velocity.y < 0)
+        if (controller.isGrounded && velocity.y < 0f)
         {
             velocity.y = -6f;
         }
