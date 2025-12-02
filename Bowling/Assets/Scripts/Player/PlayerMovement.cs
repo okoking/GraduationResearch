@@ -11,13 +11,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float deceleration = 10f;    // 減速の速さ
 
     private Vector3 velocity;
-    private BeamCamera beamCamera;
+    private KariBeam beamInfo;
     private CharacterController controller;
     private Vector3 currentMove = Vector3.zero; // 慣性付きの移動速度
 
     void Start()
     {
-        beamCamera = GetComponent<BeamCamera>();
+        beamInfo = GetComponent<KariBeam>();
         controller = GetComponent<CharacterController>();
     }
 
@@ -60,14 +60,17 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // --- 回転（向き） ---
-        if (currentMove.magnitude > 0.1f)
+        if (!beamInfo.disableRotate)
         {
-            Quaternion targetRot = Quaternion.LookRotation(currentMove);
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                targetRot,
-                rotationSpeed * Time.deltaTime
-            );
+            if (currentMove.magnitude > 0.1f)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(currentMove);
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    targetRot,
+                    rotationSpeed * Time.deltaTime
+                );
+            }
         }
 
         // --- 接地判定 ---

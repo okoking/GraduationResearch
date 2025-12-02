@@ -10,6 +10,7 @@ public class KariBeam : MonoBehaviour
     [SerializeField] private float MinibeamDuration = 1.5f; // 何秒間出し続けるか
     [SerializeField] private LayerMask hitMask;
     [SerializeField] private Camera mainCam;
+    public bool disableRotate;
 
     private bool isFiring = false;
     private BeamCamera beamCamera;
@@ -43,6 +44,7 @@ public class KariBeam : MonoBehaviour
     IEnumerator FireBeam()
     {
         isFiring = true;
+        disableRotate = true;
         lineRenderer.enabled = true;
 
         float timer = 0f;
@@ -53,6 +55,15 @@ public class KariBeam : MonoBehaviour
             Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // 中央(0.5,0.5)
             Vector3 end = ray.origin + ray.direction * beamLength;
 
+            // ★ 撃っている方向にプレイヤーを向ける（水平だけ）
+            Vector3 lookDir = ray.direction;
+            lookDir.y = 0;
+            Quaternion targetRot = Quaternion.LookRotation(lookDir);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRot,
+                10.0f * Time.deltaTime
+            );
             // Raycastで命中判定
             if (Physics.SphereCast(start, beamWidth,transform.forward, out RaycastHit hit, beamLength))
             {
@@ -74,6 +85,7 @@ public class KariBeam : MonoBehaviour
         }
 
         lineRenderer.enabled = false;
+        disableRotate = false;
         isFiring = false;
     }
     
