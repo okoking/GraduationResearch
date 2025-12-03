@@ -14,6 +14,10 @@ public class PlayerMovement : MonoBehaviour
     private KariBeam beamInfo;
     private CharacterController controller;
     private Vector3 currentMove = Vector3.zero; // 慣性付きの移動速度
+    private bool isGrounded;
+    private bool wasGrounded;
+
+    private Vector3 wallNormal;
 
     void Start()
     {
@@ -38,6 +42,13 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveInput = camForward * v + camRight * h;
         moveInput.Normalize();
 
+        isGrounded = CheckGrounded(out bool onSteepSlope, out wallNormal);
+
+
+        if (!wasGrounded && isGrounded)
+        {
+            velocity = Vector3.zero;
+        }
 
         // --- 慣性付きの移動ベクトルを計算 ---
         if (moveInput.magnitude > 0.1f)
@@ -76,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
         // --- 接地判定 ---
         if (controller.isGrounded && velocity.y < 0f)
         {
-            velocity.y = -6f;
+            velocity.y = -2f;
         }
 
         // --- ジャンプ ---
@@ -85,9 +96,17 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
         }
 
-        // --- 重力 ---
-        velocity.y += gravity * Time.deltaTime;
-
+        if (onSteepSlope && !isGrounded)
+        {
+            // 壁の法線に沿った下方向へ滑らせる
+            Vector3 slideDir = Vector3.ProjectOnPlane(Vector3.down, wallNormal).normalized;
+            velocity = slideDir * 6f;
+        }
+        else
+        {
+            velocity.y += gravity * Time.deltaTime;
+        }
+        
         // --- 移動適用（慣性を使う！） ---
         controller.Move(currentMove * moveSpeed * Time.deltaTime);
         controller.Move(velocity * Time.deltaTime);
@@ -97,6 +116,8 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("落下");
             transform.position = Vector3.zero;
         }
+
+        wasGrounded = isGrounded;
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
@@ -137,5 +158,29 @@ public class PlayerMovement : MonoBehaviour
 
         //    return;
         //}
+    }
+
+    bool CheckGrounded(out bool onSteepSlope, out Vector3 hitNormal)
+    {
+        float rayLength = controller.height / 2 + 0.1f;
+        onSteepSlope = false;
+        hitNormal = Vector3.up;
+
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, rayLength))
+        {
+            float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
+            hitNormal = hit.normal;
+
+            if (slopeAngle <= controller.slopeLimit)
+            {
+                return true; // 普通の接地
+            }
+            else
+            {
+                onSteepSlope = true; // 急斜面に触れている
+                return false;       // 接地判定はなし
+            }
+        }
+        return false;
     }
 }
