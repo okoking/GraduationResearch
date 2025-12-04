@@ -18,8 +18,6 @@ public class BeamSweepController : MonoBehaviour
 
     private PlayerHealth playerHealth;
 
-    private GameObject effect;
-
     GameObject EffectInstant;
 
     void Start()
@@ -35,8 +33,6 @@ public class BeamSweepController : MonoBehaviour
         Destroy(gameObject, duration);
 
         playerHealth = GameObject.Find("Player").GetComponent<PlayerHealth>();
-
-        effect = Resources.Load<GameObject>("Effects/AoE slash blue");
     }
 
     void Update()
@@ -68,11 +64,6 @@ public class BeamSweepController : MonoBehaviour
             if (h.collider.CompareTag("Player"))
             {
                 //playerHealth.TakeDamage(1);
-
-                if (EffectInstant == null)
-                {
-                    EffectInstant = Instantiate(effect, h.transform.position, Quaternion.identity);
-                }
             }
         }
 

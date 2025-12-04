@@ -24,9 +24,7 @@ public class EffectManager : MonoBehaviour
     void Start()
     {
         // Resources/Effects ‚Ì‰º‚ÉPrefab‚ð’u‚¢‚Ä‚¨‚­
-        effects["Explosion"] = Resources.Load<GameObject>("Effects/Explosion");
-        effects["LevelUp"] = Resources.Load<GameObject>("Effects/LevelUpEffect");
-        effects["Hit"] = Resources.Load<GameObject>("Effects/Hit");
+        effects["meteor"] = Resources.Load<GameObject>("Effects/Meteors AOE");
     }
 
     /// <summary>

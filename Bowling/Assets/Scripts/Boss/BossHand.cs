@@ -106,11 +106,8 @@ public class BossHand : MonoBehaviour
         {
             //ここで攻撃本体を生成
             floorAttack = Instantiate(floorAttackPrefab, PPos, new Quaternion(0f, 0f, 0f, 0f));
-
-            if (floorAttackEffect == null)
-            {
-                floorAttackEffect = Instantiate(effect, PPos, Quaternion.identity);
-            }
+            EffectManager.instance.Request("meteor", PPos);
+            
 
             isFloorAtack = false;
             isAttttttack = true;

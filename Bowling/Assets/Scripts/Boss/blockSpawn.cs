@@ -23,9 +23,9 @@ public class blockSpawn : MonoBehaviour
         //ƒuƒƒbƒN‚ğ¶¬
         Instantiate(block, blockPos, transform.rotation);
 
-        blockhp = GameObject.Find("wall").GetComponent<blockHp>();
-
         currentHp = maxHp;
+
+        blockhp = block.GetComponent<blockHp>();
     }
 
     // Update is called once per frame
