@@ -33,4 +33,9 @@ public class blockHp : MonoBehaviour
             currentHp = maxHp;
         }
     }
+
+    public void TakeDamage(int i)
+    {
+        currentHp = -i;
+    }
 }

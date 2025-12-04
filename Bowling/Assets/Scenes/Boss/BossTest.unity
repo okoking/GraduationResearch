@@ -413,6 +413,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1162671915252128079, guid: d671787bfda091c48b05c562da8b8630, type: 3}
+      propertyPath: blockPos.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1162671915252128079, guid: d671787bfda091c48b05c562da8b8630, type: 3}
       propertyPath: blockPos.z
       value: 0
       objectReference: {fileID: 0}

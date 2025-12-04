@@ -41,7 +41,13 @@ public class blockSpawn : MonoBehaviour
         if(coolTimeCnt > coolTime)
         {
             coolTimeCnt = 0;
-            blockhp.HealHp();
+            blockhp.HealHp();   //ƒuƒƒbƒN‚ÌHP‚ğ‰ñ•œ
         }
+    }
+
+    public void TakeDamage(int i)
+    {
+        currentHp -= i;
+        Debug.Log(currentHp);
     }
 }
