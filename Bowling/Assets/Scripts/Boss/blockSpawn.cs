@@ -17,31 +17,33 @@ public class blockSpawn : MonoBehaviour
 
     private int currentHp;
 
+    private bool isDead = false;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //ブロックを生成
-        Instantiate(block, blockPos, transform.rotation);
+        GameObject obj = Instantiate(block, blockPos, transform.rotation);
 
         currentHp = maxHp;
 
-        blockhp = block.GetComponent<blockHp>();
+        blockhp = obj.GetComponent<blockHp>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //HPが0以下になればこいつ自身を消す
-        if(currentHp <= 0)
+        if (currentHp <= 0)
         {
-            Destroy(this);
+            Destroy(gameObject);
+            return;
         }
 
-        coolTimeCnt++;
-        if(coolTimeCnt > coolTime)
+        coolTimeCnt += Time.deltaTime;
+
+        if (coolTimeCnt > coolTime)
         {
             coolTimeCnt = 0;
-            blockhp.HealHp();   //ブロックのHPを回復
+            blockhp.HealHp();
         }
     }
 

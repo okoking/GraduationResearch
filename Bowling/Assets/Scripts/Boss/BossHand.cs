@@ -32,12 +32,14 @@ public class BossHand : MonoBehaviour
 
     bool isAttttttack = false;          //神の一手
 
-    GameObject floorAttackSub;          //床攻撃前の危険表示
+    public int FloorAtkNum;
 
-    GameObject floorAttackEffect;             //床攻撃
-    GameObject floorAttack;             //床攻撃
+    GameObject[] floorAttackSub;          //床攻撃前の危険表示
 
-    Vector3 PPos;
+    GameObject   floorAttackEffect;       //床攻撃
+    GameObject[] floorAttack;             //床攻撃
+
+    Vector3[] PPos;
 
     private GameObject effect;
 
@@ -47,6 +49,10 @@ public class BossHand : MonoBehaviour
             player = GameObject.FindWithTag("Player")?.transform;
 
         effect = Resources.Load<GameObject>("Effects/Meteors AOE");
+
+        PPos = new Vector3[FloorAtkNum];
+        floorAttackSub = new GameObject[FloorAtkNum];
+        floorAttack = new GameObject[FloorAtkNum];
     }
 
     void Update()
@@ -95,8 +101,12 @@ public class BossHand : MonoBehaviour
             floorAttackDispTimer += Time.deltaTime;
             if (floorAttackDispTimer > 2f)
             {
+               
+                for (int i = 0; i < FloorAtkNum; i++)
+                {
+                    Destroy(floorAttackSub[i]);
+                }
                 floorAttackDispTimer = 0f;
-                Destroy(floorAttackSub);
                 isFloorAtack = true;
                 isFloorAtackDisp = false;
             }
@@ -105,9 +115,10 @@ public class BossHand : MonoBehaviour
         if (isFloorAtack)
         {
             //ここで攻撃本体を生成
-            floorAttack = Instantiate(floorAttackPrefab, PPos, new Quaternion(0f, 0f, 0f, 0f));
-            EffectManager.instance.Request("meteor", PPos);
-            
+            for (int i = 0; i < FloorAtkNum; i++) {
+                floorAttack[i] = Instantiate(floorAttackPrefab, PPos[i], new Quaternion(0f, 0f, 0f, 0f));
+                EffectManager.instance.Request("meteor", PPos[i]);
+            }
 
             isFloorAtack = false;
             isAttttttack = true;
@@ -122,7 +133,10 @@ public class BossHand : MonoBehaviour
         if (FloorAtackFinTimer > 5f)
         {
             //攻撃本体を殺す
-            Destroy(floorAttack);
+            for (int i = 0; i < FloorAtkNum; i++)
+            {
+                Destroy(floorAttack[i]);
+            }
             FloorAtackFinTimer = 0f;
             //攻撃終了したことを伝える
             isFloorAtackFin = true;
@@ -169,8 +183,11 @@ public class BossHand : MonoBehaviour
     private void RoundFloorAttack()
     {
         //プレイヤーの座標に出す
-        PPos = new Vector3(player.position.x, 0.0f, player.position.z);
+        for (int i = 0; i < FloorAtkNum; i++)
+        {
+            PPos[i] = new Vector3(player.position.x + Random.Range(-50, 50), 0.0f, player.position.z + Random.Range(-50, 50));
+            floorAttackSub[i] = Instantiate(floorAttackSubPrefab, PPos[i], new Quaternion(0f, 0f, 0f, 0f));
+        }
         isFloorAtackDisp = true;
-        floorAttackSub = Instantiate(floorAttackSubPrefab, PPos, new Quaternion(0f, 0f, 0f, 0f));
     }
 }
