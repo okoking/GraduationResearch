@@ -1,17 +1,14 @@
 using UnityEngine;
-using System.Collections;
 using UnityEngine.VFX;
 
-public class SpecialBeam : MonoBehaviour
+public class SimpleBeam : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-
-    private BeamCamera  beamCamera;
+    private BeamCamera beamCamera;
     public VisualEffect vfxPrefab;      //エフェクト
-    public Transform    player;         //プレイヤーの情報
-    private bool        isActive;       //エフェクトが活動中か
-    private int         activeTime;     //エフェクトの生存時間
-
+    public Transform player;         //プレイヤーの情報
+    private bool isActive;       //エフェクトが活動中か
+    private int activeTime;     //エフェクトの生存時間
     void Start()
     {
         beamCamera = GetComponent<BeamCamera>();
@@ -21,11 +18,11 @@ public class SpecialBeam : MonoBehaviour
 
     void Update()
     {
-        // ボタン押したらビーム発射＆必殺技撃つ体制なら＆活動中でないなら
-        if (Input.GetKeyDown("joystick button 5") && beamCamera.isSootBeam && !isActive)
+        // ボタン押したらビーム発射＆必殺技撃つ体制でないなら＆活動中でないなら
+        if (Input.GetKeyDown("joystick button 5") && !beamCamera.isSootBeam && !isActive)
         {
             //ビームエフェクト再生
-            ShotSpecialBeam();
+            ShotSimpleBeam();
             isActive = true;
         }
 
@@ -33,7 +30,7 @@ public class SpecialBeam : MonoBehaviour
     }
 
     //ビームエフェクト再生
-    public void ShotSpecialBeam()
+    public void ShotSimpleBeam()
     {
         //プレイヤーの座標を渡す・エフェクト生成
         var vfx = Instantiate(
@@ -48,8 +45,8 @@ public class SpecialBeam : MonoBehaviour
         vfx.transform.localPosition = new Vector3(0, 1.0f, 0);
 
         //再生の合図
-        vfxPrefab.SendEvent("OnPlay");
-        Debug.Log("Beam!");
+        vfxPrefab.SendEvent("OnPlaySimpleBeam");
+        Debug.Log("OnPlaySimpleBeam!");
     }
 
     //撃てる回数を制限
@@ -68,7 +65,7 @@ public class SpecialBeam : MonoBehaviour
                 Debug.Log("ビーム活動終了!");
             }
 
-            
+
         }
     }
 }
