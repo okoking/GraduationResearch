@@ -63,7 +63,29 @@ public class EnemyManager : MonoBehaviour
     }
     public void Unregister(EnemyAI enemy) => enemies.Remove(enemy);
 
+<<<<<<< Updated upstream
     public Transform GetPlayerTransform() => playerTransform;
+=======
+        if (player == null)
+        {
+            Debug.Log("プレイヤーを取得できませんでした");
+            Debug.Log("再度取得します。");
+            var p = GameObject.FindWithTag("Player");
+            if (p != null) player = p.transform;
+            return;
+        }
+    }
+
+    public void RegisterEnemy(EnemyAI e)
+    {
+        e.Initialize(this, player, attackController);
+
+        if (!enemies.Contains(e))
+            enemies.Add(e);
+    }
+
+    public void Unregister(EnemyAI e) => enemies.Remove(e);
+>>>>>>> Stashed changes
 
     //近くの敵を取得（Boids用）
     public List<EnemyAI> GetNearbyEnemies(EnemyAI self, float radius)

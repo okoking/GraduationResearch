@@ -18,10 +18,15 @@ public abstract class EnemyAI : MonoBehaviour
     [SerializeField] private float patrolRadius = 10f;
     //待機状態で止まる時間
     [SerializeField] private float patrolWaitTime = 3f;
+<<<<<<< Updated upstream
     //待機中の経過時間フレーム
     private float patrolTimer = 0f;
     [SerializeField] private Vector3 patrolCenter; //巡回の中心点
     [SerializeField] private float patrolAreaRadius = 20f; //この範囲から出ない
+=======
+    [SerializeField] private Vector3 patrolCenter;          //巡回の中心点
+    [SerializeField] private float patrolAreaRadius = 20f;  //この範囲から出ない
+>>>>>>> Stashed changes
 
     //Boids群れ制御関連
     [Header("Boids群れ制御関連")]
@@ -37,6 +42,37 @@ public abstract class EnemyAI : MonoBehaviour
     [SerializeField] private float maxBoidsForce = 7f;
     //Boids 計算の更新間隔
     [SerializeField] private int boidsUpdateInterval = 3;
+<<<<<<< Updated upstream
+=======
+
+    //攻撃関連
+    [Header("攻撃関連")]
+    [SerializeField] private float attackInterval = 5.0f;   //攻撃間隔
+    [SerializeField] private float attackRange = 2.5f;      //攻撃範囲
+    [SerializeField] private float keepDistance = 2.0f;     //適正距離
+    [SerializeField] private float retreatDistance = 1.2f;  //近すぎると下がる距離
+    [SerializeField] private float attackMoveSpeed = 2.0f;  //攻撃時の移動速度
+    [SerializeField] private float dashSpeed = 8f;          //突進スピード
+    [SerializeField] private float dashTime = 10.0f;        //どれだけ突進するか
+    [SerializeField] private float attackRadius = 0.1f;     //当たり判定の半径
+    [SerializeField] private int attackPower = 20;          //攻撃力
+
+    //役割
+    [Header("Role & Misc")]
+    [SerializeField] private Role role = Role.Front;
+    [SerializeField] private float encircleSignRandomSeed;
+
+    //internal
+    private NavMeshAgent agent;
+    private Transform player;
+    private IState currentState;
+    private BoidsSteering boids;
+    private AttackController attackController;
+    private EnemyManager manager;
+
+    //待機中の経過時間フレーム
+    private float patrolTimer = 0f;
+>>>>>>> Stashed changes
     //フレームカウンタ
     private int frameCounter = 0;
     //前回の Boids 力を保持し、更新間隔中は再利用
@@ -630,7 +666,29 @@ public abstract class EnemyAI : MonoBehaviour
 
     }
 
+<<<<<<< Updated upstream
     //Player を後からセットできる
+=======
+    //外部用の読み取り専用関数
+    
+    public Vector3 GetPatrolCenter() => patrolCenter;
+    public Vector3 GetPatrolTarget() => patrolTarget;
+    public float GetPatrolRadius() => patrolRadius;
+    public float GetPatrolAreaRadius() => patrolAreaRadius;
+    public NavMeshAgent Agent => agent;
+    public Transform Player => player;
+    public BoidsSteering Boids => boids;
+    public AttackController AttackCtrl => attackController;
+    public EnemyManager Manager => manager;
+    public Role EnemyRole => role;
+    public float KeepDistance => keepDistance;
+    public float RetreatDistance => retreatDistance;
+    public float AttackInterval => attackInterval;
+    public float AttackRadius => attackRadius;
+    public int AttackPower => attackPower;
+    public float DashTime => dashTime;
+
+>>>>>>> Stashed changes
     public void SetPlayer(Transform p)
     {
         player = p;
