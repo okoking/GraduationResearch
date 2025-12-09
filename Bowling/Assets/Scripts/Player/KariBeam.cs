@@ -122,7 +122,7 @@ public class KariBeam : MonoBehaviour
                     if (h.collider.CompareTag("Enemy"))
                         Debug.Log("“G‚ÉŠÑ’Êƒqƒbƒg: " + h.collider.name);
 
-                    h.collider.GetComponent<Boss>()?.TakeDamage(1);
+                    //h.collider.GetComponent<Boss>()?.TakeDamage(1);
                 }
 
                 //// raycast‚Å–½’†”»’è
