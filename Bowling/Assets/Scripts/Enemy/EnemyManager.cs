@@ -63,10 +63,9 @@ public class EnemyManager : MonoBehaviour
     }
     public void Unregister(EnemyAI enemy) => enemies.Remove(enemy);
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
+
     public Transform GetPlayerTransform() => playerTransform;
-=======
+    {
         if (player == null)
         {
             Debug.Log("プレイヤーを取得できませんでした");
@@ -86,10 +85,11 @@ public class EnemyManager : MonoBehaviour
     }
 
     public void Unregister(EnemyAI e) => enemies.Remove(e);
->>>>>>> Stashed changes
-=======
+
     public Transform GetPlayerTransform() => playerTransform;
->>>>>>> parent of bb1ebc5 (a)
+
+    public Transform GetPlayerTransform() => playerTransform;
+
 
     //近くの敵を取得（Boids用）
     public List<EnemyAI> GetNearbyEnemies(EnemyAI self, float radius)
