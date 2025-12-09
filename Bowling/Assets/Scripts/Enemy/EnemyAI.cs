@@ -19,26 +19,12 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float patrolRadius = 10f;
     //待機状態で止まる時間
     [SerializeField] private float patrolWaitTime = 3f;
-<<<<<<< HEAD
-<<<<<<< HEAD
 
     //待機中の経過時間フレーム
     private float patrolTimer = 0f;
     [SerializeField] private Vector3 patrolCenter; //巡回の中心点
-=======
-    [SerializeField] private Vector3 patrolCenter;  //巡回の中心点
->>>>>>> parent of 79a22f5 (Revert "a")
     [SerializeField] private float patrolAreaRadius = 20f; //この範囲から出ない
 
-    [SerializeField] private Vector3 patrolCenter;          //巡回の中心点
-    [SerializeField] private float patrolAreaRadius = 20f;  //この範囲から出ない
-
-=======
-    //待機中の経過時間フレーム
-    private float patrolTimer = 0f;
-    [SerializeField] private Vector3 patrolCenter; //巡回の中心点
-    [SerializeField] private float patrolAreaRadius = 20f; //この範囲から出ない
->>>>>>> parent of 9b8b393 (a)
 
     //Boids群れ制御関連
     [Header("Boids群れ制御関連")]
@@ -54,9 +40,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float maxBoidsForce = 7f;
     //Boids 計算の更新間隔
     [SerializeField] private int boidsUpdateInterval = 3;
-<<<<<<< HEAD
 
-<<<<<<< HEAD
     //攻撃関連
     [Header("攻撃関連")]
     [SerializeField] private float attackInterval = 5.0f;   //攻撃間隔
@@ -70,16 +54,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private int attackPower = 20;          //攻撃力
 
     //役割
-=======
-    [Header("Attack")]
-    [SerializeField] private float keepDistance = 2.0f;
-    [SerializeField] private float retreatDistance = 1.2f;
-    [SerializeField] public float dashSpeed = 8f;
-    [SerializeField] public float dashTime = 1.0f;
-    [SerializeField] public float attackRadius = 0.1f;
-    [SerializeField] public int attackPower = 20;
-    //攻撃間隔関連 [Header("攻撃間隔関連")] [SerializeField] private float attackInterval = 5.0f; //攻撃間隔 private float attackTimer = 0f; [SerializeField] private float attackRange = 2.5f; //攻撃範囲 [SerializeField] private float keepDistance = 2.0f; //適正距離 [SerializeField] private float retreatDistance = 1.2f; //近すぎると下がる距離 [SerializeField] private float attackMoveSpeed = 2.0f; //攻撃時の移動速度
->>>>>>> parent of 79a22f5 (Revert "a")
+
     [Header("Role & Misc")]
     [SerializeField] private Role role = Role.Front;
     [SerializeField] private float encircleSignRandomSeed;
@@ -92,14 +67,6 @@ public class EnemyAI : MonoBehaviour
     private AttackController attackController;
     private EnemyManager manager;
 
-    //待機中の経過時間フレーム
-    private float patrolTimer = 0f;
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of 79a22f5 (Revert "a")
-=======
->>>>>>> parent of 9b8b393 (a)
     //フレームカウンタ
     private int frameCounter = 0;
     //前回の Boids 力を保持し、更新間隔中は再利用
@@ -275,15 +242,7 @@ public class EnemyAI : MonoBehaviour
         alert.GetComponent<BillBoard>().enemy = this.transform;
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-    //Player を後からセットできる
-=======
-=======
->>>>>>> parent of 79a22f5 (Revert "a")
+
     //外部用の読み取り専用関数
     
     public Vector3 GetPatrolCenter() => patrolCenter;
@@ -298,24 +257,13 @@ public class EnemyAI : MonoBehaviour
     public Role EnemyRole => role;
     public float KeepDistance => keepDistance;
     public float RetreatDistance => retreatDistance;
-<<<<<<< HEAD
+
     public float AttackInterval => attackInterval;
     public float AttackRadius => attackRadius;
     public int AttackPower => attackPower;
     public float DashTime => dashTime;
 
->>>>>>> Stashed changes
-=======
-    //Player を後からセットできる
->>>>>>> parent of bb1ebc5 (a)
-=======
-    //Player を後からセットできる
->>>>>>> parent of bb1ebc5 (a)
-=======
->>>>>>> parent of 79a22f5 (Revert "a")
-=======
-    //Player を後からセットできる
->>>>>>> parent of 9b8b393 (a)
+
     public void SetPlayer(Transform p)
     {
         player = p;

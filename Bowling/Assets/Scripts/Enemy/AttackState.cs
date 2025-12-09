@@ -8,7 +8,7 @@ public class AttackState : IState
     public StateType Type => StateType.Attack;
 
     private EnemyAI enemy;
-<<<<<<< HEAD
+
 
     private float attackTimer = 0f;             //攻撃間隔
     private bool isDashing = false;             //突進するか
@@ -16,18 +16,7 @@ public class AttackState : IState
     private Vector3 dashDir;
     private float nextAttackRequestTime = 0f;
     public float attackRequestCooldown = 2f;    // 攻撃再申請までの秒数
-=======
-    
-    private float attackTimer = 0f;
-    
-    private bool isDashing = false;                        //突進するか
-    private float dashTimer = 0f;
-    //タイマー 
-    private Vector3 dashDir;
 
-    private float nextAttackRequestTime = 0f;
-    public float attackRequestCooldown = 2f; //攻撃再申請までの秒数
->>>>>>> parent of 79a22f5 (Revert "a")
 
     public AttackState(EnemyAI enemy)
     {
@@ -113,11 +102,11 @@ public class AttackState : IState
             enemy.Agent.SetDestination(hit.position);
         }
         //攻撃条件（範囲内かつクールダウン経過
-<<<<<<< HEAD
+
         if (attackTimer >= enemy.AttackInterval)
-=======
-        if (attackTimer >= attackInterval)
->>>>>>> parent of 79a22f5 (Revert "a")
+
+        if (attackTimer >= enemy.AttackInterval)
+
         {
             if (Time.time >= nextAttackRequestTime &&
             enemy.AttackCtrl.TryRequestAttack(enemy))
@@ -159,32 +148,27 @@ public class AttackState : IState
 
         //衝突判定
         Collider[] hits = Physics.OverlapSphere(enemy.transform.position
-<<<<<<< HEAD
+
         + enemy.transform.forward * 0.5f, enemy.AttackRadius);
-=======
-        + enemy.transform.forward * 0.5f, attackRadius);
->>>>>>> parent of 79a22f5 (Revert "a")
+
+
+
 
         foreach (var h in hits)
         {
             if (h.CompareTag("Player"))
             {
                 Debug.Log($"の突進がプレイヤーに命中！");
-<<<<<<< HEAD
+
                 h.GetComponent<PlayerHealth>()?.TakeDamage(enemy.AttackPower);
-=======
-                h.GetComponent<PlayerHealth>()?.TakeDamage(attackPower);
->>>>>>> parent of 79a22f5 (Revert "a")
+
                 enemy.AttackCtrl.EndAttack(enemy);
                 return;
             }
 
             //時間で突進終了
-<<<<<<< HEAD
+
             if (dashTimer > enemy.DashTime)
-=======
-            if (dashTimer > dashTime)
->>>>>>> parent of 79a22f5 (Revert "a")
             {
                 enemy.AttackCtrl.EndAttack(enemy);
             }
