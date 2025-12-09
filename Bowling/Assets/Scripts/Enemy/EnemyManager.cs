@@ -51,6 +51,7 @@ public class EnemyManager : MonoBehaviour
 <<<<<<< HEAD
 
     public Transform GetPlayerTransform() => playerTransform;
+<<<<<<< HEAD
     {
 =======
 >>>>>>> parent of 79a22f5 (Revert "a")
@@ -95,6 +96,8 @@ public class EnemyManager : MonoBehaviour
 
 =======
 >>>>>>> parent of 79a22f5 (Revert "a")
+=======
+>>>>>>> parent of 9b8b393 (a)
 
     public List<EnemyAI> GetNearbyEnemies(EnemyAI self, float radius)
     {

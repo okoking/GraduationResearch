@@ -20,6 +20,7 @@ public class EnemyAI : MonoBehaviour
     //待機状態で止まる時間
     [SerializeField] private float patrolWaitTime = 3f;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     //待機中の経過時間フレーム
     private float patrolTimer = 0f;
@@ -32,6 +33,12 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private Vector3 patrolCenter;          //巡回の中心点
     [SerializeField] private float patrolAreaRadius = 20f;  //この範囲から出ない
 
+=======
+    //待機中の経過時間フレーム
+    private float patrolTimer = 0f;
+    [SerializeField] private Vector3 patrolCenter; //巡回の中心点
+    [SerializeField] private float patrolAreaRadius = 20f; //この範囲から出ない
+>>>>>>> parent of 9b8b393 (a)
 
     //Boids群れ制御関連
     [Header("Boids群れ制御関連")]
@@ -47,6 +54,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float maxBoidsForce = 7f;
     //Boids 計算の更新間隔
     [SerializeField] private int boidsUpdateInterval = 3;
+<<<<<<< HEAD
 
 <<<<<<< HEAD
     //攻撃関連
@@ -90,6 +98,8 @@ public class EnemyAI : MonoBehaviour
 
 =======
 >>>>>>> parent of 79a22f5 (Revert "a")
+=======
+>>>>>>> parent of 9b8b393 (a)
     //フレームカウンタ
     private int frameCounter = 0;
     //前回の Boids 力を保持し、更新間隔中は再利用
@@ -268,6 +278,7 @@ public class EnemyAI : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     //Player を後からセットできる
 =======
@@ -302,6 +313,9 @@ public class EnemyAI : MonoBehaviour
 >>>>>>> parent of bb1ebc5 (a)
 =======
 >>>>>>> parent of 79a22f5 (Revert "a")
+=======
+    //Player を後からセットできる
+>>>>>>> parent of 9b8b393 (a)
     public void SetPlayer(Transform p)
     {
         player = p;
