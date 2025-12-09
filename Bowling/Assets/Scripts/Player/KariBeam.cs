@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class KariBeam : MonoBehaviour
 {
@@ -120,6 +121,8 @@ public class KariBeam : MonoBehaviour
                 {
                     if (h.collider.CompareTag("Enemy"))
                         Debug.Log("“G‚ÉŠÑ’Êƒqƒbƒg: " + h.collider.name);
+
+                    h.collider.GetComponent<Boss>()?.TakeDamage(1);
                 }
 
                 //// raycast‚Å–½’†”»’è
