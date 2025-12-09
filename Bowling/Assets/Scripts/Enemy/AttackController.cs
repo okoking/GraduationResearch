@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class AttackController
 {
+<<<<<<< HEAD
     //[Header("Å‘å“¯ŽžUŒ‚”")]
     //[SerializeField] private int baseMaxAttacker = 3;
 
@@ -42,6 +43,28 @@ public class AttackController
     public AttackController()
     {
         baseMaxAttacker = maxAttacker;
+=======
+    [Header("Å‘å“¯ŽžUŒ‚”")]
+    [SerializeField] private int baseMaxAttacker = 3;
+
+    public int MaxAttacker { get; private set; } = 3;
+    private int currentAttacking = 0;
+    private Queue<EnemyAI> attackQueue = new Queue<EnemyAI>();
+    private float globalCooldown = 2.5f;
+    private float globalTimer = 0f;
+
+    //ƒ‰ƒbƒVƒ…
+    private bool isRush = false;
+    private float rushChance = 0.1f;
+    private float rushDuration = 4f;
+    private float rushTimer = 0f;
+    private float rushCooldown = 10f;
+    private float rushCooldownTimer = 0f;
+
+    public AttackController()
+    {
+        MaxAttacker = baseMaxAttacker;
+>>>>>>> parent of 79a22f5 (Revert "a")
     }
 
     public void Update()

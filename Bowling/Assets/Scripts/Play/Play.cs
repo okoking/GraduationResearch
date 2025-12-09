@@ -5,9 +5,9 @@ public class Play : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //プレイヤーセット
-        EnemyManager.Instance.SetPlayer(
-            GameObject.Find("Player").transform);
+        ////プレイヤーセット
+        //EnemyManager.Instance.SetPlayer(
+        //    GameObject.Find("Player").transform);
     }
 
     // Update is called once per frame
