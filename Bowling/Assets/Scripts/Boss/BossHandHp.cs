@@ -7,6 +7,12 @@ public class BossHandHp : MonoBehaviour
 
     private Boss boss;
 
+    //無敵かどうか
+    bool isPerfect = false;
+
+    //無敵時間
+    float isInvincibleTime;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,6 +23,17 @@ public class BossHandHp : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isPerfect)
+        {
+            isInvincibleTime += Time.deltaTime;
+        }
+
+        if (isInvincibleTime > 0.5f)
+        {
+            isInvincibleTime = 0f;
+            isPerfect = false;
+        }
+
         //仮
         if (Input.GetKey(KeyCode.H))
         {
@@ -26,9 +43,12 @@ public class BossHandHp : MonoBehaviour
 
     public void TakeDamage(int take)
     {
-        hp -= take;
-
-        Debug.Log("ボスハンド" + hp);
+        if (!isPerfect)
+        {
+            hp -= take;
+            Debug.Log(hp);
+            isPerfect = true;
+        }
 
         if (hp <= 0)
         {
@@ -38,7 +58,7 @@ public class BossHandHp : MonoBehaviour
 
     void Die()
     {
-        Destroy(this);
+        Destroy(gameObject);
         //ボスの完全無敵状態を解除する
         boss.FalseIsPerfectInvincible();
     }

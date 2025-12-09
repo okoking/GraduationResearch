@@ -36,7 +36,6 @@ public class BossHand : MonoBehaviour
 
     GameObject[] floorAttackSub;          //床攻撃前の危険表示
 
-    GameObject   floorAttackEffect;       //床攻撃
     GameObject[] floorAttack;             //床攻撃
 
     Vector3[] PPos;

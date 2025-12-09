@@ -13,6 +13,30 @@ public class Boss : MonoBehaviour
 
     int hp = 50;
 
+    Transform player;
+
+    private float floorAttackDispTimer;
+    private bool isFloorAtackDisp = false;
+    private float floorAttackTimer;
+    private bool isFloorAtack = false;
+    private float FloorAtackFinTimer;
+    private bool isFloorAtackFin = true;
+
+    bool isAttttttack = false;          //_‚Ìˆêè
+
+    public int FloorAtkNum;
+
+    GameObject[] floorAttackSub;          //°UŒ‚‘O‚ÌŠëŒ¯•\¦
+
+    GameObject[] floorAttack;             //°UŒ‚
+
+    Vector3[] PPos;
+
+    private GameObject effect;
+
+    public GameObject floorAttackSubPrefab;//°UŒ‚
+    public GameObject floorAttackPrefab;   //°UŒ‚
+
     public void FalseIsPerfectInvincible()
     {
         isPerfectInvincible = false;
@@ -21,7 +45,14 @@ public class Boss : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        effect = Resources.Load<GameObject>("Effects/Meteors AOE");
 
+        PPos = new Vector3[FloorAtkNum];
+        floorAttackSub = new GameObject[FloorAtkNum];
+        floorAttack = new GameObject[FloorAtkNum];
+
+        if (player == null)
+            player = GameObject.FindWithTag("Player")?.transform;
     }
 
     // Update is called once per frame
@@ -29,10 +60,10 @@ public class Boss : MonoBehaviour
     {
         if (isPerfect)
         {
-            isInvincibleTime++;
+            isInvincibleTime += Time.deltaTime;
         }
 
-        if (isInvincibleTime > 5f)
+        if (isInvincibleTime > 0.5f)
         {
             isInvincibleTime = 0f;
             isPerfect = false;
@@ -40,17 +71,83 @@ public class Boss : MonoBehaviour
 
         if (hp <= 0)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
 
-        //‰¼
+        //–³“G‚Å‚È‚¯‚ê‚ÎˆÈ‰º‚Ìˆ—‚ğs‚¤
+        if (!isPerfectInvincible)
+        {
+            //UŒ‚—\‘ª•\¦ˆ—
+            if (!isFloorAtackDisp && isFloorAtackFin)
+            {
+                floorAttackTimer += Time.deltaTime;
+            }
+
+            if (floorAttackTimer >= 5f)
+            {
+                RoundFloorAttack();
+                isFloorAtackFin = false;
+                floorAttackTimer = 0f;
+            }
+
+            // UŒ‚—\‘ª•\¦’†‚È‚ç
+            if (isFloorAtackDisp)
+            {
+                floorAttackDispTimer += Time.deltaTime;
+                if (floorAttackDispTimer > 2f)
+                {
+
+                    for (int i = 0; i < FloorAtkNum; i++)
+                    {
+                        Destroy(floorAttackSub[i]);
+                    }
+                    floorAttackDispTimer = 0f;
+                    isFloorAtack = true;
+                    isFloorAtackDisp = false;
+                }
+            }
+
+            if (isFloorAtack)
+            {
+                //‚±‚±‚ÅUŒ‚–{‘Ì‚ğ¶¬
+                for (int i = 0; i < FloorAtkNum; i++)
+                {
+                    floorAttack[i] = Instantiate(floorAttackPrefab, PPos[i], new Quaternion(0f, 0f, 0f, 0f));
+                    EffectManager.instance.Request("meteor", PPos[i]);
+                }
+
+                isFloorAtack = false;
+                isAttttttack = true;
+            }
+
+            if (isAttttttack)
+            {
+                //‚±‚±‚ÅƒfƒXƒgƒƒC‚Ü‚Å‚Ìƒ^ƒCƒ}[‚ğ‰ñ‚·
+                FloorAtackFinTimer += Time.deltaTime;
+            }
+
+            if (FloorAtackFinTimer > 5f)
+            {
+                //UŒ‚–{‘Ì‚ğE‚·
+                for (int i = 0; i < FloorAtkNum; i++)
+                {
+                    Destroy(floorAttack[i]);
+                }
+                FloorAtackFinTimer = 0f;
+                //UŒ‚I—¹‚µ‚½‚±‚Æ‚ğ“`‚¦‚é
+                isFloorAtackFin = true;
+                isAttttttack = false;
+            }
+        }
+
+            //‰¼
         if (Input.GetKeyDown(KeyCode.V))
         {
-            TakeDamage();
+            TakeDamage(1);
         }
     }
 
-    public void TakeDamage()
+    public void TakeDamage(int i)
     {
         //–³“G‚Å‚ ‚ê‚ÎˆÈ‰º‚Ìˆ—‚ğs‚í‚È‚¢
         if (isPerfectInvincible) return;
@@ -58,9 +155,20 @@ public class Boss : MonoBehaviour
         //–³“G’†‚Å‚È‚¯‚ê‚ÎUŒ‚‚ª—˜‚­
         if (!isPerfect)
         {
-            hp--;
+            hp -= i;
             Debug.Log(hp);
             isPerfect = true;
         }
+    }
+
+    private void RoundFloorAttack()
+    {
+        //ƒvƒŒƒCƒ„[‚ÌÀ•W‚Éo‚·
+        for (int i = 0; i < FloorAtkNum; i++)
+        {
+            PPos[i] = new Vector3(player.position.x + Random.Range(-50, 50), 0.0f, player.position.z + Random.Range(-50, 50));
+            floorAttackSub[i] = Instantiate(floorAttackSubPrefab, PPos[i], new Quaternion(0f, 0f, 0f, 0f));
+        }
+        isFloorAtackDisp = true;
     }
 }
