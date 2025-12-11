@@ -42,6 +42,8 @@ public class BossHand : MonoBehaviour
 
     int[] off;
 
+    int id = -1;
+
     void Start()
     {
         if (player == null)
@@ -124,12 +126,20 @@ public class BossHand : MonoBehaviour
 
         if (Input.GetKey(KeyCode.K))
         {
-            EffectManager.instance.Pause(off[0]);
+            if (id == -1)
+            {
+                id = off[0];
+                EffectManager.instance.Pause(id);
+            }
         }
 
         if (Input.GetKey(KeyCode.J))
         {
-            EffectManager.instance.Resume(off[0]);
+            if (id != -1)
+            {
+                EffectManager.instance.Resume(id);
+                id = -1;
+            }
         }
 
         if (isAttttttack)
