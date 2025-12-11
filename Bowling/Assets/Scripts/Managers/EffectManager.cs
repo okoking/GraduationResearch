@@ -5,16 +5,16 @@ public class EffectManager : MonoBehaviour
 {
     public static EffectManager instance;
 
-    // 登録しておくエフェクトPrefab
+    //登録しておくエフェクトPrefabリスト
     private Dictionary<string, GameObject> effects = new Dictionary<string, GameObject>();
 
-    // 再生中エフェクト（名前）→ 複数
+    //再生中のエフェクトリスト
     private Dictionary<string, List<int>> effectsByName = new Dictionary<string, List<int>>();
 
-    // 再生中エフェクト（ID）→ GameObject
+    //再生中エフェクトIDリスト
     private Dictionary<int, GameObject> effectsById = new Dictionary<int, GameObject>();
 
-    // ユニークID用カウンタ
+    //ID用カウンタ
     private int nextId = 1;
 
     private void Awake()
@@ -29,33 +29,39 @@ public class EffectManager : MonoBehaviour
 
     void Start()
     {
-        // Resources/Effects 以下
+        //エフェクトの登録を行う。
+        //エフェクトはResourcesファイルの中のEffectsの中に入れる
+        //配列の名前は被らない限り自由な名前でOK
+        //      kore↓名前
         effects["meteor"] = Resources.Load<GameObject>("Effects/Meteors AOE");
     }
 
-    // ===============================================================
-    // Play（再生） → 返り値は個別ID
-    // ===============================================================
+    //エフェクトの呼び出し
+    //引数(Startでつけた名前/再生する座標)
+    //使用方法 : EffectManager.instance.Play(名前,座標) : 複数呼び出しも可能
     public int Play(string effectName, Vector3 pos)
     {
+        //登録されていなければエラー
         if (!effects.ContainsKey(effectName)) return -1;
 
+        //生成する
         GameObject fx = Instantiate(effects[effectName], pos, Quaternion.identity);
 
         int id = nextId++;
-        effectsById[id] = fx;
-
+        effectsById[id] = fx;   //生成順にIDを付与する(個別でエフェクトを管理するため)
+            
+        //名前単位でリスト管理
         if (!effectsByName.ContainsKey(effectName))
             effectsByName[effectName] = new List<int>();
 
         effectsByName[effectName].Add(id);
 
-        return id; // 個別に制御可能！
+        return id;
     }
 
-    // ===============================================================
-    // 個別 Pause
-    // ===============================================================
+    //Playで割り振られたIDで個別にエフェクトを停止
+    //引数(Playで割り振られたID(Playでの戻り値))
+    //使用方法 : EffectMaanger.instace.Pause(ID)
     public void Pause(int id)
     {
         if (!effectsById.ContainsKey(id)) return;
@@ -64,9 +70,9 @@ public class EffectManager : MonoBehaviour
         if (ps != null) ps.Pause();
     }
 
-    // ===============================================================
-    // 名前単位 Pause（Hit 全部）
-    // ===============================================================
+    //その名前を付けたエフェクト全てを停止
+    //引数(Startでつけた名前)
+    //使用方法 : EffectManager.instance.Pause("名前")
     public void Pause(string effectName)
     {
         if (!effectsByName.ContainsKey(effectName)) return;
@@ -75,9 +81,9 @@ public class EffectManager : MonoBehaviour
             Pause(id);
     }
 
-    // ===============================================================
-    // 個別 Resume
-    // ===============================================================
+    //Playで割り振られたIDで個別にエフェクトを再生
+    //引数(Playで割り振られたID(Playでの戻り値))
+    //使用方法 : EffectManager.instance.Resume(ID)
     public void Resume(int id)
     {
         if (!effectsById.ContainsKey(id)) return;
@@ -86,9 +92,9 @@ public class EffectManager : MonoBehaviour
         if (ps != null) ps.Play();
     }
 
-    // ===============================================================
-    // 名前単位 Resume（Hit 全部）
-    // ===============================================================
+    //その名前を付けたエフェクト全てを再生
+    //引数(Startでつけた名前)
+    //使用方法 : EffectManager.instance.Resume("名前")
     public void Resume(string effectName)
     {
         if (!effectsByName.ContainsKey(effectName)) return;
@@ -97,9 +103,9 @@ public class EffectManager : MonoBehaviour
             Resume(id);
     }
 
-    // ===============================================================
-    // 個別 Stop（破棄）
-    // ===============================================================
+    //Playで割り振られたIDで個別にエフェクトを停止し破棄
+    //引数(Playで割り振られたID(Playでの戻り値))
+    //使用方法 : EffectMaanger.instace.Stop(ID)
     public void Stop(int id)
     {
         if (!effectsById.ContainsKey(id)) return;
@@ -113,14 +119,14 @@ public class EffectManager : MonoBehaviour
 
         effectsById.Remove(id);
 
-        // 名前リストからも削除
+        //名前リストからも削除
         foreach (var list in effectsByName.Values)
             list.Remove(id);
     }
 
-    // ===============================================================
-    // 名前単位 Stop（Hit 全部）
-    // ===============================================================
+    //その名前を付けたエフェクト全てを停止し破棄
+    //引数(Startでつけた名前)
+    //使用方法 : EffectManager.instance.Stop("名前")
     public void Stop(string effectName)
     {
         if (!effectsByName.ContainsKey(effectName)) return;
@@ -131,9 +137,9 @@ public class EffectManager : MonoBehaviour
         effectsByName[effectName].Clear();
     }
 
-    // ===============================================================
-    // 全部 Stop
-    // ===============================================================
+    //生成した全てのエフェクトを削除
+    //引数(なし)
+    //使用方法 : EffectManager.instance.StopAll()
     public void StopAll()
     {
         foreach (var id in new List<int>(effectsById.Keys))
