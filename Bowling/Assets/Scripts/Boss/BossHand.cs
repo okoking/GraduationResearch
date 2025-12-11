@@ -40,6 +40,8 @@ public class BossHand : MonoBehaviour
 
     Vector3[] PPos;
 
+    int[] off;
+
     void Start()
     {
         if (player == null)
@@ -48,6 +50,7 @@ public class BossHand : MonoBehaviour
         PPos = new Vector3[FloorAtkNum];
         floorAttackSub = new GameObject[FloorAtkNum];
         floorAttack = new GameObject[FloorAtkNum];
+        off = new int[FloorAtkNum];
     }
 
     void Update()
@@ -112,11 +115,21 @@ public class BossHand : MonoBehaviour
             //ここで攻撃本体を生成
             for (int i = 0; i < FloorAtkNum; i++) {
                 floorAttack[i] = Instantiate(floorAttackPrefab, PPos[i], new Quaternion(0f, 0f, 0f, 0f));
-                EffectManager.instance.Request("meteor", PPos[i]);
+                off[i] = EffectManager.instance.Play("meteor", PPos[i]);
             }
 
             isFloorAtack = false;
             isAttttttack = true;
+        }
+
+        if (Input.GetKey(KeyCode.K))
+        {
+            EffectManager.instance.Pause(off[0]);
+        }
+
+        if (Input.GetKey(KeyCode.J))
+        {
+            EffectManager.instance.Resume(off[0]);
         }
 
         if (isAttttttack)

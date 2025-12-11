@@ -112,7 +112,7 @@ MonoBehaviour:
   beamInterval: 5
   beamWarningTime: 1
   sweepAngle: 90
-  FloorAtkNum: 1
+  FloorAtkNum: 2
 --- !u!65 &6509926182899686461
 BoxCollider:
   m_ObjectHideFlags: 0

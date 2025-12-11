@@ -112,7 +112,7 @@ public class Boss : MonoBehaviour
                 for (int i = 0; i < FloorAtkNum; i++)
                 {
                     floorAttack[i] = Instantiate(floorAttackPrefab, PPos[i], new Quaternion(0f, 0f, 0f, 0f));
-                    EffectManager.instance.Request("meteor", PPos[i]);
+                    EffectManager.instance.Play("meteor", PPos[i]);
                 }
 
                 isFloorAtack = false;
