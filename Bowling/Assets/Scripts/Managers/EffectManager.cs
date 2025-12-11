@@ -89,7 +89,7 @@ public class EffectManager : MonoBehaviour
         if (!effectsById.ContainsKey(id)) return;
 
         var ps = effectsById[id].GetComponent<ParticleSystem>();
-        if (ps != null && ps.isPaused) ps.Play();
+        if (ps != null) ps.Play();
     }
 
     //その名前を付けたエフェクト全てを再生
