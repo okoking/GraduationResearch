@@ -558,6 +558,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6713537756215694911, guid: 4f2d654c914cb804b8fc217e8646ca94, type: 3}
     - target: {fileID: 297866073283056106, guid: ce93e6f3f4525aa40a1e470fba8f6999, type: 3}
+      propertyPath: maxInvincibleTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 297866073283056106, guid: ce93e6f3f4525aa40a1e470fba8f6999, type: 3}
       propertyPath: floorAttackSubPrefab
       value: 
       objectReference: {fileID: 815703356155443534, guid: a5aa4bf307e59a94fb857c32c79ec60b, type: 3}

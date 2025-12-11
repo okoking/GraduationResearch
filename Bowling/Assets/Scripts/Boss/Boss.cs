@@ -32,10 +32,11 @@ public class Boss : MonoBehaviour
 
     Vector3[] PPos;
 
-    private GameObject effect;
-
     public GameObject floorAttackSubPrefab;//床攻撃
     public GameObject floorAttackPrefab;   //床攻撃
+
+    //最大無敵時間
+    public float maxInvincibleTime;
 
     public void FalseIsPerfectInvincible()
     {
@@ -45,8 +46,6 @@ public class Boss : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        effect = Resources.Load<GameObject>("Effects/Meteors AOE");
-
         PPos = new Vector3[FloorAtkNum];
         floorAttackSub = new GameObject[FloorAtkNum];
         floorAttack = new GameObject[FloorAtkNum];
@@ -63,7 +62,7 @@ public class Boss : MonoBehaviour
             isInvincibleTime += Time.deltaTime;
         }
 
-        if (isInvincibleTime > 0.5f)
+        if (isInvincibleTime > maxInvincibleTime)
         {
             isInvincibleTime = 0f;
             isPerfect = false;
@@ -166,7 +165,7 @@ public class Boss : MonoBehaviour
         //プレイヤーの座標に出す
         for (int i = 0; i < FloorAtkNum; i++)
         {
-            PPos[i] = new Vector3(player.position.x + Random.Range(-50, 50), 0.0f, player.position.z + Random.Range(-50, 50));
+            PPos[i] = new Vector3(player.position.x + Random.Range(-50, 50), 0.01f, player.position.z + Random.Range(-50, 50));
             floorAttackSub[i] = Instantiate(floorAttackSubPrefab, PPos[i], new Quaternion(0f, 0f, 0f, 0f));
         }
         isFloorAtackDisp = true;

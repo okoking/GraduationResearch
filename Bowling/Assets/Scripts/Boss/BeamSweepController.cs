@@ -18,8 +18,6 @@ public class BeamSweepController : MonoBehaviour
 
     private PlayerHealth playerHealth;
 
-    GameObject EffectInstant;
-
     void Start()
     {
         line = GetComponent<LineRenderer>();
@@ -63,7 +61,7 @@ public class BeamSweepController : MonoBehaviour
         {
             if (h.collider.CompareTag("Player"))
             {
-                //playerHealth.TakeDamage(1);
+                playerHealth.TakeDamage(1);
             }
         }
 

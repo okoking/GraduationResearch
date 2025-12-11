@@ -25,6 +25,7 @@ public class EffectManager : MonoBehaviour
     {
         // Resources/Effects ‚Ì‰º‚ÉPrefab‚ð’u‚¢‚Ä‚¨‚­
         effects["meteor"] = Resources.Load<GameObject>("Effects/Meteors AOE");
+        effects["beam"] = Resources.Load<GameObject>("Effects/AoE slash blue");
     }
 
     /// <summary>

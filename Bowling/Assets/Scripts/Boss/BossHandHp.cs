@@ -13,10 +13,12 @@ public class BossHandHp : MonoBehaviour
     //–³“GŠÔ
     float isInvincibleTime;
 
+    //Å‘å–³“GŠÔ
+    public float maxInvincibleTime;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
         boss = FindAnyObjectByType<Boss>();
     }
 
@@ -28,7 +30,7 @@ public class BossHandHp : MonoBehaviour
             isInvincibleTime += Time.deltaTime;
         }
 
-        if (isInvincibleTime > 0.5f)
+        if (isInvincibleTime > maxInvincibleTime)
         {
             isInvincibleTime = 0f;
             isPerfect = false;

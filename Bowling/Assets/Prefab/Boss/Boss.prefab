@@ -138,3 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be9845a7970a24409e61766ca7f7119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FloorAtkNum: 20
+  floorAttackSubPrefab: {fileID: 815703356155443534, guid: a5aa4bf307e59a94fb857c32c79ec60b, type: 3}
+  floorAttackPrefab: {fileID: 6713537756215694911, guid: 4f2d654c914cb804b8fc217e8646ca94, type: 3}
+  maxInvincibleTime: 0.5

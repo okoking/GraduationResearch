@@ -16,7 +16,7 @@ public class BossHandSpawer : MonoBehaviour
         BossHand handScript = hand.GetComponent<BossHand>();
         if (handScript != null)
         {
-            handScript.bossHandSpawn = this.transform;
+            handScript.bossHandSpawn = transform;
         }
     }
 

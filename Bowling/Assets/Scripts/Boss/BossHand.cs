@@ -40,14 +40,10 @@ public class BossHand : MonoBehaviour
 
     Vector3[] PPos;
 
-    private GameObject effect;
-
     void Start()
     {
         if (player == null)
             player = GameObject.FindWithTag("Player")?.transform;
-
-        effect = Resources.Load<GameObject>("Effects/Meteors AOE");
 
         PPos = new Vector3[FloorAtkNum];
         floorAttackSub = new GameObject[FloorAtkNum];
@@ -184,7 +180,7 @@ public class BossHand : MonoBehaviour
         //プレイヤーの座標に出す
         for (int i = 0; i < FloorAtkNum; i++)
         {
-            PPos[i] = new Vector3(player.position.x + Random.Range(-50, 50), 0.0f, player.position.z + Random.Range(-50, 50));
+            PPos[i] = new Vector3(player.position.x + Random.Range(-20, 20), 0.01f, player.position.z + Random.Range(-20, 20));
             floorAttackSub[i] = Instantiate(floorAttackSubPrefab, PPos[i], new Quaternion(0f, 0f, 0f, 0f));
         }
         isFloorAtackDisp = true;
