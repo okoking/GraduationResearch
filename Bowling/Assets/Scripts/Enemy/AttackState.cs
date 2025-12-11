@@ -9,7 +9,6 @@ public class AttackState : IState
 
     private EnemyAI enemy;
 
-
     private float attackTimer = 0f;             //攻撃間隔
     private bool isDashing = false;             //突進するか
     private float dashTimer = 0f;               //タイマー
@@ -96,17 +95,14 @@ public class AttackState : IState
         Vector3 moveDir = Vector3.Slerp(angle, (desiredPos + boidsForce).normalized, 0.4f);
         //NavMesh上の有効な地点を探して移動
         Vector3 targetPos = enemy.transform.position + moveDir * 2.0f;
-        //3m 先を目標にする
+        //3m先を目標にする
         if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
         {
             enemy.Agent.SetDestination(hit.position);
         }
+
         //攻撃条件（範囲内かつクールダウン経過
-
         if (attackTimer >= enemy.AttackInterval)
-
-        if (attackTimer >= enemy.AttackInterval)
-
         {
             if (Time.time >= nextAttackRequestTime &&
             enemy.AttackCtrl.TryRequestAttack(enemy))
@@ -114,8 +110,9 @@ public class AttackState : IState
                 nextAttackRequestTime = Time.time + attackRequestCooldown;
                 if (!isDashing)
                 {
-                    ////突進方向を決定（最初の1回だけ）
-                    //dashDir = (player.position - enemy.transform.position).normalized; dashDir.y = 0f;
+                    //突進方向を決定（最初の1回だけ）
+                    dashDir = (player.position - enemy.transform.position).normalized;
+                    dashDir.y = 0f;
                     isDashing = true;
                     dashTimer = 0f;
                     Debug.Log($"突進攻撃を開始！");
@@ -144,15 +141,11 @@ public class AttackState : IState
 
         //突進移動
         dashTimer += Time.deltaTime;
-        //enemy.transform.position += dashDir * dashSpeed * Time.deltaTime;
+        enemy.transform.position += dashDir * enemy.DashSpeed * Time.deltaTime;
 
         //衝突判定
         Collider[] hits = Physics.OverlapSphere(enemy.transform.position
-
         + enemy.transform.forward * 0.5f, enemy.AttackRadius);
-
-
-
 
         foreach (var h in hits)
         {
@@ -162,17 +155,25 @@ public class AttackState : IState
 
                 h.GetComponent<PlayerHealth>()?.TakeDamage(enemy.AttackPower);
 
-                enemy.AttackCtrl.EndAttack(enemy);
+                EndAttack();
                 return;
             }
 
             //時間で突進終了
-
             if (dashTimer > enemy.DashTime)
             {
-                enemy.AttackCtrl.EndAttack(enemy);
+                EndAttack();
             }
         }
+    }
+
+    //攻撃終了
+    void EndAttack()
+    {
+        isDashing = false;
+        attackTimer = 0f;
+        dashTimer = 0f;
+        enemy.Ctrl.EndAttack(this);
     }
 
     private void EndDash()

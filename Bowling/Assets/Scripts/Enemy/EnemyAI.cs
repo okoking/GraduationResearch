@@ -257,11 +257,11 @@ public class EnemyAI : MonoBehaviour
     public Role EnemyRole => role;
     public float KeepDistance => keepDistance;
     public float RetreatDistance => retreatDistance;
-
     public float AttackInterval => attackInterval;
     public float AttackRadius => attackRadius;
     public int AttackPower => attackPower;
     public float DashTime => dashTime;
+    public float DashSpeed => dashSpeed;
 
 
     public void SetPlayer(Transform p)
