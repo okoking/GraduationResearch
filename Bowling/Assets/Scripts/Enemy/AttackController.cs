@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class AttackController
 {
-
     [Header("攻撃管理")]
     public int maxAttacker = 3;                     //同時に攻撃できる人数
     private int currentAttacking = 0;               //今攻撃している敵の人数
@@ -25,16 +24,19 @@ public class AttackController
 
     public AttackController()
     {
-        //MaxAttacker = baseMaxAttacker;
+        baseMaxAttacker = maxAttacker;
     }
 
     public void Update()
     {
-        //if (globalTimer > 0f) globalTimer -= Time.deltaTime;
-
+        //グローバルクールダウン時間経過
+        if (globalAttackTimer > 0f)
+            globalAttackTimer -= Time.deltaTime;
+        //ラッシュ攻撃クールダウン
         if (!isRush)
         {
             rushCooldownTimer -= Time.deltaTime;
+            //ラッシュ可能 & 抽選
             if (rushCooldownTimer <= 0f)
             {
                 if (Random.value < rushChance)
@@ -44,52 +46,53 @@ public class AttackController
                 else
                 {
                     rushCooldownTimer = 5f;
+                    //再抽選までの猶予
                 }
             }
         }
         else
         {
+            //ラッシュ継続時間
             rushTimer -= Time.deltaTime;
-            if (rushTimer <= 0f) EndRush();
+            if (rushTimer <= 0f)
+                EndRush();
         }
+
+        
     }
 
     public bool TryRequestAttack(EnemyAI requester)
     {
-        //if (!isRush && globalTimer > 0f) return false;
-        //if (!attackQueue.Contains(requester)) attackQueue.Enqueue(requester);
-        //if (currentAttacking >= MaxAttacker) return false;
-        //if (attackQueue.Peek() != requester) return false;
+        if (!isRush && globalAttackTimer > 0f) return false;
+        if (!attackQueue.Contains(requester)) attackQueue.Enqueue(requester);
+        if (currentAttacking >= maxAttacker) return false;
+        if (attackQueue.Peek() != requester) return false;
 
-        //attackQueue.Dequeue();
-        //currentAttacking++;
-        //if (!isRush) globalTimer = globalCooldown;
+        attackQueue.Dequeue();
+        currentAttacking++;
+        if (!isRush) globalAttackTimer = globalAttackCooldown;
         return true;
     }
 
     //攻撃終了
     public void EndAttack(EnemyAI enemy)
     {
-        //isDashing = false;
-        //attackTimer = 0f
-        //dashTimer = 0f;
-
         currentAttacking = Mathf.Max(0, currentAttacking - 1);
     }
 
     private void StartRush()
     {
-        //isRush = true;
-        //rushTimer = rushDuration;
-        //MaxAttacker = baseMaxAttacker * 2; //example: ラッシュで枠を増やす
-        //globalTimer = 0f;
-        //rushCooldownTimer = rushCooldown;
+        isRush = true;
+        rushTimer = rushDuration;
+        maxAttacker = baseMaxAttacker * 2; //example: ラッシュで枠を増やす
+        globalAttackTimer = 0f;
+        rushCooldownTimer = rushCooldown;
     }
 
     private void EndRush()
     {
-        //isRush = false;
-        //MaxAttacker = baseMaxAttacker;
+        isRush = false;
+        maxAttacker = baseMaxAttacker;
     }
 
     public int CurrentAttacking => currentAttacking;

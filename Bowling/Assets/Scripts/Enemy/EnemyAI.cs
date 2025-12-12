@@ -142,7 +142,6 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    #region State API (used by states)
     public bool CanSeePlayer(float viewDistance = 10f, float viewAngle = 60f)
     {
         if (player == null)
@@ -209,7 +208,6 @@ public class EnemyAI : MonoBehaviour
         currentState = newState;
         currentState?.OnStart();
     }
-    #endregion
 
     private void AssignRandomRole()
     {
@@ -242,7 +240,6 @@ public class EnemyAI : MonoBehaviour
         alert.GetComponent<BillBoard>().enemy = this.transform;
     }
 
-
     //外部用の読み取り専用関数
     
     public Vector3 GetPatrolCenter() => patrolCenter;
@@ -262,7 +259,6 @@ public class EnemyAI : MonoBehaviour
     public int AttackPower => attackPower;
     public float DashTime => dashTime;
     public float DashSpeed => dashSpeed;
-
 
     public void SetPlayer(Transform p)
     {

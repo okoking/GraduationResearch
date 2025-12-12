@@ -86,7 +86,7 @@ public class AttackState : IState
         {
             //攻撃タイマー更新
             attackTimer += Time.deltaTime;
-            Debug.Log($"プレイヤーがちょうどいい距離にいます");
+            //Debug.Log($"プレイヤーがちょうどいい距離にいます");
         }
 
         //Boids補正
@@ -121,7 +121,7 @@ public class AttackState : IState
         }
         else
         {
-            Debug.Log($"クールダウンが終わっていません: {attackTimer}");
+            //Debug.Log($"クールダウンが終わっていません: {attackTimer}");
         }
 
         PerformAttack();
@@ -173,7 +173,7 @@ public class AttackState : IState
         isDashing = false;
         attackTimer = 0f;
         dashTimer = 0f;
-        //enemy.Ctrl.EndAttack(this);
+        enemy.AttackCtrl.EndAttack(enemy);
     }
 
     private void EndDash()

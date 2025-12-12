@@ -44,14 +44,46 @@ public class EnemyManager : MonoBehaviour
     void Update()
     {
         attackController.Update();
+        //if (player == null)
+        //{
+        //    Debug.Log("プレイヤーを取得できませんでした");
+        //    Debug.Log("再度取得します。");
+        //    var p = GameObject.FindWithTag("Player");
+        //    if (p != null) player = p.transform;
+        //    return;
+        //}
+
         if (player == null)
         {
-            Debug.Log("プレイヤーを取得できませんでした");
-            Debug.Log("再度取得します。");
-            var p = GameObject.FindWithTag("Player");
-            if (p != null) player = p.transform;
+            Debug.Log("プレイヤー情報がないため処理を終了しました");
+            SetPlayer(GameObject.Find("Player").transform);
+            if (player != null)
+                Debug.Log("プレイヤー情報を取得しました");
+            else
+                Debug.Log("プレイヤー情報を取得できませんでした");
             return;
         }
+
+        //foreach (var e in enemies)
+        //{
+        //    float dist = Vector3.Distance(player.position,
+        //        e.transform.position);
+        //    if (dist < 15f)
+        //        e.ManagedUpdate();
+        //    //近距離は毎フレーム
+        //    else if (dist < 30f)
+        //    {
+        //        if (Time.frameCount % 2 == 0)
+        //            e.ManagedUpdate();
+        //    }
+        //    //中距離
+        //    else
+        //    {
+        //        if (Time.frameCount % 5 == 0)
+        //            e.ManagedUpdate();
+        //    }
+        //    //遠距離
+        //}
     }
 
     //近くにいる敵に警告をだす
@@ -71,6 +103,24 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    public bool IsFrontEnemyAttacking(Transform enemy, Transform player, float frontAngle = 1f)
+    {
+        foreach (var e in enemies)
+        {
+            if (e == null || e == enemy) continue;
+            if (e.CurrentStateType == StateType.Attack) continue;
+            //この敵が player 方向の前方にいるかチェック
+            Vector3 toThisEnemy = e.transform.position - player.position;
+            Vector3 toQuery = enemy.position - player.position;
+            float angle = Vector3.Angle(toThisEnemy, toQuery);
+            if (angle < frontAngle)
+            {
+                //同じ方向（前方ライン上）に攻撃中の敵がいる
+            return true;
+            }
+        }
+        return false;
+    }
     public int IsEnemyAttacking()
     {
         int count = 0;
@@ -103,6 +153,13 @@ public class EnemyManager : MonoBehaviour
     }
     //public int NumEnemiesAttackingNearby()
     //{ return attackController.CurrentAttacking; }
+
+    public void SetPlayer(Transform Player)
+    {
+        player = Player;
+        //登録済み EnemyAI に player を通知
+        foreach (var e in enemies) e.SetPlayer(player);
+    }
 
     //取得関数
     public Transform Player => player;
