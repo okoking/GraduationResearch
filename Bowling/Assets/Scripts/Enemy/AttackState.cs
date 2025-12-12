@@ -173,7 +173,7 @@ public class AttackState : IState
         isDashing = false;
         attackTimer = 0f;
         dashTimer = 0f;
-        enemy.Ctrl.EndAttack(this);
+        //enemy.Ctrl.EndAttack(this);
     }
 
     private void EndDash()
