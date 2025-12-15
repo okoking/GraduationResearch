@@ -12,9 +12,7 @@ public class PatrolState : IState
     {
         this.enemy = enemy;
     }
-
     public void OnStart() { }
-
     public void OnUpdate()
     {
         //エージェントを取得
@@ -70,12 +68,10 @@ public class PatrolState : IState
             agent.SetDestination(hit.position);
         }
     }
-
     public void OnExit()
     {
 
     }
-
     //巡回範囲と目的地をGizmosで可視化
     void OnDrawGizmosSelected()
     {

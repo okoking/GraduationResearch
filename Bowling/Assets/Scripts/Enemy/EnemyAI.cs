@@ -100,7 +100,11 @@ public class EnemyAI : MonoBehaviour
         debugLine.startWidth = debugLine.endWidth = 0.05f;
         debugLine.material = new Material(Shader.Find("Sprites/Default"));
         debugLine.positionCount = 2;
-       
+
+        if (!agent.isOnNavMesh)
+        {
+            Debug.LogError($"NavMesh 上にいません");
+        }
     }
 
     private void Start()
@@ -262,10 +266,10 @@ public class EnemyAI : MonoBehaviour
         isKnockback = true;
         knockbackTimer = knockbackDuration;
 
-        // 方向は一度だけ確定
+        //方向は一度だけ確定
         knockbackDir = (transform.position - attackerPos).normalized;
 
-        // NavMeshAgentを一時停止
+        //NavMeshAgentを一時停止
         agent.isStopped = true;
     }
     //ノックバック更新
