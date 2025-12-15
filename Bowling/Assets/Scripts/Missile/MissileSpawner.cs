@@ -25,6 +25,9 @@ public class MissileSpawner : MonoBehaviour
     {
         thisTransform = transform;
         intervalWait = new WaitForSeconds(interval);
+        var player = GameObject.FindWithTag("Player");
+
+        target = player.transform;
     }
 
     void Update()
@@ -34,14 +37,14 @@ public class MissileSpawner : MonoBehaviour
             return;
         }
 
-        if (missileMeter > MeterMax)
-        {
+        //if (missileMeter > MeterMax)
+        //{
             if (Input.GetKey(KeyCode.Space))
             {
                 StartCoroutine(nameof(SpawnMissile));
                 missileMeter = 0;
             }
-        }
+        //}
         
     }
 

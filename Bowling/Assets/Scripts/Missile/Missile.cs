@@ -81,7 +81,6 @@ public class Missile : MonoBehaviour
         thisTransform.rotation = Quaternion.LookRotation(velocity);
     }
 
-
     IEnumerator Timer()
     {
         yield return new WaitForSeconds(lifeTime);
@@ -92,7 +91,7 @@ public class Missile : MonoBehaviour
     Transform FindRandomTarget()
     {
         //敵のタグが付いたオブジェクトを探して格納
-        GameObject[] targets = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] targets = GameObject.FindGameObjectsWithTag("Player");
         //ターゲットとの距離が0ならnullを返す
         if (targets.Length == 0) return null;
         //ランダムなターゲットのトランスフォームを返す

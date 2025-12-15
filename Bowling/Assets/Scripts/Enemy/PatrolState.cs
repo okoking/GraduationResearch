@@ -17,6 +17,15 @@ public class PatrolState : IState
 
     public void OnUpdate()
     {
+        //エージェントを取得
+        var agent = enemy.Agent;
+
+        //NavMesh上にいなければ何もしない
+        if (!agent.enabled || !agent.isOnNavMesh)
+        {
+            return;
+        }
+
         //プレイヤーを発見したら
         if (enemy.CanSeePlayer())
         {
@@ -28,9 +37,6 @@ public class PatrolState : IState
             enemy.ShowAlert();
             return;
         }
-
-        //エージェントを取得
-        var agent = enemy.Agent;
 
         //経路計算中は待機
         if (agent.pathPending) return;
@@ -44,32 +50,25 @@ public class PatrolState : IState
             return;
         }
 
-        //Boids補正で目的地微調整
-        var boids = enemy.Boids.GetBoidsForceOptimized() * 0.9f;
         //目的地
         Vector3 patrolTarget = enemy.GetPatrolTarget();
+        //Boids補正で目的地微調整
+        var boids = enemy.Boids.GetBoidsForceOptimized() * 0.9f;
 
         //NavMeshAgentが目指す目標方向を補正
         Vector3 targetDir = (patrolTarget - enemy.transform.position).normalized;
-        Vector3 adjustedTarget = enemy.transform.position + (targetDir + boids).normalized * 2f;
-        agent.SetDestination(adjustedTarget);
+        Vector3 adjustedTarget = enemy.transform.position + 
+            (targetDir + boids).normalized * 2f;
 
         //次の目標位置をBoids補正で微調整
-        Vector3 direction = (patrolTarget - enemy.transform.position).normalized + boids;
+        Vector3 direction = (patrolTarget - enemy.transform.position).normalized +
+            boids;
         Vector3 adjustedPos = enemy.transform.position + direction.normalized * 2f;
 
         if (NavMesh.SamplePosition(adjustedPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
         {
             agent.SetDestination(hit.position);
         }
-
-        //Vector3 direction = (enemy.transform.position - agent.destination).normalized + boids;
-        //Vector3 adjusted = enemy.transform.position + direction.normalized * 2f;
-        //if (UnityEngine.AI.NavMesh.SamplePosition(adjusted, out var hit, 1f, UnityEngine.AI.NavMesh.AllAreas))
-        //{
-        //    enemy.Agent.SetDestination(hit.position);
-        //}
-
     }
 
     public void OnExit()

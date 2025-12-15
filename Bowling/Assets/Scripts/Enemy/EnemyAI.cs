@@ -22,9 +22,8 @@ public class EnemyAI : MonoBehaviour
 
     //待機中の経過時間フレーム
     private float patrolTimer = 0f;
-    [SerializeField] private Vector3 patrolCenter; //巡回の中心点
-    [SerializeField] private float patrolAreaRadius = 20f; //この範囲から出ない
-
+    [SerializeField] private Vector3 patrolCenter;          //巡回の中心点
+    [SerializeField] private float patrolAreaRadius = 20f;  //この範囲から出ない
 
     //Boids群れ制御関連
     [Header("Boids群れ制御関連")]
@@ -53,11 +52,18 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float attackRadius = 0.1f;     //当たり判定の半径
     [SerializeField] private int attackPower = 20;          //攻撃力
 
-    //役割
+    //HP
+    [Header("HP関連")]
+    [SerializeField] private int hp = 100;
 
+    //役割
     [Header("Role & Misc")]
     [SerializeField] private Role role = Role.Front;
     [SerializeField] private float encircleSignRandomSeed;
+
+    //ノックバック
+    [SerializeField] float knockbackPower = 5.0f;
+    [SerializeField] float knockbackDuration = 0.2f;
 
     //internal
     private NavMeshAgent agent;
@@ -66,6 +72,9 @@ public class EnemyAI : MonoBehaviour
     private BoidsSteering boids;
     private AttackController attackController;
     private EnemyManager manager;
+    bool isKnockback = false;
+    Vector3 knockbackDir;
+    float knockbackTimer;
 
     //フレームカウンタ
     private int frameCounter = 0;
@@ -132,6 +141,12 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
+        //ノックバック中は他の処理を完全停止
+        if (isKnockback)
+        {
+            KnockbackUpdate();
+            return;
+        }
         //現在の状態の更新処理
         currentState?.OnUpdate();
         //巡回目的地への線を表示
@@ -239,9 +254,61 @@ public class EnemyAI : MonoBehaviour
         GameObject alert = Instantiate(alertPrefab, pos, Quaternion.identity);
         alert.GetComponent<BillBoard>().enemy = this.transform;
     }
+    //ノックバック発生
+    public void ApplyKnockback(Vector3 attackerPos)
+    {
+        if (isKnockback) return;
+
+        isKnockback = true;
+        knockbackTimer = knockbackDuration;
+
+        // 方向は一度だけ確定
+        knockbackDir = (transform.position - attackerPos).normalized;
+
+        // NavMeshAgentを一時停止
+        agent.isStopped = true;
+    }
+    //ノックバック更新
+    void KnockbackUpdate()
+    {
+        knockbackTimer -= Time.deltaTime;
+
+        transform.position += knockbackDir * knockbackPower * Time.deltaTime;
+
+        if (knockbackTimer <= 0f)
+        {
+            isKnockback = false;
+
+            //NavMeshAgent再開
+            agent.isStopped = false;
+        }
+    }
+    //ダメージ
+    public void TakeDamage(int damage, Vector3 attackerPos)
+    {
+        //HP減少
+        hp -= damage;
+
+        //ノックバック発生
+        ApplyKnockback(attackerPos);
+
+        //死亡判定
+        if (hp <= 0)
+        {
+            Die();
+        }
+    }
+    //死亡処理
+    void Die()
+    {
+        //EnemyManagerから除外
+        manager?.UnregisterEnemy(this);
+
+        Destroy(gameObject);
+    }
 
     //外部用の読み取り専用関数
-    
+
     public Vector3 GetPatrolCenter() => patrolCenter;
     public Vector3 GetPatrolTarget() => patrolTarget;
     public float GetPatrolRadius() => patrolRadius;

@@ -151,6 +151,13 @@ public class EnemyManager : MonoBehaviour
         if (!enemies.Contains(e))
             enemies.Add(e);
     }
+    public void UnregisterEnemy(EnemyAI e)
+    {
+        if (enemies.Contains(e))
+        {
+            enemies.Remove(e);
+        }
+    }
     //public int NumEnemiesAttackingNearby()
     //{ return attackController.CurrentAttacking; }
 

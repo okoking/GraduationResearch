@@ -578,7 +578,7 @@ Transform:
   m_GameObject: {fileID: 854114013}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.91, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -725,6 +725,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1723698667}
+  - component: {fileID: 1723698668}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -747,6 +748,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1723698668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1723698665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02c83e3a190704140965aab32ff69697, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 854114017}
+  prefab: {fileID: 6450600260413757805, guid: 2d973426587e99d4dab1536ce43936c8, type: 3}
+  iterationCount: 10
+  interval: 0.1
+  MeterMax: 100
 --- !u!1 &2136993451
 GameObject:
   m_ObjectHideFlags: 0
@@ -776,12 +794,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef1e1052483bc6345bb15305d0689f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAttacker: 3
-  globalAttackCooldown: 2.5
-  rushChance: 0.1
-  rushDuration: 4
-  rushCooldown: 10
-  isRush: 0
+  player: {fileID: 0}
+  baseMaxAttacker: 3
 --- !u!4 &2136993453
 Transform:
   m_ObjectHideFlags: 0
