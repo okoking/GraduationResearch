@@ -11,7 +11,7 @@ public class Boss : MonoBehaviour
     //–³“GŠÔ
     float isInvincibleTime;
 
-    int hp = 50;
+    int hp = 5;
 
     Transform player;
 
@@ -35,12 +35,19 @@ public class Boss : MonoBehaviour
     public GameObject floorAttackSubPrefab;//°UŒ‚
     public GameObject floorAttackPrefab;   //°UŒ‚
 
+    bool isDeath = false;
+
     //Å‘å–³“GŠÔ
     public float maxInvincibleTime;
 
     public void FalseIsPerfectInvincible()
     {
         isPerfectInvincible = false;
+    }
+
+    public bool ReturnDeath()
+    {
+        return isDeath;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -70,6 +77,7 @@ public class Boss : MonoBehaviour
 
         if (hp <= 0)
         {
+            isDeath = true;
             Destroy(gameObject);
         }
 

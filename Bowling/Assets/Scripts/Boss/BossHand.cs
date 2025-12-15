@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class BossHand : MonoBehaviour
 {
@@ -41,6 +42,8 @@ public class BossHand : MonoBehaviour
     Vector3[] PPos;
 
     int[] off;
+
+    List<int> pausedIDs = new List<int>();
 
     void Start()
     {
@@ -122,14 +125,27 @@ public class BossHand : MonoBehaviour
             isAttttttack = true;
         }
 
-        if (Input.GetKey(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.K))
         {
-            EffectManager.instance.Pause(off[0]);
+            int id = off[0];  // 今 Pause したいエフェクト
+
+            // まだ Pause してないなら追加
+            if (!pausedIDs.Contains(id))
+            {
+                pausedIDs.Add(id);
+                EffectManager.instance.Pause(id);
+            }
         }
 
-        if (Input.GetKey(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.J))
         {
-            EffectManager.instance.Resume(off[0]);
+            foreach (var id in pausedIDs)
+            {
+                EffectManager.instance.Resume(id);
+            }
+
+            // 全部再生したのでクリア
+            pausedIDs.Clear();
         }
 
         if (isAttttttack)
