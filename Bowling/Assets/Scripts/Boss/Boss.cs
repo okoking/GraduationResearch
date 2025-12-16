@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class Boss : MonoBehaviour
 {
     //Š®‘S–³“G‚©‚Ç‚¤‚©
