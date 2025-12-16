@@ -101,10 +101,10 @@ public class EnemyAI : MonoBehaviour
         debugLine.material = new Material(Shader.Find("Sprites/Default"));
         debugLine.positionCount = 2;
 
-        if (!agent.isOnNavMesh)
-        {
-            Debug.LogError($"NavMesh 上にいません");
-        }
+        //if (!agent.isOnNavMesh)
+        //{
+        //    Debug.LogError($"NavMesh 上にいません");
+        //}
     }
 
     private void Start()
