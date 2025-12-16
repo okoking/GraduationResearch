@@ -168,12 +168,7 @@ public class Boss2 : MonoBehaviour
             if (hit.CompareTag("Player"))
             {
                 playerHealth.TakeDamage(1);
-
-                //// ノックバック
-                //Vector3 dir = (hit.transform.position - transform.position).normalized;
-                //hit.GetComponent<Rigidbody>()?.AddForce(dir * 8f, ForceMode.Impulse);
             }
         }
     }
-
 }
