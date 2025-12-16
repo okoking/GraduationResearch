@@ -27,13 +27,14 @@ public class EffectManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
+    //エフェクトの登録を行う。
+    //エフェクトはResourcesファイルの中のEffectsの中に入れる
+    //配列の名前は被らない限り自由な名前でOK
     void Start()
     {
-        //エフェクトの登録を行う。
-        //エフェクトはResourcesファイルの中のEffectsの中に入れる
-        //配列の名前は被らない限り自由な名前でOK
-        //      kore↓名前
+        //      kore↓名前                                         ↓エフェクトの名前
         effects["meteor"] = Resources.Load<GameObject>("Effects/Meteors AOE");
+        effects["BeamColl"] = Resources.Load<GameObject>("Effects/AoE slash blue");
     }
 
     //エフェクトの呼び出し

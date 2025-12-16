@@ -17,6 +17,7 @@ TagManager:
   - Pillar
   - UltBeam
   - Bosshand
+  - Ground
   layers:
   - Default
   - TransparentFX
