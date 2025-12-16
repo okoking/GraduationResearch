@@ -15,10 +15,16 @@ public class BossHp : MonoBehaviour
 
     private bool isDeath;               //€‚ñ‚Å‚¢‚é‚©
 
+    public bool GetIsPerfectInvincible() {  return isPerfectInvincible; }
+    public void SetIsPerfectInvincible(bool flg) { isPerfectInvincible = flg; }
+
+    public bool GetIsInvicible() { return isInvicible; }
+    public bool GetIsDeath() { return isDeath; }
+
     //Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        maxHp = currentHp;
+        currentHp = maxHp;
         isDeath = false;
     }
 
@@ -50,6 +56,7 @@ public class BossHp : MonoBehaviour
         if (!isInvicible)                   //–³“G‚Å‚È‚¯‚ê‚Îƒ_ƒ[ƒW‚ª’Ê‚é
         {
             currentHp -= hp;
+            Debug.Log(currentHp);
             isInvicible = true;
         }
     }
@@ -58,9 +65,10 @@ public class BossHp : MonoBehaviour
     {
         currentHp += hp;
 
-        if (currentHp > maxHp)  //Å‘å‘Ì—Í‚ğ’´‚¦‚È‚¢‚æ‚¤‚É‚·‚é
+        if (currentHp >= maxHp)  //Å‘å‘Ì—Í‚ğ’´‚¦‚È‚¢‚æ‚¤‚É‚·‚é
         {
             currentHp = maxHp;
+            Debug.Log(currentHp);
         }
     }
 }

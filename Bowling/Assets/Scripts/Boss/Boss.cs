@@ -1,16 +1,6 @@
 using UnityEngine;
 public class Boss : MonoBehaviour
 {
-    //äÆëSñ≥ìGÇ©Ç«Ç§Ç©
-    bool isPerfectInvincible = true;
-
-    //ñ≥ìGÇ©Ç«Ç§Ç©
-    bool isPerfect = false;
-
-    //ñ≥ìGéûä‘
-    float isInvincibleTime;
-
-    int hp = 5;
 
     Transform player;
 
@@ -31,23 +21,10 @@ public class Boss : MonoBehaviour
 
     Vector3[] PPos;
 
+    private BossHp bossHp;
+
     public GameObject floorAttackSubPrefab;//è∞çUåÇ
     public GameObject floorAttackPrefab;   //è∞çUåÇ
-
-    bool isDeath = false;
-
-    //ç≈ëÂñ≥ìGéûä‘
-    public float maxInvincibleTime;
-
-    public void FalseIsPerfectInvincible()
-    {
-        isPerfectInvincible = false;
-    }
-
-    public bool ReturnDeath()
-    {
-        return isDeath;
-    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -56,6 +33,8 @@ public class Boss : MonoBehaviour
         floorAttackSub = new GameObject[FloorAtkNum];
         floorAttack = new GameObject[FloorAtkNum];
 
+        bossHp = GameObject.Find("Boss").GetComponent<BossHp>();
+
         if (player == null)
             player = GameObject.FindWithTag("Player")?.transform;
     }
@@ -63,25 +42,8 @@ public class Boss : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isPerfect)
-        {
-            isInvincibleTime += Time.deltaTime;
-        }
-
-        if (isInvincibleTime > maxInvincibleTime)
-        {
-            isInvincibleTime = 0f;
-            isPerfect = false;
-        }
-
-        if (hp <= 0)
-        {
-            isDeath = true;
-            Destroy(gameObject);
-        }
-
         //ñ≥ìGÇ≈Ç»ÇØÇÍÇŒà»â∫ÇÃèàóùÇçsÇ§
-        if (!isPerfectInvincible)
+        if (!bossHp.GetIsPerfectInvincible())
         {
             //çUåÇó\ë™ï\é¶èàóù
             if (!isFloorAtackDisp && isFloorAtackFin)
@@ -149,21 +111,12 @@ public class Boss : MonoBehaviour
             //âº
         if (Input.GetKeyDown(KeyCode.V))
         {
-            TakeDamage(1);
+            bossHp.TakeDamage(1);
         }
-    }
 
-    public void TakeDamage(int i)
-    {
-        //ñ≥ìGÇ≈Ç†ÇÍÇŒà»â∫ÇÃèàóùÇçsÇÌÇ»Ç¢
-        if (isPerfectInvincible) return;
-
-        //ñ≥ìGíÜÇ≈Ç»ÇØÇÍÇŒçUåÇÇ™óòÇ≠
-        if (!isPerfect)
+        if (Input.GetKeyDown(KeyCode.B))
         {
-            hp -= i;
-            Debug.Log(hp);
-            isPerfect = true;
+            bossHp.Recovery(10);
         }
     }
 

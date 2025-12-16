@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BossDeath : MonoBehaviour
 {
-    private Boss boss;
+    private BossHp bosshp;
 
     float height;
 
@@ -11,7 +11,7 @@ public class BossDeath : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        boss = GameObject.Find("Boss").GetComponent<Boss>();
+        bosshp = GameObject.Find("Boss").GetComponent<BossHp>();
 
         height = GetComponent<Renderer>().bounds.size.y;
 
@@ -21,7 +21,7 @@ public class BossDeath : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (boss.ReturnDeath() && transform.position.y < startY + height)
+        if (bosshp.GetIsDeath() && transform.position.y < startY + height)
         {
             Debug.Log("Ž€‚ñ‚¾‚Ì‚Å“®‚«‚Ü‚·");
             transform.Translate(Vector3.up * height * Time.deltaTime);

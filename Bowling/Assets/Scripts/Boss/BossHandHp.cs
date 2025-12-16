@@ -3,6 +3,8 @@ using UnityEngine;
 public class BossHandHp : MonoBehaviour
 {
 
+    private BossHp bosshp;
+
     public int hp = 50;
 
     private Boss boss;
@@ -20,6 +22,7 @@ public class BossHandHp : MonoBehaviour
     void Start()
     {
         boss = FindAnyObjectByType<Boss>();
+        bosshp = GameObject.Find("Boss").GetComponent<BossHp>();
     }
 
     // Update is called once per frame
@@ -62,6 +65,6 @@ public class BossHandHp : MonoBehaviour
     {
         Destroy(gameObject);
         //ƒ{ƒX‚ÌŠ®‘S–³“Gó‘Ô‚ğ‰ğœ‚·‚é
-        boss.FalseIsPerfectInvincible();
+        bosshp.SetIsPerfectInvincible(false);
     }
 }
