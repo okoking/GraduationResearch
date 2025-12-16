@@ -27,7 +27,7 @@ public static class SceneGroups
               { GameState.Option, new List<string> { "Option", "OptionUI" } },
               { GameState.StageSelect, new List<string> { "StageSelect", "StageSelectUI" } },
               { GameState.Play, new List<string> { "Play", "Player","EnemyTest",
-                  "Gimmick","Map"/*,"BossTest"*/ } },
+                  "Gimmick","Map","BossTest" } },
               { GameState.Result, new List<string> { "Result", "Result_UI" } },
         };
 }
