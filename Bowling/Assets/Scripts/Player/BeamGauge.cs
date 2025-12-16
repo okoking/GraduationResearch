@@ -1,41 +1,52 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BeamGauge : MonoBehaviour
 {
-    public bool isChargeComplete = false;
+    [SerializeField] Image gaugeFill;
 
-    private int BeamGaugeValue;
-    private int BeamGaugeMaxValue = 100;
+    private float maxGauge = 100f;
+    private float currentGauge = 0f;
+    private float chargeSpeed = 20f;
+    private float chargecost = 1f;
 
-    private int ChargeQuantity;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        ChargeBeamGauge();
+        Charge();
+        UpdateGauge();
     }
 
-    void ChargeBeamGauge()
+    void Charge()
     {
-        BeamGaugeValue += ChargeQuantity;
-        BeamGaugeValue = Mathf.Clamp(BeamGaugeValue, 0, BeamGaugeMaxValue); // 0～maxに制限
-
-        Debug.Log("現在のチャージ量：" + BeamGaugeValue);
-
-        if (BeamGaugeValue >= BeamGaugeMaxValue)
-        {
-            ChargeComplete();
-        }
+        currentGauge = Mathf.Clamp(
+            currentGauge + chargeSpeed * Time.deltaTime,
+            0,
+            maxGauge
+        );
     }
 
-    void ChargeComplete()
+    public bool UseBeam(float cost)
     {
-        isChargeComplete = true;
+        if (currentGauge < cost)
+            return false;
+
+        currentGauge -= cost;
+        UpdateGauge();
+        return true;
+    }
+    
+    public bool UseBeam()
+    {
+        if (currentGauge < chargecost)
+            return false;
+
+        currentGauge -= chargecost;
+        UpdateGauge();
+        return true;
+    }
+
+    void UpdateGauge()
+    {
+        gaugeFill.fillAmount = currentGauge / maxGauge;
     }
 }
