@@ -5,14 +5,20 @@ public class BeamGauge : MonoBehaviour
 {
     [SerializeField] Image gaugeFill;
 
-    private float maxGauge = 100f;
-    private float currentGauge = 0f;
-    private float chargeSpeed = 20f;
-    private float chargecost = 1f;
+    [SerializeField] float maxGauge = 100f;
+    [SerializeField] float chargeSpeed = 20f;        // ïbä‘âÒïúó 
+    [SerializeField] float consumePerSecond = 30f;   // ïbä‘è¡îÔó 
+
+    float currentGauge;
+    bool isUsingBeam;
 
     void Update()
     {
-        Charge();
+        if (!isUsingBeam)
+            Charge();
+
+        Debug.Log(currentGauge);
+
         UpdateGauge();
     }
 
@@ -25,28 +31,24 @@ public class BeamGauge : MonoBehaviour
         );
     }
 
-    public bool UseBeam(float cost)
+    public bool TryConsume()
     {
+        float cost = consumePerSecond * Time.deltaTime;
+
         if (currentGauge < cost)
             return false;
 
         currentGauge -= cost;
-        UpdateGauge();
         return true;
     }
-    
-    public bool UseBeam()
-    {
-        if (currentGauge < chargecost)
-            return false;
 
-        currentGauge -= chargecost;
-        UpdateGauge();
-        return true;
+    public void SetUsingBeam(bool value)
+    {
+        isUsingBeam = value;
     }
 
     void UpdateGauge()
     {
-        gaugeFill.fillAmount = currentGauge / maxGauge;
+        //gaugeFill.fillAmount = currentGauge / maxGauge;
     }
 }

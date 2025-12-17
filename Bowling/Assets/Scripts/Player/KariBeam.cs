@@ -16,6 +16,11 @@ public class KariBeam : MonoBehaviour
     private BeamCamera beamCamera;
     private LockOnSystem lockOn;
 
+    bool isFireButtonHeld;
+    Coroutine fireBeamRoutine;
+
+    BeamGauge beamGauge;
+
     void Start()
     {
         lineRenderer.enabled = false;
@@ -23,33 +28,113 @@ public class KariBeam : MonoBehaviour
         lineRenderer.endWidth = beamWidth;
         beamCamera = GetComponent<BeamCamera>();
         lockOn = GetComponent<LockOnSystem>();
+        beamGauge = GetComponent<BeamGauge>();
     }
 
     void Update()
     {
         // ボタン押したらビーム発射
-        if (Input.GetKeyDown("joystick button 5") && !isFiring)
+        if (Input.GetKeyDown(KeyCode.JoystickButton5) && !isFiring)
         {
             if (beamCamera.isSootBeam)
             {
-                StartCoroutine(FireBeam());
+                isFireButtonHeld = true;
+                fireBeamRoutine = StartCoroutine(FireBeam());
             }
             else
             {
                 StartCoroutine(FireLockOnBeam());
             }
         }
+
+        if (Input.GetKeyUp(KeyCode.JoystickButton5) && beamCamera.isSootBeam)
+        {
+            isFireButtonHeld = false;
+        }
+        //// ボタン押したらビーム発射
+        //if (Input.GetKeyDown("joystick button 5") && !isFiring)
+        //{
+        //    if (beamCamera.isSootBeam)
+        //    {
+        //        StartCoroutine(FireBeam());
+        //    }
+        //    else
+        //    {
+        //        StartCoroutine(FireLockOnBeam());
+        //    }
+        //}
     }
 
+    //IEnumerator FireBeam()
+    //{
+    //    isFiring = true;
+    //    disableRotate = true;
+    //    lineRenderer.enabled = true;
+
+    //    beamGauge.SetUsingBeam(true);
+
+    //    while (isFireButtonHeld)
+    //    {
+    //        // ★ ゲージ消費できなければ停止
+    //        if (!beamGauge.TryConsume())
+    //            break;
+
+    //        Vector3 start = transform.position + Vector3.up;
+
+    //        Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+    //        Vector3 end = ray.origin + ray.direction * beamLength;
+
+    //        // 向き調整（水平）
+    //        Vector3 lookDir = ray.direction;
+    //        lookDir.y = 0;
+
+    //        if (lookDir.sqrMagnitude > 0.01f)
+    //        {
+    //            Quaternion targetRot = Quaternion.LookRotation(lookDir);
+    //            transform.rotation = Quaternion.Slerp(
+    //                transform.rotation,
+    //                targetRot,
+    //                10f * Time.deltaTime
+    //            );
+    //        }
+
+    //        if (Physics.SphereCast(start, beamWidth, transform.forward,
+    //            out RaycastHit hit, beamLength))
+    //        {
+    //            end = hit.point;
+
+    //            if (hit.collider.CompareTag("Enemy"))
+    //            {
+    //                // DPS型ダメージ
+    //                // hit.collider.GetComponent<Enemy>()?.TakeDamage(dps * Time.deltaTime);
+    //            }
+    //        }
+
+    //        lineRenderer.SetPosition(0, start);
+    //        lineRenderer.SetPosition(1, end);
+
+    //        yield return null;
+    //    }
+
+    //    // 後始末
+    //    beamGauge.SetUsingBeam(false);
+    //    lineRenderer.enabled = false;
+    //    disableRotate = false;
+    //    isFiring = false;
+    //}
     IEnumerator FireBeam()
     {
         isFiring = true;
         disableRotate = true;
         lineRenderer.enabled = true;
+        beamGauge.SetUsingBeam(true);
 
-        float timer = 0f;
-        while (timer < MegabeamDuration)
+        while (isFireButtonHeld)
         {
+            // ★ ゲージ消費できなければ停止
+            if (!beamGauge.TryConsume())
+                break;
+
             Vector3 start = transform.position;
             start.y += 1;
             Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // 中央(0.5,0.5)
@@ -65,7 +150,7 @@ public class KariBeam : MonoBehaviour
                 10.0f * Time.deltaTime
             );
             // Raycastで命中判定
-            if (Physics.SphereCast(start, beamWidth,transform.forward, out RaycastHit hit, beamLength))
+            if (Physics.SphereCast(start, beamWidth, transform.forward, out RaycastHit hit, beamLength))
             {
                 // end = hit.point;
                 // 当たった敵に処理
@@ -80,15 +165,61 @@ public class KariBeam : MonoBehaviour
             lineRenderer.SetPosition(0, start);
             lineRenderer.SetPosition(1, end);
 
-            timer += Time.deltaTime;
             yield return null;
         }
-
+        beamGauge.SetUsingBeam(false);
         lineRenderer.enabled = false;
         disableRotate = false;
         isFiring = false;
     }
-    
+    //IEnumerator FireBeam()
+    //{
+    //    isFiring = true;
+    //    disableRotate = true;
+    //    lineRenderer.enabled = true;
+
+    //    float timer = 0f;
+    //    while (timer < MegabeamDuration)
+    //    {
+    //        Vector3 start = transform.position;
+    //        start.y += 1;
+    //        Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // 中央(0.5,0.5)
+    //        Vector3 end = ray.origin + ray.direction * beamLength;
+
+    //        // ★ 撃っている方向にプレイヤーを向ける（水平だけ）
+    //        Vector3 lookDir = ray.direction;
+    //        lookDir.y = 0;
+    //        Quaternion targetRot = Quaternion.LookRotation(lookDir);
+    //        transform.rotation = Quaternion.Slerp(
+    //            transform.rotation,
+    //            targetRot,
+    //            10.0f * Time.deltaTime
+    //        );
+    //        // Raycastで命中判定
+    //        if (Physics.SphereCast(start, beamWidth, transform.forward, out RaycastHit hit, beamLength))
+    //        {
+    //            // end = hit.point;
+    //            // 当たった敵に処理
+    //            if (hit.collider.CompareTag("Enemy"))
+    //            {
+    //                Debug.Log("敵にヒット！: " + hit.collider.name);
+    //                // EnemyスクリプトのTakeDamageを呼ぶなど
+    //                // hit.collider.GetComponent<Enemy>()?.TakeDamage(10);
+    //            }
+    //        }
+
+    //        lineRenderer.SetPosition(0, start);
+    //        lineRenderer.SetPosition(1, end);
+
+    //        timer += Time.deltaTime;
+    //        yield return null;
+    //    }
+
+    //    lineRenderer.enabled = false;
+    //    disableRotate = false;
+    //    isFiring = false;
+    //}
+
     IEnumerator FireLockOnBeam()
     {
         if (lockOn != null && lockOn.lockOnTarget != null)

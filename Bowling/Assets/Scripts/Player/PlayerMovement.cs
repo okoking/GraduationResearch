@@ -14,10 +14,9 @@ public class PlayerMovement : MonoBehaviour
     private KariBeam beamInfo;
     private CharacterController controller;
     private Vector3 currentMove = Vector3.zero; // 慣性付きの移動速度
-    private bool isonSteepSlope;
-    private bool wasonSteepSlope;
 
     private bool isGroundEx;
+    private bool wasGroundEx;
 
     private Vector3 wallNormal;
 
@@ -25,13 +24,6 @@ public class PlayerMovement : MonoBehaviour
     {
         beamInfo = GetComponent<KariBeam>();
         controller = GetComponent<CharacterController>();
-    }
-
-    [ContextMenu("着地の判定")]
-    void DebugTakeDamage()
-    {
-        Debug.Log(wasonSteepSlope);
-        Debug.Log(isonSteepSlope);
     }
 
     void Update()
@@ -54,15 +46,6 @@ public class PlayerMovement : MonoBehaviour
         //CheckGrounded(out bool onSteepSlope, out wallNormal);
         //isGroundEx = CheckGroundedEx(out bool onSteepSlope, out wallNormal);
         CheckGroundedEx(out bool onSteepSlope, out wallNormal);
-        isonSteepSlope = onSteepSlope;
-
-        if (!isonSteepSlope && wasonSteepSlope)
-        {
-            velocity = Vector3.zero;
-            Debug.Log("着地");
-        }
-
-        wasonSteepSlope = isonSteepSlope;
 
         // --- 慣性付きの移動ベクトルを計算 ---
         if (moveInput.magnitude > 0.1f)
@@ -98,21 +81,28 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        // --- ジャンプ ---
-        if (Input.GetButtonDown("Jump") && isGroundEx/* && !isonSteepSlope*/)
+        // --- 接地判定 ---
+        if (!wasGroundEx && isGroundEx)
         {
-            velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
+            velocity.x = 0f;
+            velocity.z = 0f;
         }
 
-        // --- 接地判定 ---
+        wasGroundEx = isGroundEx;
+
         if (isGroundEx && velocity.y < 0f)
         {
             velocity.y = -2f;
         }
 
+        // --- ジャンプ ---
+        if (Input.GetButtonDown("Jump") && isGroundEx)
+        {
+            velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
+        }
 
         // --- 壁滑り中かどうか ---
-        if (/*onSteepSlope && !isGroundEx && */isonSteepSlope && velocity.y <= 0f)
+        if (onSteepSlope && velocity.y <= 0f)
         {
             // 斜面上の滑り方向（重力を地面に投影）
             Vector3 slideDir = Vector3.ProjectOnPlane(Physics.gravity, wallNormal).normalized;
