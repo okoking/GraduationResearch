@@ -23,6 +23,11 @@ public class Missile : MonoBehaviour
     //Å‘åU‚ê•
     Vector3 maxInitVelocity;
 
+    [SerializeField, Min(0)]
+    float timeToTarget = 1f;
+
+    float currentTime;
+
     Vector3 position;
     Vector3 velocity;
     Vector3 acceleration;
@@ -42,13 +47,32 @@ public class Missile : MonoBehaviour
 
     void Start()
     {
+        //thisTransform = transform;
+        //position = thisTransform.position;
+        ////‹…‚Ì‹O“¹‚Ì‰ŠúU‚ê•
+        //velocity = new Vector3(Random.Range(minInitVelocity.x, maxInitVelocity.x), Random.Range(minInitVelocity.y, maxInitVelocity.y), Random.Range(minInitVelocity.z, maxInitVelocity.z));
+        //target = FindRandomTarget();
+
+        //StartCoroutine(nameof(Timer));
+
         thisTransform = transform;
         position = thisTransform.position;
-        //‹…‚Ì‹O“¹‚Ì‰ŠúU‚ê•
-        velocity = new Vector3(Random.Range(minInitVelocity.x, maxInitVelocity.x), Random.Range(minInitVelocity.y, maxInitVelocity.y), Random.Range(minInitVelocity.z, maxInitVelocity.z));
-        target = FindRandomTarget();
+
+        velocity = new Vector3(
+            Random.Range(minInitVelocity.x, maxInitVelocity.x),
+            Random.Range(minInitVelocity.y, maxInitVelocity.y),
+            Random.Range(minInitVelocity.z, maxInitVelocity.z)
+        );
+
+        // š ‚·‚Å‚Éİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î’T‚·
+        if (target == null)
+        {
+            target = FindRandomTarget();
+        }
 
         StartCoroutine(nameof(Timer));
+
+        currentTime = timeToTarget;
     }
 
     public void Update()
@@ -68,9 +92,9 @@ public class Missile : MonoBehaviour
             acceleration = acceleration.normalized * maxAcceleration;
         }
 
-        time -= Time.deltaTime;
+        currentTime -= Time.deltaTime;
 
-        if (time < 0f)
+        if (currentTime <= 0f)
         {
             return;
         }

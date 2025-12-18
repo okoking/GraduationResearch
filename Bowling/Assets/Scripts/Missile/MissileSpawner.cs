@@ -23,9 +23,29 @@ public class MissileSpawner : MonoBehaviour
 
     void Start()
     {
+        //thisTransform = transform;
+        //intervalWait = new WaitForSeconds(interval);
+        //var player = GameObject.FindWithTag("Player");
+
+        //target = player.transform;
+
         thisTransform = transform;
         intervalWait = new WaitForSeconds(interval);
+
+        if (prefab == null)
+        {
+            Debug.LogError("MissileSpawner: prefab が設定されていません");
+            enabled = false;
+            return;
+        }
+
         var player = GameObject.FindWithTag("Player");
+        if (player == null)
+        {
+            Debug.LogError("MissileSpawner: Player タグのオブジェクトが見つかりません");
+            enabled = false;
+            return;
+        }
 
         target = player.transform;
     }
@@ -39,29 +59,49 @@ public class MissileSpawner : MonoBehaviour
 
         //if (missileMeter > MeterMax)
         //{
-            //if (Input.GetKey(KeyCode.Space))
-            //{
-            //    StartCoroutine(nameof(SpawnMissile));
-            //    missileMeter = 0;
-            //}
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(SpawnMissile());
+            missileMeter = 0;
+        }
         //}
-        
+
     }
 
     IEnumerator SpawnMissile()
     {
-        isSpawning = true;
+        //isSpawning = true;
 
-        Missile homing;
+        //Missile homing;
+
+        //for (int i = 0; i < iterationCount; i++)
+        //{
+        //    homing = Instantiate(prefab, thisTransform.position, Quaternion.identity).GetComponent<Missile>();
+        //    homing.Target = target;
+        //}
+
+        //yield return intervalWait;
+
+        //isSpawning = false;
+
+        isSpawning = true;
 
         for (int i = 0; i < iterationCount; i++)
         {
-            homing = Instantiate(prefab, thisTransform.position, Quaternion.identity).GetComponent<Missile>();
+            var go = Instantiate(prefab, thisTransform.position, Quaternion.identity);
+            var homing = go.GetComponent<Missile>();
+
+            if (homing == null)
+            {
+                Debug.LogError("MissileSpawner: prefab に Missile コンポーネントが付いていません");
+                Destroy(go);
+                yield break;
+            }
+
             homing.Target = target;
         }
 
         yield return intervalWait;
-
         isSpawning = false;
     }
 

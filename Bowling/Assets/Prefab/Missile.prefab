@@ -123,13 +123,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad13b7c78d08c374c8eda702e06f3c23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 727497205073763627, guid: c59305cb362bc0548b3296687e5b1e28, type: 3}
+  target: {fileID: 2128942822025895330, guid: 2d973426587e99d4dab1536ce43936c8, type: 3}
   time: 1.5
   lifeTime: 2
-  limitAcceleration: 0
+  limitAcceleration: 1
   maxAcceleration: 100
   minInitVelocity: {x: -30, y: 0, z: 0}
   maxInitVelocity: {x: 30, y: 30, z: 0}
+  timeToTarget: 1
 --- !u!114 &-1236482858010485244
 MonoBehaviour:
   m_ObjectHideFlags: 0
