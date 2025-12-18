@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3131430918310527911}
   - component: {fileID: 7469564852121426981}
   - component: {fileID: 6203865631138914739}
+  - component: {fileID: 5304539946798102468}
   m_Layer: 0
   m_Name: Boss2
   m_TagString: Boss
@@ -156,3 +157,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5304539946798102468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162575937703456075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 669542e2fcd3955469c7084c2dccb295, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHp: 5
+  isPerfectInvincible: 0
+  isInvicible: 0
+  maxInvincibleTime: 0.1

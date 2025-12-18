@@ -37,6 +37,8 @@ public class Boss2 : MonoBehaviour
 
     private PlayerHealth playerHealth;
 
+    private BossHp bossHp;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -49,6 +51,8 @@ public class Boss2 : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         playerHealth = GameObject.Find("Player").GetComponent<PlayerHealth>();
+
+        bossHp = GameObject.Find("Boss2").GetComponent<BossHp>();
     }
 
     // Update is called once per frame
@@ -77,6 +81,16 @@ public class Boss2 : MonoBehaviour
             case BossMove.JUMP:
                 StartChargeJump();
                 break;
+        }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            bossHp.TakeDamage(1);
+        }
+
+        if (bossHp.GetIsDeath())
+        {
+            Destroy(gameObject);
         }
     }
 

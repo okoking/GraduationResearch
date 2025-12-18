@@ -45,7 +45,6 @@ public class BossHp : MonoBehaviour
         if(currentHp <= 0)  //0ˆÈ‰º‚É‚È‚Á‚½‚çŽE‚·
         {
             isDeath = true;
-            Destroy(gameObject);
         }
     }
 

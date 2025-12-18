@@ -64,7 +64,6 @@ public class Boss : MonoBehaviour
                 floorAttackDispTimer += Time.deltaTime;
                 if (floorAttackDispTimer > 2f)
                 {
-
                     for (int i = 0; i < FloorAtkNum; i++)
                     {
                         Destroy(floorAttackSub[i]);
@@ -117,6 +116,16 @@ public class Boss : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.B))
         {
             bossHp.Recovery(10);
+        }
+
+        if (bossHp.GetIsDeath())
+        {
+            for (int i = 0; i < FloorAtkNum; i++)
+            {
+                Destroy(floorAttackSub[i]);
+                Destroy(floorAttack[i]);
+            }
+            Destroy(gameObject);
         }
     }
 
