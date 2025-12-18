@@ -90,7 +90,7 @@ public class Boss2 : MonoBehaviour
 
         if (bossHp.GetIsDeath())
         {
-            Destroy(gameObject);
+            bossHp.ThisDestroy();
         }
     }
 

@@ -125,7 +125,7 @@ public class Boss : MonoBehaviour
                 Destroy(floorAttackSub[i]);
                 Destroy(floorAttack[i]);
             }
-            Destroy(gameObject);
+            bossHp.ThisDestroy();
         }
     }
 

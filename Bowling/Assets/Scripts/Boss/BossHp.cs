@@ -70,4 +70,12 @@ public class BossHp : MonoBehaviour
             Debug.Log(currentHp);
         }
     }
+
+    public void ThisDestroy()
+    {
+        if (isDeath)
+        {
+            Destroy(gameObject);
+        }
+    }
 }
