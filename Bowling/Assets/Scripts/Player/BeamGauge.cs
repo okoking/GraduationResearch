@@ -3,14 +3,19 @@ using UnityEngine.UI;
 
 public class BeamGauge : MonoBehaviour
 {
-    [SerializeField] Image gaugeFill;
+    //[SerializeField] Image gaugeFill;
 
     [SerializeField] float maxGauge = 100f;
-    [SerializeField] float chargeSpeed = 20f;        // •bŠÔ‰ñ•œ—Ê
+    [SerializeField] float chargeSpeed = 5f;        // •bŠÔ‰ñ•œ—Ê
     [SerializeField] float consumePerSecond = 30f;   // •bŠÔÁ”ï—Ê
 
     float currentGauge;
     bool isUsingBeam;
+
+    private void Start()
+    {
+        currentGauge = maxGauge;
+    }
 
     void Update()
     {
@@ -45,6 +50,11 @@ public class BeamGauge : MonoBehaviour
     public void SetUsingBeam(bool value)
     {
         isUsingBeam = value;
+    }
+
+    public float GetGaugeRatio()
+    {
+        return currentGauge / maxGauge;
     }
 
     void UpdateGauge()

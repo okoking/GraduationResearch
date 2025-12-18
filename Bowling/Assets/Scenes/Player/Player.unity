@@ -1056,6 +1056,10 @@ PrefabInstance:
       propertyPath: MinibeamDuration
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 7437730767811466147, guid: a2b8b602076d2c746b998eab34d3cc52, type: 3}
+      propertyPath: chargeSpeed
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
