@@ -18,11 +18,13 @@ public class PlayerHP : MonoBehaviour
 
     void Start()
     {
-        player = GetComponent<PlayerHealth>();
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        player = playerObj.GetComponent<PlayerHealth>();
+
         currentHp = player.GetHealth();
 
         //バー
-        HpSlinder.value = currentHp;    //現在のHPを反映
+        HpSlinder.value = player.GetRatio();
 
         //数値
         textHP.text = currentHp.ToString();
@@ -39,7 +41,7 @@ public class PlayerHP : MonoBehaviour
         currentHp = player.GetHealth();
 
         // スライダーに現在のHPを反映
-        HpSlinder.value = currentHp;
+        HpSlinder.value = player.GetRatio();
         textHP.text = currentHp.ToString();
         //4桁で0埋めする
         textHP.text = currentHp.ToString("D4");

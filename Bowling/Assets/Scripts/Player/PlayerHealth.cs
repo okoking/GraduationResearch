@@ -57,6 +57,11 @@ public class PlayerHealth : MonoBehaviour
         return currentHealth;
     }
 
+    public float GetRatio()
+    {
+        return currentHealth / (float)maxHealth;
+    }
+
     // €–Sˆ—
     void Die()
     {

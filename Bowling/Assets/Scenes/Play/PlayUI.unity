@@ -660,12 +660,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 461627417}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c0da93a75478164aa56584feffeb964, type: 3}
+  m_Script: {fileID: 11500000, guid: 50c8ddabf7996ee45a869804f3a9e317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1000
-  currentHealth: 0
-  Damage: 10
+  HpSlinder: {fileID: 1699227652}
 --- !u!1 &531982462
 GameObject:
   m_ObjectHideFlags: 0
