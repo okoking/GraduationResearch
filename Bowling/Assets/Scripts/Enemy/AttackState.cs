@@ -32,7 +32,10 @@ public class AttackState : IState
     public void OnUpdate()
     {
         var player = enemy.Player;
+        //プレイヤーが空であれば処理しない
         if (player == null) return;
+        //ノックバック中は処理しない
+        if (enemy.IsKnockBack) return;
 
         //プレイヤー方向ベクトルと距離を計算
         Vector3 toPlayer = player.position - enemy.transform.position;

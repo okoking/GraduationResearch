@@ -24,6 +24,9 @@ public class PatrolState : IState
             return;
         }
 
+        //ノックバック中は処理しない
+        if (enemy.IsKnockBack) return;
+
         //プレイヤーを発見したら
         if (enemy.CanSeePlayer())
         {
