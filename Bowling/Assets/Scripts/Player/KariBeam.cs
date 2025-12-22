@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Diagnostics;
 
 public class KariBeam : MonoBehaviour
 {
@@ -156,9 +157,19 @@ public class KariBeam : MonoBehaviour
                 // 当たった敵に処理
                 if (hit.collider.CompareTag("Enemy"))
                 {
-                    Debug.Log("敵にヒット！: " + hit.collider.name);
+                    hit.collider.GetComponent<EnemyAI>()?.TakeDamage(1, hit.point);
                     // EnemyスクリプトのTakeDamageを呼ぶなど
                     // hit.collider.GetComponent<Enemy>()?.TakeDamage(10);
+                }
+                else if (hit.collider.CompareTag("Boss"))
+                {
+                    hit.collider.GetComponent<BossHp>()?.TakeDamage(1);
+                    UnityEngine.Debug.Log("ボス本体");
+                }
+                else if (hit.collider.CompareTag("Bosshand"))
+                {
+                    hit.collider.GetComponent<BossHandHp>()?.TakeDamage(1);
+                    UnityEngine.Debug.Log("ボスハンド");
                 }
             }
 
@@ -250,9 +261,15 @@ public class KariBeam : MonoBehaviour
                 foreach (var h in hits)
                 {
                     if (h.collider.CompareTag("Enemy"))
-                        Debug.Log("敵に貫通ヒット: " + h.collider.name);
-
-                    //h.collider.GetComponent<Boss>()?.TakeDamage(1);
+                    {
+                        h.collider.GetComponent<EnemyAI>()?.TakeDamage(1, h.point);
+                    }
+                    //else if (h.collider.CompareTag("Boss"))
+                    //{
+                    //    Debug.Log("敵にヒット！: " + h.collider.name);
+                    //    // EnemyスクリプトのTakeDamageを呼ぶなど
+                    //    // hit.collider.GetComponent<Enemy>()?.TakeDamage(10);
+                    //}
                 }
 
                 //// raycastで命中判定
