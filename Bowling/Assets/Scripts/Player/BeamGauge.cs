@@ -22,8 +22,6 @@ public class BeamGauge : MonoBehaviour
         if (!isUsingBeam)
             Charge();
 
-        Debug.Log(currentGauge);
-
         UpdateGauge();
     }
 

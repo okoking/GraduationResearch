@@ -164,12 +164,10 @@ public class KariBeam : MonoBehaviour
                 else if (hit.collider.CompareTag("Boss"))
                 {
                     hit.collider.GetComponent<BossHp>()?.TakeDamage(1);
-                    UnityEngine.Debug.Log("ボス本体");
                 }
                 else if (hit.collider.CompareTag("Bosshand"))
                 {
                     hit.collider.GetComponent<BossHandHp>()?.TakeDamage(1);
-                    UnityEngine.Debug.Log("ボスハンド");
                 }
             }
 
