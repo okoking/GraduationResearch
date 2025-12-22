@@ -21,8 +21,9 @@ public class BossHandHp : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        boss = FindAnyObjectByType<Boss>();
-        bosshp = GameObject.Find("Boss").GetComponent<BossHp>();
+        GameObject bossObj = GameObject.FindGameObjectWithTag("Boss");
+        if (bossObj != null)
+            bosshp = bossObj.GetComponent<BossHp>();
     }
 
     // Update is called once per frame

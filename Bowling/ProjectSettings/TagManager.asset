@@ -18,6 +18,7 @@ TagManager:
   - UltBeam
   - Bosshand
   - Ground
+  - Door
   layers:
   - Default
   - TransparentFX
