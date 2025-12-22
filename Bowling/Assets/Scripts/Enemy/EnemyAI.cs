@@ -152,12 +152,14 @@ public class EnemyAI : MonoBehaviour
         this.manager = manager;
         this.player = player;
         this.attackController = attackController;
+
         agent.speed += UnityEngine.Random.Range(-0.5f, 0.5f);
         separationWeight += UnityEngine.Random.Range(-0.5f, 0.5f);
         cohesionWeight += UnityEngine.Random.Range(-0.05f, 0.05f);
         alignmentWeight += UnityEngine.Random.Range(-0.05f, 0.05f);
         agent.avoidancePriority = UnityEngine.Random.Range(40, 90);
         patrolTarget = Vector3.zero;
+
         AssignRandomRole();
         ChangeState(new PatrolState(this));
     }
@@ -187,6 +189,7 @@ public class EnemyAI : MonoBehaviour
         //}
     }
 
+    //プレイヤーを見つけたか
     public bool CanSeePlayer(float viewDistance = 10f, float viewAngle = 60f)
     {
         if (player == null)
@@ -207,6 +210,7 @@ public class EnemyAI : MonoBehaviour
         return false;
     }
 
+    //巡回地点を設定
     public void SetPatrolTarget(Vector3 pos)
     {
         patrolTarget = pos;
@@ -254,6 +258,7 @@ public class EnemyAI : MonoBehaviour
         currentState?.OnStart();
     }
 
+    //ランダムに役割を決定
     private void AssignRandomRole()
     {
         role = (Role)UnityEngine.Random.Range(0, 3);
@@ -274,6 +279,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    //発見アラート表示
     public void ShowAlert()
     {
         if (alertPrefab == null) return;
@@ -389,7 +395,6 @@ public class EnemyAI : MonoBehaviour
     }
 
     //外部用の読み取り専用関数
-
     public Vector3 GetPatrolCenter() => patrolCenter;
     public Vector3 GetPatrolTarget() => patrolTarget;
     public float GetPatrolRadius() => patrolRadius;
