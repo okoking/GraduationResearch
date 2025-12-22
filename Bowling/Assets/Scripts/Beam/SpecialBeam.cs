@@ -22,7 +22,7 @@ public class SpecialBeam : MonoBehaviour
     void Update()
     {
         // ボタン押したらビーム発射＆必殺技撃つ体制なら＆活動中でないなら
-        if (Input.GetKeyDown("joystick button 5") && beamCamera.isSootBeam && !isActive)
+        if (Input.GetKey(KeyCode.Q) || (Input.GetKeyDown("joystick button 5")) && beamCamera.isSootBeam && !isActive)
         {
             //ビームエフェクト再生
             ShotSpecialBeam();
