@@ -151,7 +151,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5238c6b5a58b4b648b7ec9f7c5961f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 0
   patrolRadius: 20
   patrolWaitTime: 2
   patrolCenter: {x: 0, y: 0, z: 0}
@@ -167,13 +166,24 @@ MonoBehaviour:
   keepDistance: 6
   retreatDistance: 4.5
   attackMoveSpeed: 2
-  role: 0
-  alertRadius: 2
-  alertPrefab: {fileID: 4457379341208604167, guid: ab5e076ca4838d6489609e51fd5614a6, type: 3}
   dashSpeed: 6
   dashTime: 1
   attackRadius: 0.1
   attackPower: 20
+  hp: 1000
+  role: 0
+  encircleSignRandomSeed: 0
+  knockbackPower: 0.5
+  knockbackDuration: 0.2
+  gravity: 30
+  knockbackUpPower: 12
+  knockbackForwardPower: 8
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  groundCheckDistance: 0.3
+  landingStunTime: 0.5
+  alertPrefab: {fileID: 4457379341208604167, guid: ab5e076ca4838d6489609e51fd5614a6, type: 3}
 --- !u!195 &-2953616013130259206
 NavMeshAgent:
   m_ObjectHideFlags: 0
