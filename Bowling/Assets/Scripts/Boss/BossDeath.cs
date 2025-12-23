@@ -8,10 +8,13 @@ public class BossDeath : MonoBehaviour
     float height;
     float startY;
 
+    bool isDeath;
+
     void Start()
     {
         height = GetComponent<Renderer>().bounds.size.y;
         startY = transform.position.y;
+        isDeath = false;
 
         StartCoroutine(WaitForBoss());
     }
@@ -34,9 +37,15 @@ public class BossDeath : MonoBehaviour
     {
         if (bosshp == null) return;
 
-        if (bosshp.GetIsDeath() && transform.position.y < startY + height)
+        if (bosshp.GetIsDeath())
+        {
+            isDeath = true;
+        }
+
+        if (isDeath && transform.position.y < startY + height)
         {
             Debug.Log("Ž€‚ñ‚¾‚Ì‚Å“®‚«‚Ü‚·");
+            //Destroy(gameObject);
             transform.Translate(Vector3.up * 1f * Time.deltaTime);
         }
     }
