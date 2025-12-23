@@ -7,6 +7,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : MonoBehaviour
 {
+
     public enum Role { Front, Side, Back }
     public IState CurrentState { get; private set; }
     public StateType CurrentStateType => CurrentState?.Type ?? StateType.Idle;
@@ -65,6 +66,18 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] float knockbackPower = 5.0f;
     [SerializeField] float knockbackDuration = 0.2f;
 
+    //重力
+    [SerializeField] float gravity = 30f;
+    [SerializeField] float knockbackUpPower = 12f;
+    [SerializeField] float knockbackForwardPower = 8f;
+
+    //地面判定
+    [SerializeField] LayerMask groundLayer;
+    [SerializeField] float groundCheckDistance = 2.0f;
+
+    //硬直
+    [SerializeField] float landingStunTime = 0.5f;
+
     //internal
     private NavMeshAgent agent;
     private Transform player;
@@ -72,9 +85,13 @@ public class EnemyAI : MonoBehaviour
     private BoidsSteering boids;
     private AttackController attackController;
     private EnemyManager manager;
-    bool isKnockback = false;
-    Vector3 knockbackDir;
+
+    //ノックバック用
+    private bool isKnockback;
+    private Vector3 knockbackVelocity;
     float knockbackTimer;
+    private float stunTimer;
+    private Vector3 prevPosition;
 
     //フレームカウンタ
     private int frameCounter = 0;
@@ -100,6 +117,8 @@ public class EnemyAI : MonoBehaviour
         debugLine.startWidth = debugLine.endWidth = 0.05f;
         debugLine.material = new Material(Shader.Find("Sprites/Default"));
         debugLine.positionCount = 2;
+
+        
 
         //if (!agent.isOnNavMesh)
         //{
@@ -133,12 +152,14 @@ public class EnemyAI : MonoBehaviour
         this.manager = manager;
         this.player = player;
         this.attackController = attackController;
+
         agent.speed += UnityEngine.Random.Range(-0.5f, 0.5f);
         separationWeight += UnityEngine.Random.Range(-0.5f, 0.5f);
         cohesionWeight += UnityEngine.Random.Range(-0.05f, 0.05f);
         alignmentWeight += UnityEngine.Random.Range(-0.05f, 0.05f);
         agent.avoidancePriority = UnityEngine.Random.Range(40, 90);
         patrolTarget = Vector3.zero;
+
         AssignRandomRole();
         ChangeState(new PatrolState(this));
     }
@@ -151,16 +172,24 @@ public class EnemyAI : MonoBehaviour
             KnockbackUpdate();
             return;
         }
+
+        if (stunTimer > 0f)
+        {
+            stunTimer -= Time.deltaTime;
+            return;
+        }
+
         //現在の状態の更新処理
         currentState?.OnUpdate();
-        //巡回目的地への線を表示
-        if (patrolTarget != Vector3.zero)
-        {
-            debugLine.SetPosition(0, transform.position + Vector3.up * 0.1f);
-            debugLine.SetPosition(1, patrolTarget + Vector3.up * 0.1f);
-        }
+        ////巡回目的地への線を表示
+        //if (patrolTarget != Vector3.zero)
+        //{
+        //    debugLine.SetPosition(0, transform.position + Vector3.up * 0.1f);
+        //    debugLine.SetPosition(1, patrolTarget + Vector3.up * 0.1f);
+        //}
     }
 
+    //プレイヤーを見つけたか
     public bool CanSeePlayer(float viewDistance = 10f, float viewAngle = 60f)
     {
         if (player == null)
@@ -181,6 +210,7 @@ public class EnemyAI : MonoBehaviour
         return false;
     }
 
+    //巡回地点を設定
     public void SetPatrolTarget(Vector3 pos)
     {
         patrolTarget = pos;
@@ -228,6 +258,7 @@ public class EnemyAI : MonoBehaviour
         currentState?.OnStart();
     }
 
+    //ランダムに役割を決定
     private void AssignRandomRole()
     {
         role = (Role)UnityEngine.Random.Range(0, 3);
@@ -248,6 +279,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    //発見アラート表示
     public void ShowAlert()
     {
         if (alertPrefab == null) return;
@@ -258,35 +290,83 @@ public class EnemyAI : MonoBehaviour
         GameObject alert = Instantiate(alertPrefab, pos, Quaternion.identity);
         alert.GetComponent<BillBoard>().enemy = this.transform;
     }
+
     //ノックバック発生
     public void ApplyKnockback(Vector3 attackerPos)
     {
         if (isKnockback) return;
 
+        //ノックバック中
         isKnockback = true;
-        knockbackTimer = knockbackDuration;
+        stunTimer = 0f;
 
-        //方向は一度だけ確定
-        knockbackDir = (transform.position - attackerPos).normalized;
+        //NavMesh 停止
+        agent.enabled = false;
 
-        //NavMeshAgentを一時停止
-        agent.isStopped = true;
+        //吹き飛び方向（水平のみ）
+        Vector3 dir = transform.position - attackerPos;
+        dir.y = 0f;
+        dir.Normalize();
+
+        //一度だけノックバック方向計算
+        knockbackVelocity = dir * knockbackForwardPower + 
+            Vector3.up * knockbackUpPower;
     }
+
     //ノックバック更新
     void KnockbackUpdate()
     {
-        knockbackTimer -= Time.deltaTime;
+        //前の座標
+        prevPosition = transform.position;
 
-        transform.position += knockbackDir * knockbackPower * Time.deltaTime;
+        //重力
+        knockbackVelocity.y -= gravity * Time.deltaTime;
 
-        if (knockbackTimer <= 0f)
+        Vector3 move = knockbackVelocity * Time.deltaTime;
+        transform.position += move;
+
+        //落下中のみ着地チェック
+        if (knockbackVelocity.y <= 0f)
         {
-            isKnockback = false;
+            if (IsGrounded(out RaycastHit hit))
+            {
+                //地面にスナップ
+                Vector3 pos = transform.position;
+                pos.y = hit.point.y;
+                transform.position = pos;
 
-            //NavMeshAgent再開
-            agent.isStopped = false;
+                EndKnockback();
+            }
         }
     }
+
+    //地面についているかどうか
+    bool IsGrounded(out RaycastHit hit)
+    {
+        Vector3 origin = transform.position + Vector3.up * 0.5f;
+
+        return Physics.Raycast(
+            origin,
+            Vector3.down,
+            out hit,
+            1.5f,
+            groundLayer
+        );
+    }
+
+    //ノックバック終了判定
+    void EndKnockback()
+    {
+        isKnockback = false;
+
+        //硬直開始
+        stunTimer = landingStunTime;
+
+        //NavMesh 復帰
+        agent.enabled = true;
+        agent.Warp(transform.position);
+    }
+
     //ダメージ
     public void TakeDamage(int damage, Vector3 attackerPos)
     {
@@ -302,17 +382,19 @@ public class EnemyAI : MonoBehaviour
             Die();
         }
     }
+
     //死亡処理
     void Die()
     {
         //EnemyManagerから除外
         manager?.UnregisterEnemy(this);
 
+        Debug.Log("敵を倒した！");
+
         Destroy(gameObject);
     }
 
     //外部用の読み取り専用関数
-
     public Vector3 GetPatrolCenter() => patrolCenter;
     public Vector3 GetPatrolTarget() => patrolTarget;
     public float GetPatrolRadius() => patrolRadius;
@@ -330,7 +412,7 @@ public class EnemyAI : MonoBehaviour
     public int AttackPower => attackPower;
     public float DashTime => dashTime;
     public float DashSpeed => dashSpeed;
-
+    public bool IsKnockBack => isKnockback;
     public void SetPlayer(Transform p)
     {
         player = p;

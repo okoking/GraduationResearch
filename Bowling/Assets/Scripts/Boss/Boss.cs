@@ -33,11 +33,12 @@ public class Boss : MonoBehaviour
         floorAttackSub = new GameObject[FloorAtkNum];
         floorAttack = new GameObject[FloorAtkNum];
 
-        bossHp = GameObject.Find("Boss").GetComponent<BossHp>();
+        bossHp = GetComponent<BossHp>();
 
         if (player == null)
             player = GameObject.FindWithTag("Player")?.transform;
     }
+
 
     // Update is called once per frame
     void Update()

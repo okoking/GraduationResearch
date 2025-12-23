@@ -8,7 +8,7 @@ public class BossHp : MonoBehaviour
     private int currentHp;  //Œ»İ‘Ì—Í
 
     public bool isPerfectInvincible;    //Š®‘S‚É–³“G
-    public bool isInvicible;            //–³“G
+    private bool isInvicible;           //–³“G
 
     public float maxInvincibleTime;     //Å‘å–³“GŠÔ
     private float invincibleTime;       //–³“GŠÔ
@@ -21,6 +21,10 @@ public class BossHp : MonoBehaviour
     public bool GetIsInvicible() { return isInvicible; }
     public bool GetIsDeath() { return isDeath; }
 
+    public int GetCurrentHp() {  return currentHp; }
+
+    public float GetRatio() {  return currentHp / (float)maxHp; }
+
     //Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -31,6 +35,7 @@ public class BossHp : MonoBehaviour
     //Update is called once per frame
     void Update()
     {
+
         if (isInvicible)    //–³“G’†‚Å‚ ‚ê‚ÎŠÔ‚ğƒJƒEƒ“ƒg
         {
             invincibleTime += Time.deltaTime;
