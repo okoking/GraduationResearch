@@ -148,3 +148,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 50
   maxInvincibleTime: 0.5
+  bossHandSpawnerCenter: {fileID: 3102153505023771960, guid: ce93e6f3f4525aa40a1e470fba8f6999, type: 3}

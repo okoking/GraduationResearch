@@ -124,9 +124,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossHandSpawerPrefab: {fileID: 6985524775857696473, guid: bc6473a9d7be48f4a9815f1ce2299852, type: 3}
-  handNum: 1
-  offsetX: 3
-  offsetY: 2
+  handNum: 2
+  offsetX: 5
+  offsetY: 4
 --- !u!114 &297866073283056106
 MonoBehaviour:
   m_ObjectHideFlags: 0

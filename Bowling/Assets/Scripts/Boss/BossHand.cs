@@ -60,21 +60,21 @@ public class BossHand : MonoBehaviour
     {
         if (bossHandSpawn == null || player == null) return;
 
-        //ビーム中でなければ動く
-        if (!isFiringBeam)
-        {
-            //手は軌道を描きながら動く、プレイヤーを向き続ける
-            angle += orbitSpeed * Time.deltaTime;
-            float rad = angle * Mathf.Deg2Rad;
-            Vector3 offset = new Vector3(
-                Mathf.Cos(rad) * orbitRadius,
-                Mathf.Sin(Time.time * floatSpeed) * floatAmplitude,
-                Mathf.Sin(rad) * orbitRadius
-            );
-            //スポーン座標を基準に回る
-            transform.position = bossHandSpawn.position + offset;
-            transform.LookAt(player);
-        }
+        ////ビーム中でなければ動く
+        //if (!isFiringBeam)
+        //{
+        //    //手は軌道を描きながら動く、プレイヤーを向き続ける
+        //angle += orbitSpeed * Time.deltaTime;
+        //float rad = angle * Mathf.Deg2Rad;
+        //Vector3 offset = new Vector3(
+        //    Mathf.Cos(rad) * orbitRadius,
+        //    Mathf.Sin(Time.time * floatSpeed) * floatAmplitude,
+        //    Mathf.Sin(rad) * orbitRadius
+        //);
+        //    //スポーン座標を基準に回る
+        //    transform.position = bossHandSpawn.position + offset;
+
+        transform.LookAt(player);
 
         beamTimer += Time.deltaTime;
         if (beamTimer >= beamInterval && !isFiringBeam)
@@ -123,29 +123,6 @@ public class BossHand : MonoBehaviour
 
             isFloorAtack = false;
             isAttttttack = true;
-        }
-
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            int id = off[0];  // 今 Pause したいエフェクト
-
-            // まだ Pause してないなら追加
-            if (!pausedIDs.Contains(id))
-            {
-                pausedIDs.Add(id);
-                EffectManager.instance.Pause(id);
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            foreach (var id in pausedIDs)
-            {
-                EffectManager.instance.Resume(id);
-            }
-
-            // 全部再生したのでクリア
-            pausedIDs.Clear();
         }
 
         if (isAttttttack)

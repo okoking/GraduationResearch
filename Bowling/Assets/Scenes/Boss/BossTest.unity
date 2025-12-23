@@ -345,6 +345,7 @@ GameObject:
   - component: {fileID: 202994568}
   - component: {fileID: 202994569}
   - component: {fileID: 202994570}
+  - component: {fileID: 202994571}
   m_Layer: 0
   m_Name: ManagerHub
   m_TagString: Untagged
@@ -391,6 +392,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f10beb23b11abb44b1c41d5fb380123, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &202994571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 202994566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9724adaf3e7f33549ba91c672f5f9de2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doors: []
+  bossSpawner: {fileID: 213401679}
 --- !u!1 &213401678
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,7 +417,7 @@ GameObject:
   - component: {fileID: 213401680}
   - component: {fileID: 213401679}
   m_Layer: 0
-  m_Name: BosSP
+  m_Name: BossSP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -422,6 +437,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bossPrefab: {fileID: 6956558955919073738, guid: ce93e6f3f4525aa40a1e470fba8f6999, type: 3}
   spawnPoint: {fileID: 213401680}
+  bossHpBar: {fileID: 1514571924}
+  bossDeath: {fileID: 1196240698987713593, guid: bbc192c630bf89c478c5fb646fedea0d, type: 3}
 --- !u!4 &213401680
 Transform:
   m_ObjectHideFlags: 0
@@ -431,7 +448,7 @@ Transform:
   m_GameObject: {fileID: 213401678}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4, z: 225}
+  m_LocalPosition: {x: 0, y: 4, z: 25.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -797,6 +814,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 911385268}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &931200680 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8079119010320544848, guid: 09e80315b03ad0446b794f5798f21bef, type: 3}
+  m_PrefabInstance: {fileID: 1764561218}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &931200687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931200680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41a38941803732143afb9452b5180353, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1133657020
 GameObject:
   m_ObjectHideFlags: 0
@@ -1597,6 +1631,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1196240698987713593, guid: bbc192c630bf89c478c5fb646fedea0d, type: 3}
+      propertyPath: bossObj
+      value: 
+      objectReference: {fileID: 6956558955919073738, guid: ce93e6f3f4525aa40a1e470fba8f6999, type: 3}
     - target: {fileID: 5633753936748441289, guid: bbc192c630bf89c478c5fb646fedea0d, type: 3}
       propertyPath: m_Name
       value: TheWall
@@ -1814,10 +1852,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8079119010320544848, guid: 09e80315b03ad0446b794f5798f21bef, type: 3}
+      propertyPath: m_TagString
+      value: Boss
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8079119010320544848, guid: 09e80315b03ad0446b794f5798f21bef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 931200687}
   m_SourcePrefab: {fileID: 100100000, guid: 09e80315b03ad0446b794f5798f21bef, type: 3}
 --- !u!1 &1866428265
 GameObject:
@@ -2247,6 +2292,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2047617095}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2131817229 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8079119010320544848, guid: 09e80315b03ad0446b794f5798f21bef, type: 3}
+  m_PrefabInstance: {fileID: 1774467455548983088}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2131817236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131817229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f03db62401ba0349a654f52b67b8657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1774467455548983088
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2259,6 +2321,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: a2dfee9bd4faca246aa50e98301bc23f, type: 2}
+    - target: {fileID: 5502002370822390862, guid: 09e80315b03ad0446b794f5798f21bef, type: 3}
+      propertyPath: doorIndex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5593171341279962551, guid: 09e80315b03ad0446b794f5798f21bef, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2307,10 +2373,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8079119010320544848, guid: 09e80315b03ad0446b794f5798f21bef, type: 3}
+      propertyPath: m_TagString
+      value: Boss
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8079119010320544848, guid: 09e80315b03ad0446b794f5798f21bef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2131817236}
   m_SourcePrefab: {fileID: 100100000, guid: 09e80315b03ad0446b794f5798f21bef, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -4,33 +4,23 @@ using UnityEngine;
 public class BossDeath : MonoBehaviour
 {
     private BossHp bosshp;
+    public GameObject bossObj;
 
     float height;
     float startY;
 
     bool isDeath;
 
+    public void SetBoss(BossHp hp)
+    {
+        bosshp = hp;
+    }
+
     void Start()
     {
         height = GetComponent<Renderer>().bounds.size.y;
         startY = transform.position.y;
         isDeath = false;
-
-        StartCoroutine(WaitForBoss());
-    }
-
-    IEnumerator WaitForBoss()
-    {
-        while (bosshp == null)
-        {
-            GameObject bossObj = GameObject.FindGameObjectWithTag("Boss");
-            if (bossObj != null)
-            {
-                bosshp = bossObj.GetComponent<BossHp>();
-                break;
-            }
-            yield return null;
-        }
     }
 
     void Update()
@@ -39,14 +29,8 @@ public class BossDeath : MonoBehaviour
 
         if (bosshp.GetIsDeath())
         {
-            isDeath = true;
-        }
-
-        if (isDeath && transform.position.y < startY + height)
-        {
             Debug.Log("Ž€‚ñ‚¾‚Ì‚Å“®‚«‚Ü‚·");
-            //Destroy(gameObject);
-            transform.Translate(Vector3.up * 1f * Time.deltaTime);
+            Destroy(gameObject);
         }
     }
 }

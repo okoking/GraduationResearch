@@ -30,7 +30,11 @@ public class BeamSweepController : MonoBehaviour
 
         Destroy(gameObject, duration);
 
-        playerHealth = GameObject.Find("Player").GetComponent<PlayerHealth>();
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            playerHealth = player.GetComponent<PlayerHealth>();
+        }
     }
 
     void Update()

@@ -4,24 +4,21 @@ public class BossSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject bossPrefab;
     [SerializeField] private Transform spawnPoint;
+    [SerializeField] private BossHpBar bossHpBar;
+    [SerializeField] private BossDeath bossDeath;
 
     private bool isSpawned = false;
 
-    void OnEnable()
-    {
-        DoorDeath.OnDoorOpened += SpawnBoss;
-    }
-
-    void OnDisable()
-    {
-        DoorDeath.OnDoorOpened -= SpawnBoss;
-    }
-
-    void SpawnBoss()
+    public void SpawnBoss()
     {
         if (isSpawned) return;
 
-        Instantiate(bossPrefab, spawnPoint.position, spawnPoint.rotation);
+        GameObject bossObj = Instantiate(bossPrefab, spawnPoint.position, spawnPoint.rotation);
         isSpawned = true;
+
+        BossHp bossHp = bossObj.GetComponent<BossHp>();
+        bossDeath.SetBoss(bossHp);
+
+        bossHpBar.SetBoss(bossHp);
     }
 }
