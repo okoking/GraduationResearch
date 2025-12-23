@@ -364,7 +364,7 @@ Transform:
   m_GameObject: {fileID: 98652790}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.5, w: 0.8660254}
-  m_LocalPosition: {x: 0.88, y: 0.88, z: 0}
+  m_LocalPosition: {x: 0.86, y: 0.86, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1012,9 +1012,6 @@ PrefabInstance:
       addedObject: {fileID: 1316075569}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b3309cc3af68f574eb66e68b8af5d7d2, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1316075568}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b3309cc3af68f574eb66e68b8af5d7d2, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1316075567}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b3309cc3af68f574eb66e68b8af5d7d2, type: 3}
       insertIndex: -1
@@ -1031,6 +1028,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b3309cc3af68f574eb66e68b8af5d7d2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1316075562}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b3309cc3af68f574eb66e68b8af5d7d2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1316075572}
   m_SourcePrefab: {fileID: 100100000, guid: b3309cc3af68f574eb66e68b8af5d7d2, type: 3}
 --- !u!1 &1316075561 stripped
 GameObject:
@@ -1097,7 +1097,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vfxPrefab: {fileID: 9203698795361965003, guid: f8997f39d17210141a7f1af4ac1fa8b7, type: 3}
-  player: {fileID: 845249622}
+  beamRange: 100
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 0
+  damagePerSec: 10
+  maxGauge: 100
+  gaugeDrainPerSec: 20
+  disableRotate: 0
+  mainCam: {fileID: 167591189}
+  lineRenderer: {fileID: 1948414629}
+  MinibeamDuration: 1.5
 --- !u!114 &1316075565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1141,28 +1151,6 @@ MonoBehaviour:
   maxHealth: 1000
   currentHealth: 0
   Damage: 10
---- !u!114 &1316075568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1316075561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8dbb16379dbb9704794a53a25c666cad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lineRenderer: {fileID: 1948414629}
-  beamLength: 50
-  beamWidth: 0.2
-  MegabeamDuration: 3
-  MinibeamDuration: 0.1
-  hitMask:
-    serializedVersion: 2
-    m_Bits: 0
-  mainCam: {fileID: 167591189}
-  disableRotate: 0
 --- !u!114 &1316075569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1176,7 +1164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lockOnTarget: {fileID: 2027203835072127484, guid: 7f9d84a6757738742adb04bb35930953, type: 3}
-  lockOnRange: 20
+  lockOnRange: 10
   markerSystem: {fileID: 1402032433}
 --- !u!114 &1316075570
 MonoBehaviour:
@@ -1214,6 +1202,23 @@ MonoBehaviour:
   gravity: -20
   acceleration: 10
   deceleration: 8
+--- !u!114 &1316075572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316075561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dbb16379dbb9704794a53a25c666cad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineRenderer: {fileID: 1948414629}
+  beamLength: 50
+  beamWidth: 0.2
+  MinibeamDuration: 1.5
+  mainCam: {fileID: 167591189}
 --- !u!1 &1402032432
 GameObject:
   m_ObjectHideFlags: 0

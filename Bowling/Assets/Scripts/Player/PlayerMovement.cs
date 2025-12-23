@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float deceleration = 10f;    // 減速の速さ
 
     private Vector3 velocity;
-    private KariBeam beamInfo;
+    private SpecialBeam beamInfo;
     private CharacterController controller;
     private Vector3 currentMove = Vector3.zero; // 慣性付きの移動速度
 
@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        beamInfo = GetComponent<KariBeam>();
+        beamInfo = GetComponent<SpecialBeam>();
         controller = GetComponent<CharacterController>();
     }
 

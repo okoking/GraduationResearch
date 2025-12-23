@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BeamGauge : MonoBehaviour
 {
@@ -53,6 +52,15 @@ public class BeamGauge : MonoBehaviour
     public float GetGaugeRatio()
     {
         return currentGauge / maxGauge;
+    }
+
+    public bool IsLowestValueShotBeam()
+    {
+        // Å’á‚P•b‘Å‚Ä‚é•ª‚Ìƒr[ƒ€‚ª‚È‚¯‚ê‚Î‘Å‚Ä‚È‚¢‚æ‚¤‚É‚·‚é
+        if (currentGauge <= consumePerSecond)
+            return false;
+
+        return true;
     }
 
     void UpdateGauge()
