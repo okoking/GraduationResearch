@@ -24,12 +24,6 @@ public class SpecialBeam : MonoBehaviour
     [Header("Camera")]
     [SerializeField] Camera mainCam;
 
-    [Header("LockOnBeam")]
-    [SerializeField] private LineRenderer lineRenderer;
-    [SerializeField] private float MinibeamDuration = 1.5f; // âΩïbä‘èoÇµë±ÇØÇÈÇ©
-    private LockOnSystem lockOn;
-
-
     private BeamGauge beamGauge;
 
     // ===== State =====
@@ -41,7 +35,6 @@ public class SpecialBeam : MonoBehaviour
     {
         beamCamera = GetComponent<BeamCamera>();
         beamGauge = GetComponent<BeamGauge>();
-        lockOn= GetComponent<LockOnSystem>();
     }
 
     void Update()
@@ -219,16 +212,24 @@ public class SpecialBeam : MonoBehaviour
 
         Ray ray = mainCam.ScreenPointToRay(center);
 
-        // ìñÇΩÇ¡ÇΩÇÁ hit.point
-        if (Physics.Raycast(ray, out RaycastHit hit, beamRange))
+        RaycastHit[] hits = Physics.RaycastAll(ray, beamRange);
+
+        float nearestDist = float.MaxValue;
+        Vector3 result = ray.origin + ray.direction * beamRange;
+
+        foreach (var h in hits)
         {
-            if (!hit.collider.CompareTag("Untagged"))
+            if (h.collider.CompareTag("Untagged"))
+                continue;
+
+            if (h.distance < nearestDist)
             {
-                return hit.point;
+                nearestDist = h.distance;
+                result = h.point;
             }
         }
-        // ìñÇΩÇÁÇ»Ç©Ç¡ÇΩÇÁ éÀíˆï™êÊ
-        return ray.origin + ray.direction * beamRange;
+
+        return result;
     }
 
     Vector3 GetCenterToPlayerDir()
