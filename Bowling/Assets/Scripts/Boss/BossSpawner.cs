@@ -9,6 +9,8 @@ public class BossSpawner : MonoBehaviour
 
     private bool isSpawned = false;
 
+    bool ones = false;
+
     public void SpawnBoss()
     {
         if (isSpawned) return;
@@ -17,6 +19,7 @@ public class BossSpawner : MonoBehaviour
         isSpawned = true;
 
         BossHp bossHp = bossObj.GetComponent<BossHp>();
+
         bossDeath.SetBoss(bossHp);
 
         bossHpBar.SetBoss(bossHp);
