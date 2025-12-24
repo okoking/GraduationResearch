@@ -8,10 +8,10 @@ public class CameraRegister : MonoBehaviour
 
     void Awake()
     {
-        CameraManager.Instance.Register(
-            mode,
-            GetComponent<CinemachineCamera>()
-        );
+        //CameraManager.Instance.Register(
+        //    mode,
+        //    GetComponent<CinemachineCamera>()
+        //);
     }
 
     void Start()
@@ -19,7 +19,6 @@ public class CameraRegister : MonoBehaviour
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         

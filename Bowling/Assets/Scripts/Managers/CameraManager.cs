@@ -24,6 +24,9 @@ public class CameraManager : MonoBehaviour
 
     private Dictionary<CameraMode, CinemachineCamera> cameras = new();
 
+    private Camera PlayUI;
+    private Camera Ivent;
+    private Camera Player;
 
     private void Awake()
     {
@@ -37,31 +40,45 @@ public class CameraManager : MonoBehaviour
 
     void Start()
     {
-       
+        PlayUI = GameObject.Find("PlayerUICamera")?.GetComponent<Camera>();
+        
+        Ivent = GameObject.Find("IventCamera")?.GetComponent<Camera>();
+        Player = GameObject.Find("PlayerCamera")?.GetComponent<Camera>();
+
+        PlayUI.enabled = false;
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            cameras[CameraMode.Player].gameObject.SetActive(false);
-            cameras[CameraMode.Ivent].gameObject.SetActive(true);
+
+            //cameras[CameraMode.Ivent].enabled = false;
+            
+
+            
         }
     }
 
     //“®“I‚ÉƒV[ƒ““à‚ÌƒJƒƒ‰‚ğ’T‚µ‚Ä“o˜^
-    public void Register(CameraMode mode, CinemachineCamera cam)
-    {
-        if (cameras.ContainsKey(mode))
-        {
-            Debug.LogWarning($"CameraMode {mode} ‚ÍŠù‚É“o˜^‚³‚ê‚Ä‚¢‚Ü‚·");
-            return;
-        }
+    //public void Register(CameraMode mode, CinemachineCamera cam)
+    //{
+    //    if (cameras.ContainsKey(mode))
+    //    {
+    //        Debug.LogWarning($"CameraMode {mode} ‚ÍŠù‚É“o˜^‚³‚ê‚Ä‚¢‚Ü‚·");
+    //        return;
+    //    }
 
-        cameras[mode] = cam;
-        Debug.Log($"{cam} ‚ğ“o˜^‚µ‚Ü‚µ‚½");
-        cameras[mode].Priority = 10;
-    }
+    //    cameras[mode] = cam;
+    //    Debug.Log($"{cam} ‚ğ“o˜^‚µ‚Ü‚µ‚½");
+    //    //cameras[mode].Priority = 0;
+
+    //    //‰‰ñ“o˜^‚ÉØ‚è‘Ö‚¦
+    //    if (cameras.Count == 3)
+    //    {
+    //        cameras[CameraMode.PlayUI].enabled = false;
+    //    }
+    //}
 
     //ƒJƒƒ‰ƒ‚[ƒhæ“¾ŠÖ”
     public CameraMode GetCurrentMode() => currentMode;
@@ -74,12 +91,12 @@ public class CameraManager : MonoBehaviour
             return;
         }
 
-        //‘SOFF
-        foreach (var cam in cameras.Values)
-            cam.Priority = 10;
+        ////‘SOFF
+        //foreach (var cam in cameras.Values)
+        //    cam.Priority = 10;
 
         currentMode = mode;
-        cameras[mode].Priority = 20;
+        //cameras[mode].Priority = 20;
         Debug.Log($"ƒJƒƒ‰Ø‘Ö: {mode}");
     }
 
@@ -92,58 +109,48 @@ public class CameraManager : MonoBehaviour
         cameraRoutine = StartCoroutine(MoveFromIventToPlayer(duration));
     }
 
-    //IEnumerator ZoomSequence(float duration)
-    //{
-    //    SwitchCamera(CameraMode.Ivent);
-    //    yield return new WaitForSecondsRealtime(duration);
-    //    SwitchCamera(CameraMode.Player);
-    //}
-
-   
-
     IEnumerator MoveFromIventToPlayer(float duration)
     {
-        //EventƒJƒƒ‰‚ğ•\¦
-        SwitchCamera(CameraMode.Ivent);
-        yield return null; // Priority”½‰f‘Ò‚¿id—vj
-
-        var iventCam = cameras[CameraMode.Ivent];
-        var playerCam = cameras[CameraMode.Player];
-
-        //Followæ“¾
-        var iventFollow = iventCam.GetComponent<CinemachineFollow>();
-        var playerFollow = playerCam.GetComponent<CinemachineFollow>();
-
-        if (iventFollow == null)
+        if (!cameras.TryGetValue(CameraMode.Ivent, out var iventCam) ||
+       !cameras.TryGetValue(CameraMode.Player, out var playerCam))
         {
-            Debug.LogError("IventCamera ‚É CinemachineFollow ‚ª•t‚¢‚Ä‚¢‚Ü‚¹‚ñ");
+            Debug.LogError("Ivent / Player ƒJƒƒ‰‚ª Register ‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
             yield break;
         }
 
-        if (playerFollow == null)
-        {
-            Debug.LogError("PlayerCamera ‚É CinemachineFollow ‚ª•t‚¢‚Ä‚¢‚Ü‚¹‚ñ");
-            yield break;
-        }
+        //IventCamera ‚ğ—LŒø‰»
+        
+        iventCam.Priority = 30;
+        playerCam.Priority = 10;
+        currentMode = CameraMode.Ivent;
+        Transform from = iventCam.transform;
+        Transform to = playerCam.transform;
 
-        Vector3 startOffset = iventFollow.FollowOffset;
-        Vector3 targetOffset = playerFollow.FollowOffset;
+        Vector3 startPos = from.position;
+        Quaternion startRot = from.rotation;
+
+        Vector3 endPos = to.position;
+        Quaternion endRot = to.rotation;
 
         float t = 0f;
+
         while (t < 1f)
         {
-            t += Time.unscaledDeltaTime / duration;
+            t += Time.deltaTime / duration;
             float eased = EaseOut(t);
 
-            iventFollow.FollowOffset =
-                Vector3.Lerp(startOffset, targetOffset, eased);
+            from.position = Vector3.Lerp(startPos, endPos, eased);
+            from.rotation = Quaternion.Slerp(startRot, endRot, eased);
 
             yield return null;
         }
 
-        //Š®—¹Œã Player ƒJƒƒ‰‚Ö
+        //”O‚Ì‚½‚ßÅIˆê’v
+        from.position = endPos;
+        from.rotation = endRot;
+
+        //PlayerCamera ‚ÉØ‘Ö
         SwitchCamera(CameraMode.Player);
-        cameraRoutine = null;
     }
 
     float EaseOut(float t) { return 1f - Mathf.Pow(1f - t, 3f); }
