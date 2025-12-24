@@ -16,9 +16,9 @@ public class BossHandSpawnerCenter : MonoBehaviour
 
     void Start()
     {
-        Renderer renderer = GetComponent<Renderer>();
-        halfWidth = renderer.bounds.extents.x;
-        halfHeight = renderer.bounds.extents.y;
+        //Renderer renderer = GetComponent<Renderer>();
+        //halfWidth = renderer.bounds.extents.x;
+        //halfHeight = renderer.bounds.extents.y;
 
         SpawnHands();
     }
@@ -38,29 +38,9 @@ public class BossHandSpawnerCenter : MonoBehaviour
                 case 2:
                     offset = new Vector3(
                         (i == 0 ? -(halfWidth + offsetX) : (halfWidth + offsetX)),
-                        0,
+                        offsetY,
                         0
                     );
-                    break;
-
-                case 3:
-                    if (i == 0)
-                        offset = new Vector3(-(halfWidth + offsetX), 0, 0);
-                    else if (i == 1)
-                        offset = new Vector3((halfWidth + offsetX), 0, 0);
-                    else
-                        offset = new Vector3(0, halfHeight + offsetY, 0);
-                    break;
-
-                case 4:
-                    if (i == 0)
-                        offset = new Vector3(-(halfWidth + offsetX), 0, 0);
-                    else if (i == 1)
-                        offset = new Vector3((halfWidth + offsetX), 0, 0);
-                    else if (i == 2)
-                        offset = new Vector3(-(halfWidth / 2), halfHeight + offsetY, 0);
-                    else
-                        offset = new Vector3((halfWidth / 2), halfHeight + offsetY, 0);
                     break;
             }
 

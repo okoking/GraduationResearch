@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17367d02b960efb4c8541e6ae232ab6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossHandPrefab: {fileID: 375154224479475916, guid: 4cf83f98f001690429b78eab4bc31b80, type: 3}
+  bossHandPrefab: {fileID: 6158068602318555912, guid: 4cf83f98f001690429b78eab4bc31b80, type: 3}

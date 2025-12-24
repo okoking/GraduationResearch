@@ -435,7 +435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee97b43c60d2024cafa17cb9a7b90e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossPrefab: {fileID: 6956558955919073738, guid: ce93e6f3f4525aa40a1e470fba8f6999, type: 3}
+  bossPrefab: {fileID: 4705851803761269698, guid: ce93e6f3f4525aa40a1e470fba8f6999, type: 3}
   spawnPoint: {fileID: 213401680}
   bossHpBar: {fileID: 1514571924}
   bossDeath: {fileID: 1196240698987713593, guid: bbc192c630bf89c478c5fb646fedea0d, type: 3}
@@ -448,7 +448,7 @@ Transform:
   m_GameObject: {fileID: 213401678}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4, z: 25.2}
+  m_LocalPosition: {x: 0, y: 4, z: 227.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
