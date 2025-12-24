@@ -80,12 +80,12 @@ public class BallSelectManager : MonoBehaviour
             UpdateCursor();
         }
 
-        //Œˆ’è
-        if (InputManager.Instance.Enter)
-        {
-            SelectBall();
-            CameraManager.Instance.SwitchCamera(CameraMode.Play);
-        }
+        ////Œˆ’è
+        //if (InputManager.Instance.Enter)
+        //{
+        //    SelectBall();
+        //    CameraManager.Instance.SwitchCamera(CameraMode.Player);
+        //}
 
     }
 

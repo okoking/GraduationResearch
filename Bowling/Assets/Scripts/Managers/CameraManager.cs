@@ -1,13 +1,14 @@
 using System.Collections;
+using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 //カメラモード
 public enum CameraMode
 {
-    Ivent,          //コース確認
-    Play,           //プレイ
-    Enemy,          //エネミー
-    Boss,           //ボス
+    Ivent,          //イベント
+    Player,         //プレイ
+    PlayUI,
 
     //Replay        //将来用
 }
@@ -17,158 +18,133 @@ public class CameraManager : MonoBehaviour
 {
     public static CameraManager Instance { get; private set; }
 
-    private Camera IventCamera;
-    private Camera playerCamera;
-    private Camera EnemyCamera;
-    private Camera BossCamera;
-
     private CameraMode currentMode;
 
     private Coroutine cameraRoutine;
 
+    private Dictionary<CameraMode, CinemachineCamera> cameras = new();
+
+
     private void Awake()
     {
-        if (Instance == null) Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         else Destroy(gameObject);
-
-        
-        
     }
 
     void Start()
     {
-        
+       
     }
 
     void Update()
     {
-        //必要に応じてカメラ切り替えの入力処理など
-        RegisterCameras();
-        //SwitchCamera(CameraMode.Play);
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            cameras[CameraMode.Player].gameObject.SetActive(false);
+            cameras[CameraMode.Ivent].gameObject.SetActive(true);
+        }
     }
 
     //動的にシーン内のカメラを探して登録
-    public void RegisterCameras()
+    public void Register(CameraMode mode, CinemachineCamera cam)
     {
-        IventCamera = GameObject.Find("IventCamera")?.GetComponent<Camera>();
-        playerCamera = GameObject.Find("PlayerCamera")?.GetComponent<Camera>();
-        //EnemyCamera = GameObject.Find("EnemyCamera")?.GetComponent<Camera>();
-        //BossCamera = GameObject.Find("Main Camera")?.GetComponent<Camera>();
-        if (IventCamera == null) Debug.LogError("IventCamera が見つかりません！");
-        if (playerCamera == null) Debug.LogError("PlayerCamera が見つかりません！");
-        //if (EnemyCamera == null) Debug.LogError("EnemyCamera が見つかりません！");
-        //if (BossCamera == null) Debug.LogError("BossCamera が見つかりません！");
+        if (cameras.ContainsKey(mode))
+        {
+            Debug.LogWarning($"CameraMode {mode} は既に登録されています");
+            return;
+        }
 
-        ////すべてのカメラを無効化
-        //if (IventCamera != null) IventCamera.gameObject.SetActive(false);
-        //if (playerCamera != null) playerCamera.gameObject.SetActive(false);
-        //if (EnemyCamera != null) EnemyCamera.gameObject.SetActive(false);
-        //if (BossCamera != null) BossCamera.gameObject.SetActive(false);
+        cameras[mode] = cam;
+        Debug.Log($"{cam} を登録しました");
+        cameras[mode].Priority = 10;
     }
+
+    //カメラモード取得関数
+    public CameraMode GetCurrentMode() => currentMode;
 
     public void SwitchCamera(CameraMode mode)
     {
+        if (!cameras.ContainsKey(mode))
+        {
+            Debug.LogError($"CameraMode {mode} のカメラが未登録です");
+            return;
+        }
+
+        //全OFF
+        foreach (var cam in cameras.Values)
+            cam.Priority = 10;
+
         currentMode = mode;
-
-        //モードに応じて有効化
-        switch (mode)
-        {
-            case CameraMode.Ivent:
-                if (IventCamera != null) IventCamera.gameObject.SetActive(true);
-                Debug.Log("イベントカメラに変更");
-                break;
-            case CameraMode.Play:
-                if (playerCamera != null) playerCamera.gameObject.SetActive(true);
-                Debug.Log("プレイカメラに変更");
-                break;
-        }
-
-
-    }
-
-    private void OnGUI()
-    {
-        if (Instance == null) return;
-
-        CameraMode mode = Instance.GetCurrentMode()/*.ToString()*/;
-        GUI.color = Color.red;
-        
-        GUI.Label(new Rect(10, 5, 300, 30), $"現在のカメラモード: {mode}");
-
-        //モードに応じて有効化
-        switch (mode)
-        {
-            case CameraMode.Ivent:
-                GUI.Label(new Rect(10, 20, 300, 30), $"Vキー：PlayCameraへ");
-                GUI.Label(new Rect(10, 35, 300, 30), $"Qキー：上昇");
-                GUI.Label(new Rect(10, 50, 300, 30), $"Eキー：下降");
-                break;
-            case CameraMode.Play:
-                GUI.Label(new Rect(10, 20, 300, 30), $"Cキー：FreeCameraへ");
-                GUI.Label(new Rect(10, 35, 300, 30), $"Spaceキー：MissileIventCameraへ");
-                break;
-        }
+        cameras[mode].Priority = 20;
+        Debug.Log($"カメラ切替: {mode}");
     }
 
     //カメラ演出
-    public void PlayStartCameraSequence(float duration)
+    public void PlayMoveFromIventToPlayer(float duration)
     {
         if (cameraRoutine != null)
             StopCoroutine(cameraRoutine);
 
-        cameraRoutine = StartCoroutine(StartCameraSequence(duration));
+        cameraRoutine = StartCoroutine(MoveFromIventToPlayer(duration));
     }
 
-    IEnumerator StartCameraSequence(float duration)
-    {
-        SwitchCamera(CameraMode.Ivent);   //演出カメラ
-        yield return new WaitForSecondsRealtime(duration);
-        SwitchCamera(CameraMode.Play);       //通常カメラ
-    }
+    //IEnumerator ZoomSequence(float duration)
+    //{
+    //    SwitchCamera(CameraMode.Ivent);
+    //    yield return new WaitForSecondsRealtime(duration);
+    //    SwitchCamera(CameraMode.Player);
+    //}
 
-    public void PlayZoomInToPlayer(float duration)
-    {
-        if (cameraRoutine != null)
-            StopCoroutine(cameraRoutine);
+   
 
-        cameraRoutine = StartCoroutine(ZoomInToPlayerCoroutine(duration));
-    }
-
-    IEnumerator ZoomInToPlayerCoroutine(float duration)
+    IEnumerator MoveFromIventToPlayer(float duration)
     {
-        // 演出用カメラに切替
+        //Eventカメラを表示
         SwitchCamera(CameraMode.Ivent);
+        yield return null; // Priority反映待ち（重要）
 
-        Transform fromCam = IventCamera.transform;
-        Transform toCam = playerCamera.transform;
+        var iventCam = cameras[CameraMode.Ivent];
+        var playerCam = cameras[CameraMode.Player];
 
-        Vector3 startPos = fromCam.position;
-        Quaternion startRot = fromCam.rotation;
+        //Follow取得
+        var iventFollow = iventCam.GetComponent<CinemachineFollow>();
+        var playerFollow = playerCam.GetComponent<CinemachineFollow>();
 
-        Vector3 targetPos = toCam.position;
-        Quaternion targetRot = toCam.rotation;
+        if (iventFollow == null)
+        {
+            Debug.LogError("IventCamera に CinemachineFollow が付いていません");
+            yield break;
+        }
+
+        if (playerFollow == null)
+        {
+            Debug.LogError("PlayerCamera に CinemachineFollow が付いていません");
+            yield break;
+        }
+
+        Vector3 startOffset = iventFollow.FollowOffset;
+        Vector3 targetOffset = playerFollow.FollowOffset;
 
         float t = 0f;
-
         while (t < 1f)
         {
             t += Time.unscaledDeltaTime / duration;
+            float eased = EaseOut(t);
 
-            // 位置・回転を補間
-            fromCam.position = Vector3.Lerp(startPos, targetPos, EaseOut(t));
-            fromCam.rotation = Quaternion.Slerp(startRot, targetRot, EaseOut(t));
+            iventFollow.FollowOffset =
+                Vector3.Lerp(startOffset, targetOffset, eased);
 
             yield return null;
         }
 
-        // 最後にプレイカメラへ
-        SwitchCamera(CameraMode.Play);
+        //完了後 Player カメラへ
+        SwitchCamera(CameraMode.Player);
+        cameraRoutine = null;
     }
-    //カメラモード取得関数
-    public CameraMode GetCurrentMode() => currentMode;
 
-    float EaseOut(float t)
-{
-    return 1f - Mathf.Pow(1f - t, 3f);
-}
+    float EaseOut(float t) { return 1f - Mathf.Pow(1f - t, 3f); }
 }

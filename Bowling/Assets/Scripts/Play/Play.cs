@@ -34,10 +34,10 @@ public class Play : MonoBehaviour
             //Debug.Log("フリーカメラへ変更");
         }
 
-        //フリーカメラに変更
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            CameraManager.Instance.SwitchCamera(CameraMode.Play);
-        }
+        ////フリーカメラに変更
+        //if (Input.GetKeyDown(KeyCode.V))
+        //{
+        //    CameraManager.Instance.SwitchCamera(CameraMode.Player);
+        //}
     }
 }

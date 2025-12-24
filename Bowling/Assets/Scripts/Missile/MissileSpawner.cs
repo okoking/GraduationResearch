@@ -59,11 +59,11 @@ public class MissileSpawner : MonoBehaviour
 
         //if (missileMeter > MeterMax)
         //{
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            StartCoroutine(SpawnMissile());
-            missileMeter = 0;
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    StartCoroutine(SpawnMissile());
+        //    missileMeter = 0;
+        //}
         //}
 
     }

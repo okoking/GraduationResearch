@@ -29,7 +29,7 @@ public class GameStartDirector : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            CameraManager.Instance.PlayZoomInToPlayer(cameraDuration);
+            CameraManager.Instance.PlayMoveFromIventToPlayer(cameraDuration);
         }
     }
 
@@ -44,9 +44,9 @@ public class GameStartDirector : MonoBehaviour
         countdownText.gameObject.SetActive(false);
         goText.gameObject.SetActive(false);
 
-        ////カメラ演出
-        //CameraManager.Instance.PlayZoomInToPlayer(cameraDuration);
-        //yield return new WaitForSecondsRealtime(cameraDuration);
+        //カメラ演出
+        CameraManager.Instance.PlayMoveFromIventToPlayer(cameraDuration);
+        yield return new WaitForSecondsRealtime(cameraDuration);
 
         //カウントダウン
         countdownText.gameObject.SetActive(true);
