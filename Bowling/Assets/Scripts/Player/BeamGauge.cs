@@ -5,7 +5,7 @@ public class BeamGauge : MonoBehaviour
     //[SerializeField] Image gaugeFill;
 
     [SerializeField] float maxGauge = 100f;
-    [SerializeField] float chargeSpeed = 5f;        // •bŠÔ‰ñ•œ—Ê
+    [SerializeField] float chargeVal = 5f;          // “G“¢”°‚Ì‰ñ•œ—Ê
     [SerializeField] float consumePerSecond = 30f;   // •bŠÔÁ”ï—Ê
 
     float currentGauge;
@@ -13,21 +13,18 @@ public class BeamGauge : MonoBehaviour
 
     private void Start()
     {
-        currentGauge = maxGauge;
+        currentGauge = 0;
     }
 
     void Update()
     {
-        if (!isUsingBeam)
-            Charge();
 
-        UpdateGauge();
     }
 
-    void Charge()
+    public void Charge()
     {
         currentGauge = Mathf.Clamp(
-            currentGauge + chargeSpeed * Time.deltaTime,
+            currentGauge + chargeVal,
             0,
             maxGauge
         );
@@ -56,15 +53,10 @@ public class BeamGauge : MonoBehaviour
 
     public bool IsLowestValueShotBeam()
     {
-        // Å’á‚P•b‘Å‚Ä‚é•ª‚Ìƒr[ƒ€‚ª‚È‚¯‚ê‚Î‘Å‚Ä‚È‚¢‚æ‚¤‚É‚·‚é
-        if (currentGauge <= consumePerSecond)
+        // Å’á‚Q•b‘Å‚Ä‚é•ª‚Ìƒr[ƒ€‚ª‚È‚¯‚ê‚Î‘Å‚Ä‚È‚¢‚æ‚¤‚É‚·‚é
+        if (currentGauge <= consumePerSecond * 2f)
             return false;
 
         return true;
-    }
-
-    void UpdateGauge()
-    {
-        //gaugeFill.fillAmount = currentGauge / maxGauge;
     }
 }

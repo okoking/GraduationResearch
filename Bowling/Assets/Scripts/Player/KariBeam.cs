@@ -12,7 +12,7 @@ public class KariBeam : MonoBehaviour
     private bool isFiring = false;
     private BeamCamera beamCamera;
     private LockOnSystem lockOn;
-
+    private BeamGauge beamGauge;
     void Start()
     {
         lineRenderer.enabled = false;
@@ -20,6 +20,7 @@ public class KariBeam : MonoBehaviour
         lineRenderer.endWidth = beamWidth;
         beamCamera = GetComponent<BeamCamera>();
         lockOn = GetComponent<LockOnSystem>();
+        beamGauge = GetComponent<BeamGauge>();
     }
 
     void Update()
@@ -41,8 +42,8 @@ public class KariBeam : MonoBehaviour
             isFiring = true;
             lineRenderer.enabled = true;
 
-            bool isHit = false;
-            while (!isHit)
+            int cnt = 0;
+            while (cnt < 10)
             {
                 if (lockOn.lockOnTarget == null)
                 {
@@ -61,12 +62,16 @@ public class KariBeam : MonoBehaviour
                 float Distance = Vector3.Distance(end, start);
 
                 RaycastHit[] hits = Physics.SphereCastAll(start, beamWidth, direction, Distance);
+
                 foreach (var h in hits)
                 {
                     if (h.collider.CompareTag("Enemy"))
                     {
-                        h.collider.GetComponent<EnemyAI>()?.TakeDamage(1, h.point);
-                        isHit = true;
+                        if(!h.collider.GetComponent<EnemyAI>().TakeDamage(1, h.point))
+                        {
+                            beamGauge.Charge();
+                        }
+                        cnt++;
                     }
                 }
 
@@ -79,6 +84,11 @@ public class KariBeam : MonoBehaviour
             lineRenderer.enabled = false;
             isFiring = false;
         }
+    }
+
+    public bool GetisFiring()
+    {
+        return isFiring;
     }
 }
 

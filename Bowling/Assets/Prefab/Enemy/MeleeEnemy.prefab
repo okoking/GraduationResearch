@@ -170,7 +170,7 @@ MonoBehaviour:
   dashTime: 1
   attackRadius: 0.1
   attackPower: 20
-  hp: 1000
+  hp: 100
   role: 0
   encircleSignRandomSeed: 0
   knockbackPower: 0.5
