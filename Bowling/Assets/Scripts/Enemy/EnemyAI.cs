@@ -371,7 +371,7 @@ public class EnemyAI : MonoBehaviour
     }
 
     //ダメージ
-    public void TakeDamage(int damage, Vector3 attackerPos)
+    public bool TakeDamage(int damage, Vector3 attackerPos)
     {
         //HP減少
         hp -= damage;
@@ -383,7 +383,10 @@ public class EnemyAI : MonoBehaviour
         if (hp <= 0)
         {
             Die();
+            return false;
         }
+
+        return true;
     }
 
     //死亡処理

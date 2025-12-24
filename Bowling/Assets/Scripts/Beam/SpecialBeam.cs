@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEngine.VFX;
-using UnityEngine.UI;
-using Unity.VisualScripting;
 
 public class SpecialBeam : MonoBehaviour
 {
@@ -63,6 +61,7 @@ public class SpecialBeam : MonoBehaviour
             beamGauge.SetUsingBeam(true);
             StartBeam();
         }
+        // Debug.Log(GetCenterToPlayerDir());
 
         //// --- 撃っている間 ---
         //if (isActive)
@@ -110,7 +109,6 @@ public class SpecialBeam : MonoBehaviour
                 beamGauge.SetUsingBeam(false);
             }
         }
-
     }
 
     // =====================
@@ -119,12 +117,10 @@ public class SpecialBeam : MonoBehaviour
 
     void StartBeam()
     {
-        Ray ray = GetCenterRay();
-
         currentVFX = Instantiate(
             vfxPrefab,
             transform.position + Vector3.up * 1.0f,
-            Quaternion.LookRotation(ray.direction)
+            Quaternion.LookRotation(GetCenterToPlayerDir())
         );
 
         currentVFX.transform.SetParent(transform, true);
@@ -137,11 +133,11 @@ public class SpecialBeam : MonoBehaviour
     {
         if (currentVFX == null) return;
 
-        Ray ray = GetCenterRay();
+        Vector3 dir = GetCenterToPlayerDir();
 
         // 体を向ける
         // ★ 撃っている方向にプレイヤーを向ける（水平だけ）
-        Vector3 lookDir = ray.direction;
+        Vector3 lookDir = dir;
         lookDir.y = 0;
         Quaternion targetRot = Quaternion.LookRotation(lookDir);
         transform.rotation = Quaternion.Slerp(
@@ -151,7 +147,7 @@ public class SpecialBeam : MonoBehaviour
         );
 
         currentVFX.transform.position = transform.position + Vector3.up * 1.0f;
-        currentVFX.transform.rotation = Quaternion.LookRotation(ray.direction);
+        currentVFX.transform.rotation = Quaternion.LookRotation(dir);
     }
 
     void StopBeam()
@@ -172,13 +168,19 @@ public class SpecialBeam : MonoBehaviour
 
     void BeamRaycast()
     {
-        Ray ray = GetCenterRay();
         //Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // 中央(0.5,0.5)
-
-        if (Physics.SphereCast(transform.position, .2f, transform.forward, out RaycastHit hit, 50f))
+        Vector3 dir = GetCenterToPlayerDir();
+        if (Physics.SphereCast(
+            transform.position,  // プレイヤー位置
+            1f,                  // 半径
+            dir,                 // ← さっきの座標方向
+            out RaycastHit hit,
+            30f                  // 距離
+        ))
         {
             if (hit.collider.CompareTag("Enemy"))
             {
+                Debug.Log("Hit");
                 hit.collider.GetComponent<EnemyAI>()?.TakeDamage(999, hit.point);
             }
             else if (hit.collider.CompareTag("Boss"))
@@ -195,17 +197,45 @@ public class SpecialBeam : MonoBehaviour
     // Utility
     // =====================
 
-    Ray GetCenterRay()
+    //Ray GetCenterRay()
+    //{
+    //    Vector3 screenCenter = new Vector3(
+    //        Screen.width * 4f / 7f,
+    //        Screen.height / 2f,
+    //        0f
+    //    );
+
+    //    return mainCam.ScreenPointToRay(screenCenter);
+    //}
+
+    Vector3 GetCenterRayPoint()
     {
-        Vector3 screenCenter = new Vector3(
-            Screen.width / 2f,
-            Screen.height / 2f,
+        // 画面中央
+        Vector3 center = new Vector3(
+            Screen.width * 0.5f,
+            Screen.height * 0.5f,
             0f
         );
 
-        return mainCam.ScreenPointToRay(screenCenter);
+        Ray ray = mainCam.ScreenPointToRay(center);
+
+        // 当たったら hit.point
+        if (Physics.Raycast(ray, out RaycastHit hit, beamRange))
+        {
+            if (!hit.collider.CompareTag("Untagged"))
+            {
+                return hit.point;
+            }
+        }
+        // 当たらなかったら 射程分先
+        return ray.origin + ray.direction * beamRange;
     }
 
+    Vector3 GetCenterToPlayerDir()
+    {
+        // プレイヤー → ターゲットへの方向
+        return GetCenterRayPoint() - transform.position;
+    }
     //IEnumerator FireLockOnBeam()
     //{
     //    if (lockOn != null && lockOn.lockOnTarget != null)
