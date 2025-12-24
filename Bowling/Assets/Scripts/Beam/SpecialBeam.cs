@@ -17,7 +17,6 @@ public class SpecialBeam : MonoBehaviour
 
     [Header("Beam Gauge")]
     [SerializeField] float maxGauge = 100f;
-    [SerializeField] float gaugeDrainPerSec = 20f;
 
     [Header("PlayerMovement")]
     public bool disableRotate;
@@ -109,6 +108,7 @@ public class SpecialBeam : MonoBehaviour
                 beamGauge.SetUsingBeam(false);
             }
         }
+
     }
 
     // =====================
