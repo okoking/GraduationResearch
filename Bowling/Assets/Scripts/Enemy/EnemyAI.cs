@@ -166,6 +166,9 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
+        ////ゲームがスタートしていないときは処理しない
+        //if (!GameStartDirector.IsGameStarted) return;
+
         //ノックバック中は他の処理を完全停止
         if (isKnockback)
         {

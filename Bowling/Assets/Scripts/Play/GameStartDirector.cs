@@ -1,0 +1,70 @@
+using UnityEngine;
+using System.Collections;
+using TMPro;
+using Unity.Cinemachine;
+
+public class GameStartDirector : MonoBehaviour
+{
+    //[Header("Camera")]
+    //[SerializeField] CinemachineVirtualCamera introCam;
+    //[SerializeField] CinemachineVirtualCamera playCam;
+
+    [Header("UI")]
+    [SerializeField] TextMeshProUGUI countdownText;
+    [SerializeField] TextMeshProUGUI goText;
+
+    [Header("Timing")]
+    [SerializeField] float cameraDuration = 2.0f;
+    [SerializeField] float countInterval = 1.0f;
+
+    public static bool IsGameStarted { get; private set; }
+
+
+    void Start()
+    {
+        StartCoroutine(GameStartSequence());
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            CameraManager.Instance.PlayZoomInToPlayer(cameraDuration);
+        }
+    }
+
+    IEnumerator GameStartSequence()
+    {
+        //CameraManager の初期化待ち
+        yield return null;
+
+        //ロック
+        IsGameStarted = false;
+
+        countdownText.gameObject.SetActive(false);
+        goText.gameObject.SetActive(false);
+
+        ////カメラ演出
+        //CameraManager.Instance.PlayZoomInToPlayer(cameraDuration);
+        //yield return new WaitForSecondsRealtime(cameraDuration);
+
+        //カウントダウン
+        countdownText.gameObject.SetActive(true);
+
+        for (int i = 3; i > 0; i--)
+        {
+            countdownText.text = i.ToString();
+            yield return new WaitForSecondsRealtime(countInterval);
+        }
+
+        countdownText.gameObject.SetActive(false);
+
+        //GO!
+        goText.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(0.5f);
+        goText.gameObject.SetActive(false);
+
+        //解放
+        IsGameStarted = true;
+    }
+}

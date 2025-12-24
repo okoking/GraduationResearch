@@ -19,6 +19,7 @@ TagManager:
   - Bosshand
   - Ground
   - Door
+  - IventCamera
   layers:
   - Default
   - TransparentFX
