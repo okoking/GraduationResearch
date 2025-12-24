@@ -7,13 +7,19 @@ public class LockOnSystem : MonoBehaviour
     public Transform lockOnTarget;
     public float lockOnRange = 20f;
     [SerializeField] private LockOn3DMarker markerSystem;
+    private KariBeam KariBeam;
+
+    private void Start()
+    {
+        KariBeam = GetComponent<KariBeam>();
+    }
 
     void Update()
     {
-        //if (Input.GetKeyDown("joystick button 1"))
-        //{
-        lockOnTarget = FindLockOnTarget();
-        //}
+        if (!KariBeam.GetisFiring())
+        {
+            lockOnTarget = FindLockOnTarget();
+        }
 
         // 対象が消えたら解除
         if (lockOnTarget == null)
