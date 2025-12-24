@@ -3,11 +3,7 @@ using UnityEngine;
 public class BossHandHp : MonoBehaviour
 {
 
-    private BossHp bosshp;
-
     public int hp = 50;
-
-    private Boss boss;
 
     //–³“G‚©‚Ç‚¤‚©
     bool isPerfect = false;
@@ -19,12 +15,23 @@ public class BossHandHp : MonoBehaviour
     public float maxInvincibleTime;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    BossHandManager handManager;
+
     void Start()
     {
-        GameObject bossObj = GameObject.FindGameObjectWithTag("Boss");
-        if (bossObj != null)
-            bosshp = bossObj.GetComponent<BossHp>();
+        BossHandManager manager =
+        FindAnyObjectByType<BossHandManager>();
+
+        if (manager != null)
+        {
+            SetHandManager(manager);
+        }
+        else
+        {
+            Debug.LogError("BossHandManager ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ", this);
+        }
     }
+
 
     // Update is called once per frame
     void Update()
@@ -62,10 +69,23 @@ public class BossHandHp : MonoBehaviour
         }
     }
 
+    public void SetHandManager(BossHandManager manager)
+    {
+        handManager = manager;
+    }
+
+
     void Die()
     {
+        if (handManager != null)
+        {
+            handManager.OnHandDestroyed();
+        }
+        else
+        {
+            Debug.LogError("HandManager ‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ", this);
+        }
+
         Destroy(gameObject);
-        //ƒ{ƒX‚ÌŠ®‘S–³“Gó‘Ô‚ğ‰ğœ‚·‚é
-        bosshp.SetIsPerfectInvincible(false);
     }
 }
