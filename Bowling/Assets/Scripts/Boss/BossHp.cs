@@ -60,7 +60,6 @@ public class BossHp : MonoBehaviour
         if (!isInvicible)                   //–³“G‚Å‚È‚¯‚ê‚Îƒ_ƒ[ƒW‚ª’Ê‚é
         {
             currentHp -= hp;
-            Debug.Log(currentHp);
             isInvicible = true;
         }
     }
@@ -72,7 +71,6 @@ public class BossHp : MonoBehaviour
         if (currentHp >= maxHp)  //Å‘å‘Ì—Í‚ğ’´‚¦‚È‚¢‚æ‚¤‚É‚·‚é
         {
             currentHp = maxHp;
-            Debug.Log(currentHp);
         }
     }
 

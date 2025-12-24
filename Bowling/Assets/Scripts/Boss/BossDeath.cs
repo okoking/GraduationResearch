@@ -4,12 +4,6 @@ using UnityEngine;
 public class BossDeath : MonoBehaviour
 {
     private BossHp bosshp;
-    public GameObject bossObj;
-
-    float height;
-    float startY;
-
-    bool isDeath;
 
     public void SetBoss(BossHp hp)
     {
@@ -18,14 +12,16 @@ public class BossDeath : MonoBehaviour
 
     void Start()
     {
-        height = GetComponent<Renderer>().bounds.size.y;
-        startY = transform.position.y;
-        isDeath = false;
+
     }
 
     void Update()
     {
+        Debug.Log(bosshp);
+
         if (bosshp == null) return;
+
+        Debug.Log("死んでない！！！！！！！！！！！！");
 
         if (bosshp.GetIsDeath())
         {

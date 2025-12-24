@@ -4,6 +4,8 @@ public class Boss : MonoBehaviour
 
     Transform player;
 
+    private GameObject cube;
+
     private float floorAttackDispTimer;
     private bool isFloorAtackDisp = false;
     private float floorAttackTimer;
@@ -34,6 +36,13 @@ public class Boss : MonoBehaviour
         floorAttack = new GameObject[FloorAtkNum];
 
         bossHp = GetComponent<BossHp>();
+
+        cube = GameObject.FindWithTag("BossCube");
+
+        if (cube != null)
+        {
+            cube.transform.SetParent(transform, true);
+        }
 
         if (player == null)
             player = GameObject.FindWithTag("Player")?.transform;
