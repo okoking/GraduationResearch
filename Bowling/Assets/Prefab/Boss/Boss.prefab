@@ -1599,7 +1599,7 @@ GameObject:
   - component: {fileID: -7661670295088693706}
   - component: {fileID: 5816129311796538438}
   m_Layer: 0
-  m_Name: boss
+  m_Name: Boss
   m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1613,8 +1613,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4705851803761269698}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -0.19706479, y: 0, z: -2.5322857}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1625,7 +1625,7 @@ Transform:
   - {fileID: 5348615525517902892}
   - {fileID: 3186734597104744173}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &3013425476337688644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1638,10 +1638,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be9845a7970a24409e61766ca7f7119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cube: {fileID: 0}
   FloorAtkNum: 10
   floorAttackSubPrefab: {fileID: 815703356155443534, guid: a5aa4bf307e59a94fb857c32c79ec60b, type: 3}
   floorAttackPrefab: {fileID: 6713537756215694911, guid: 4f2d654c914cb804b8fc217e8646ca94, type: 3}
+  wavePrefab: {fileID: 8728523580810820293, guid: b3a47bd423eb46c418aca1dbb3285f5e, type: 3}
 --- !u!114 &7104333417549960233
 MonoBehaviour:
   m_ObjectHideFlags: 0

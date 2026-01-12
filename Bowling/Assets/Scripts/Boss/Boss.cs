@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 public class Boss : MonoBehaviour
 {
 
@@ -27,6 +28,10 @@ public class Boss : MonoBehaviour
 
     public GameObject floorAttackSubPrefab;//°UŒ‚
     public GameObject floorAttackPrefab;   //°UŒ‚
+
+    bool isWaveAttacking = false;
+
+    float waveAttackTimer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -117,15 +122,12 @@ public class Boss : MonoBehaviour
             }
         }
 
-            //‰¼
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            bossHp.TakeDamage(1);
-        }
+        waveAttackTimer += Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.B))
+        if (!isWaveAttacking && waveAttackTimer > 10f)
         {
-            bossHp.Recovery(10);
+            StartCoroutine(WaveAttack());
+            waveAttackTimer = 0;
         }
 
         if (bossHp.GetIsDeath())
@@ -149,4 +151,43 @@ public class Boss : MonoBehaviour
         }
         isFloorAtackDisp = true;
     }
+
+    [SerializeField]
+    GameObject wavePrefab;
+
+    void SpawnWave()
+    {
+        GameObject wave = Instantiate(
+            wavePrefab,
+            transform.position,
+            Quaternion.identity
+        );
+
+        wave.GetComponent<WaveRing>()
+            .Init(
+                startRadius: 0.2f,
+                speed: 5f,
+                maxRadius: 50f
+            );
+    }
+
+
+    IEnumerator WaveAttack()
+    {
+        isWaveAttacking = true;
+
+        float attackDuration = 5f;
+        float interval = 0.7f;
+        float timer = 0f;
+
+        while (timer < attackDuration)
+        {
+            SpawnWave();
+            yield return new WaitForSeconds(interval);
+            timer += interval;
+        }
+
+        isWaveAttacking = false;
+    }
+
 }
