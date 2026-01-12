@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     private bool wasGroundEx;
 
     private Vector3 wallNormal;
-
+  
     void Start()
     {
         beamInfo = GetComponent<SpecialBeam>();
