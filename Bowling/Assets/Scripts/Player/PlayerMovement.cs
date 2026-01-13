@@ -5,7 +5,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] private float jumpForce = 7f;
-    [SerializeField] private Transform cam;
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float acceleration = 10f;    // 加速の速さ
     [SerializeField] private float deceleration = 10f;    // 減速の速さ
@@ -29,11 +28,15 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         // --- 移動 ---
-        Vector3 camForward = cam.forward;
+        //Vector3 camForward = cam.forward;
+        Vector3 camForward = Camera.main.transform.forward;
         camForward.y = 0f;         // 上下成分は消す
         camForward.Normalize();
 
-        Vector3 camRight = cam.right;
+        Debug.Log(camForward);
+
+        //Vector3 camRight = cam.right;
+        Vector3 camRight = Camera.main.transform.right;
         camRight.y = 0f;
         camRight.Normalize();
 
