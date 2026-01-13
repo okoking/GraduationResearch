@@ -27,15 +27,13 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (Camera.main == null) return;
+
         // --- 移動 ---
-        //Vector3 camForward = cam.forward;
         Vector3 camForward = Camera.main.transform.forward;
         camForward.y = 0f;         // 上下成分は消す
         camForward.Normalize();
 
-        Debug.Log(camForward);
-
-        //Vector3 camRight = cam.right;
         Vector3 camRight = Camera.main.transform.right;
         camRight.y = 0f;
         camRight.Normalize();
