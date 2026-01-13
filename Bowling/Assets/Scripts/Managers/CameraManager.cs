@@ -61,24 +61,24 @@ public class CameraManager : MonoBehaviour
     }
 
     //“®“I‚ÉƒV[ƒ““à‚ÌƒJƒƒ‰‚ð’T‚µ‚Ä“o˜^
-    //public void Register(CameraMode mode, CinemachineCamera cam)
-    //{
-    //    if (cameras.ContainsKey(mode))
-    //    {
-    //        Debug.LogWarning($"CameraMode {mode} ‚ÍŠù‚É“o˜^‚³‚ê‚Ä‚¢‚Ü‚·");
-    //        return;
-    //    }
+    public void Register(CameraMode mode, CinemachineCamera cam)
+    {
+        if (cameras.ContainsKey(mode))
+        {
+            Debug.LogWarning($"CameraMode {mode} ‚ÍŠù‚É“o˜^‚³‚ê‚Ä‚¢‚Ü‚·");
+            return;
+        }
 
-    //    cameras[mode] = cam;
-    //    Debug.Log($"{cam} ‚ð“o˜^‚µ‚Ü‚µ‚½");
-    //    //cameras[mode].Priority = 0;
+        cameras[mode] = cam;
+        Debug.Log($"{cam} ‚ð“o˜^‚µ‚Ü‚µ‚½");
+        cameras[mode].Priority = 0;
 
-    //    //‰‰ñ“o˜^Žž‚ÉØ‚è‘Ö‚¦
-    //    if (cameras.Count == 3)
-    //    {
-    //        cameras[CameraMode.PlayUI].enabled = false;
-    //    }
-    //}
+        //‰‰ñ“o˜^Žž‚ÉØ‚è‘Ö‚¦
+        if (cameras.Count == 3)
+        {
+            cameras[CameraMode.PlayUI].enabled = false;
+        }
+    }
 
     //ƒJƒƒ‰ƒ‚[ƒhŽæ“¾ŠÖ”
     public CameraMode GetCurrentMode() => currentMode;
