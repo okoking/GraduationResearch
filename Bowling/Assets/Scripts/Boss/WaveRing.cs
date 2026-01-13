@@ -19,7 +19,7 @@ public class WaveRing : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x += speed * Time.deltaTime;
         scale.z += speed * Time.deltaTime;
-        scale.y = 1f; // © c‚ÍŒÅ’è
+        scale.y = 0.1f; // © c‚ÍŒÅ’è
         transform.localScale = scale;
 
         if (transform.localScale.x >= maxRadius)

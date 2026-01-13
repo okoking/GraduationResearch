@@ -167,7 +167,7 @@ public class Boss : MonoBehaviour
             .Init(
                 startRadius: 0.2f,
                 speed: 5f,
-                maxRadius: 50f
+                maxRadius: 120f
             );
     }
 
@@ -177,7 +177,7 @@ public class Boss : MonoBehaviour
         isWaveAttacking = true;
 
         float attackDuration = 5f;
-        float interval = 0.7f;
+        float interval = 5f;
         float timer = 0f;
 
         while (timer < attackDuration)
@@ -189,5 +189,4 @@ public class Boss : MonoBehaviour
 
         isWaveAttacking = false;
     }
-
 }
