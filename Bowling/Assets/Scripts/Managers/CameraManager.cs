@@ -24,9 +24,9 @@ public class CameraManager : MonoBehaviour
 
     private Dictionary<CameraMode, CinemachineCamera> cameras = new();
 
-    private Camera PlayUI;
-    private Camera Ivent;
-    private Camera Player;
+    //private Camera PlayUI;
+    //private Camera Ivent;
+    //private Camera Player;
 
     private void Awake()
     {
@@ -40,12 +40,12 @@ public class CameraManager : MonoBehaviour
 
     void Start()
     {
-        PlayUI = GameObject.Find("PlayerUICamera")?.GetComponent<Camera>();
+        //PlayUI = GameObject.Find("PlayerUICamera")?.GetComponent<Camera>();
         
-        Ivent = GameObject.Find("IventCamera")?.GetComponent<Camera>();
-        Player = GameObject.Find("PlayerCamera")?.GetComponent<Camera>();
+        //Ivent = GameObject.Find("IventCamera")?.GetComponent<Camera>();
+        //Player = GameObject.Find("PlayerCamera")?.GetComponent<Camera>();
 
-        PlayUI.enabled = false;
+        //PlayUI.enabled = false;
     }
 
     void Update()
