@@ -24,6 +24,10 @@ public class CameraManager : MonoBehaviour
 
     private Dictionary<CameraMode, CinemachineCamera> cameras = new();
 
+    private Camera PlayUI;
+    private Camera Ivent;
+    private Camera Player;
+
     private void Awake()
     {
         if (Instance == null)
@@ -36,7 +40,12 @@ public class CameraManager : MonoBehaviour
 
     void Start()
     {
+        PlayUI = GameObject.Find("PlayerUICamera")?.GetComponent<Camera>();
         
+        Ivent = GameObject.Find("IventCamera")?.GetComponent<Camera>();
+        Player = GameObject.Find("PlayerCamera")?.GetComponent<Camera>();
+
+        PlayUI.enabled = false;
     }
 
     void Update()
@@ -52,24 +61,24 @@ public class CameraManager : MonoBehaviour
     }
 
     //“®“I‚ÉƒV[ƒ““à‚ÌƒJƒƒ‰‚ğ’T‚µ‚Ä“o˜^
-    public void Register(CameraMode mode, CinemachineCamera cam)
-    {
-        if (cameras.ContainsKey(mode))
-        {
-            Debug.LogWarning($"CameraMode {mode} ‚ÍŠù‚É“o˜^‚³‚ê‚Ä‚¢‚Ü‚·");
-            return;
-        }
+    //public void Register(CameraMode mode, CinemachineCamera cam)
+    //{
+    //    if (cameras.ContainsKey(mode))
+    //    {
+    //        Debug.LogWarning($"CameraMode {mode} ‚ÍŠù‚É“o˜^‚³‚ê‚Ä‚¢‚Ü‚·");
+    //        return;
+    //    }
 
-        cameras[mode] = cam;
-        Debug.Log($"{cam} ‚ğ“o˜^‚µ‚Ü‚µ‚½");
-        cameras[mode].Priority = 0;
+    //    cameras[mode] = cam;
+    //    Debug.Log($"{cam} ‚ğ“o˜^‚µ‚Ü‚µ‚½");
+    //    //cameras[mode].Priority = 0;
 
-        //‰‰ñ“o˜^‚ÉØ‚è‘Ö‚¦
-        if (cameras.Count == 3)
-        {
-            cameras[CameraMode.PlayUI].enabled = false;
-        }
-    }
+    //    //‰‰ñ“o˜^‚ÉØ‚è‘Ö‚¦
+    //    if (cameras.Count == 3)
+    //    {
+    //        cameras[CameraMode.PlayUI].enabled = false;
+    //    }
+    //}
 
     //ƒJƒƒ‰ƒ‚[ƒhæ“¾ŠÖ”
     public CameraMode GetCurrentMode() => currentMode;
@@ -102,19 +111,15 @@ public class CameraManager : MonoBehaviour
 
     IEnumerator MoveFromIventToPlayer(float duration)
     {
-        if (!cameras.TryGetValue(CameraMode.Ivent, out var iventCam))
+        if (!cameras.TryGetValue(CameraMode.Ivent, out var iventCam) ||
+       !cameras.TryGetValue(CameraMode.Player, out var playerCam))
         {
-            Debug.LogError("IventƒJƒƒ‰‚ª Register ‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
-            yield break;
-        }
-        if(!cameras.TryGetValue(CameraMode.Player, out var playerCam))
-        {
-            Debug.LogError("PlayerƒJƒƒ‰‚ª Register ‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+            Debug.LogError("Ivent / Player ƒJƒƒ‰‚ª Register ‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
             yield break;
         }
 
         //IventCamera ‚ğ—LŒø‰»
-
+        
         iventCam.Priority = 30;
         playerCam.Priority = 10;
         currentMode = CameraMode.Ivent;
