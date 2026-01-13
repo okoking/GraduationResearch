@@ -36,7 +36,10 @@ public class GameStartDirector : MonoBehaviour
     IEnumerator GameStartSequence()
     {
         //CameraManager の初期化待ち
-        yield return null;
+        yield return new WaitUntil(() =>
+       CameraManager.Instance != null &&
+       CameraManager.Instance.IsReady
+   );
 
         //ロック
         IsGameStarted = false;
@@ -44,9 +47,9 @@ public class GameStartDirector : MonoBehaviour
         countdownText.gameObject.SetActive(false);
         goText.gameObject.SetActive(false);
 
-        ////カメラ演出
-        //CameraManager.Instance.PlayMoveFromIventToPlayer(cameraDuration);
-        //yield return new WaitForSecondsRealtime(cameraDuration);
+        //カメラ演出
+        CameraManager.Instance.PlayMoveFromIventToPlayer(cameraDuration);
+        yield return new WaitForSecondsRealtime(cameraDuration);
 
         //カウントダウン
         countdownText.gameObject.SetActive(true);

@@ -24,6 +24,8 @@ public class CameraManager : MonoBehaviour
 
     private Dictionary<CameraMode, CinemachineCamera> cameras = new();
 
+    public bool IsReady { get; private set; }
+
     //private Camera PlayUI;
     //private Camera Ivent;
     //private Camera Player;
@@ -42,7 +44,7 @@ public class CameraManager : MonoBehaviour
 
     void Start()
     {
-        
+        //cameras[CameraMode.Ivent].gameObject.SetActive(true);
     }
 
     void Update()
@@ -69,11 +71,20 @@ public class CameraManager : MonoBehaviour
         cameras[mode] = cam;
         Debug.Log($"{cam} を登録しました");
         cameras[mode].gameObject.SetActive(false);
+        
 
         //初回登録時に切り替え
-        if (cameras.Count == 3)
+        if (mode == CameraMode.Ivent)
         {
-            cameras[CameraMode.PlayUI].enabled = false;
+            cameras[mode].gameObject.SetActive(true);
+            currentMode = mode;
+        }
+
+        // 必要なカメラが全部揃ったら Ready
+        if (cameras.ContainsKey(CameraMode.Ivent) &&
+            cameras.ContainsKey(CameraMode.Player))
+        {
+            IsReady = true;
         }
     }
 
@@ -88,12 +99,12 @@ public class CameraManager : MonoBehaviour
             return;
         }
 
-        ////全OFF
-        //foreach (var cam in cameras.Values)
-        //    cam.Priority = 10;
+        //全OFF
+        foreach (var cam in cameras.Values)
+            cam.gameObject.SetActive(false);
 
         currentMode = mode;
-        //cameras[mode].Priority = 20;
+        cameras[mode].gameObject.SetActive(true);
         Debug.Log($"カメラ切替: {mode}");
     }
 
@@ -117,8 +128,7 @@ public class CameraManager : MonoBehaviour
 
         //IventCamera を有効化
 
-        cameras[CameraMode.Ivent].gameObject.SetActive(true);
-        playerCam.Priority = 10;
+
         currentMode = CameraMode.Ivent;
         Transform from = iventCam.transform;
         Transform to = playerCam.transform;
