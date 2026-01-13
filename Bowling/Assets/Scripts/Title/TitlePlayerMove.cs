@@ -12,7 +12,7 @@ public class TitlePlayerMove : MonoBehaviour
     //一度だけ再生したい
     bool kariStop = false;
 
-    public VisualEffect currentVFX;
+    //public VisualEffect currentVFX;
 
 
     void Start()
@@ -35,7 +35,6 @@ public class TitlePlayerMove : MonoBehaviour
             speed = 0;
             anim.SetBool("Stop", true); // アニメーション切り替え
             Debug.Log("アニメーション開始");
-            currentVFX.SendEvent("OnPlay");
 
             kariStop = true;
         }

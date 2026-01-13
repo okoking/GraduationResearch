@@ -5,6 +5,7 @@ public class kari : MonoBehaviour
 {
 
     public VisualEffect currentVFX;
+    bool karifalg = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -15,11 +16,13 @@ public class kari : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) && !karifalg)
         {
-            currentVFX.SendEvent("OnPlay");
-            Debug.Log("アニメーション開始");
-
+            //currentVFX.SendEvent("OnPlay");
+            //currentVFX.SendEvent(VisualEffectAsset.PlayEventName);
+            currentVFX.Play();
+            Debug.Log("エフェクト開始");
+            karifalg = true;
         }
     }
 }
