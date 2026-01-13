@@ -36,16 +36,13 @@ public class CameraManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject);
+
+
     }
 
     void Start()
     {
-        //PlayUI = GameObject.Find("PlayerUICamera")?.GetComponent<Camera>();
         
-        //Ivent = GameObject.Find("IventCamera")?.GetComponent<Camera>();
-        //Player = GameObject.Find("PlayerCamera")?.GetComponent<Camera>();
-
-        //PlayUI.enabled = false;
     }
 
     void Update()
@@ -53,10 +50,10 @@ public class CameraManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
 
-            //cameras[CameraMode.Ivent].enabled = false;
-            
+            cameras[CameraMode.Ivent].gameObject.SetActive(false);
+            cameras[CameraMode.Player].gameObject.SetActive(true);
 
-            
+
         }
     }
 
@@ -71,7 +68,7 @@ public class CameraManager : MonoBehaviour
 
         cameras[mode] = cam;
         Debug.Log($"{cam} ‚ğ“o˜^‚µ‚Ü‚µ‚½");
-        cameras[mode].Priority = 0;
+        cameras[mode].gameObject.SetActive(false);
 
         //‰‰ñ“o˜^‚ÉØ‚è‘Ö‚¦
         if (cameras.Count == 3)
@@ -119,8 +116,8 @@ public class CameraManager : MonoBehaviour
         }
 
         //IventCamera ‚ğ—LŒø‰»
-        
-        iventCam.Priority = 30;
+
+        cameras[CameraMode.Ivent].gameObject.SetActive(true);
         playerCam.Priority = 10;
         currentMode = CameraMode.Ivent;
         Transform from = iventCam.transform;
