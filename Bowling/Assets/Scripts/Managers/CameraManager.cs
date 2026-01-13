@@ -156,9 +156,54 @@ public class CameraManager : MonoBehaviour
         from.position = endPos;
         from.rotation = endRot;
 
+        //// Åö PlayerCam Ç‡ìØÇ∂ Transform Ç…Ç∑ÇÈ
+        //playerCam.transform.position = from.position;
+        //playerCam.transform.rotation = from.rotation;
+
         //PlayerCamera Ç…êÿë÷
         SwitchCamera(CameraMode.Player);
     }
+    public void PlayRail(CameraRail rail, float duration)
+    {
+        if (cameraRoutine != null)
+            StopCoroutine(cameraRoutine);
 
+        cameraRoutine = StartCoroutine(RailSequence(rail, duration));
+    }
+
+    IEnumerator RailSequence(CameraRail rail, float duration)
+    {
+        if (!cameras.TryGetValue(CameraMode.Ivent, out var iventCam))
+        {
+            Debug.LogError("IventCamera ñ¢ìoò^");
+            yield break;
+        }
+
+        // IventCamera ÇégÇ§
+        SwitchCamera(CameraMode.Ivent);
+
+        float totalSegments = rail.Count - 1;
+        float segmentTime = duration / totalSegments;
+
+        for (int i = 0; i < rail.Count - 1; i++)
+        {
+            Transform from = rail.GetPoint(i);
+            Transform to = rail.GetPoint(i + 1);
+
+            float t = 0f;
+            while (t < 1f)
+            {
+                t += Time.deltaTime / segmentTime;
+                float eased = EaseOut(t);
+
+                iventCam.transform.position =
+                    Vector3.Lerp(from.position, to.position, eased);
+                iventCam.transform.rotation =
+                    Quaternion.Slerp(from.rotation, to.rotation, eased);
+
+                yield return null;
+            }
+        }
+    }
     float EaseOut(float t) { return 1f - Mathf.Pow(1f - t, 3f); }
 }

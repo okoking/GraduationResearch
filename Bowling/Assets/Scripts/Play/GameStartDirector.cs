@@ -19,9 +19,13 @@ public class GameStartDirector : MonoBehaviour
 
     public static bool IsGameStarted { get; private set; }
 
+    //上 0, 30, -75
+
 
     void Start()
     {
+        countdownText.gameObject.SetActive(false);
+        goText.gameObject.SetActive(false);
         StartCoroutine(GameStartSequence());
     }
 
@@ -43,9 +47,6 @@ public class GameStartDirector : MonoBehaviour
 
         //ロック
         IsGameStarted = false;
-
-        countdownText.gameObject.SetActive(false);
-        goText.gameObject.SetActive(false);
 
         //カメラ演出
         CameraManager.Instance.PlayMoveFromIventToPlayer(cameraDuration);
