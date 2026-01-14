@@ -44,8 +44,8 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveInput = camForward * v + camRight * h;
         moveInput.Normalize();
 
-        //CheckGrounded(out bool onSteepSlope, out wallNormal);
-        //isGroundEx = CheckGroundedEx(out bool onSteepSlope, out wallNormal);
+        // CheckGrounded(out bool onSteepSlope, out wallNormal);
+        // isGroundEx = CheckGroundedEx(out bool onSteepSlope, out wallNormal);
         CheckGroundedEx(out bool onSteepSlope, out wallNormal);
 
         // --- 慣性付きの移動ベクトルを計算 ---

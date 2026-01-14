@@ -7,16 +7,16 @@ public class LockOnSystem : MonoBehaviour
     public Transform lockOnTarget;
     public float lockOnRange = 20f;
     [SerializeField] private LockOn3DMarker markerSystem;
-    private KariBeam KariBeam;
+    private BeamCamera beamCamera;
 
     private void Start()
     {
-        KariBeam = GetComponent<KariBeam>();
+        beamCamera = GetComponent<BeamCamera>();
     }
 
     void Update()
     {
-        if (!KariBeam.GetisFiring())
+        if (!beamCamera.isSootBeam)
         {
             lockOnTarget = FindLockOnTarget();
         }
@@ -29,7 +29,7 @@ public class LockOnSystem : MonoBehaviour
         }
 
         // 一定距離外れたら解除
-        if (Vector3.Distance(transform.position, lockOnTarget.position) > lockOnRange)
+        if (beamCamera.isSootBeam || Vector3.Distance(transform.position, lockOnTarget.position) > lockOnRange)
         {
             lockOnTarget = null;
         }
