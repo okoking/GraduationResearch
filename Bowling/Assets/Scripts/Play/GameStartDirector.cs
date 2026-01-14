@@ -17,10 +17,11 @@ public class GameStartDirector : MonoBehaviour
     [SerializeField] float cameraDuration = 2.0f;
     [SerializeField] float countInterval = 1.0f;
 
+    [SerializeField] CameraRail startRail;
+    [SerializeField] float railDuration = 3f;
+    [SerializeField] Transform lookTarget;
+
     public static bool IsGameStarted { get; private set; }
-
-    //上 0, 30, -75
-
 
     void Start()
     {
@@ -41,16 +42,21 @@ public class GameStartDirector : MonoBehaviour
     {
         //CameraManager の初期化待ち
         yield return new WaitUntil(() =>
-       CameraManager.Instance != null &&
-       CameraManager.Instance.IsReady
-   );
+       CameraManager.Instance != null && CameraManager.Instance.IsReady);
 
         //ロック
         IsGameStarted = false;
+        //CameraManager.Instance.PlayRailWithFade(startRail, lookTarget, railDuration,
+        //    1f);
+        CameraManager.Instance.PlayRail(startRail, lookTarget, railDuration,
+            CameraLookMode.LookTarget);
+        yield return new WaitForSecondsRealtime(railDuration);
 
         //カメラ演出
         CameraManager.Instance.PlayMoveFromIventToPlayer(cameraDuration);
         yield return new WaitForSecondsRealtime(cameraDuration);
+
+        yield return new WaitForSecondsRealtime(2.0f);
 
         //カウントダウン
         countdownText.gameObject.SetActive(true);

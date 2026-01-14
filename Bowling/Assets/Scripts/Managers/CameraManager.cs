@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
@@ -11,6 +12,13 @@ public enum CameraMode
     PlayUI,
 
     //Replay        //将来用
+}
+public enum CameraLookMode
+{
+    RailRotation,   // レールポイントの回転を使う
+    LookTarget,     // 特定ターゲットを見る
+    FreeRotation,   // 外部から指定した回転
+    BlendToPlayer   // 最後にPlayerへ寄せる
 }
 
 //カメラマネージャー
@@ -39,7 +47,7 @@ public class CameraManager : MonoBehaviour
         }
         else Destroy(gameObject);
 
-
+        //fader = ScreenFader.Find("Fader");
     }
 
     void Start()
@@ -163,15 +171,27 @@ public class CameraManager : MonoBehaviour
         //PlayerCamera に切替
         SwitchCamera(CameraMode.Player);
     }
-    public void PlayRail(CameraRail rail, float duration)
+    public void PlayRail(CameraRail rail, Transform lookTarget, float duration,
+    CameraLookMode lookMode, Quaternion? freeRotation = null)
     {
         if (cameraRoutine != null)
             StopCoroutine(cameraRoutine);
 
-        cameraRoutine = StartCoroutine(RailSequence(rail, duration));
+        cameraRoutine = StartCoroutine(RailSequence(rail, lookTarget, duration,
+            lookMode, freeRotation));
+    }
+    public void PlayRailWithFade(CameraRail rail, Transform lookTarget, float duration,
+    float fadeTime)
+    {
+        if (cameraRoutine != null)
+            StopCoroutine(cameraRoutine);
+
+        cameraRoutine = StartCoroutine(RailSequenceWithFade(rail, lookTarget,
+    duration, fadeTime));
     }
 
-    IEnumerator RailSequence(CameraRail rail, float duration)
+    IEnumerator RailSequence(CameraRail rail, Transform lookTarget, float duration,
+    CameraLookMode lookMode, Quaternion? freeRotation = null)
     {
         if (!cameras.TryGetValue(CameraMode.Ivent, out var iventCam))
         {
@@ -179,7 +199,7 @@ public class CameraManager : MonoBehaviour
             yield break;
         }
 
-        // IventCamera を使う
+        //IventCamera を使う
         SwitchCamera(CameraMode.Ivent);
 
         float totalSegments = rail.Count - 1;
@@ -196,14 +216,134 @@ public class CameraManager : MonoBehaviour
                 t += Time.deltaTime / segmentTime;
                 float eased = EaseOut(t);
 
+                //位置
                 iventCam.transform.position =
                     Vector3.Lerp(from.position, to.position, eased);
+
+                //向き
+                Quaternion targetRot = iventCam.transform.rotation;
+
+                switch (lookMode)
+                {
+                    case CameraLookMode.RailRotation:
+                        targetRot =
+                            Quaternion.Slerp(from.rotation, to.rotation, eased);
+                        break;
+
+                    case CameraLookMode.LookTarget:
+                        Vector3 dir =
+                            lookTarget.position - iventCam.transform.position;
+                        targetRot = Quaternion.LookRotation(dir, Vector3.up);
+                        break;
+
+                    case CameraLookMode.FreeRotation:
+                        if (freeRotation.HasValue)
+                            targetRot = freeRotation.Value;
+                        break;
+                }
+
                 iventCam.transform.rotation =
-                    Quaternion.Slerp(from.rotation, to.rotation, eased);
+                    Quaternion.Slerp(
+                        iventCam.transform.rotation,
+                        targetRot,
+                        10f * Time.deltaTime
+                    );
+
+                //// 最後以外でフェイド
+                //if (i < rail.Count - 2)
+                //{
+                //    yield return ScreenFader.Instance.FadeOut(fadeTime);
+
+                //    cam.transform.SetPositionAndRotation(
+                //        rail.GetPoint(i + 1).position,
+                //        rail.GetPoint(i + 1).rotation
+                //    );
+
+                //    yield return ScreenFader.Instance.FadeIn(fadeTime);
+                //}
 
                 yield return null;
             }
         }
+    }
+    IEnumerator RailSequenceWithFade(
+    CameraRail rail,
+    Transform lookTarget,
+    float duration,
+    float fadeTime
+)
+    {
+        if (!cameras.TryGetValue(CameraMode.Ivent, out var cam))
+            yield break;
+
+        SwitchCamera(CameraMode.Ivent);
+
+        float moveTime = duration / (rail.Count - 1);
+
+        for (int i = 0; i < rail.Count - 1; i++)
+        {
+            // 補間移動
+            yield return MoveBetweenPoints(
+                cam,
+                rail.GetPoint(i),
+                rail.GetPoint(i + 1),
+                lookTarget,
+                moveTime
+            );
+
+            // 最後以外でフェイド
+            if (i < rail.Count - 2)
+            {
+                yield return ScreenFader.Instance.FadeOut(fadeTime);
+
+                cam.transform.SetPositionAndRotation(
+                    rail.GetPoint(i + 1).position,
+                    rail.GetPoint(i + 1).rotation
+                );
+
+                yield return ScreenFader.Instance.FadeIn(fadeTime);
+            }
+        }
+    }
+    IEnumerator MoveBetweenPoints(
+    CinemachineCamera cam,
+    Transform from,
+    Transform to,
+    Transform lookTarget,
+    float time
+)
+    {
+        float t = 0f;
+
+        Vector3 startPos = from.position;
+        Quaternion startRot = from.rotation;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime / time;
+            float eased = EaseOut(t);
+
+            cam.transform.position =
+                Vector3.Lerp(startPos, to.position, eased);
+
+            if (lookTarget != null)
+            {
+                Vector3 dir = lookTarget.position - cam.transform.position;
+                cam.transform.rotation =
+                    Quaternion.LookRotation(dir, Vector3.up);
+            }
+            else
+            {
+                cam.transform.rotation =
+                    Quaternion.Slerp(startRot, to.rotation, eased);
+            }
+
+            yield return null;
+        }
+
+        cam.transform.SetPositionAndRotation(
+            to.position, to.rotation
+        );
     }
     float EaseOut(float t) { return 1f - Mathf.Pow(1f - t, 3f); }
 }

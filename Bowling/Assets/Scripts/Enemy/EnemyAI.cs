@@ -166,8 +166,8 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        ////ゲームがスタートしていないときは処理しない
-        //if (!GameStartDirector.IsGameStarted) return;
+        //ゲームがスタートしていないときは処理しない
+        if (!GameStartDirector.IsGameStarted) return;
 
         //ノックバック中は他の処理を完全停止
         if (isKnockback)
@@ -176,11 +176,11 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
-        if (stunTimer > 0f)
-        {
-            stunTimer -= Time.deltaTime;
-            return;
-        }
+        //if (stunTimer > 0f)
+        //{
+        //    stunTimer -= Time.deltaTime;
+        //    return;
+        //}
 
         //現在の状態の更新処理
         currentState?.OnUpdate();
