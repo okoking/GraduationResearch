@@ -210,9 +210,17 @@ public class CameraManager : MonoBehaviour
             Transform from = rail.GetPoint(i);
             Transform to = rail.GetPoint(i + 1);
 
+            if (i == 0)
+            {
+                ScreenFader.Instance.PlayFadeIn(1.0f);
+                ScreenFader.Instance.PlayFadeOut(1.0f);
+            }
+
             float t = 0f;
             while (t < 1f)
             {
+                
+
                 t += Time.deltaTime / segmentTime;
                 float eased = EaseOut(t);
 
@@ -249,21 +257,13 @@ public class CameraManager : MonoBehaviour
                         10f * Time.deltaTime
                     );
 
-                //// 最後以外でフェイド
-                //if (i < rail.Count - 2)
-                //{
-                //    yield return ScreenFader.Instance.FadeOut(fadeTime);
 
-                //    cam.transform.SetPositionAndRotation(
-                //        rail.GetPoint(i + 1).position,
-                //        rail.GetPoint(i + 1).rotation
-                //    );
-
-                //    yield return ScreenFader.Instance.FadeIn(fadeTime);
-                //}
 
                 yield return null;
             }
+
+            
+
         }
     }
     IEnumerator RailSequenceWithFade(
@@ -282,6 +282,13 @@ public class CameraManager : MonoBehaviour
 
         for (int i = 0; i < rail.Count - 1; i++)
         {
+            // フェードアウトを「並列」で開始
+            Coroutine fadeOut = null;
+            if (i < rail.Count - 2)
+            {
+                fadeOut = ScreenFader.Instance.PlayFadeOut(fadeTime);
+            }
+
             // 補間移動
             yield return MoveBetweenPoints(
                 cam,
@@ -291,18 +298,13 @@ public class CameraManager : MonoBehaviour
                 moveTime
             );
 
-            // 最後以外でフェイド
+            // フェードアウトが終わるのを待つ
+            if (fadeOut != null)
+                yield return fadeOut;
+
+            // フェードイン
             if (i < rail.Count - 2)
-            {
-                yield return ScreenFader.Instance.FadeOut(fadeTime);
-
-                cam.transform.SetPositionAndRotation(
-                    rail.GetPoint(i + 1).position,
-                    rail.GetPoint(i + 1).rotation
-                );
-
-                yield return ScreenFader.Instance.FadeIn(fadeTime);
-            }
+                yield return ScreenFader.Instance.PlayFadeIn(fadeTime);
         }
     }
     IEnumerator MoveBetweenPoints(

@@ -25,14 +25,14 @@ public class ScreenFader : MonoBehaviour
         }
     }
 
-    public IEnumerator FadeOut(float time)
+    public Coroutine PlayFadeOut(float time)
     {
-        yield return Fade(0f, 1f, time);
+        return StartCoroutine(Fade(0f, 1f, time));
     }
 
-    public IEnumerator FadeIn(float time)
+    public Coroutine PlayFadeIn(float time)
     {
-        yield return Fade(1f, 0f, time);
+        return StartCoroutine(Fade(1f, 0f, time));
     }
 
     IEnumerator Fade(float from, float to, float time)
