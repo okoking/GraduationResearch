@@ -54,7 +54,6 @@ public class LockOnSystem : MonoBehaviour
                 minDist = dist;
             }
         }
-
         return closest;
     }
 
@@ -95,11 +94,9 @@ public class LockOnSystem : MonoBehaviour
                     continue;
                 }
             }
-
             // 遮蔽物なし → これがロックオン対象
             return enemy;
         }
-
         return null;
     }
 }

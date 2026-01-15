@@ -159,8 +159,6 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-
-
         //// 壁（normal.y がほぼ 0）
         //if (Mathf.Abs(hit.normal.y) < 0.1f)
         //{
