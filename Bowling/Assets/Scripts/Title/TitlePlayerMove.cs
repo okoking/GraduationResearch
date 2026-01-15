@@ -1,10 +1,12 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.VFX;
 
 public class TitlePlayerMove : MonoBehaviour
 {
     //ロボットの進むスピード
-    float speed = 5.0f;
+    private float speed = 5.0f;
 
     //アニメーション管理用のコンポーネント変数
     private Animator anim;
@@ -12,7 +14,8 @@ public class TitlePlayerMove : MonoBehaviour
     //一度だけ再生したい
     bool kariStop = false;
 
-    //public VisualEffect currentVFX;
+    private TMP_Text text;
+    private float text_alph; //テキストの透明度
 
 
     void Start()
@@ -29,15 +32,17 @@ public class TitlePlayerMove : MonoBehaviour
         // キャラの進行方向に移動する
         transform.position += speed * Time.deltaTime * transform.forward;
 
-        // X座標が0になったら停止
-        if (transform.position.x <= 0.0f && !kariStop)
+        // X座標がxxになったら停止
+        if (transform.position.x <= 4.0f && !kariStop)
         {
             speed = 0;
             anim.SetBool("Stop", true); // アニメーション切り替え
             Debug.Log("アニメーション開始");
 
+            //一回だけ来るように
             kariStop = true;
         }
 
     }
+    
 }
