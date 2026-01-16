@@ -3,26 +3,29 @@ using UnityEngine.VFX;
 
 public class kari : MonoBehaviour
 {
-
     public VisualEffect currentVFX;
-    bool karifalg = false;
+    bool FirstFlag = false;
+
+    [SerializeField] private TitlePlayerMove player;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        //始まったときに再生されないように
+        currentVFX.Stop();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space) && !karifalg)
+        if (player.GetStopFlag() && !FirstFlag)
         {
-            //currentVFX.SendEvent("OnPlay");
-            //currentVFX.SendEvent(VisualEffectAsset.PlayEventName);
+            //エフェクト再生
             currentVFX.Play();
             Debug.Log("エフェクト開始");
-            karifalg = true;
+
+            //一回だけ再生されるように
+            FirstFlag = true;
         }
     }
 }
