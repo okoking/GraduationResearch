@@ -17,11 +17,28 @@ public class PlayerAnimation : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            layerIndex = 4;
+        }
+
+
         if (oldlayerIndex != layerIndex)
         {
             animator.SetInteger("animNum", layerIndex);
             animator.SetTrigger("animTrigger");
         }
+
         oldlayerIndex = layerIndex;
+    }
+
+    public void OnAnimEnd()
+    {
+
+    }
+
+    public void ChangedAnim(int Index)
+    {
+        layerIndex = Index;
     }
 }

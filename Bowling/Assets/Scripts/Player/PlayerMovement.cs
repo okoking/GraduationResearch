@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private SpecialBeam beamInfo;
     private CharacterController controller;
     private Vector3 currentMove = Vector3.zero; // 慣性付きの移動速度
+    private PlayerAnimation plAnim;
 
     private bool isGroundEx;
     private bool wasGroundEx;
@@ -23,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     {
         beamInfo = GetComponent<SpecialBeam>();
         controller = GetComponent<CharacterController>();
+        plAnim= GetComponent<PlayerAnimation>();
     }
 
     void Update()
@@ -68,6 +70,24 @@ public class PlayerMovement : MonoBehaviour
             );
         }
 
+        // 常に待機状態にして移動しているならアニメーション
+        plAnim.ChangedAnim(0);
+
+        if (isGroundEx && currentMove.magnitude > .1f)
+        {
+            plAnim.ChangedAnim(1);
+        }
+
+        if (velocity.y > .1f)
+        {
+            plAnim.ChangedAnim(2);
+        }
+        
+        if (!isGroundEx && velocity.y < -.1f)
+        {
+            plAnim.ChangedAnim(3);
+        }
+
         // --- 回転（向き） ---
         if (!beamInfo.disableRotate)
         {
@@ -87,6 +107,9 @@ public class PlayerMovement : MonoBehaviour
         {
             velocity.x = 0f;
             velocity.z = 0f;
+
+            plAnim.ChangedAnim(4);
+            Debug.Log("着地");
         }
 
         wasGroundEx = isGroundEx;
