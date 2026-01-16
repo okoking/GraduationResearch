@@ -486,7 +486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  baseMaxAttacker: 3
+  baseMaxAttacker: 5
 --- !u!4 &2136993453
 Transform:
   m_ObjectHideFlags: 0
@@ -532,7 +532,11 @@ PrefabInstance:
       objectReference: {fileID: 5411282424450531688, guid: bdee937bc5a77054d8fb081a5be27aaa, type: 3}
     - target: {fileID: 1910511154469292916, guid: eebed159c06b9ec47a3e25cddf283b5e, type: 3}
       propertyPath: infiniteSpawn
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910511154469292916, guid: eebed159c06b9ec47a3e25cddf283b5e, type: 3}
+      propertyPath: spawnInterval
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1910511154469292916, guid: eebed159c06b9ec47a3e25cddf283b5e, type: 3}
       propertyPath: IsInfiniteSpawn
