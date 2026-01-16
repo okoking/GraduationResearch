@@ -12,7 +12,17 @@ public class PatrolState : IState
     {
         this.enemy = enemy;
     }
-    public void OnStart() { }
+    public void OnStart()
+    {
+        ////巡回開始時に必ず目的地を決める
+        //enemy.SetRandomPatrolPoint();
+
+        //var agent = enemy.Agent;
+        //if (agent.enabled && agent.isOnNavMesh)
+        //{
+        //    agent.SetDestination(enemy.GetPatrolTarget());
+        //}
+    }
     public void OnUpdate()
     {
         //エージェントを取得

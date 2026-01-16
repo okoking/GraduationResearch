@@ -4,6 +4,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum EnemyType
+{
+    Melee,
+    Ranged
+}
+
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : MonoBehaviour
 {
@@ -13,6 +19,11 @@ public class EnemyAI : MonoBehaviour
     public StateType CurrentStateType => CurrentState?.Type ?? StateType.Idle;
 
     //設定可能フィールド（Inspector）
+    [Header("Enemy Type")]
+    [SerializeField] private EnemyType enemyType = EnemyType.Melee;
+
+    public EnemyType Type => enemyType;
+
     //巡回状態関連 
     [Header("巡回状態関連")]
     private Vector3 patrolTarget;
@@ -52,6 +63,11 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float dashTime = 10.0f;        //どれだけ突進するか
     [SerializeField] private float attackRadius = 0.1f;     //当たり判定の半径
     [SerializeField] private int attackPower = 20;          //攻撃力
+    [Header("Ranged Attack")]
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private float rangedAttackRange = 14f;
+    [SerializeField] private float idealRangedDistance = 8f;
+    [SerializeField] private float projectileSpeed = 10f;
 
     //HP
     [Header("HP関連")]
@@ -159,7 +175,7 @@ public class EnemyAI : MonoBehaviour
         alignmentWeight += UnityEngine.Random.Range(-0.05f, 0.05f);
         agent.avoidancePriority = UnityEngine.Random.Range(40, 90);
         patrolTarget = Vector3.zero;
-
+        //enemyType
         AssignRandomRole();
         ChangeState(new PatrolState(this));
     }
@@ -423,5 +439,6 @@ public class EnemyAI : MonoBehaviour
     {
         player = p;
     }
-    
+    public float IdealRangedDistance => idealRangedDistance;
+    public float RangedAttackRange => rangedAttackRange;
 }

@@ -954,7 +954,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.75
   m_Speed: 3.5
-  m_Acceleration: 15
+  m_Acceleration: 12
   avoidancePriority: 50
   m_AngularSpeed: 180
   m_StoppingDistance: 1
@@ -977,6 +977,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5238c6b5a58b4b648b7ec9f7c5961f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyType: 0
   patrolRadius: 20
   patrolWaitTime: 2
   patrolCenter: {x: 0, y: 0, z: 0}
@@ -989,13 +990,17 @@ MonoBehaviour:
   boidsUpdateInterval: 3
   attackInterval: 2
   attackRange: 10
-  keepDistance: 6
-  retreatDistance: 4.5
-  attackMoveSpeed: 4
-  dashSpeed: 8
+  keepDistance: 8
+  retreatDistance: 5
+  attackMoveSpeed: 5
+  dashSpeed: 10
   dashTime: 1
   attackRadius: 0.5
   attackPower: 20
+  projectilePrefab: {fileID: 0}
+  rangedAttackRange: 12
+  idealRangedDistance: 8
+  projectileSpeed: 10
   hp: 30
   role: 0
   encircleSignRandomSeed: 0

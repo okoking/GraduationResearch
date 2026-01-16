@@ -41,31 +41,53 @@ public class ChaseState : IState
         //左右方向
         Vector3 encircleDir = Quaternion.Euler(0, 90f * encircleSign, 0) * toPlayerDir;
         Vector3 desiredPos = Vector3.zero;
-        
+
         //役割によって動きを変える
-        if (distance > 8f)
+        if (enemy.Type == EnemyType.Melee)
         {
-            switch (enemy.EnemyRole)
+            if (distance > 8f)
             {
-                case EnemyAI.Role.Front:
-                    //前衛 → 直接突撃
-                    desiredPos = toPlayerDir;
-                    break;
-                case EnemyAI.Role.Side:
-                    //側面 → 斜めに包囲
-                    desiredPos = encircleDir * 0.8f + toPlayerDir * 0.3f; break;
-                case EnemyAI.Role.Back:
-                    //後衛 → 少し距離をとって包囲
-                    desiredPos = -toPlayerDir * 0.4f + encircleDir * 0.6f; break;
+                switch (enemy.EnemyRole)
+                {
+                    case EnemyAI.Role.Front:
+                        //前衛 → 直接突撃
+                        desiredPos = toPlayerDir;
+                        break;
+                    case EnemyAI.Role.Side:
+                        //側面 → 斜めに包囲
+                        desiredPos = encircleDir * 0.8f + toPlayerDir * 0.3f; break;
+                    case EnemyAI.Role.Back:
+                        //後衛 → 少し距離をとって包囲
+                        desiredPos = -toPlayerDir * 0.4f + encircleDir * 0.6f; break;
+                }
             }
         }
-        
+
+        if (enemy.Type == EnemyType.Ranged)
+        {
+            // 近づきすぎたら離れる
+            if (distance < enemy.IdealRangedDistance)
+            {
+                desiredPos = -toPlayerDir;
+            }
+            // 遠すぎたら近づく
+            else if (distance > enemy.RangedAttackRange)
+            {
+                enemy.Agent.speed = 5.0f;
+                desiredPos = toPlayerDir;
+            }
+            else
+            {
+                // 横移動（撃ちやすい位置取り）
+                desiredPos = encircleDir;
+            }
+        }
         //Boids補正
         Vector3 boidsForce = enemy.Boids.GetBoidsForceOptimized() * 0.9f;
         //方向補正（急な方向転換を防ぐ）
         Vector3 moveDir = Vector3.Slerp(enemy.transform.forward, (desiredPos + boidsForce).normalized, 0.4f);
         //NavMesh上の有効な地点を探して移動
-        Vector3 targetPos = enemy.transform.position + moveDir * 2.0f;
+        Vector3 targetPos = enemy.transform.position + moveDir * 3.0f;
         
         //3m 先を目標にする
         if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))

@@ -62,6 +62,11 @@ public class EnemySpawn : MonoBehaviour
             {
                 GameObject enemy = Instantiate(enemyPrefab, hit.position, Quaternion.identity);
                 activeEnemies.Add(enemy);
+                var enemyAI = enemy.GetComponent<EnemyAI>();
+                if (enemyAI != null)
+                {
+                    enemyAI.SetRandomPatrolPoint();
+                }
             }
             else
             {

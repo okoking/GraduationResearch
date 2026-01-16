@@ -33,14 +33,11 @@ public class AttackState : IState
     {
         var player = enemy.Player;
         //プレイヤーが空であれば処理しない
-        if (player == null) return;
-        //ノックバック中は処理しない
-        if (enemy.IsKnockBack) return;
+        if (player == null || enemy.IsKnockBack) return;
 
         //プレイヤー方向ベクトルと距離を計算
         Vector3 toPlayer = player.position - enemy.transform.position;
         float distance = toPlayer.magnitude;
-        Vector3 toPlayerDir = toPlayer.normalized;
 
         //回転は滑らかに
         if (!isDashing)
@@ -66,74 +63,97 @@ public class AttackState : IState
             }
         }
 
+        if (enemy.Type == EnemyType.Melee)
+        {
+            UpdateMelee(player, distance, toPlayer.normalized);
+        }
+        else
+        {
+            UpdateRanged(player, distance);
+        }
+    }
+    void UpdateMelee(Transform player, float distance, Vector3 toPlayerDir)
+    {
+        enemy.Agent.speed = 5.0f;
+
         Vector3 desiredPos = Vector3.zero;
         Vector3 angle = Vector3.zero;
 
         if (distance > enemy.KeepDistance)
         {
-            //少し遠い → 接近
             desiredPos = toPlayerDir;
             angle = enemy.transform.forward;
-
-            attackTimer = 0;
+            attackTimer = 0f;
         }
         else if (distance < enemy.RetreatDistance && !isDashing)
         {
-            //近すぎる → 後退を強化
             desiredPos = -toPlayerDir;
             angle = -enemy.transform.forward;
-
-            attackTimer = 0;
+            attackTimer = 0f;
         }
         else
         {
-            //攻撃タイマー更新
             attackTimer += Time.deltaTime;
-            //Debug.Log($"プレイヤーがちょうどいい距離にいます");
         }
 
-        //Boids補正
-        Vector3 boidsForce = enemy.Boids.GetBoidsForceOptimized() * 0.9f;
-        //方向補正（急な方向転換を防ぐ）
-        Vector3 moveDir = Vector3.Slerp(angle, (desiredPos + boidsForce).normalized, 0.4f);
-        //NavMesh上の有効な地点を探して移動
-        Vector3 targetPos = enemy.transform.position + moveDir * 2.0f;
-        //3m先を目標にする
+        // Boids + 移動
+        Vector3 boids = enemy.Boids.GetBoidsForceOptimized() * 0.9f;
+        Vector3 moveDir = Vector3.Slerp(angle, (desiredPos + boids).normalized, 1.0f);
+
+        Vector3 targetPos = enemy.transform.position + moveDir * 2f;
         if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
-        {
             enemy.Agent.SetDestination(hit.position);
-        }
 
-        //攻撃条件（範囲内かつクールダウン経過
-        if (attackTimer >= enemy.AttackInterval)
-        {
-            if (Time.time >= nextAttackRequestTime &&
+        // 攻撃開始
+        if (attackTimer >= enemy.AttackInterval &&
+            Time.time >= nextAttackRequestTime &&
             enemy.AttackCtrl.TryRequestAttack(enemy))
-            {
-                nextAttackRequestTime = Time.time + attackRequestCooldown;
-                if (!isDashing)
-                {
-                    //突進方向を決定（最初の1回だけ）
-                    dashDir = (player.position - enemy.transform.position).normalized;
-                    dashDir.y = 0f;
-                    isDashing = true;
-                    dashTimer = 0f;
-                    Debug.Log($"突進攻撃を開始！");
-                }
-            }
-        }
-        else
         {
-            //Debug.Log($"クールダウンが終わっていません: {attackTimer}");
+            nextAttackRequestTime = Time.time + attackRequestCooldown;
+
+            if (!isDashing)
+            {
+                dashDir = (player.position - enemy.transform.position).normalized;
+                dashDir.y = 0f;
+                isDashing = true;
+                dashTimer = 0f;
+            }
         }
 
         PerformAttack();
 
-        //距離が離れたら追跡へ戻る
         if (distance > 10f)
+            enemy.ChangeState(new ChaseState(enemy));
+    }
+
+    void UpdateRanged(Transform player, float distance)
+    {
+        //// プレイヤーを見る
+        //Vector3 dir = player.position - enemy.transform.position;
+        //dir.y = 0;
+
+        //enemy.transform.rotation = Quaternion.Slerp(
+        //    enemy.transform.rotation,
+        //    Quaternion.LookRotation(dir),
+        //    Time.deltaTime * 5f
+        //);
+
+        // 距離が崩れたら Chase に戻す
+        if (distance > enemy.RangedAttackRange ||
+            distance < enemy.IdealRangedDistance - 1f)
         {
             enemy.ChangeState(new ChaseState(enemy));
-            Debug.Log($"プレイヤーが離れたため追跡へ戻る");
+            return;
+        }
+
+        attackTimer += Time.deltaTime;
+
+        if (attackTimer >= enemy.AttackInterval &&
+            enemy.AttackCtrl.TryRequestAttack(enemy))
+        {
+            //Shoot(player);
+            attackTimer = 0f;
+            enemy.AttackCtrl.EndAttack(enemy);
         }
     }
 
