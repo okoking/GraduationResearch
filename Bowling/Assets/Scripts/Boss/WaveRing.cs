@@ -4,7 +4,6 @@ public class WaveRing : MonoBehaviour
 {
     float speed;
 
-
     float maxRadius;
 
     public void Init(float startRadius, float speed, float maxRadius)
@@ -18,8 +17,8 @@ public class WaveRing : MonoBehaviour
     {
         Vector3 scale = transform.localScale;
         scale.x += speed * Time.deltaTime;
-        scale.z += speed * Time.deltaTime;
-        scale.y = 0.1f; // Å© ècÇÕå≈íË
+        scale.z = 1f;
+        scale.y += speed * Time.deltaTime;
         transform.localScale = scale;
 
         if (transform.localScale.x >= maxRadius)
@@ -32,8 +31,15 @@ public class WaveRing : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            //other.GetComponent<PlayerStatus>().Damage(10);
+            Debug.Log("ç°êGÇËÇ‹ÇµÇΩÇÊÇÀÅI");
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.CompareTag("Player"))
+        {
+            Debug.Log("ç°êGÇËÇ‹ÇµÇΩÇÊÇÀÅI");
+        }
+    }
 }

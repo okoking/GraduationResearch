@@ -159,15 +159,15 @@ public class Boss : MonoBehaviour
     {
         GameObject wave = Instantiate(
             wavePrefab,
-            transform.position,
-            Quaternion.identity
+            new Vector3(0f, 0.2f, 0f),
+            Quaternion.Euler(90, 0, 0)
         );
 
         wave.GetComponent<WaveRing>()
             .Init(
-                startRadius: 0.2f,
-                speed: 5f,
-                maxRadius: 120f
+                startRadius: 100f,
+                speed: 800f,
+                maxRadius: 10000f
             );
     }
 
