@@ -58,91 +58,91 @@ public class BossHand : MonoBehaviour
 
     void Update()
     {
-        if (bossHandSpawn == null || player == null) return;
+        //if (bossHandSpawn == null || player == null) return;
 
-        ////ビーム中でなければ動く
-        //if (!isFiringBeam)
+        //////ビーム中でなければ動く
+        ////if (!isFiringBeam)
+        ////{
+        ////    //手は軌道を描きながら動く、プレイヤーを向き続ける
+        ////angle += orbitSpeed * Time.deltaTime;
+        ////float rad = angle * Mathf.Deg2Rad;
+        ////Vector3 offset = new Vector3(
+        ////    Mathf.Cos(rad) * orbitRadius,
+        ////    Mathf.Sin(Time.time * floatSpeed) * floatAmplitude,
+        ////    Mathf.Sin(rad) * orbitRadius
+        ////);
+        ////    //スポーン座標を基準に回る
+        ////    transform.position = bossHandSpawn.position + offset;
+
+        //transform.LookAt(player);
+
+        //beamTimer += Time.deltaTime;
+        //if (beamTimer >= beamInterval && !isFiringBeam)
         //{
-        //    //手は軌道を描きながら動く、プレイヤーを向き続ける
-        //angle += orbitSpeed * Time.deltaTime;
-        //float rad = angle * Mathf.Deg2Rad;
-        //Vector3 offset = new Vector3(
-        //    Mathf.Cos(rad) * orbitRadius,
-        //    Mathf.Sin(Time.time * floatSpeed) * floatAmplitude,
-        //    Mathf.Sin(rad) * orbitRadius
-        //);
-        //    //スポーン座標を基準に回る
-        //    transform.position = bossHandSpawn.position + offset;
+        //    beamTimer = 0f;
+        //    StartCoroutine(ShootSweepBeam());
+        //}
 
-        transform.LookAt(player);
+        ////攻撃予測表示処理
+        //if (!isFloorAtackDisp && isFloorAtackFin)
+        //{
+        //    floorAttackTimer += Time.deltaTime;
+        //}
 
-        beamTimer += Time.deltaTime;
-        if (beamTimer >= beamInterval && !isFiringBeam)
-        {
-            beamTimer = 0f;
-            StartCoroutine(ShootSweepBeam());
-        }
+        //if (floorAttackTimer >= 5f)
+        //{
+        //    RoundFloorAttack();
+        //    isFloorAtackFin = false;
+        //    floorAttackTimer = 0f;
+        //}
 
-        //攻撃予測表示処理
-        if (!isFloorAtackDisp && isFloorAtackFin)
-        {
-            floorAttackTimer += Time.deltaTime;
-        }
-
-        if (floorAttackTimer >= 5f)
-        {
-            RoundFloorAttack();
-            isFloorAtackFin = false;
-            floorAttackTimer = 0f;
-        }
-
-        // 攻撃予測表示中なら
-        if (isFloorAtackDisp)
-        {
-            floorAttackDispTimer += Time.deltaTime;
-            if (floorAttackDispTimer > 2f)
-            {
+        //// 攻撃予測表示中なら
+        //if (isFloorAtackDisp)
+        //{
+        //    floorAttackDispTimer += Time.deltaTime;
+        //    if (floorAttackDispTimer > 2f)
+        //    {
                
-                for (int i = 0; i < FloorAtkNum; i++)
-                {
-                    Destroy(floorAttackSub[i]);
-                }
-                floorAttackDispTimer = 0f;
-                isFloorAtack = true;
-                isFloorAtackDisp = false;
-            }
-        }
+        //        for (int i = 0; i < FloorAtkNum; i++)
+        //        {
+        //            Destroy(floorAttackSub[i]);
+        //        }
+        //        floorAttackDispTimer = 0f;
+        //        isFloorAtack = true;
+        //        isFloorAtackDisp = false;
+        //    }
+        //}
 
-        if (isFloorAtack)
-        {
-            //ここで攻撃本体を生成
-            for (int i = 0; i < FloorAtkNum; i++) {
-                floorAttack[i] = Instantiate(floorAttackPrefab, PPos[i], new Quaternion(0f, 0f, 0f, 0f));
-                off[i] = EffectManager.instance.Play("meteor", PPos[i]);
-            }
+        //if (isFloorAtack)
+        //{
+        //    //ここで攻撃本体を生成
+        //    for (int i = 0; i < FloorAtkNum; i++) {
+        //        floorAttack[i] = Instantiate(floorAttackPrefab, PPos[i], new Quaternion(0f, 0f, 0f, 0f));
+        //        off[i] = EffectManager.instance.Play("meteor", PPos[i]);
+        //    }
 
-            isFloorAtack = false;
-            isAttttttack = true;
-        }
+        //    isFloorAtack = false;
+        //    isAttttttack = true;
+        //}
 
-        if (isAttttttack)
-        {
-            //ここでデストロイまでのタイマーを回す
-            FloorAtackFinTimer += Time.deltaTime;
-        }
+        //if (isAttttttack)
+        //{
+        //    //ここでデストロイまでのタイマーを回す
+        //    FloorAtackFinTimer += Time.deltaTime;
+        //}
 
-        if (FloorAtackFinTimer > 5f)
-        {
-            //攻撃本体を殺す
-            for (int i = 0; i < FloorAtkNum; i++)
-            {
-                Destroy(floorAttack[i]);
-            }
-            FloorAtackFinTimer = 0f;
-            //攻撃終了したことを伝える
-            isFloorAtackFin = true;
-            isAttttttack = false;
-        }
+        //if (FloorAtackFinTimer > 5f)
+        //{
+        //    //攻撃本体を殺す
+        //    for (int i = 0; i < FloorAtkNum; i++)
+        //    {
+        //        Destroy(floorAttack[i]);
+        //    }
+        //    FloorAtackFinTimer = 0f;
+        //    //攻撃終了したことを伝える
+        //    isFloorAtackFin = true;
+        //    isAttttttack = false;
+        //}
     }
 
     private IEnumerator ShootSweepBeam()

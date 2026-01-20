@@ -31,15 +31,8 @@ public class WaveRing : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("今触りましたよね！");
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.transform.CompareTag("Player"))
-        {
-            Debug.Log("今触りましたよね！");
+            //プレイヤーにダメージ
+            other.GetComponent<PlayerHealth>().TakeDamage(100);
         }
     }
 }

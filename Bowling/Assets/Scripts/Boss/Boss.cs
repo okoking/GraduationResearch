@@ -159,7 +159,7 @@ public class Boss : MonoBehaviour
     {
         GameObject wave = Instantiate(
             wavePrefab,
-            new Vector3(0f, 0.2f, 0f),
+            new Vector3(0f, 0.5f, 0f),
             Quaternion.Euler(90, 0, 0)
         );
 
