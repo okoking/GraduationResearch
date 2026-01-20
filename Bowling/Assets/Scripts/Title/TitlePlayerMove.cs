@@ -46,22 +46,9 @@ public class TitlePlayerMove : MonoBehaviour
             MoveStopFlag = true;
         }
 
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("アーマチュア|2_move"))
-        {
-            currentStateName = "2_move";
-        }
-        else if (anim.GetCurrentAnimatorStateInfo(0).IsName("アーマチュア|7_baem"))
-        {
-            currentStateName = "7_baem";
-        }
-        else if (anim.GetCurrentAnimatorStateInfo(0).IsName("アーマチュア|8_baemShot"))
-        {
-            currentStateName = "8_baemShot";
-        }
-        //Debug.Log(currentStateName);
 
         //8_beamShotが終了したか確認
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("アーマチュア|8_baemShot"))
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("アーマチュア|8_baemShot") && !EffectStartFlag)
         {
             Debug.Log("特定のアニメーション終了");
 
@@ -77,3 +64,21 @@ public class TitlePlayerMove : MonoBehaviour
     }
     
 }
+
+/*
+ //if (anim.GetCurrentAnimatorStateInfo(0).IsName("アーマチュア|2_move"))
+        //{
+        //    currentStateName = "2_move";
+        //}
+        //else if (anim.GetCurrentAnimatorStateInfo(0).IsName("アーマチュア|7_baem"))
+        //{
+        //    currentStateName = "7_baem";
+        //}
+        //else if (anim.GetCurrentAnimatorStateInfo(0).IsName("アーマチュア|8_baemShot"))
+        //{
+        //    currentStateName = "8_baemShot";
+        //}
+        //Debug.Log(currentStateName);
+ 
+ 
+ */

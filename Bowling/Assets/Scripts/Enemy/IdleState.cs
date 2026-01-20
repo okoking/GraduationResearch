@@ -12,7 +12,7 @@ public class IdleState : IState
     public IdleState(EnemyAI enemy)
     {
         this.enemy = enemy;
-        waitTime = UnityEngine.Random.Range(1.5f, 3.5f);
+        waitTime = UnityEngine.Random.Range(1.5f, 2.0f);
     }
 
     //初期化処理
@@ -20,7 +20,7 @@ public class IdleState : IState
     {
         timer = 0f;
         //待ち時間再設定
-        waitTime = Random.Range(3, 6);
+        waitTime = Random.Range(1.0f, 2.5f);
     }
 
     //更新処理
@@ -46,16 +46,16 @@ public class IdleState : IState
         {
             //ランダムパトロール地点設定
             enemy.SetRandomPatrolPoint();
-            //巡回状態へ変更
-            enemy.ChangeState(new PatrolState(enemy));
-            //var center = enemy.GetPatrolCenter();
-            //Vector3 rnd = center + Random.insideUnitSphere * enemy.GetPatrolRadius();
-            //rnd.y = enemy.transform.position.y;
-            //if (UnityEngine.AI.NavMesh.SamplePosition(rnd, out var hit, enemy.GetPatrolRadius(), UnityEngine.AI.NavMesh.AllAreas))
-            //{
-            //    enemy.SetPatrolTarget(hit.position);
-            //    enemy.ChangeState(new PatrolState(enemy));
-            //}
+            ////巡回状態へ変更
+            //enemy.ChangeState(new PatrolState(enemy));
+            var center = enemy.GetPatrolCenter();
+            Vector3 rnd = center + Random.insideUnitSphere * enemy.GetPatrolRadius();
+            rnd.y = enemy.transform.position.y;
+            if (UnityEngine.AI.NavMesh.SamplePosition(rnd, out var hit, enemy.GetPatrolRadius(), UnityEngine.AI.NavMesh.AllAreas))
+            {
+                enemy.SetPatrolTarget(hit.position);
+                enemy.ChangeState(new PatrolState(enemy));
+            }
         }
     }
 
