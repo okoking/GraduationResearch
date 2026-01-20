@@ -9,14 +9,28 @@ public class SoundData
     [Tooltip("‰¹—Ê")][Range(0.0f, 1.0f)] public float soundVolume = 1f;
 }
 
+[System.Serializable]
+public class AudioSourceData
+{
+    [Tooltip("AudioSourceID")] public string audioSourceID;
+    [Tooltip("AudioSource")] public AudioSource audioSource;
+}
+
 [CreateAssetMenu(menuName = "System/SoundList")]
 public class SoundList : ScriptableObject
 {
     public List<SoundData> soundList = new List<SoundData>();
+    public List<AudioSourceData> audioSourceList = new List<AudioSourceData>();
 
     //—v‘f‚ð’T‚·
-    public SoundData Find(string soudID)
+    public SoundData SoundFind(string soudID)
     {
         return soundList.Find(sound => sound.soundID == soudID);
+    }
+
+    //—v‘f‚ð’T‚·
+    public AudioSourceData AudioSourceFind(string audioSourceID)
+    {
+        return audioSourceList.Find(sound => sound.audioSourceID == audioSourceID);
     }
 }
