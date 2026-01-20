@@ -16,3 +16,6 @@ MonoBehaviour:
   - soundID: PlayerShot
     audioClip: {fileID: 8300000, guid: 3b6cc825be3d50c40a61a1863401cfd6, type: 3}
     soundVolume: 0
+  audioSourceList:
+  - audioSourceID: 
+    audioSource: {fileID: 0}
