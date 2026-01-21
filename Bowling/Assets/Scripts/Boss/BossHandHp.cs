@@ -3,7 +3,8 @@ using UnityEngine;
 public class BossHandHp : MonoBehaviour
 {
 
-    public int hp = 50;
+    public int hp = 25;
+    public int maxHp;
 
     //–³“G‚©‚Ç‚¤‚©
     bool isPerfect = false;
@@ -47,11 +48,11 @@ public class BossHandHp : MonoBehaviour
             isPerfect = false;
         }
 
-        //‰¼
-        if (Input.GetKey(KeyCode.H))
-        {
-            TakeDamage(10);
-        }
+        ////‰¼
+        //if (Input.GetKey(KeyCode.H))
+        //{
+        //    TakeDamage(10);
+        //}
     }
 
     public void TakeDamage(int take)
@@ -59,9 +60,10 @@ public class BossHandHp : MonoBehaviour
         if (!isPerfect)
         {
             hp -= take;
-            Debug.Log(hp);
             isPerfect = true;
         }
+
+        Debug.Log(hp);
 
         if (hp <= 0)
         {

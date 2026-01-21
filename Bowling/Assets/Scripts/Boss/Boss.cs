@@ -29,6 +29,9 @@ public class Boss : MonoBehaviour
     public GameObject floorAttackSubPrefab;//°UŒ‚
     public GameObject floorAttackPrefab;   //°UŒ‚
 
+    [SerializeField] private Transform handLeft;
+    [SerializeField] private Transform handRight;
+
     bool isWaveAttacking = false;
 
     float waveAttackTimer;
@@ -125,7 +128,9 @@ public class Boss : MonoBehaviour
 
             if (!isWaveAttacking && waveAttackTimer > 10f)
             {
-                StartCoroutine(WaveAttack());
+                StartCoroutine(WaveAttack(transform.position));
+                StartCoroutine(WaveAttack(handLeft.position));
+                StartCoroutine(WaveAttack(handRight.position));
                 waveAttackTimer = 0;
             }
 
@@ -155,11 +160,11 @@ public class Boss : MonoBehaviour
     [SerializeField]
     GameObject wavePrefab;
 
-    void SpawnWave()
+    void SpawnWave(Vector3 pos)
     {
         GameObject wave = Instantiate(
             wavePrefab,
-            new Vector3(0f, 0.5f, 0f),
+            new Vector3(pos.x, 0.5f, pos.z),
             Quaternion.Euler(90, 0, 0)
         );
 
@@ -172,7 +177,7 @@ public class Boss : MonoBehaviour
     }
 
 
-    IEnumerator WaveAttack()
+    IEnumerator WaveAttack(Vector3 pos)
     {
         isWaveAttacking = true;
 
@@ -182,7 +187,7 @@ public class Boss : MonoBehaviour
 
         while (timer < attackDuration)
         {
-            SpawnWave();
+            SpawnWave(pos);
             yield return new WaitForSeconds(interval);
             timer += interval;
         }
