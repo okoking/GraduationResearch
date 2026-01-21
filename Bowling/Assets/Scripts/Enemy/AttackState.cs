@@ -1,11 +1,18 @@
 using UnityEngine;
 using UnityEngine.AI;
 using static IState;
+enum AttackMoveMode
+{
+    None,
+    Approach,
+    Retreat
+}
 
 //攻撃状態
 public class AttackState : IState
 {
     public StateType Type => StateType.Attack;
+    private AttackMoveMode moveMode = AttackMoveMode.None;
 
     private EnemyAI enemy;
 
@@ -27,6 +34,8 @@ public class AttackState : IState
         attackTimer = 0f;
         isDashing = false;
         dashTimer = 0f;
+
+        moveMode = AttackMoveMode.None;
     }
 
     public void OnUpdate()
@@ -74,35 +83,60 @@ public class AttackState : IState
     }
     void UpdateMelee(Transform player, float distance, Vector3 toPlayerDir)
     {
-        enemy.Agent.speed = 5.0f;
+        //enemy.Agent.speed = 5f;
 
-        Vector3 desiredPos = Vector3.zero;
-        Vector3 angle = Vector3.zero;
+        //// モード決定（毎フレーム SetDestination しない）
+        //if (!isDashing)
+        //{
+        //    if (distance > enemy.KeepDistance)
+        //    {
+        //        SetMoveMode(AttackMoveMode.Approach, toPlayerDir);
+        //    }
+        //    else if (distance < enemy.RetreatDistance)
+        //    {
+        //        SetMoveMode(AttackMoveMode.Retreat, -toPlayerDir);
+        //    }
+        //    else
+        //    {
+        //        //StopMove();
+        //        attackTimer += Time.deltaTime;
+        //    }
+        //}
 
-        if (distance > enemy.KeepDistance)
-        {
-            desiredPos = toPlayerDir;
-            angle = enemy.transform.forward;
-            attackTimer = 0f;
-        }
-        else if (distance < enemy.RetreatDistance && !isDashing)
-        {
-            desiredPos = -toPlayerDir;
-            angle = -enemy.transform.forward;
-            attackTimer = 0f;
-        }
-        else
-        {
-            attackTimer += Time.deltaTime;
-        }
+        //TryStartAttack(player, distance);
+        //PerformAttack();
 
-        // Boids + 移動
-        Vector3 boids = enemy.Boids.GetBoidsForceOptimized() * 0.9f;
-        Vector3 moveDir = Vector3.Slerp(angle, (desiredPos + boids).normalized, 1.0f);
+        if (distance > 10f)
+            enemy.ChangeState(new ChaseState(enemy));
+        //enemy.Agent.speed = 5.0f;
 
-        Vector3 targetPos = enemy.transform.position + moveDir * 2f;
-        if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
-            enemy.Agent.SetDestination(hit.position);
+        //Vector3 desiredPos = Vector3.zero;
+        //Vector3 angle = Vector3.zero;
+
+        //if (distance > enemy.KeepDistance)
+        //{
+        //    desiredPos = toPlayerDir;
+        //    angle = enemy.transform.forward;
+        //    attackTimer = 0f;
+        //}
+        //else if (distance < enemy.RetreatDistance && !isDashing)
+        //{
+        //    desiredPos = -toPlayerDir;
+        //    angle = -enemy.transform.forward;
+        //    attackTimer = 0f;
+        //}
+        //else
+        //{
+        //    attackTimer += Time.deltaTime;
+        //}
+
+        //// Boids + 移動
+        //Vector3 boids = enemy.Boids.GetBoidsForceOptimized() * 0.9f;
+        //Vector3 moveDir = Vector3.Slerp(angle, (desiredPos + boids).normalized, 1.0f);
+
+        //Vector3 targetPos = enemy.transform.position + moveDir * 2f;
+        //if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+        //    enemy.Agent.SetDestination(hit.position);
 
         // 攻撃開始
         if (attackTimer >= enemy.AttackInterval &&
@@ -120,10 +154,10 @@ public class AttackState : IState
             }
         }
 
-        PerformAttack();
+        //PerformAttack();
 
-        if (distance > 10f)
-            enemy.ChangeState(new ChaseState(enemy));
+        //if (distance > 10f)
+        //    enemy.ChangeState(new ChaseState(enemy));
     }
 
     void UpdateRanged(Transform player, float distance)
@@ -155,6 +189,27 @@ public class AttackState : IState
             attackTimer = 0f;
             enemy.AttackCtrl.EndAttack(enemy);
         }
+    }
+
+    void SetMoveMode(AttackMoveMode mode, Vector3 dir)
+    {
+        if (moveMode == mode) return;
+
+        moveMode = mode;
+
+        Vector3 targetPos = enemy.transform.position + dir.normalized * 2.0f;
+        if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+        {
+            enemy.Agent.SetDestination(hit.position);
+        }
+    }
+
+    void StopMove()
+    {
+        if (moveMode == AttackMoveMode.None) return;
+
+        moveMode = AttackMoveMode.None;
+        enemy.Agent.ResetPath();
     }
 
     //攻撃処理

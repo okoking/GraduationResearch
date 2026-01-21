@@ -4,6 +4,7 @@ using UnityEngine.AI;
 
 public class EnemySpawn : MonoBehaviour
 {
+    public static EnemySpawn Instance { get; private set; }
     [Header("敵プレハブ")]
     [SerializeField] private GameObject enemyPrefab;
     [Header("スポーン地点（複数指定可能）")]
@@ -24,12 +25,12 @@ public class EnemySpawn : MonoBehaviour
 
     void Start()
     {
-        SpawnEnemies();
+        if (Instance == null) Instance = this;
     }
 
     void Update()
     {
-        if (infiniteSpawn)
+        if (infiniteSpawn && GameStartDirector.IsGameStarted)
         {
             timer += Time.deltaTime;
             if (timer >= spawnInterval)
@@ -39,7 +40,7 @@ public class EnemySpawn : MonoBehaviour
             }
         }
     }
-    void SpawnEnemies()
+    public void SpawnEnemies()
     {
         if (spawnPoints.Length == 0)
         {
@@ -56,17 +57,15 @@ public class EnemySpawn : MonoBehaviour
             Vector3 randomOffset = Random.insideUnitSphere * randomRadius;
             randomOffset.y = 0;
             Vector3 candidatePos = basePoint.position + randomOffset;
-
+            
             //NavMesh上の有効な地点を探す
             if (NavMesh.SamplePosition(candidatePos, out NavMeshHit hit, navMeshSearchRadius, NavMesh.AllAreas))
             {
                 GameObject enemy = Instantiate(enemyPrefab, hit.position, Quaternion.identity);
                 activeEnemies.Add(enemy);
                 var enemyAI = enemy.GetComponent<EnemyAI>();
-                //if (enemyAI != null)
-                //{
-                //    enemyAI.SetRandomPatrolPoint();
-                //}
+                enemyAI.SetPatrolCenter(basePoint);
+                Debug.Log("敵がスポーンしました");
             }
             else
             {

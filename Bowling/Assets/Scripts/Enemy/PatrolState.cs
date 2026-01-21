@@ -14,28 +14,22 @@ public class PatrolState : IState
     }
     public void OnStart()
     {
-        ////巡回開始時に必ず目的地を決める
-        //enemy.SetRandomPatrolPoint();
+        enemy.SetRandomPatrolPoint();
+        Debug.Log("パトロールを始めます");
 
-        //var agent = enemy.Agent;
-        //if (agent.enabled && agent.isOnNavMesh)
-        //{
-        //    agent.SetDestination(enemy.GetPatrolTarget());
-        //}
+
+        var agent = enemy.Agent;
+        if (agent.enabled && agent.isOnNavMesh)
+        {
+            agent.SetDestination(enemy.GetPatrolTarget());
+        }
     }
     public void OnUpdate()
     {
         //エージェントを取得
         var agent = enemy.Agent;
 
-        //NavMesh上にいなければ何もしない
-        if (!agent.enabled || !agent.isOnNavMesh)
-        {
-            return;
-        }
-
-        //ノックバック中は処理しない
-        if (enemy.IsKnockBack) return;
+        if (!agent.enabled || !agent.isOnNavMesh || enemy.IsKnockBack) return;
 
         //プレイヤーを発見したら
         if (enemy.CanSeePlayer())
@@ -57,33 +51,36 @@ public class PatrolState : IState
         {
             //待機状態へ
             enemy.ChangeState(new IdleState(enemy));
-            Debug.Log("待機状態へ");
+            Debug.Log("目的値に到達しました");
             return;
         }
 
-        //目的地
-        Vector3 patrolTarget = enemy.GetPatrolTarget();
-        //Boids補正で目的地微調整
-        var boids = enemy.Boids.GetBoidsForceOptimized() * 0.9f;
+        ////目的地
+        //Vector3 patrolTarget = enemy.GetPatrolTarget();
+        ////Boids補正で目的地微調整
+        //Vector3 boidsAdjustment = enemy.Boids.GetBoidsForceOptimized() * 0.9f;
 
-        //NavMeshAgentが目指す目標方向を補正
-        Vector3 targetDir = (patrolTarget - enemy.transform.position).normalized;
-        Vector3 adjustedTarget = enemy.transform.position + 
-            (targetDir + boids).normalized * 2f;
+        //////NavMeshAgentが目指す目標方向を補正
+        ////Vector3 targetDir = (patrolTarget - enemy.transform.position).normalized;
+        ////Vector3 adjustedTarget = enemy.transform.position + 
+        ////    (targetDir + boids).normalized * 2f;
 
-        //次の目標位置をBoids補正で微調整
-        Vector3 direction = (patrolTarget - enemy.transform.position).normalized +
-            boids;
-        Vector3 adjustedPos = enemy.transform.position + direction.normalized * 2f;
-
-        if (NavMesh.SamplePosition(adjustedPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
-        {
-            agent.SetDestination(hit.position);
-        }
+        //////次の目標位置をBoids補正で微調整
+        ////Vector3 direction = (patrolTarget - enemy.transform.position).normalized +
+        ////    boids;
+        ////Vector3 adjustedPos = enemy.transform.position + direction.normalized * 2f;
+        //// 目標位置をBoidsで微調整
+        //Vector3 direction = (patrolTarget - enemy.transform.position).normalized + 
+        //    boidsAdjustment;
+        //Vector3 adjustedPos = enemy.transform.position + direction.normalized * 2f;
+        //if (NavMesh.SamplePosition(adjustedPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+        //{
+        //    agent.SetDestination(hit.position);
+        //}
     }
     public void OnExit()
     {
-
+        Debug.Log("待機状態へ");
     }
     //巡回範囲と目的地をGizmosで可視化
     void OnDrawGizmosSelected()

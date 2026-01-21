@@ -978,10 +978,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 0
-  patrolRadius: 20
+  patrolRadius: 30
   patrolWaitTime: 2
   patrolCenter: {x: 0, y: 0, z: 0}
-  patrolAreaRadius: 80
+  patrolAreaRadius: 100
   separationWeight: 15
   alignmentWeight: 0.2
   cohesionWeight: 0.3

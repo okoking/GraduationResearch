@@ -128,18 +128,16 @@ public class EnemyAI : MonoBehaviour
         boids = new BoidsSteering(this, neighborRadius, separationWeight, alignmentWeight, cohesionWeight, maxBoidsForce, boidsUpdateInterval);
         agent.radius = 0.6f;
         encircleSignRandomSeed = UnityEngine.Random.value;
-        //LineRenderer for debugging
+        
         debugLine = gameObject.AddComponent<LineRenderer>();
         debugLine.startWidth = debugLine.endWidth = 0.05f;
         debugLine.material = new Material(Shader.Find("Sprites/Default"));
         debugLine.positionCount = 2;
 
-        
-
-        //if (!agent.isOnNavMesh)
-        //{
-        //    Debug.LogError($"NavMesh 上にいません");
-        //}
+        if (!agent.isOnNavMesh)
+        {
+            Debug.LogError($"NavMesh 上にいません");
+        }
     }
 
     private void Start()
@@ -160,6 +158,9 @@ public class EnemyAI : MonoBehaviour
         {
             Debug.LogError("EnemyManager に Player が設定されていません。Initialize 未実行です！");
         }
+
+        //最初は待機状態に遷移
+        ChangeState(new IdleState(this));
     }
 
     //初期化は外から呼ぶ（EnemyManager など）
@@ -175,9 +176,10 @@ public class EnemyAI : MonoBehaviour
         alignmentWeight += UnityEngine.Random.Range(-0.05f, 0.05f);
         agent.avoidancePriority = UnityEngine.Random.Range(40, 90);
         patrolTarget = Vector3.zero;
-        //enemyType
+
         AssignRandomRole();
-        ChangeState(new PatrolState(this));
+        ChangeState(new IdleState(this));
+        Debug.Log("最初は待機状態です");
     }
 
     void Update()
@@ -200,12 +202,12 @@ public class EnemyAI : MonoBehaviour
 
         //現在の状態の更新処理
         currentState?.OnUpdate();
-        ////巡回目的地への線を表示
-        //if (patrolTarget != Vector3.zero)
-        //{
-        //    debugLine.SetPosition(0, transform.position + Vector3.up * 0.1f);
-        //    debugLine.SetPosition(1, patrolTarget + Vector3.up * 0.1f);
-        //}
+        //巡回目的地への線を表示
+        if (patrolTarget != Vector3.zero)
+        {
+            debugLine.SetPosition(0, transform.position + Vector3.up * 0.1f);
+            debugLine.SetPosition(1, patrolTarget + Vector3.up * 0.1f);
+        }
     }
 
     //プレイヤーを見つけたか
@@ -441,4 +443,8 @@ public class EnemyAI : MonoBehaviour
     }
     public float IdealRangedDistance => idealRangedDistance;
     public float RangedAttackRange => rangedAttackRange;
+    public void SetPatrolCenter(Transform p)
+    {
+        patrolCenter = p.position;
+    }
 }

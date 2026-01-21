@@ -14,18 +14,7 @@ public class EnemyManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null) Instance = this;
-        //Awake でプレイヤー探索（Start より早い）
-        if (player == null)
-        {
-            var p = GameObject.FindWithTag("Player");
-            if (p != null)
-            {
-                player = p.transform;
-                Debug.Log("[EnemyManager] Player found in Awake.");
-            }
-        }
-        attackController = new AttackController();
+        
     }
     void Start()
     {
@@ -40,6 +29,19 @@ public class EnemyManager : MonoBehaviour
             else
                 Debug.Log("プレイヤーが見つかりません");
         }
+
+        if (Instance == null) Instance = this;
+        //Awake でプレイヤー探索（Start より早い）
+        if (player == null)
+        {
+            var p = GameObject.FindWithTag("Player");
+            if (p != null)
+            {
+                player = p.transform;
+                Debug.Log("[EnemyManager] Player found in Awake.");
+            }
+        }
+        attackController = new AttackController();
     }
     void Update()
     {

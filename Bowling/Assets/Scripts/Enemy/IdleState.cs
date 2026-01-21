@@ -44,24 +44,27 @@ public class IdleState : IState
         //待ち時間が終わったら
         if (timer > waitTime)
         {
-            //ランダムパトロール地点設定
-            enemy.SetRandomPatrolPoint();
-            ////巡回状態へ変更
-            //enemy.ChangeState(new PatrolState(enemy));
-            var center = enemy.GetPatrolCenter();
-            Vector3 rnd = center + Random.insideUnitSphere * enemy.GetPatrolRadius();
-            rnd.y = enemy.transform.position.y;
-            if (UnityEngine.AI.NavMesh.SamplePosition(rnd, out var hit, enemy.GetPatrolRadius(), UnityEngine.AI.NavMesh.AllAreas))
-            {
-                enemy.SetPatrolTarget(hit.position);
-                enemy.ChangeState(new PatrolState(enemy));
-            }
+            ////ランダムパトロール地点設定
+            //enemy.SetRandomPatrolPoint();
+            //巡回状態へ変更
+            enemy.ChangeState(new PatrolState(enemy));
+
+            //var center = enemy.GetPatrolCenter();
+            //Vector3 rnd = center + Random.insideUnitSphere * enemy.GetPatrolRadius();
+            //rnd.y = enemy.transform.position.y;
+            //if (UnityEngine.AI.NavMesh.SamplePosition(rnd, out var hit, enemy.GetPatrolRadius(), UnityEngine.AI.NavMesh.AllAreas))
+            //{
+            //    enemy.SetPatrolTarget(hit.position);
+            //    enemy.ChangeState(new PatrolState(enemy));
+            //}
+
+            Debug.Log("待機状態の待ち時間が終わりました");
         }
     }
 
     //終了処理
     public void OnExit()
     {
-        Debug.Log("巡回状態へ");
+        //Debug.Log("巡回状態へ");
     }
 }

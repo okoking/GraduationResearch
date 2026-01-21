@@ -79,5 +79,6 @@ public class GameStartDirector : MonoBehaviour
 
         //‰ð•ú
         IsGameStarted = true;
+        EnemySpawn.Instance.SpawnEnemies();
     }
 }
