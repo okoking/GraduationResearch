@@ -120,24 +120,24 @@ public class Boss : MonoBehaviour
                 isFloorAtackFin = true;
                 isAttttttack = false;
             }
-        }
 
-        waveAttackTimer += Time.deltaTime;
+            waveAttackTimer += Time.deltaTime;
 
-        if (!isWaveAttacking && waveAttackTimer > 10f)
-        {
-            StartCoroutine(WaveAttack());
-            waveAttackTimer = 0;
-        }
-
-        if (bossHp.GetIsDeath())
-        {
-            for (int i = 0; i < FloorAtkNum; i++)
+            if (!isWaveAttacking && waveAttackTimer > 10f)
             {
-                Destroy(floorAttackSub[i]);
-                Destroy(floorAttack[i]);
+                StartCoroutine(WaveAttack());
+                waveAttackTimer = 0;
             }
-            bossHp.ThisDestroy();
+
+            if (bossHp.GetIsDeath())
+            {
+                for (int i = 0; i < FloorAtkNum; i++)
+                {
+                    Destroy(floorAttackSub[i]);
+                    Destroy(floorAttack[i]);
+                }
+                bossHp.ThisDestroy();
+            }
         }
     }
 

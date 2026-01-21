@@ -71,7 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 50
-  maxInvincibleTime: 0.5
+  maxInvincibleTime: 0.2
 --- !u!65 &-4153446433829889040
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -91,5 +91,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 6, y: 6, z: 4}
   m_Center: {x: 0, y: 0, z: 0}
