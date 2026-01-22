@@ -35,6 +35,8 @@ public class BossHand : MonoBehaviour
 
     public int FloorAtkNum;
 
+    private  GameObject beamPoint_L;
+
     GameObject[] floorAttackSub;          //床攻撃前の危険表示
 
     GameObject[] floorAttack;             //床攻撃
@@ -50,6 +52,11 @@ public class BossHand : MonoBehaviour
         if (player == null)
             player = GameObject.FindWithTag("Player")?.transform;
 
+        if(beamPoint_L == null)
+        {
+            beamPoint_L = GameObject.FindWithTag("BeamPoint");
+        }
+
         PPos = new Vector3[FloorAtkNum];
         floorAttackSub = new GameObject[FloorAtkNum];
         floorAttack = new GameObject[FloorAtkNum];
@@ -60,19 +67,7 @@ public class BossHand : MonoBehaviour
     {
         if (bossHandSpawn == null || player == null) return;
 
-        ////ビーム中でなければ動く
-        //if (!isFiringBeam)
-        //{
-        //    //手は軌道を描きながら動く、プレイヤーを向き続ける
-        //angle += orbitSpeed * Time.deltaTime;
-        //float rad = angle * Mathf.Deg2Rad;
-        //Vector3 offset = new Vector3(
-        //    Mathf.Cos(rad) * orbitRadius,
-        //    Mathf.Sin(Time.time * floatSpeed) * floatAmplitude,
-        //    Mathf.Sin(rad) * orbitRadius
-        //);
-        //    //スポーン座標を基準に回る
-        //    transform.position = bossHandSpawn.position + offset;
+        transform.position = beamPoint_L.transform.position;
 
         transform.LookAt(player);
 
