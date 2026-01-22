@@ -83,31 +83,49 @@ public class AttackState : IState
     }
     void UpdateMelee(Transform player, float distance, Vector3 toPlayerDir)
     {
-        //enemy.Agent.speed = 5f;
+        enemy.Agent.speed = 5f;
 
-        //// モード決定（毎フレーム SetDestination しない）
-        //if (!isDashing)
-        //{
-        //    if (distance > enemy.KeepDistance)
-        //    {
-        //        SetMoveMode(AttackMoveMode.Approach, toPlayerDir);
-        //    }
-        //    else if (distance < enemy.RetreatDistance)
-        //    {
-        //        SetMoveMode(AttackMoveMode.Retreat, -toPlayerDir);
-        //    }
-        //    else
-        //    {
-        //        //StopMove();
-        //        attackTimer += Time.deltaTime;
-        //    }
-        //}
+        // モード決定（毎フレーム SetDestination しない）
+        if (!isDashing)
+        {
+            if (distance > enemy.KeepDistance + 0.5f)
+            {
+                Debug.Log("遠すぎるので近づきます");
+                SetMoveMode(AttackMoveMode.Approach, toPlayerDir);
+            }
+            else if (distance < enemy.RetreatDistance - 0.5f)
+            {
+                Debug.Log("近すぎるので離れます");
+                SetMoveMode(AttackMoveMode.Retreat, -toPlayerDir);
+            }
+            else
+            {
+                StopMove();
+                attackTimer += Time.deltaTime;
+                Debug.Log("ちょうどいい距離にいます");
+            }
+        }
 
-        //TryStartAttack(player, distance);
-        //PerformAttack();
+        // 攻撃開始
+        if (attackTimer >= enemy.AttackInterval &&
+            Time.time >= nextAttackRequestTime &&
+            enemy.AttackCtrl.TryRequestAttack(enemy))
+        {
+            nextAttackRequestTime = Time.time + attackRequestCooldown;
 
-        if (distance > 10f)
-            enemy.ChangeState(new ChaseState(enemy));
+            if (!isDashing)
+            {
+                dashDir = (player.position - enemy.transform.position).normalized;
+                dashDir.y = 0f;
+                isDashing = true;
+                dashTimer = 0f;
+            }
+        }
+        PerformAttack();
+
+        //if (distance > 10f)
+        //    enemy.ChangeState(new ChaseState(enemy));
+
         //enemy.Agent.speed = 5.0f;
 
         //Vector3 desiredPos = Vector3.zero;
@@ -137,22 +155,6 @@ public class AttackState : IState
         //Vector3 targetPos = enemy.transform.position + moveDir * 2f;
         //if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
         //    enemy.Agent.SetDestination(hit.position);
-
-        // 攻撃開始
-        if (attackTimer >= enemy.AttackInterval &&
-            Time.time >= nextAttackRequestTime &&
-            enemy.AttackCtrl.TryRequestAttack(enemy))
-        {
-            nextAttackRequestTime = Time.time + attackRequestCooldown;
-
-            if (!isDashing)
-            {
-                dashDir = (player.position - enemy.transform.position).normalized;
-                dashDir.y = 0f;
-                isDashing = true;
-                dashTimer = 0f;
-            }
-        }
 
         //PerformAttack();
 
@@ -193,7 +195,7 @@ public class AttackState : IState
 
     void SetMoveMode(AttackMoveMode mode, Vector3 dir)
     {
-        if (moveMode == mode) return;
+        ////if (moveMode == mode) return;
 
         moveMode = mode;
 

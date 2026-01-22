@@ -202,12 +202,12 @@ public class EnemyAI : MonoBehaviour
 
         //現在の状態の更新処理
         currentState?.OnUpdate();
-        //巡回目的地への線を表示
-        if (patrolTarget != Vector3.zero)
-        {
-            debugLine.SetPosition(0, transform.position + Vector3.up * 0.1f);
-            debugLine.SetPosition(1, patrolTarget + Vector3.up * 0.1f);
-        }
+        ////巡回目的地への線を表示
+        //if (patrolTarget != Vector3.zero)
+        //{
+        //    debugLine.SetPosition(0, transform.position + Vector3.up * 0.1f);
+        //    debugLine.SetPosition(1, patrolTarget + Vector3.up * 0.1f);
+        //}
     }
 
     //プレイヤーを見つけたか
