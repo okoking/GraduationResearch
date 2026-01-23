@@ -3,13 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class Title : MonoBehaviour
 {
-    /*
-     ・ロボット右から左に向かって歩いてくる
-    ・ビームを撃つ体制に構える
-    ・ビームを撃つ
-    ・タイトルがゆっくり浮かび上がってくる
-    ・ぷれすA が点滅する
-     */
 
     //Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

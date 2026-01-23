@@ -7,6 +7,8 @@ public class ClearUI : MonoBehaviour
     public float fadeTime = 0.001f;
     float t = 0f;
     bool startFlag; //透過を始めるか
+    int cont = 200;  //フェード開始のカウント
+
 
     void Start()
     {
@@ -15,16 +17,24 @@ public class ClearUI : MonoBehaviour
         canvasGroup.blocksRaycasts = false;
 
         startFlag = false;
+
+        cont=200;
     }
 
     void Update()
     {
-        //仮のトリガー
-        //本来はゲームがクリアしたら
-        if (Input.GetKeyDown(KeyCode.F))
+        if (!startFlag)
+        {
+            //カウント減少
+            cont--;
+        }
+
+        //カウントが終わったらUIを浮かばせる
+        if (cont < 0)
         {
             startFlag = true;
         }
+
 
         Fead();
     }

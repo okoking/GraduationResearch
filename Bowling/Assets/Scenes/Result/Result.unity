@@ -581,6 +581,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5007a1d4202108341ac269b3121bb3b4, type: 3}
   m_PrefabInstance: {fileID: 326023914}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &502711306
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 502711308}
+  - component: {fileID: 502711307}
+  m_Layer: 0
+  m_Name: ResultManeger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &502711307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502711306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b8b7ddb30809b94db86aa41687440f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &502711308
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502711306}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -13.1708555, y: -9.4411, z: 22.508678}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &516729916
 GameObject:
   m_ObjectHideFlags: 0
@@ -1737,6 +1781,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chestnut_Good
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5007a1d4202108341ac269b3121bb3b4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9222065738425870839, guid: 5007a1d4202108341ac269b3121bb3b4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.6
@@ -2401,6 +2449,7 @@ SceneRoots:
   - {fileID: 191256932}
   - {fileID: 259074457}
   - {fileID: 1064320666}
+  - {fileID: 502711308}
   - {fileID: 927020397}
   - {fileID: 185401615}
   - {fileID: 1304054024}
