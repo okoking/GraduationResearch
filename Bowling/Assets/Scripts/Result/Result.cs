@@ -9,16 +9,19 @@ public class Result : MonoBehaviour
         Debug.Log("ゲーム開始");
         //UIシーンを合わせている
         SceneManager.LoadScene("ResultUI", LoadSceneMode.Additive);
+
+        //SoundManager.Instance.Request("BGM_Result");
+
     }
 
     // Update is called once per frame
     void Update()
     {
-      
+
         //ステージセレクトシーンへ
         //if (InputManager.Instance.Enter)
         //{
-        //    //SceneController.Instance.ChangeState(GameState.StageSelect);
+        //    //SceneController.Instance.ChangeState(GameState.Title);
         //}
     }
 }

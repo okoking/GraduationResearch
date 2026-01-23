@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    [SerializeField]AudioSource m_AudioSource;
     [Header("全体の音量")][SerializeField] float m_Volume = 1f;
     [Header("参照するサウンドリスト")][SerializeField] SoundList m_SoundList;
 
@@ -41,14 +42,14 @@ public class SoundManager : MonoBehaviour
             m_SoundList.SoundFind(soundID).soundVolume);
     }
     //サウンドのリクエスト
-    public void Request(string audioSourceID,string soundID)
+    public void Request(string soundID)
     {
         //指定したサウンドが読み込まれていなければ実行しない
         if (m_SoundList.SoundFind(soundID).audioClip == null ||
-            m_SoundList.AudioSourceFind(audioSourceID).audioSource == null) return;
+            m_AudioSource == null) return;
 
         //立体音響なし再生
-        m_SoundList.AudioSourceFind(audioSourceID).audioSource.PlayOneShot(
+        m_AudioSource.PlayOneShot(
             m_SoundList.SoundFind(soundID).audioClip, 
             m_SoundList.SoundFind(soundID).soundVolume);
     }
