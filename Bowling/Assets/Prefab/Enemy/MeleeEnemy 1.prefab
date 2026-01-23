@@ -977,7 +977,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5238c6b5a58b4b648b7ec9f7c5961f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: 0
+  enemyType: 1
   patrolRadius: 30
   patrolWaitTime: 2
   patrolCenter: {x: 0, y: 0, z: 0}
@@ -1001,6 +1001,8 @@ MonoBehaviour:
   rangedAttackRange: 12
   idealRangedDistance: 8
   projectileSpeed: 10
+  missilePrefab: {fileID: 4437993144311020198, guid: c8a5231c5fce0ab4c868a2f5c90fa7c1, type: 3}
+  firePoint: {fileID: 0}
   hp: 100
   role: 0
   encircleSignRandomSeed: 0

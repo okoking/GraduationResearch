@@ -64,10 +64,11 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float attackRadius = 0.1f;     //当たり判定の半径
     [SerializeField] private int attackPower = 20;          //攻撃力
     [Header("Ranged Attack")]
-    [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private float rangedAttackRange = 14f;
     [SerializeField] private float idealRangedDistance = 8f;
     [SerializeField] private float projectileSpeed = 10f;
+    [SerializeField] private GameObject missilePrefab;
+    private Transform firePoint;
 
     //HP
     [Header("HP関連")]
@@ -383,7 +384,7 @@ public class EnemyAI : MonoBehaviour
             origin,
             Vector3.down,
             out hit,
-            1.5f,
+            0.0f,
             groundLayer
         );
     }
@@ -429,6 +430,23 @@ public class EnemyAI : MonoBehaviour
         Debug.Log("敵を倒した！");
 
         Destroy(gameObject);
+    }
+
+    public void FireMissile()
+    {
+        if (missilePrefab == null || firePoint == null || player == null)
+            return;
+
+        GameObject go = Instantiate(
+            missilePrefab,
+            firePoint.position, firePoint.rotation
+        );
+
+        Missile missile = go.GetComponent<Missile>();
+        if (missile != null)
+        {
+            missile.Target = player;
+        }
     }
 
     //外部用の読み取り専用関数

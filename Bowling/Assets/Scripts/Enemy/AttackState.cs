@@ -23,7 +23,6 @@ public class AttackState : IState
     private float nextAttackRequestTime = 0f;
     public float attackRequestCooldown = 2f;    // 攻撃再申請までの秒数
 
-
     public AttackState(EnemyAI enemy)
     {
         this.enemy = enemy;
@@ -78,14 +77,14 @@ public class AttackState : IState
         }
         else
         {
-            UpdateRanged(player, distance);
+            UpdateRanged(player, distance, toPlayer.normalized);
         }
     }
     void UpdateMelee(Transform player, float distance, Vector3 toPlayerDir)
     {
         enemy.Agent.speed = 5f;
 
-        // モード決定（毎フレーム SetDestination しない）
+        //モード決定（毎フレーム SetDestination しない）
         if (!isDashing)
         {
             if (distance > enemy.KeepDistance + 0.5f)
@@ -122,74 +121,47 @@ public class AttackState : IState
             }
         }
         PerformAttack();
-
-        //if (distance > 10f)
-        //    enemy.ChangeState(new ChaseState(enemy));
-
-        //enemy.Agent.speed = 5.0f;
-
-        //Vector3 desiredPos = Vector3.zero;
-        //Vector3 angle = Vector3.zero;
-
-        //if (distance > enemy.KeepDistance)
-        //{
-        //    desiredPos = toPlayerDir;
-        //    angle = enemy.transform.forward;
-        //    attackTimer = 0f;
-        //}
-        //else if (distance < enemy.RetreatDistance && !isDashing)
-        //{
-        //    desiredPos = -toPlayerDir;
-        //    angle = -enemy.transform.forward;
-        //    attackTimer = 0f;
-        //}
-        //else
-        //{
-        //    attackTimer += Time.deltaTime;
-        //}
-
-        //// Boids + 移動
-        //Vector3 boids = enemy.Boids.GetBoidsForceOptimized() * 0.9f;
-        //Vector3 moveDir = Vector3.Slerp(angle, (desiredPos + boids).normalized, 1.0f);
-
-        //Vector3 targetPos = enemy.transform.position + moveDir * 2f;
-        //if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 1f, NavMesh.AllAreas))
-        //    enemy.Agent.SetDestination(hit.position);
-
-        //PerformAttack();
-
-        //if (distance > 10f)
-        //    enemy.ChangeState(new ChaseState(enemy));
     }
 
-    void UpdateRanged(Transform player, float distance)
+    void UpdateRanged(Transform player, float distance, Vector3 toPlayerDir)
     {
-        //// プレイヤーを見る
-        //Vector3 dir = player.position - enemy.transform.position;
-        //dir.y = 0;
+        enemy.Agent.speed = 5f;
 
-        //enemy.transform.rotation = Quaternion.Slerp(
-        //    enemy.transform.rotation,
-        //    Quaternion.LookRotation(dir),
-        //    Time.deltaTime * 5f
-        //);
+        float keepdis = enemy.KeepDistance + 5.0f;
+        float retdis = enemy.RetreatDistance + 5.0f;
 
-        // 距離が崩れたら Chase に戻す
-        if (distance > enemy.RangedAttackRange ||
-            distance < enemy.IdealRangedDistance - 1f)
+        //モード決定（毎フレーム SetDestination しない）
+        if (!isDashing)
         {
-            enemy.ChangeState(new ChaseState(enemy));
-            return;
+            if (distance > keepdis + 0.5f)
+            {
+                Debug.Log("遠すぎるので近づきます");
+                SetMoveMode(AttackMoveMode.Approach, toPlayerDir);
+            }
+            else if (distance < retdis - 0.5f)
+            {
+                Debug.Log("近すぎるので離れます");
+                SetMoveMode(AttackMoveMode.Retreat, -toPlayerDir);
+            }
+            else
+            {
+                StopMove();
+                attackTimer += Time.deltaTime;
+                Debug.Log("ちょうどいい距離にいます");
+            }
         }
 
-        attackTimer += Time.deltaTime;
+        //attackTimer += Time.deltaTime;
 
         if (attackTimer >= enemy.AttackInterval &&
-            enemy.AttackCtrl.TryRequestAttack(enemy))
+           Time.time >= nextAttackRequestTime &&
+           enemy.AttackCtrl.TryRequestAttack(enemy))
         {
-            //Shoot(player);
+            nextAttackRequestTime = Time.time + attackRequestCooldown;
+
+            enemy.FireMissile();
             attackTimer = 0f;
-            enemy.AttackCtrl.EndAttack(enemy);
+            //enemy.AttackCtrl.EndAttack(enemy);
         }
     }
 
