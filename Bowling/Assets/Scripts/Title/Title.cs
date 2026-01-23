@@ -10,6 +10,8 @@ public class Title : MonoBehaviour
         Debug.Log("ゲーム開始");
         //UIシーンを合わせている
         SceneManager.LoadScene("TitleUi", LoadSceneMode.Additive);
+        SoundManager.Instance.Request("BGM_Title");
+
     }
 
     //Update is called once per frame
@@ -27,10 +29,11 @@ public class Title : MonoBehaviour
         //    SceneController.Instance.ChangeState(GameState.Option);
         //}
 
-        ////ステージセレクトシーンへ
+        //ステージセレクトシーンへ
         //if (InputManager.Instance.Enter)
+        //if (Input.GetKeyUp(KeyCode.Space))
         //{
-        //    SceneController.Instance.ChangeState(GameState.StageSelect);
+        //    SceneController.Instance.ChangeState(GameState.Play);
         //}
 
     }

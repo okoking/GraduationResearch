@@ -16,6 +16,18 @@ MonoBehaviour:
   - soundID: PlayerShot
     audioClip: {fileID: 8300000, guid: 3b6cc825be3d50c40a61a1863401cfd6, type: 3}
     soundVolume: 0
+  - soundID: BGMResult
+    audioClip: {fileID: 8300000, guid: 132b24139448d92428e6db3edf44b3bc, type: 3}
+    soundVolume: 0
+  - soundID: BGMTitle
+    audioClip: {fileID: 8300000, guid: a80b3067cdb6c334f937fecd12775425, type: 3}
+    soundVolume: 0
   audioSourceList:
-  - audioSourceID: 
+  - audioSourceID: BGM_Title
+    audioSource: {fileID: 0}
+  - audioSourceID: Play
+    audioSource: {fileID: 0}
+  - audioSourceID: Boss
+    audioSource: {fileID: 0}
+  - audioSourceID: BGM_Result
     audioSource: {fileID: 0}
