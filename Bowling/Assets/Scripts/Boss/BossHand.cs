@@ -71,13 +71,6 @@ public class BossHand : MonoBehaviour
 
         transform.LookAt(player);
 
-        beamTimer += Time.deltaTime;
-        if (beamTimer >= beamInterval && !isFiringBeam)
-        {
-            beamTimer = 0f;
-            StartCoroutine(ShootSweepBeam());
-        }
-
         //攻撃予測表示処理
         if (!isFloorAtackDisp && isFloorAtackFin)
         {
@@ -186,5 +179,11 @@ public class BossHand : MonoBehaviour
             floorAttackSub[i] = Instantiate(floorAttackSubPrefab, PPos[i], new Quaternion(0f, 0f, 0f, 0f));
         }
         isFloorAtackDisp = true;
+    }
+
+    public void StartBeamAttack()
+    {
+        if (isFiringBeam) return;
+        StartCoroutine(ShootSweepBeam());
     }
 }

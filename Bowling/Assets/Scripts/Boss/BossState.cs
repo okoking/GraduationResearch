@@ -1,6 +1,6 @@
 public enum BossState
 {
     Idle,
-    Move,
+    Beam,
     Attack,
 }

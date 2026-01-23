@@ -19,8 +19,6 @@ public class BossAnimController : MonoBehaviour
 
     public void PlayAttack()
     {
-
-        State = BossState.Attack;
         animator.SetTrigger("Attack");
     }
 }
