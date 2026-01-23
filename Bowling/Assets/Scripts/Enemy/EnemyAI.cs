@@ -127,6 +127,7 @@ public class EnemyAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         boids = new BoidsSteering(this, neighborRadius, separationWeight, alignmentWeight, cohesionWeight, maxBoidsForce, boidsUpdateInterval);
         agent.radius = 0.6f;
+        agent.avoidancePriority = UnityEngine.Random.Range(40, 90);
         encircleSignRandomSeed = UnityEngine.Random.value;
         
         debugLine = gameObject.AddComponent<LineRenderer>();
@@ -352,12 +353,24 @@ public class EnemyAI : MonoBehaviour
             if (IsGrounded(out RaycastHit hit))
             {
                 //地面にスナップ
-                Vector3 pos = transform.position;
-                pos.y = hit.point.y;
-                transform.position = pos;
+                //Vector3 pos = transform.position;
+                //pos.y = hit.point.y;
+                //transform.position = pos;
 
                 EndKnockback();
             }
+        }
+
+        if (Physics.Raycast(
+    prevPosition,
+    move.normalized,
+    out RaycastHit Hit,
+    move.magnitude,
+    groundLayer))
+        {
+            //transform.position = Hit.point;
+            EndKnockback();
+            return;
         }
     }
 

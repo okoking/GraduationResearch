@@ -57,14 +57,14 @@ public class CameraManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
+        //if (Input.GetKeyDown(KeyCode.T))
+        //{
 
-            cameras[CameraMode.Ivent].gameObject.SetActive(false);
-            cameras[CameraMode.Player].gameObject.SetActive(true);
+        //    cameras[CameraMode.Ivent].gameObject.SetActive(false);
+        //    cameras[CameraMode.Player].gameObject.SetActive(true);
 
 
-        }
+        //}
     }
 
     //“®“I‚ÉƒV[ƒ““à‚ÌƒJƒƒ‰‚ğ’T‚µ‚Ä“o˜^

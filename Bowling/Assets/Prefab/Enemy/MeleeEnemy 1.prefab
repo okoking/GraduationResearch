@@ -905,12 +905,12 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -982,7 +982,7 @@ MonoBehaviour:
   patrolWaitTime: 2
   patrolCenter: {x: 0, y: 0, z: 0}
   patrolAreaRadius: 100
-  separationWeight: 15
+  separationWeight: 20
   alignmentWeight: 0.2
   cohesionWeight: 0.3
   neighborRadius: 6
@@ -1001,7 +1001,7 @@ MonoBehaviour:
   rangedAttackRange: 12
   idealRangedDistance: 8
   projectileSpeed: 10
-  hp: 30
+  hp: 100
   role: 0
   encircleSignRandomSeed: 0
   knockbackPower: 0.5
