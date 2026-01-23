@@ -16,7 +16,6 @@ public class LockOn3DMarker : MonoBehaviour
     public void SetLockOn(Transform enemy)
     {
         //if (currentMarker != null) Destroy(currentMarker);
-
         if (oldMarker != enemy)
         {
             Destroy(currentMarker);

@@ -12,11 +12,6 @@ public class SpecialBeam : MonoBehaviour
 
     [Header("Beam Hit")]
     [SerializeField] float beamRange = 100f;
-    [SerializeField] LayerMask hitMask;
-    [SerializeField] float damagePerSec = 10f;
-
-    [Header("Beam Gauge")]
-    [SerializeField] float maxGauge = 100f;
 
     [Header("PlayerMovement")]
     public bool disableRotate;
@@ -26,15 +21,17 @@ public class SpecialBeam : MonoBehaviour
 
     private BeamGauge beamGauge;
 
-    // ===== State =====
-    private bool isActive = false;
+    private PlayerAnimation plAnim;
 
+    // ===== State =========
+    private bool isActive = false;
     // =====================
 
     void Start()
     {
         beamCamera = GetComponent<BeamCamera>();
         beamGauge = GetComponent<BeamGauge>();
+        plAnim = GetComponent<PlayerAnimation>();
     }
 
     void Update()
@@ -47,6 +44,7 @@ public class SpecialBeam : MonoBehaviour
         //{
         //    StartCoroutine(FireLockOnBeam());
         //}
+
         // --- ŠJŽn ---
         if (beamInput && beamCamera.isSootBeam && !isActive && beamGauge.IsLowestValueShotBeam())
         {
@@ -158,7 +156,6 @@ public class SpecialBeam : MonoBehaviour
     // =====================
     // Ray Hit
     // =====================
-
     void BeamRaycast()
     {
         //Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // ’†‰›(0.5,0.5)

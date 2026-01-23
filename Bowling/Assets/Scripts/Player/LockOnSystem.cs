@@ -8,15 +8,17 @@ public class LockOnSystem : MonoBehaviour
     public float lockOnRange = 20f;
     [SerializeField] private LockOn3DMarker markerSystem;
     private BeamCamera beamCamera;
-
+    private KariBeam karibeam;
+    
     private void Start()
     {
         beamCamera = GetComponent<BeamCamera>();
+        karibeam = GetComponent<KariBeam>();
     }
 
     void Update()
     {
-        if (!beamCamera.isSootBeam)
+        if (!beamCamera.isSootBeam && !karibeam.isFiring)
         {
             lockOnTarget = FindLockOnTarget();
         }
