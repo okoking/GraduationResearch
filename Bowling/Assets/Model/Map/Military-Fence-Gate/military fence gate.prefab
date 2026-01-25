@@ -48,9 +48,89 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8672077662541442193, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8483339631881518170, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6656907755131266104, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5652405532938556720, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4899911939407854028, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4877528603353733211, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4604880359291624721, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4415912782141630007, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3452384578893144910, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2208206397132633587, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 180092315406892612, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 26958019e30057a418b77cebe16a41db, type: 3}
       propertyPath: m_Name
       value: military fence gate
+      objectReference: {fileID: 0}
+    - target: {fileID: 2923064451034007462, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3175668319462124309, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3526407703163662525, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882930460283839702, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6129330682111180733, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6578291614398962190, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6849528702789708668, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6856541535852898636, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7671168005944633931, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -67,6 +147,20 @@ PrefabInstance:
     - {fileID: -7296097702132031512, guid: 26958019e30057a418b77cebe16a41db, type: 3}
     - {fileID: -7150097207730203369, guid: 26958019e30057a418b77cebe16a41db, type: 3}
     - {fileID: 5600851886847894169, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+    - {fileID: 3882930460283839702, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+    - {fileID: 6856541535852898636, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+    - {fileID: -4604880359291624721, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+    - {fileID: -8483339631881518170, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+    - {fileID: 6129330682111180733, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+    - {fileID: -2208206397132633587, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+    - {fileID: -4415912782141630007, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+    - {fileID: -4899911939407854028, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+    - {fileID: 6849528702789708668, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+    - {fileID: 2923064451034007462, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+    - {fileID: -8672077662541442193, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+    - {fileID: -4877528603353733211, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+    - {fileID: -3452384578893144910, guid: 26958019e30057a418b77cebe16a41db, type: 3}
+    - {fileID: 7671168005944633931, guid: 26958019e30057a418b77cebe16a41db, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26958019e30057a418b77cebe16a41db, type: 3}
