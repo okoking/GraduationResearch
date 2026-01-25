@@ -22,6 +22,8 @@ TagManager:
   - IventCamera
   - BossCube
   - BeamPoint
+  - BeamPointL
+  - BeamPointR
   layers:
   - Default
   - TransparentFX
