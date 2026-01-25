@@ -63,8 +63,6 @@ public class BossHandHp : MonoBehaviour
             isPerfect = true;
         }
 
-        Debug.Log(hp);
-
         if (hp <= 0)
         {
             Die();

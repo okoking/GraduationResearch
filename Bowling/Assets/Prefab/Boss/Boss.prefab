@@ -1658,12 +1658,10 @@ GameObject:
   - component: {fileID: 5333770372567400824}
   - component: {fileID: 3013425476337688644}
   - component: {fileID: 7104333417549960233}
-  - component: {fileID: 8089069210945802650}
   - component: {fileID: -7661670295088693706}
   - component: {fileID: 5816129311796538438}
   - component: {fileID: 33212342245121950}
   - component: {fileID: 9179801832343935983}
-  - component: {fileID: 7223192808004333465}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Boss
@@ -1727,22 +1725,6 @@ MonoBehaviour:
   maxHp: 10
   isPerfectInvincible: 1
   maxInvincibleTime: 0.5
---- !u!114 &8089069210945802650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4705851803761269698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a90d1b74f6f169641934e57ad1e5fbf4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bossHandSpawerPrefab: {fileID: 6985524775857696473, guid: bc6473a9d7be48f4a9815f1ce2299852, type: 3}
-  handNum: 2
-  offsetX: 28
-  offsetY: 6
 --- !u!65 &-7661670295088693706
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1811,20 +1793,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 458d6676b3380b24c84391dca03f851a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7223192808004333465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4705851803761269698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2ed9925825b5a8418730f364a3a80cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anim: {fileID: 9179801832343935983}
-  hand: {fileID: 3327892393578444038, guid: 4cf83f98f001690429b78eab4bc31b80, type: 3}
 --- !u!1 &4772474730071603723
 GameObject:
   m_ObjectHideFlags: 0
@@ -2210,9 +2178,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7683545761648780238}
+  - component: {fileID: 7205548565894196287}
+  - component: {fileID: 8174771774410109922}
+  - component: {fileID: 3891933857951731947}
   m_Layer: 0
   m_Name: BeamPoint_L
-  m_TagString: BeamPointL
+  m_TagString: Bosshand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2232,6 +2203,65 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2311253692652612149}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7205548565894196287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5341162210857059688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d776d7276799fa44b18adea109927a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 25
+  maxHp: 25
+  maxInvincibleTime: 0.2
+--- !u!114 &8174771774410109922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5341162210857059688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e7d0281545d4041814f9630f56b5f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beamSweepPrefab: {fileID: 5384188851145259235, guid: a621a8553b4ca1249a1b6701036e4a06, type: 3}
+  floorAttackSubPrefab: {fileID: 815703356155443534, guid: a5aa4bf307e59a94fb857c32c79ec60b, type: 3}
+  floorAttackPrefab: {fileID: 6713537756215694911, guid: 4f2d654c914cb804b8fc217e8646ca94, type: 3}
+  orbitRadius: 5
+  orbitSpeed: 30
+  floatAmplitude: 1
+  floatSpeed: 2
+  beamInterval: 5
+  beamWarningTime: 1.5
+  sweepAngle: 90
+  FloorAtkNum: 2
+--- !u!65 &3891933857951731947
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5341162210857059688}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.02, y: 0.02, z: 0.02}
+  m_Center: {x: 0.01, y: 0, z: 0}
 --- !u!1 &5433887499138251710
 GameObject:
   m_ObjectHideFlags: 0
@@ -2853,9 +2883,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1095728824206476043}
+  - component: {fileID: 2201254025991900213}
+  - component: {fileID: 1235952101804920472}
+  - component: {fileID: 3311686124588621534}
   m_Layer: 0
   m_Name: BeamPoint_R
-  m_TagString: BeamPointR
+  m_TagString: Bosshand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2875,6 +2908,65 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6699622694963059950}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2201254025991900213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114832186174386226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d776d7276799fa44b18adea109927a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 25
+  maxHp: 25
+  maxInvincibleTime: 0.2
+--- !u!114 &1235952101804920472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114832186174386226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8729bd07af52ec24faa6c0565c2ee6ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beamSweepPrefab: {fileID: 5384188851145259235, guid: a621a8553b4ca1249a1b6701036e4a06, type: 3}
+  floorAttackSubPrefab: {fileID: 815703356155443534, guid: a5aa4bf307e59a94fb857c32c79ec60b, type: 3}
+  floorAttackPrefab: {fileID: 6713537756215694911, guid: 4f2d654c914cb804b8fc217e8646ca94, type: 3}
+  orbitRadius: 5
+  orbitSpeed: 30
+  floatAmplitude: 1
+  floatSpeed: 2
+  beamInterval: 5
+  beamWarningTime: 1.5
+  sweepAngle: 90
+  FloorAtkNum: 2
+--- !u!65 &3311686124588621534
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114832186174386226}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.02, y: 0.02, z: 0.02}
+  m_Center: {x: -0.01, y: 0, z: 0}
 --- !u!1 &7181920581283031161
 GameObject:
   m_ObjectHideFlags: 0

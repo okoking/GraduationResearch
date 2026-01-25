@@ -2,10 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class BossHand : MonoBehaviour
+public class BossHandR : MonoBehaviour
 {
     Transform player;
-    public Transform bossHandSpawn;
 
     public GameObject beamSweepPrefab;     //実際のビーム
     public GameObject floorAttackSubPrefab;//床攻撃
@@ -35,8 +34,6 @@ public class BossHand : MonoBehaviour
 
     public int FloorAtkNum;
 
-    private  GameObject beamPoint_L;
-
     GameObject[] floorAttackSub;          //床攻撃前の危険表示
 
     GameObject[] floorAttack;             //床攻撃
@@ -45,17 +42,14 @@ public class BossHand : MonoBehaviour
 
     int[] off;
 
+    float times;
+
     List<int> pausedIDs = new List<int>();
 
     void Start()
     {
         if (player == null)
             player = GameObject.FindWithTag("Player")?.transform;
-
-        if(beamPoint_L == null)
-        {
-            beamPoint_L = GameObject.FindWithTag("BeamPoint");
-        }
 
         PPos = new Vector3[FloorAtkNum];
         floorAttackSub = new GameObject[FloorAtkNum];
@@ -65,11 +59,16 @@ public class BossHand : MonoBehaviour
 
     void Update()
     {
-        if (bossHandSpawn == null || player == null) return;
-
-        transform.position = beamPoint_L.transform.position;
+        if (player == null) return;
 
         transform.LookAt(player);
+
+        times += Time.deltaTime;
+        if (times >= 5f)
+        {
+            StartCoroutine(ShootSweepBeam());
+            times = 0f;
+        }
 
         //攻撃予測表示処理
         if (!isFloorAtackDisp && isFloorAtackFin)
