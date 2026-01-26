@@ -149,6 +149,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &352113791
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 352113792}
+  m_Layer: 0
+  m_Name: spawnpoint1 (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &352113792
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352113791}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.23, y: 0, z: 190.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &451972555
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,6 +486,37 @@ MonoBehaviour:
   iterationCount: 10
   interval: 0.1
   MeterMax: 100
+--- !u!1 &1797499514
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1797499515}
+  m_Layer: 0
+  m_Name: spawnpoint1 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1797499515
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1797499514}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.23, y: 0, z: 107.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2136993451
 GameObject:
   m_ObjectHideFlags: 0
@@ -515,7 +577,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1910511154469292916, guid: eebed159c06b9ec47a3e25cddf283b5e, type: 3}
       propertyPath: spawnCount
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1910511154469292916, guid: eebed159c06b9ec47a3e25cddf283b5e, type: 3}
       propertyPath: spawnPos.y
@@ -531,7 +593,7 @@ PrefabInstance:
       objectReference: {fileID: 5411282424450531688, guid: bdee937bc5a77054d8fb081a5be27aaa, type: 3}
     - target: {fileID: 1910511154469292916, guid: eebed159c06b9ec47a3e25cddf283b5e, type: 3}
       propertyPath: infiniteSpawn
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1910511154469292916, guid: eebed159c06b9ec47a3e25cddf283b5e, type: 3}
       propertyPath: spawnInterval
@@ -547,7 +609,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1910511154469292916, guid: eebed159c06b9ec47a3e25cddf283b5e, type: 3}
       propertyPath: spawnPoints.Array.size
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1910511154469292916, guid: eebed159c06b9ec47a3e25cddf283b5e, type: 3}
       propertyPath: 'spawnPoints.Array.data[0]'
@@ -565,6 +627,14 @@ PrefabInstance:
       propertyPath: 'spawnPoints.Array.data[3]'
       value: 
       objectReference: {fileID: 451972556}
+    - target: {fileID: 1910511154469292916, guid: eebed159c06b9ec47a3e25cddf283b5e, type: 3}
+      propertyPath: 'spawnPoints.Array.data[4]'
+      value: 
+      objectReference: {fileID: 1797499515}
+    - target: {fileID: 1910511154469292916, guid: eebed159c06b9ec47a3e25cddf283b5e, type: 3}
+      propertyPath: 'spawnPoints.Array.data[5]'
+      value: 
+      objectReference: {fileID: 352113792}
     - target: {fileID: 3645373160022106898, guid: eebed159c06b9ec47a3e25cddf283b5e, type: 3}
       propertyPath: m_Name
       value: EnemySpawner
@@ -621,6 +691,8 @@ SceneRoots:
   - {fileID: 4515675028955948}
   - {fileID: 2136993453}
   - {fileID: 584970417}
+  - {fileID: 1797499515}
+  - {fileID: 352113792}
   - {fileID: 1672423003}
   - {fileID: 451972556}
   - {fileID: 77718840}
