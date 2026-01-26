@@ -577,7 +577,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1910511154469292916, guid: eebed159c06b9ec47a3e25cddf283b5e, type: 3}
       propertyPath: spawnCount
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1910511154469292916, guid: eebed159c06b9ec47a3e25cddf283b5e, type: 3}
       propertyPath: spawnPos.y
