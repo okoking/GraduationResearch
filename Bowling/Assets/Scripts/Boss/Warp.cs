@@ -22,7 +22,7 @@ public class Warp : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //‚È‚ñ‚©CharacterController•¡ŽG‰öŠïƒjƒL
+        //CharacterController
         CharacterController cc = other.GetComponent<CharacterController>();
 
         if (cc != null)
