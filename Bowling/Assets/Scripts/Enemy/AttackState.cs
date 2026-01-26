@@ -151,8 +151,6 @@ public class AttackState : IState
             }
         }
 
-        //attackTimer += Time.deltaTime;
-
         if (attackTimer >= enemy.AttackInterval &&
            Time.time >= nextAttackRequestTime &&
            enemy.AttackCtrl.TryRequestAttack(enemy))
@@ -161,7 +159,7 @@ public class AttackState : IState
 
             enemy.FireMissile();
             attackTimer = 0f;
-            //enemy.AttackCtrl.EndAttack(enemy);
+            
         }
     }
 
