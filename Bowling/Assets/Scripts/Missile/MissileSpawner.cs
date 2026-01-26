@@ -4,7 +4,7 @@ using UnityEngine;
 public class MissileSpawner : MonoBehaviour
 {
 
-    [SerializeField]
+    
     Transform target;
     [SerializeField]
     GameObject prefab;
@@ -59,11 +59,11 @@ public class MissileSpawner : MonoBehaviour
 
         //if (missileMeter > MeterMax)
         //{
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    StartCoroutine(SpawnMissile());
-        //    missileMeter = 0;
-        //}
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                StartCoroutine(SpawnMissile());
+                missileMeter = 0;
+            }
         //}
 
     }
@@ -90,6 +90,7 @@ public class MissileSpawner : MonoBehaviour
         {
             var go = Instantiate(prefab, thisTransform.position, Quaternion.identity);
             var homing = go.GetComponent<Missile>();
+            Debug.Assert(homing != null, "Missile Ç™ïtÇ¢ÇƒÇ¢Ç‹ÇπÇÒÅI");
 
             if (homing == null)
             {

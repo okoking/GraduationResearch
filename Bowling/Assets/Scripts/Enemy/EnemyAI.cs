@@ -67,8 +67,6 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float rangedAttackRange = 14f;
     [SerializeField] private float idealRangedDistance = 8f;
     [SerializeField] private float projectileSpeed = 10f;
-    [SerializeField] private GameObject missilePrefab;
-    private Transform firePoint;
 
     //HP
     [Header("HP関連")]
@@ -434,19 +432,7 @@ public class EnemyAI : MonoBehaviour
 
     public void FireMissile()
     {
-        if (missilePrefab == null || firePoint == null || player == null)
-            return;
-
-        GameObject go = Instantiate(
-            missilePrefab,
-            firePoint.position, firePoint.rotation
-        );
-
-        Missile missile = go.GetComponent<Missile>();
-        if (missile != null)
-        {
-            missile.Target = player;
-        }
+       
     }
 
     //外部用の読み取り専用関数
