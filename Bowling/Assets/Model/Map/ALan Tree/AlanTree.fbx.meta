@@ -3,7 +3,17 @@ guid: c384c2c51e43f304e85ccf93565b4047
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BroadleafBark
+    second: {fileID: 2100000, guid: 357269cbce1d38e48abde8ac995bbcc5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SampleLeaves_2
+    second: {fileID: 2100000, guid: e35b74ca4b31d3f43aed3451a8b94a48, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
