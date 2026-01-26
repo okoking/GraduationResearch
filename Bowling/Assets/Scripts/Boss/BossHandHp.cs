@@ -4,7 +4,7 @@ public class BossHandHp : MonoBehaviour
 {
 
     public int hp = 25;
-    public int maxHp;
+    public int maxHp = 25;
 
     //–³“G‚©‚Ç‚¤‚©
     bool isPerfect = false;

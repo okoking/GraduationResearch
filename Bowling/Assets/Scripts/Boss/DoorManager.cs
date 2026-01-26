@@ -19,7 +19,7 @@ public class DoorSequenceManager : MonoBehaviour
 
     void Start()
     {
-        // 最初のドアだけ有効、他はロック
+        //最初のドアだけ有効、他はロック
         for (int i = 0; i < doors.Length; i++)
         {
             doors[i].gameObject.SetActive(i == 0);
@@ -32,14 +32,14 @@ public class DoorSequenceManager : MonoBehaviour
 
         currentIndex++;
 
-        // 次のドアを開放
+        //次のドアを開放
         if (currentIndex < doors.Length)
         {
             doors[currentIndex].gameObject.SetActive(true);
         }
         else
         {
-            // 全ドア開いた → ボス出現
+            //全ドア開いたらボス出現
             bossSpawner.SpawnBoss();
         }
     }

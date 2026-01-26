@@ -21,11 +21,8 @@ public class BossDeath : MonoBehaviour
 
         if (bosshp == null) return;
 
-        Debug.Log("死んでない！！！！！！！！！！！！");
-
         if (bosshp.GetIsDeath())
         {
-            Debug.Log("死んだので動きます");
             Destroy(gameObject);
         }
     }
