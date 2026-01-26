@@ -23,14 +23,14 @@ public class KariBeam : MonoBehaviour
     private PlayerAnimation plAnim;
 
     private bool TriggershotBeam;
-    private bool isShotAnimationing;
+    public bool isShotAnimationing;
 
     [ContextMenu("ƒtƒ‰ƒOŠm”F")]
     public void Checkflag()
     {
         Debug.Log("isFiring:"+ isFiring.ToString()+"\n"+
             "TriggershotBeam:" + TriggershotBeam.ToString() + "\n" +
-            "isShotAnimationing:" + isShotAnimationing.ToString() + "\n");
+            "isShotAnimationing:" + isShotAnimationing.ToString());
     }
     
     void Start()
@@ -65,6 +65,8 @@ public class KariBeam : MonoBehaviour
         StartBeam();
 
         UpdateBeam();
+
+        UpdateRotate();
     }
 
     Vector3 GetDirToTarget()
@@ -89,6 +91,24 @@ public class KariBeam : MonoBehaviour
         TriggershotBeam = false;
     }
 
+    void UpdateRotate()
+    {
+        if (!isShotAnimationing) return;
+
+        Vector3 startPos = transform.position + Vector3.up * 1.0f;
+        Vector3 targetPos = lockOn.lockOnTarget.position;
+
+        Vector3 dir = targetPos - startPos;
+
+        // Œü‚«
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            Quaternion.LookRotation(dir),
+            5f * Time.deltaTime
+        );
+    }
+
+
     void UpdateBeam()
     {
         if (!isShotAnimationing || lockOn.lockOnTarget == null || !isFiring) return;
@@ -105,7 +125,9 @@ public class KariBeam : MonoBehaviour
         // Œü‚«
         currentVFX.transform.rotation = Quaternion.LookRotation(dir);
 
-        //// VFX‚É‹——£‚ð“n‚·
+        // VFX‚É‹——£‚ð“n‚·
+        currentVFX.transform.localScale = new Vector3(1, 1, length * .1f);
+
         //var vfx = currentVFX.GetComponent<VisualEffect>();
         //vfx.SetFloat("BeamLength", length);
 

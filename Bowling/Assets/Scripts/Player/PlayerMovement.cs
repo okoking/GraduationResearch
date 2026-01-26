@@ -20,11 +20,14 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 wallNormal;
 
+    KariBeam kariBeam;
+
     void Start()
     {
         beamInfo = GetComponent<SpecialBeam>();
         controller = GetComponent<CharacterController>();
-        plAnim= GetComponent<PlayerAnimation>();
+        plAnim = GetComponent<PlayerAnimation>();
+        kariBeam = GetComponent<KariBeam>();
     }
 
     void Update()
@@ -89,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // --- 回転（向き） ---
-        if (!beamInfo.disableRotate)
+        if (!beamInfo.disableRotate && !kariBeam.isShotAnimationing)
         {
             if (currentMove.magnitude > 0.1f)
             {
