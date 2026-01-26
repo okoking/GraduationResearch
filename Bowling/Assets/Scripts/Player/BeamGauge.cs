@@ -6,7 +6,7 @@ public class BeamGauge : MonoBehaviour
 
     [SerializeField] float currentGauge;
     [SerializeField] float maxGauge = 100f;
-    [SerializeField] float chargeVal = 5f;          // “G“¢”°‚Ì‰ñ•œ—Ê
+    [SerializeField] float chargeVal = 20f;          // “G“¢”°‚Ì‰ñ•œ—Ê
     [SerializeField] float consumePerSecond = 30f;   // •bŠÔÁ”ï—Ê
 
     bool isUsingBeam;

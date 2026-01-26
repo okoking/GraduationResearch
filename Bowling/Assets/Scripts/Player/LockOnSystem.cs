@@ -18,6 +18,8 @@ public class LockOnSystem : MonoBehaviour
 
     void Update()
     {
+        if (karibeam.isShotAnimationing) return;
+
         if (!beamCamera.isSootBeam && !karibeam.isFiring)
         {
             lockOnTarget = FindLockOnTarget();

@@ -14,7 +14,7 @@ public class Boss : MonoBehaviour
     private float FloorAtackFinTimer;
     private bool isFloorAtackFin = true;
 
-    bool isAttttttack = false;          //神の一手
+    bool isAttttttack = false;
 
     public int FloorAtkNum;
 
@@ -76,7 +76,7 @@ public class Boss : MonoBehaviour
                 floorAttackTimer = 0f;
             }
 
-            // 攻撃予測表示中なら
+            //攻撃予測表示中なら
             if (isFloorAtackDisp)
             {
                 floorAttackDispTimer += Time.deltaTime;
@@ -128,6 +128,7 @@ public class Boss : MonoBehaviour
 
             if (!isWaveAttacking && waveAttackTimer > 10f)
             {
+                //各地点でウェーブの攻撃を開始させる。
                 StartCoroutine(WaveAttack(transform.position));
                 StartCoroutine(WaveAttack(handLeft.position));
                 StartCoroutine(WaveAttack(handRight.position));
