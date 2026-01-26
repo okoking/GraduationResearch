@@ -24,7 +24,7 @@ public class BossHandHpBar : MonoBehaviour
 
     void LateUpdate()
     {
-        // í‚ÉƒJƒƒ‰Œü‚«
+        //í‚ÉƒJƒƒ‰Œü‚«
         if (Camera.main != null)
         {
             transform.forward = Camera.main.transform.forward;

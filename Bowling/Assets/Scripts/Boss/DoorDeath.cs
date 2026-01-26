@@ -3,12 +3,12 @@ using System;
 
 public class DoorDeath : MonoBehaviour
 {
-    public int doorIndex; // 0,1,2...
+    public int doorIndex;
 
     private BossHp doorHp;
     private bool isOpened = false;
 
-    // どのドアが開いたか通知
+    //どのドアが開いたか通知
     public static event Action<int> OnDoorOpened;
 
     void Start()
@@ -22,7 +22,7 @@ public class DoorDeath : MonoBehaviour
         {
             isOpened = true;
 
-            // 自分の番号を通知
+            //自分の番号を通知
             OnDoorOpened?.Invoke(doorIndex);
 
             Destroy(gameObject);
