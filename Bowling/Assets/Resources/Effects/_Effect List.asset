@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ebf9ed3ecc88d64e9b5ff3b93be82c8, type: 3}
+  m_Name: _Effect List
+  m_EditorClassIdentifier: 
+  effectList:
+  - effectID: meteor
+    effectObject: {fileID: 7957833072274404953, guid: e7f814988751ec84192cdbaf2802c84d, type: 3}
+  - effectID: BeamColl
+    effectObject: {fileID: 7647375919561907788, guid: 9026ef6df7f766f45be4e7c1ec3e4d93, type: 3}
+  - effectID: BigExplosion
+    effectObject: {fileID: 1121192042590650, guid: 9a9cd51e547c9664facde8dc13277ac2, type: 3}
+  - effectID: SmallExplosion
+    effectObject: {fileID: 1828176872806910, guid: 66767430d2264344c9024e15f6acc89b, type: 3}
+  - effectID: 
+    effectObject: {fileID: 0}
+  - effectID: 
+    effectObject: {fileID: 0}

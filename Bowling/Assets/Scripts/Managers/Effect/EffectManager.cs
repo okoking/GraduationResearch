@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class EffectManager : MonoBehaviour
 {
+    [Header("参照するエフェクトリスト")][SerializeField] EffectList m_EffectList;
+
     public static EffectManager instance;
 
     //登録しておくエフェクトPrefabリスト
-    private Dictionary<string, GameObject> effects = new Dictionary<string, GameObject>();
+    //private Dictionary<string, GameObject> effects = new Dictionary<string, GameObject>();
 
     //再生中のエフェクトリスト
     private Dictionary<string, List<int>> effectsByName = new Dictionary<string, List<int>>();
@@ -33,8 +35,8 @@ public class EffectManager : MonoBehaviour
     void Start()
     {
         //      kore↓名前                                         ↓エフェクトの名前
-        effects["meteor"] = Resources.Load<GameObject>("Effects/Meteors AOE");
-        effects["BeamColl"] = Resources.Load<GameObject>("Effects/AoE slash blue");
+        //effects["meteor"] = Resources.Load<GameObject>("Effects/Meteors AOE");
+        //effects["BeamColl"] = Resources.Load<GameObject>("Effects/AoE slash blue");
     }
 
     //エフェクトの呼び出し
@@ -43,10 +45,15 @@ public class EffectManager : MonoBehaviour
     public int Play(string effectName, Vector3 pos)
     {
         //登録されていなければエラー
-        if (!effects.ContainsKey(effectName)) return -1;
+        //if (!effects.ContainsKey(effectName)) return -1;
+
+        EffectData effect = m_EffectList.Find(effectName);
+        if (effect == null || effect.effectObject == null) return -1;
 
         //生成する
-        GameObject fx = Instantiate(effects[effectName], pos, Quaternion.identity);
+        //GameObject fx = Instantiate(effects[effectName], pos, Quaternion.identity);
+
+        GameObject fx = Instantiate(effect.effectObject, pos, Quaternion.identity);
 
         int id = nextId++;
         effectsById[id] = fx;   //生成順にIDを付与する(個別でエフェクトを管理するため)
