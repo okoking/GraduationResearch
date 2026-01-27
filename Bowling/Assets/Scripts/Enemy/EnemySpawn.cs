@@ -19,6 +19,8 @@ public class EnemySpawn : MonoBehaviour
     [SerializeField] private float randomRadius = 5f;
     [Header("NavMesh探索半径")]
     [SerializeField] private float navMeshSearchRadius = 3f;
+    [Header("敵タイプ出現率")]
+    [SerializeField] private float meleeRate = 0.6f; // 60% Melee
 
     private float timer;
     private List<GameObject> activeEnemies = new List<GameObject>();
@@ -62,10 +64,19 @@ public class EnemySpawn : MonoBehaviour
             if (NavMesh.SamplePosition(candidatePos, out NavMeshHit hit, navMeshSearchRadius, NavMesh.AllAreas))
             {
                 GameObject enemy = Instantiate(enemyPrefab, hit.position, Quaternion.identity);
-                activeEnemies.Add(enemy);
+
                 var enemyAI = enemy.GetComponent<EnemyAI>();
+
+                // ランダムでタイプ決定
+                EnemyType type =
+                    Random.value < meleeRate ? EnemyType.Melee : EnemyType.Ranged;
+
+                enemyAI.SetEnemyType(type);
+
+                // パトロール中心設定
                 enemyAI.SetPatrolCenter(basePoint);
-                Debug.Log("敵がスポーンしました");
+
+                activeEnemies.Add(enemy);
             }
             else
             {
@@ -73,6 +84,7 @@ public class EnemySpawn : MonoBehaviour
             }
         }
     }
+
     public void ClearEnemies()
     {
         foreach (var e in activeEnemies)

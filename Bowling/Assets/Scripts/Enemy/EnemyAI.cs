@@ -432,7 +432,7 @@ public class EnemyAI : MonoBehaviour
 
     public void FireMissile()
     {
-       
+        gameObject.GetComponent<MissileSpawner>().Fire();
     }
 
     //外部用の読み取り専用関数
@@ -463,5 +463,9 @@ public class EnemyAI : MonoBehaviour
     public void SetPatrolCenter(Transform p)
     {
         patrolCenter = p.position;
+    }
+    public void SetEnemyType(EnemyType type)
+    {
+        enemyType = type;
     }
 }

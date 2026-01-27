@@ -22,6 +22,11 @@ public class Missile : MonoBehaviour
     [SerializeField]
     //最大振れ幅
     Vector3 maxInitVelocity;
+    [SerializeField, Min(0)]
+    float homingDuration = 0.5f; // 何秒追跡するか
+
+    float homingTimer;
+    bool isHoming = true;
 
     [SerializeField, Min(0)]
     float timeToTarget = 1f;
@@ -47,14 +52,6 @@ public class Missile : MonoBehaviour
 
     void Start()
     {
-        //thisTransform = transform;
-        //position = thisTransform.position;
-        ////球の軌道の初期振れ幅
-        //velocity = new Vector3(Random.Range(minInitVelocity.x, maxInitVelocity.x), Random.Range(minInitVelocity.y, maxInitVelocity.y), Random.Range(minInitVelocity.z, maxInitVelocity.z));
-        //target = FindRandomTarget();
-
-        //StartCoroutine(nameof(Timer));
-
         thisTransform = transform;
         position = thisTransform.position;
 
@@ -64,52 +61,75 @@ public class Missile : MonoBehaviour
             Random.Range(minInitVelocity.z, maxInitVelocity.z)
         );
 
-        // ★ すでに設定されていなければ探す
         if (target == null)
         {
             target = FindRandomTarget();
         }
 
-        StartCoroutine(nameof(Timer));
-
-        currentTime = timeToTarget;
+        homingTimer = homingDuration;
     }
 
     public void Update()
     {
-        //ターゲットがなければミサイルを壊す
-        if (target == null)
+        // 追跡中でターゲットが消えたら破壊
+        if (isHoming && target == null)
         {
             Destroy(gameObject);
             return;
         }
 
-        //加速度を計算
-        acceleration = 2f / (time * time) * (target.position - position - time * velocity);
-
-        if (limitAcceleration && acceleration.sqrMagnitude > maxAcceleration * maxAcceleration)
+        if (isHoming)
         {
-            acceleration = acceleration.normalized * maxAcceleration;
+            // ホーミング時間を減らす
+            homingTimer -= Time.deltaTime;
+            if (homingTimer <= 0f)
+            {
+                isHoming = false; // ★追跡終了
+            }
+            else
+            {
+                // ホーミング中のみ加速度を更新
+                acceleration = 2f / (time * time)
+                    * (target.position - position - time * velocity);
+
+                if (limitAcceleration && acceleration.sqrMagnitude > maxAcceleration * maxAcceleration)
+                {
+                    acceleration = acceleration.normalized * maxAcceleration;
+                }
+
+                velocity += acceleration * Time.deltaTime;
+            }
         }
 
-        currentTime -= Time.deltaTime;
+        // ★追跡が切れても「速度」はそのまま使う
+        position += velocity * Time.deltaTime;
+        thisTransform.position = position;
 
-        if (currentTime <= 0f)
+        if (velocity.sqrMagnitude > 0.001f)
         {
+            thisTransform.rotation = Quaternion.LookRotation(velocity);
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+
+        // ターゲットに当たった
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+            target.gameObject.GetComponent<PlayerHealth>().TakeDamage(20);
             return;
         }
 
-        velocity += acceleration * Time.deltaTime;
-        position += velocity * Time.deltaTime;
-        thisTransform.position = position;
-        thisTransform.rotation = Quaternion.LookRotation(velocity);
-    }
+        // 壁・地形など
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-    IEnumerator Timer()
-    {
-        yield return new WaitForSeconds(lifeTime);
-
-        Destroy(gameObject);
+       
     }
 
     Transform FindRandomTarget()

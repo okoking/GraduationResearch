@@ -6,8 +6,8 @@ public class MissileSpawner : MonoBehaviour
 
     
     Transform target;
-    [SerializeField]
-    GameObject prefab;
+    
+    [SerializeField] private GameObject missilePrefab;
     [SerializeField, Min(1)]
     int iterationCount = 10;
     [SerializeField]
@@ -23,18 +23,12 @@ public class MissileSpawner : MonoBehaviour
 
     void Start()
     {
-        //thisTransform = transform;
-        //intervalWait = new WaitForSeconds(interval);
-        //var player = GameObject.FindWithTag("Player");
-
-        //target = player.transform;
-
         thisTransform = transform;
         intervalWait = new WaitForSeconds(interval);
 
-        if (prefab == null)
+        if (missilePrefab == null)
         {
-            Debug.LogError("MissileSpawner: prefab が設定されていません");
+            Debug.LogError("MissileSpawner: missilePrefab が設定されていません");
             enabled = false;
             return;
         }
@@ -42,7 +36,7 @@ public class MissileSpawner : MonoBehaviour
         var player = GameObject.FindWithTag("Player");
         if (player == null)
         {
-            Debug.LogError("MissileSpawner: Player タグのオブジェクトが見つかりません");
+            Debug.LogError("MissileSpawner: Player が見つかりません");
             enabled = false;
             return;
         }
@@ -59,51 +53,43 @@ public class MissileSpawner : MonoBehaviour
 
         //if (missileMeter > MeterMax)
         //{
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                StartCoroutine(SpawnMissile());
-                missileMeter = 0;
-            }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(SpawnMissile());
+            missileMeter = 0;
+        }
         //}
 
     }
 
     IEnumerator SpawnMissile()
     {
-        //isSpawning = true;
-
-        //Missile homing;
-
-        //for (int i = 0; i < iterationCount; i++)
-        //{
-        //    homing = Instantiate(prefab, thisTransform.position, Quaternion.identity).GetComponent<Missile>();
-        //    homing.Target = target;
-        //}
-
-        //yield return intervalWait;
-
-        //isSpawning = false;
-
         isSpawning = true;
 
         for (int i = 0; i < iterationCount; i++)
         {
-            var go = Instantiate(prefab, thisTransform.position, Quaternion.identity);
-            var homing = go.GetComponent<Missile>();
-            Debug.Assert(homing != null, "Missile が付いていません！");
+            Vector3 spawnPos = transform.position + Vector3.up * 1.5f;
 
-            if (homing == null)
+            var go = Instantiate(missilePrefab, spawnPos, Quaternion.identity);
+            var missile = go.GetComponent<Missile>();
+            missile.Target = target;
+            if (missile == null)
             {
-                Debug.LogError("MissileSpawner: prefab に Missile コンポーネントが付いていません");
+                Debug.LogError("Missile prefab に Missile コンポーネントがありません");
                 Destroy(go);
-                yield break;
+                continue;
             }
-
-            homing.Target = target;
         }
 
-        yield return intervalWait;
         isSpawning = false;
+        yield return null;
+    }
+
+    public void Fire()
+    {
+        if (isSpawning) return;
+
+        StartCoroutine(SpawnMissile());
     }
 
     public bool GetFlg()
