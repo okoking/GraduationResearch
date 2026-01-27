@@ -4,7 +4,8 @@ using UnityEngine;
 public class PlayAreaCheck : MonoBehaviour
 {
 
-    //出入り口の感圧版を踏んだら文字を変更する
+    //出入り口の感圧版を踏んだら文字を変更する★
+    //UIにつけるスクリプト
 
     public static PlayAreaCheck Instance;
     [SerializeField] private TextMeshProUGUI areaNameText;
@@ -20,13 +21,17 @@ public class PlayAreaCheck : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    //文字を表示
     public void Show(string name)
     {
         areaNameText.text = name;
     }
-    public void Hide()
-    {
-        areaNameText.text = "";
 
-    }
+    //文字を非表示
+    //public void Hide()
+    //{
+    //    areaNameText.text = "";
+
+    //}
 }

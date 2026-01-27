@@ -4,6 +4,8 @@ public class WallVisibilityGroup : MonoBehaviour
 {
     Renderer[] renderers;
 
+    //§ŒÀ‚Ì•Ç‚ğŒ©‚¦‚È‚­‚·‚éˆ—
+
     void Start()
     {
         renderers = GetComponentsInChildren<Renderer>();
