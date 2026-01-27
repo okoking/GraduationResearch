@@ -870,6 +870,7 @@ GameObject:
   - component: {fileID: 6501150717522973563}
   - component: {fileID: 8885601556375657235}
   - component: {fileID: 7753166806999109}
+  - component: {fileID: -5292197040953612286}
   m_Layer: 0
   m_Name: MeleeEnemy 1
   m_TagString: Enemy
@@ -977,7 +978,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5238c6b5a58b4b648b7ec9f7c5961f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: 0
+  enemyType: 1
   patrolRadius: 30
   patrolWaitTime: 2
   patrolCenter: {x: 0, y: 0, z: 0}
@@ -1000,7 +1001,7 @@ MonoBehaviour:
   rangedAttackRange: 12
   idealRangedDistance: 8
   projectileSpeed: 10
-  hp: 100
+  hp: 1000
   role: 0
   encircleSignRandomSeed: 0
   knockbackPower: 0.5
@@ -1022,6 +1023,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5411282424450531688}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &-5292197040953612286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5411282424450531688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02c83e3a190704140965aab32ff69697, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missilePrefab: {fileID: 4437993144311020198, guid: c8a5231c5fce0ab4c868a2f5c90fa7c1, type: 3}
+  iterationCount: 2
+  interval: 0.1
+  MeterMax: 100
 --- !u!1 &5731284173049030008
 GameObject:
   m_ObjectHideFlags: 0
