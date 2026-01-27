@@ -558,7 +558,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -989,7 +989,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 401423472}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.017069718, y: 0.05744041, z: 0.0009822574, w: 0.99820256}
+  m_LocalRotation: {x: -0.017010404, y: 0.101046115, z: 0.001727933, w: 0.9947349}
   m_LocalPosition: {x: 0, y: 0.804235, z: -5.7223015}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1273,6 +1273,7 @@ MonoBehaviour:
   mainCam: {fileID: 1895313540}
   vfxPrefab: {fileID: 3964782743803184419, guid: 3ee0c1777b8c1184eb26680e21e6c27c, type: 3}
   isFiring: 0
+  isShotAnimationing: 0
 --- !u!1 &1402032432
 GameObject:
   m_ObjectHideFlags: 0
