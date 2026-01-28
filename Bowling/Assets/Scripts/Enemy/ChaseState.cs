@@ -85,7 +85,14 @@ public class ChaseState : IState
         //Boids補正
         Vector3 boidsForce = enemy.Boids.GetBoidsForceOptimized() * 0.9f;
         //方向補正（急な方向転換を防ぐ）
-        Vector3 moveDir = Vector3.Slerp(enemy.transform.forward, (desiredPos + boidsForce).normalized, 0.4f);
+        Vector3 side = Vector3.Cross(Vector3.up, toPlayerDir) * encircleSign;
+        Vector3 spread = side * 0.3f;
+
+        Vector3 moveDir = Vector3.Slerp(
+            enemy.transform.forward,
+            (desiredPos + boidsForce + spread).normalized,
+            0.4f
+        );
         //NavMesh上の有効な地点を探して移動
         Vector3 targetPos = enemy.transform.position + moveDir * 3.0f;
         
@@ -119,53 +126,6 @@ public class ChaseState : IState
             Debug.Log("攻撃状態へ");
             
         }
-
-        //var player = enemy.Player;
-        //if (player == null)
-        //{
-        //    Debug.Log("プレイヤーが空です");
-        //    return;
-        //}
-
-        ////向き補正
-        //Vector3 lookPos = player.position; lookPos.y = enemy.transform.position.y;
-        //enemy.transform.LookAt(lookPos);
-
-        //Vector3 toPlayer = (player.position - enemy.transform.position);
-        //float distance = toPlayer.magnitude;
-        //Vector3 toPlayerDir = toPlayer.normalized;
-
-        //Vector3 desired = Vector3.zero;
-        //if (distance > 8f)
-        //{
-        //    switch (enemy.EnemyRole)
-        //    {
-        //        case EnemyAI.Role.Front: desired = toPlayerDir; break;
-        //        case EnemyAI.Role.Side: desired = enemy.EncircleDir(toPlayer) * 0.8f + toPlayerDir * 0.3f; break;
-        //        case EnemyAI.Role.Back: desired = -toPlayerDir * 0.4f + enemy.EncircleDir(toPlayer) * 0.6f; break;
-        //    }
-        //}
-
-        //Vector3 boids = enemy.Boids.GetBoidsForceOptimized() * 0.9f;
-        //Vector3 moveDir = Vector3.Slerp(enemy.transform.forward, (desired + boids).normalized, 0.4f);
-        //Vector3 targetPos = enemy.transform.position + moveDir * 2.0f;
-        //if (UnityEngine.AI.NavMesh.SamplePosition(targetPos, out var hit, 1f, UnityEngine.AI.NavMesh.AllAreas))
-        //    enemy.Agent.SetDestination(hit.position);
-
-        //if (distance > 20f)
-        //{
-        //    enemy.ChangeState(new PatrolState(enemy));
-        //    return;
-        //}
-
-        //float attackDistance = 5f;
-        //if (enemy.Manager.NumEnemiesAttackingNearby() >= 4) attackDistance += 10f;
-
-        //if (distance < attackDistance)
-        //{
-        //    enemy.ChangeState(new AttackState(enemy));
-        //    return;
-        //}
     }
 
     public void OnExit() { }

@@ -21,6 +21,7 @@ MonoBehaviour:
     comment: 
   - effectID: EnemyDamaga
     effectObject: {fileID: 1828176872806910, guid: 66767430d2264344c9024e15f6acc89b, type: 3}
+<<<<<<< Updated upstream
     comment: "\u30A8\u30CD\u30DF\u30FC\u306B\u653B\u6483\u3092\u5F53\u3066\u305F"
   - effectID: EnemyLost
     effectObject: {fileID: 1121192042590650, guid: 9a9cd51e547c9664facde8dc13277ac2, type: 3}
@@ -34,3 +35,9 @@ MonoBehaviour:
   - effectID: 
     effectObject: {fileID: 0}
     comment: 
+=======
+  - effectID: Teleport
+    effectObject: {fileID: 7761031033666763820, guid: 71cebcb84deaa9745848764b47675b89, type: 3}
+  - effectID: 
+    effectObject: {fileID: 0}
+>>>>>>> Stashed changes

@@ -50,7 +50,12 @@ public class BoidsSteering
         {
             Vector3 diff = enemy.transform.position - other.transform.position;
             float dist = diff.magnitude;
-            if (dist > 0) separation += diff.normalized / (dist * dist);
+            if (dist > 0)
+            {
+                float t = Mathf.InverseLerp(neighborRadius, 0.3f, dist);
+                float strength = Mathf.Lerp(0.5f, 3.0f, t);
+                separation += diff.normalized * strength;
+            }
             alignment += other.Agent.velocity;
             cohesion += other.transform.position;
         }

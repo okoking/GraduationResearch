@@ -66,26 +66,7 @@ public class EnemyManager : MonoBehaviour
             return;
         }
 
-        //foreach (var e in enemies)
-        //{
-        //    float dist = Vector3.Distance(player.position,
-        //        e.transform.position);
-        //    if (dist < 15f)
-        //        e.ManagedUpdate();
-        //    //近距離は毎フレーム
-        //    else if (dist < 30f)
-        //    {
-        //        if (Time.frameCount % 2 == 0)
-        //            e.ManagedUpdate();
-        //    }
-        //    //中距離
-        //    else
-        //    {
-        //        if (Time.frameCount % 5 == 0)
-        //            e.ManagedUpdate();
-        //    }
-        //    //遠距離
-        //}
+       
     }
 
     //近くにいる敵に警告をだす

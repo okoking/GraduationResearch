@@ -64,6 +64,10 @@ public class EffectManager : MonoBehaviour
 
         effectsByName[effectName].Add(id);
 
+        //Ä¶‚ªI‚í‚Á‚½‚ç©“®‚ÅÁ‹
+        var auto = fx.AddComponent<EffectAutoDestroy>();
+        auto.Init(id);
+
         return id;
     }
 

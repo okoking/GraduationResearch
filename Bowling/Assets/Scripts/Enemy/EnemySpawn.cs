@@ -77,6 +77,8 @@ public class EnemySpawn : MonoBehaviour
                 enemyAI.SetPatrolCenter(basePoint);
 
                 activeEnemies.Add(enemy);
+
+                EffectManager.instance.Play("Teleport", enemy.transform.position);
             }
             else
             {

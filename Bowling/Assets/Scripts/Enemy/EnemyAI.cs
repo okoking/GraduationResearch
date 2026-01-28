@@ -13,7 +13,6 @@ public enum EnemyType
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : MonoBehaviour
 {
-
     public enum Role { Front, Side, Back }
     public IState CurrentState { get; private set; }
     public StateType CurrentStateType => CurrentState?.Type ?? StateType.Idle;
@@ -126,7 +125,7 @@ public class EnemyAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         boids = new BoidsSteering(this, neighborRadius, separationWeight, alignmentWeight, cohesionWeight, maxBoidsForce, boidsUpdateInterval);
         agent.radius = 0.6f;
-        agent.avoidancePriority = UnityEngine.Random.Range(40, 90);
+        
         encircleSignRandomSeed = UnityEngine.Random.value;
         
         debugLine = gameObject.AddComponent<LineRenderer>();
@@ -170,15 +169,29 @@ public class EnemyAI : MonoBehaviour
         this.player = player;
         this.attackController = attackController;
 
-        agent.speed += UnityEngine.Random.Range(-0.5f, 0.5f);
-        separationWeight += UnityEngine.Random.Range(-0.5f, 0.5f);
-        cohesionWeight += UnityEngine.Random.Range(-0.05f, 0.05f);
-        alignmentWeight += UnityEngine.Random.Range(-0.05f, 0.05f);
-        agent.avoidancePriority = UnityEngine.Random.Range(40, 90);
-        patrolTarget = Vector3.zero;
-
         AssignRandomRole();
         ChangeState(new IdleState(this));
+
+        agent.speed += UnityEngine.Random.Range(-0.3f, 0.3f);
+        separationWeight += UnityEngine.Random.Range(-0.3f, 0.3f);
+        cohesionWeight += UnityEngine.Random.Range(-0.05f, 0.05f);
+        alignmentWeight += UnityEngine.Random.Range(-0.05f, 0.05f);
+
+        switch (role)
+        {
+            case Role.Front:
+                agent.avoidancePriority = 30; // 最優先
+                break;
+            case Role.Side:
+                agent.avoidancePriority = 50;
+                break;
+            case Role.Back:
+                agent.avoidancePriority = 70; // 避ける側
+                break;
+        }
+        patrolTarget = Vector3.zero;
+
+       
         Debug.Log("最初は待機状態です");
     }
 
@@ -194,14 +207,11 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
-        //if (stunTimer > 0f)
-        //{
-        //    stunTimer -= Time.deltaTime;
-        //    return;
-        //}
+        ApplyEmergencySeparation();
 
         //現在の状態の更新処理
         currentState?.OnUpdate();
+
         ////巡回目的地への線を表示
         //if (patrolTarget != Vector3.zero)
         //{
@@ -433,6 +443,19 @@ public class EnemyAI : MonoBehaviour
     public void FireMissile()
     {
         gameObject.GetComponent<MissileSpawner>().Fire();
+    }
+
+    void ApplyEmergencySeparation()
+    {
+        foreach (var other in Manager.GetNearbyEnemies(this, 0.7f))
+        {
+            Vector3 away = transform.position - other.transform.position;
+
+            if (away.sqrMagnitude < 0.0001f)
+                continue;
+
+            Agent.Move(away.normalized * Time.deltaTime * 1.5f);
+        }
     }
 
     //外部用の読み取り専用関数

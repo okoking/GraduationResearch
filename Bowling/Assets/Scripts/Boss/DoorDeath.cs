@@ -26,6 +26,8 @@ public class DoorDeath : MonoBehaviour
             OnDoorOpened?.Invoke(doorIndex);
 
             Destroy(gameObject);
+
+            EffectManager.instance.Play("BigExplosin", gameObject.transform.position);
         }
     }
 }

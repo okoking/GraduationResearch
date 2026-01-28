@@ -94,20 +94,20 @@ public class KariBeam : MonoBehaviour
 
     void UpdateRotate()
     {
-        if (!isShotAnimationing) return;
-        //if (lockOn.lockOnTarget == null) return;
+        //if (!isShotAnimationing) return;
+        ////if (lockOn.lockOnTarget == null) return;
 
-        Vector3 startPos = transform.position + Vector3.up * 1.0f;
-        Vector3 targetPos = lockOn.lockOnTarget.position;
+        //Vector3 startPos = transform.position + Vector3.up * 1.0f;
+        //Vector3 targetPos = lockOn.lockOnTarget.position;
 
-        Vector3 dir = targetPos - startPos;
+        //Vector3 dir = targetPos - startPos;
 
-        // Œü‚«
-        transform.rotation = Quaternion.Slerp(
-            transform.rotation,
-            Quaternion.LookRotation(dir),
-            5f * Time.deltaTime
-        );
+        //// Œü‚«
+        //transform.rotation = Quaternion.Slerp(
+        //    transform.rotation,
+        //    Quaternion.LookRotation(dir),
+        //    5f * Time.deltaTime
+        //);
     }
 
 
