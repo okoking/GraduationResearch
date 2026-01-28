@@ -108,6 +108,24 @@ public class KariBeam : MonoBehaviour
         //    Quaternion.LookRotation(dir),
         //    5f * Time.deltaTime
         //);
+
+        if (!isShotAnimationing) return;
+        if (lockOn == null) return;
+        if (lockOn.lockOnTarget == null) return;
+
+        Vector3 startPos = transform.position + Vector3.up * 1.0f;
+
+        //Destroy çœÇ›ëŒçÙ
+        Transform targetTf = lockOn.lockOnTarget;
+        if (!targetTf) return;
+
+        Vector3 dir = targetTf.position - startPos;
+
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            Quaternion.LookRotation(dir),
+            5f * Time.deltaTime
+        );
     }
 
 
