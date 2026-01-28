@@ -6,6 +6,9 @@ public class EffectData
 {
     [Tooltip("エフェクトID")] public string effectID;
     [Tooltip("エフェクト")] public GameObject effectObject;
+    [Tooltip("備考欄")]
+    [TextArea(0, 4)]
+    public string comment;
 }
 
 [CreateAssetMenu(menuName = "System/EffectList")]

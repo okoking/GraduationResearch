@@ -15,13 +15,19 @@ MonoBehaviour:
   effectList:
   - effectID: meteor
     effectObject: {fileID: 7957833072274404953, guid: e7f814988751ec84192cdbaf2802c84d, type: 3}
+    comment: 
   - effectID: BeamColl
     effectObject: {fileID: 7647375919561907788, guid: 9026ef6df7f766f45be4e7c1ec3e4d93, type: 3}
-  - effectID: BigExplosion
-    effectObject: {fileID: 1121192042590650, guid: 9a9cd51e547c9664facde8dc13277ac2, type: 3}
-  - effectID: SmallExplosion
+    comment: 
+  - effectID: EnemyDamaga
     effectObject: {fileID: 1828176872806910, guid: 66767430d2264344c9024e15f6acc89b, type: 3}
+    comment: "\u30A8\u30CD\u30DF\u30FC\u306B\u653B\u6483\u3092\u5F53\u3066\u305F"
+  - effectID: EnemyLost
+    effectObject: {fileID: 1121192042590650, guid: 9a9cd51e547c9664facde8dc13277ac2, type: 3}
+    comment: "\u30A8\u30CD\u30DF\u30FC\u3092\u6483\u7834\u3057\u305F"
+  - effectID: PlayerDamage
+    effectObject: {fileID: 6982263153641847612, guid: 68228df05b26bd842ae23d4009bc3bc8, type: 3}
+    comment: "\u30D7\u30EC\u30A4\u30E4\u30FC\u304C\u30C0\u30E1\u30FC\u30B8\u3092\u53D7\u3051\u305F"
   - effectID: 
     effectObject: {fileID: 0}
-  - effectID: 
-    effectObject: {fileID: 0}
+    comment: 
