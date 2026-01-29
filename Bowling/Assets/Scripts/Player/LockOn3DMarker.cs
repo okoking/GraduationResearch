@@ -7,35 +7,45 @@ public class LockOn3DMarker : MonoBehaviour
     private Transform oldMarker;
     private void Update()
     {
-        if (currentMarker == null) return;
+        if (currentMarker != null)
+            currentMarker.transform.position = oldMarker.position + Vector3.up * 1.5f;
+        //if (currentMarker == null) return;
 
-        //Destroy 済みチェック
-        if (!oldMarker)
-        {
-            ClearLockOn();
-            return;
-        }
+        ////Destroy 済みチェック
+        //if (!oldMarker)
+        //{
+        //    ClearLockOn();
+        //    return;
+        //}
 
-        currentMarker.transform.position = oldMarker.position + Vector3.up * 1.5f;
+        //currentMarker.transform.position = oldMarker.position + Vector3.up * 1.5f;
     }
 
     public void SetLockOn(Transform enemy)
     {
-        if (!enemy) return;
-
+        if (currentMarker != null) Destroy(currentMarker);
         if (oldMarker != enemy)
         {
-            if (currentMarker != null)
-                Destroy(currentMarker);
-
-            currentMarker = Instantiate(
-                markerPrefab,
-                enemy.position + Vector3.up * 1.5f,
-                Quaternion.identity
-            );
-
+            Destroy(currentMarker);
+            currentMarker = Instantiate(markerPrefab,
+                enemy.position + Vector3.up * 1.5f, Quaternion.identity);
             oldMarker = enemy;
         }
+        //if (!enemy) return;
+
+        //if (oldMarker != enemy)
+        //{
+        //    if (currentMarker != null)
+        //        Destroy(currentMarker);
+
+        //    currentMarker = Instantiate(
+        //        markerPrefab,
+        //        enemy.position + Vector3.up * 1.5f,
+        //        Quaternion.identity
+        //    );
+
+        //    oldMarker = enemy;
+        //}
     }
 
     public void ClearLockOn()
