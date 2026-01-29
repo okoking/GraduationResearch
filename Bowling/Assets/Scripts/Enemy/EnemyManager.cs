@@ -130,7 +130,7 @@ public class EnemyManager : MonoBehaviour
 
     public void RegisterEnemy(EnemyAI e)
     {
-        e.Initialize(this, player, attackController);
+        //e.Initialize(this, player, attackController);
         if (!enemies.Contains(e))
             enemies.Add(e);
     }

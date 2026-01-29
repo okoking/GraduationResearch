@@ -119,7 +119,7 @@ public class Missile : MonoBehaviour
         {
             Destroy(gameObject);
             target.gameObject.GetComponent<PlayerHealth>().TakeDamage(20);
-            EffectManager.instance.Play("SmallExplosion", gameObject.transform.position);
+            EffectManager.instance.Play("MissileHit", gameObject.transform.position);
             return;
         }
 
@@ -127,7 +127,7 @@ public class Missile : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             Destroy(gameObject);
-            EffectManager.instance.Play("SmallExplosion", gameObject.transform.position);
+            EffectManager.instance.Play("MissileHit", gameObject.transform.position);
             return;
         }
 
