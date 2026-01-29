@@ -31,11 +31,12 @@ MonoBehaviour:
   - effectID: BarrierBreak
     effectObject: {fileID: 8974203713140315807, guid: c1205e835e00ee04e96e85a5ce6127d0, type: 3}
     comment: "\u30D0\u30EA\u30A2\u3092\u7834\u58CA"
-  - effectID: 
-    effectObject: {fileID: 0}
+  - effectID: MissileHit
+    effectObject: {fileID: 1828176872806910, guid: 66767430d2264344c9024e15f6acc89b, type: 3}
     comment: 
   - effectID: Teleport
     effectObject: {fileID: 7761031033666763820, guid: 71cebcb84deaa9745848764b47675b89, type: 3}
-  - effectID: 
-    effectObject: {fileID: 0}
-
+    comment: 
+  - effectID: PlayerAura
+    effectObject: {fileID: 7131401307255788800, guid: 4a16b10988ce39f4b9a598b7cb376bc7, type: 3}
+    comment: "\u30D7\u30EC\u30A4\u30E4\u30FC\u306E\u30D3\u30FC\u30E0\u304C\u6253\u3066\u308B\u3088\u3046\u306B\u306A\u3063\u305F\u3089"
