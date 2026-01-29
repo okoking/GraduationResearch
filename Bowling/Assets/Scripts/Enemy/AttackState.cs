@@ -159,7 +159,8 @@ public class AttackState : IState
 
             enemy.FireMissile();
             attackTimer = 0f;
-            
+            //UŒ‚˜g‚ğ•Ô‹p
+            enemy.AttackCtrl.EndAttack(enemy);
         }
     }
 
