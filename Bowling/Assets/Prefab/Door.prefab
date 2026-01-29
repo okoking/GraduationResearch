@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 855351753854256050}
   - component: {fileID: 3622584510309393375}
   - component: {fileID: 4935519471463045089}
-  - component: {fileID: 5502002370822390862}
   m_Layer: 0
   m_Name: Door
   m_TagString: Door
@@ -125,15 +124,3 @@ MonoBehaviour:
   maxHp: 100
   isPerfectInvincible: 0
   maxInvincibleTime: 0
---- !u!114 &5502002370822390862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8079119010320544848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1141909a9ea99844eb43156a5a879be7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
