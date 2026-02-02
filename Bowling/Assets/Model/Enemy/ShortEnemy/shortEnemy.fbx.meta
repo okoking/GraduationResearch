@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: OH_Outline_Material
+    second: {fileID: 2100000, guid: ca1af9e617313f94bb55eb43c016a5f1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: "\u30DE\u30C6\u30EA\u30A2\u30EB.007"
     second: {fileID: 2100000, guid: 2ff49c074329199409c4fdf49a76ea9b, type: 2}
   - first:
