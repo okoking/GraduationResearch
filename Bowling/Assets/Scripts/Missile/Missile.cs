@@ -101,7 +101,7 @@ public class Missile : MonoBehaviour
             }
         }
 
-        // ★追跡が切れても「速度」はそのまま使う
+        //追跡が切れても「速度」はそのまま使う
         position += velocity * Time.deltaTime;
         thisTransform.position = position;
 
