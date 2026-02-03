@@ -24,6 +24,10 @@ public class Missile : MonoBehaviour
     Vector3 maxInitVelocity;
     [SerializeField, Min(0)]
     float homingDuration = 0.5f; // 何秒追跡するか
+    [SerializeField]
+    float targetRadius = 1.5f;   // プレイヤー周囲の半径
+
+    Vector3 aimPoint;            // 実際の着弾地点
 
     float homingTimer;
     bool isHoming = true;
@@ -66,6 +70,13 @@ public class Missile : MonoBehaviour
             target = FindRandomTarget();
         }
 
+        //着弾地点を1回だけ決定
+        if (target != null)
+        {
+            Vector2 rand = Random.insideUnitCircle * targetRadius;
+            aimPoint = target.position + new Vector3(rand.x, 0f, rand.y);
+        }
+
         homingTimer = homingDuration;
     }
 
@@ -90,7 +101,7 @@ public class Missile : MonoBehaviour
             {
                 // ホーミング中のみ加速度を更新
                 acceleration = 2f / (time * time)
-                    * (target.position - position - time * velocity);
+                    * (aimPoint - position - time * velocity);
 
                 if (limitAcceleration && acceleration.sqrMagnitude > maxAcceleration * maxAcceleration)
                 {
@@ -114,7 +125,7 @@ public class Missile : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
 
-        // ターゲットに当たった
+        //ターゲットに当たった
         if (other.gameObject.CompareTag("Player"))
         {
             Destroy(gameObject);
@@ -123,7 +134,7 @@ public class Missile : MonoBehaviour
             return;
         }
 
-        // 壁・地形など
+        //壁・地形など
         if (other.gameObject.CompareTag("Ground"))
         {
             Destroy(gameObject);
