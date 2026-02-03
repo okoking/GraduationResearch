@@ -29,6 +29,11 @@ public class Missile : MonoBehaviour
 
     Vector3 aimPoint;            // 実際の着弾地点
 
+    [SerializeField]
+    GameObject warningMarkerPrefab;
+
+    GameObject warningMarker;
+
     float homingTimer;
     bool isHoming = true;
 
@@ -75,6 +80,13 @@ public class Missile : MonoBehaviour
         {
             Vector2 rand = Random.insideUnitCircle * targetRadius;
             aimPoint = target.position + new Vector3(rand.x, 0f, rand.y);
+
+            //着弾予告マーカー生成
+            warningMarker = Instantiate(
+                warningMarkerPrefab,
+                aimPoint,
+                Quaternion.Euler(90f, 0f, 0f)
+            );
         }
 
         homingTimer = homingDuration;
@@ -120,6 +132,12 @@ public class Missile : MonoBehaviour
         {
             thisTransform.rotation = Quaternion.LookRotation(velocity);
         }
+
+        float t = 1f - (homingTimer / homingDuration);
+        float scale = Mathf.Lerp(0.7f, 0.5f, t);
+        warningMarker.transform.localScale = Vector3.one * scale;
+
+        
     }
 
     void OnTriggerEnter(Collider other)
@@ -128,6 +146,9 @@ public class Missile : MonoBehaviour
         //ターゲットに当たった
         if (other.gameObject.CompareTag("Player"))
         {
+            if (warningMarker != null)
+                Destroy(warningMarker);
+
             Destroy(gameObject);
             target.gameObject.GetComponent<PlayerHealth>().TakeDamage(20);
             EffectManager.instance.Play("MissileHit", gameObject.transform.position);
@@ -137,6 +158,9 @@ public class Missile : MonoBehaviour
         //壁・地形など
         if (other.gameObject.CompareTag("Ground"))
         {
+            if (warningMarker != null)
+                Destroy(warningMarker);
+
             Destroy(gameObject);
             EffectManager.instance.Play("MissileHit", gameObject.transform.position);
             return;

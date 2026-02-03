@@ -125,14 +125,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 4635167315351051218, guid: bdee937bc5a77054d8fb081a5be27aaa, type: 3}
-  time: 0.5
+  time: 1.5
   lifeTime: 2
   limitAcceleration: 1
   maxAcceleration: 200
   minInitVelocity: {x: -30, y: 0, z: 0}
   maxInitVelocity: {x: 30, y: 30, z: 0}
   homingDuration: 4
-  timeToTarget: 1
+  targetRadius: 1.5
+  warningMarkerPrefab: {fileID: 1824423930510386651, guid: 01b2f362c093ab447bcd37324fcf97c1, type: 3}
+  timeToTarget: 1.2
 --- !u!114 &-1236482858010485244
 MonoBehaviour:
   m_ObjectHideFlags: 0
