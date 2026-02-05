@@ -80,7 +80,7 @@ public class Missile : MonoBehaviour
         {
             Vector2 rand = Random.insideUnitCircle * targetRadius;
             aimPoint = target.position + new Vector3(rand.x, 0f, rand.y);
-            aimPoint.y = 0f;
+            aimPoint.y = 0.01f;
             //着弾予告マーカー生成
             warningMarker = Instantiate(
                 warningMarkerPrefab,

@@ -13,6 +13,8 @@ public enum EnemyType
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : MonoBehaviour
 {
+    private Animator animator;
+
     public enum Role { Front, Side, Back }
     public IState CurrentState { get; private set; }
     public StateType CurrentStateType => CurrentState?.Type ?? StateType.Idle;
@@ -137,6 +139,8 @@ public class EnemyAI : MonoBehaviour
         {
             Debug.LogError($"NavMesh 上にいません");
         }
+
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
