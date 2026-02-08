@@ -44,6 +44,8 @@ public class BossHandL : MonoBehaviour
 
     float times;
 
+    Animator animator;
+
     List<int> pausedIDs = new List<int>();
 
     void Start()
@@ -55,6 +57,8 @@ public class BossHandL : MonoBehaviour
         floorAttackSub = new GameObject[FloorAtkNum];
         floorAttack = new GameObject[FloorAtkNum];
         off = new int[FloorAtkNum];
+
+        animator = GetComponentInParent<Animator>();
     }
 
     void Update()
@@ -86,10 +90,10 @@ public class BossHandL : MonoBehaviour
         // 攻撃予測表示中なら
         if (isFloorAtackDisp)
         {
+            animator.SetBool("isAttack", true);
             floorAttackDispTimer += Time.deltaTime;
             if (floorAttackDispTimer > 2f)
             {
-
                 for (int i = 0; i < FloorAtkNum; i++)
                 {
                     Destroy(floorAttackSub[i]);
@@ -97,6 +101,7 @@ public class BossHandL : MonoBehaviour
                 floorAttackDispTimer = 0f;
                 isFloorAtack = true;
                 isFloorAtackDisp = false;
+                animator.SetBool("isAttack", false);
             }
         }
 

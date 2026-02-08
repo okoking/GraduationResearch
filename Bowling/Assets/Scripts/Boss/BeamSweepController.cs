@@ -66,7 +66,7 @@ public class BeamSweepController : MonoBehaviour
             if (h.collider.CompareTag("Player"))
             {
                 playerHealth.TakeDamage(1);
-                EffectManager.instance.Play("BeamColl",h.transform.position);
+                EffectManager.instance.Play("BeamColl", h.transform.position);
             }
         }
 
