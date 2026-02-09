@@ -36,6 +36,8 @@ public class Boss : MonoBehaviour
 
     float waveAttackTimer;
 
+    Animator animator;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -44,6 +46,8 @@ public class Boss : MonoBehaviour
         floorAttack = new GameObject[FloorAtkNum];
 
         bossHp = GetComponent<BossHp>();
+
+        animator = GetComponentInParent<Animator>();
 
         cube = GameObject.FindWithTag("BossCube");
 
@@ -54,6 +58,8 @@ public class Boss : MonoBehaviour
 
         if (player == null)
             player = GameObject.FindWithTag("Player")?.transform;
+
+        
     }
 
 
@@ -79,8 +85,9 @@ public class Boss : MonoBehaviour
             //UŒ‚—\‘ª•\Ž¦’†‚È‚ç
             if (isFloorAtackDisp)
             {
+                animator.SetBool("isAttack", true);
                 floorAttackDispTimer += Time.deltaTime;
-                if (floorAttackDispTimer > 2f)
+                if (floorAttackDispTimer > 1f)
                 {
                     for (int i = 0; i < FloorAtkNum; i++)
                     {
@@ -94,6 +101,7 @@ public class Boss : MonoBehaviour
 
             if (isFloorAtack)
             {
+                animator.SetBool("isAttack", false);
                 //‚±‚±‚ÅUŒ‚–{‘Ì‚ð¶¬
                 for (int i = 0; i < FloorAtkNum; i++)
                 {

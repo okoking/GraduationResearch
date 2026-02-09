@@ -87,7 +87,7 @@ public class BossHandR : MonoBehaviour
         if (isFloorAtackDisp)
         {
             floorAttackDispTimer += Time.deltaTime;
-            if (floorAttackDispTimer > 2f)
+            if (floorAttackDispTimer > 1f)
             {
 
                 for (int i = 0; i < FloorAtkNum; i++)

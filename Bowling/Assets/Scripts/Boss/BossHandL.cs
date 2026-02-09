@@ -92,7 +92,7 @@ public class BossHandL : MonoBehaviour
         {
             animator.SetBool("isAttack", true);
             floorAttackDispTimer += Time.deltaTime;
-            if (floorAttackDispTimer > 2f)
+            if (floorAttackDispTimer > 1f)
             {
                 for (int i = 0; i < FloorAtkNum; i++)
                 {
@@ -101,12 +101,12 @@ public class BossHandL : MonoBehaviour
                 floorAttackDispTimer = 0f;
                 isFloorAtack = true;
                 isFloorAtackDisp = false;
-                animator.SetBool("isAttack", false);
             }
         }
 
         if (isFloorAtack)
         {
+            animator.SetBool("isAttack", false);
             //ここで攻撃本体を生成
             for (int i = 0; i < FloorAtkNum; i++)
             {
