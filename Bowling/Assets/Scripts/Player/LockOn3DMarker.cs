@@ -4,11 +4,17 @@ public class LockOn3DMarker : MonoBehaviour
 {
     public GameObject markerPrefab;
     private GameObject currentMarker;
-    private Transform oldMarker;
+    private Transform enemyTransform;
     private void Update()
     {
         if (currentMarker != null)
-            currentMarker.transform.position = oldMarker.position + Vector3.up * 1.5f;
+            currentMarker.transform.position = enemyTransform.position + Vector3.up * 1.5f;
+
+        if (enemyTransform != null && currentMarker != null)
+        {
+            Debug.Log("なんかは入ってるらしい");
+        }
+
         //if (currentMarker == null) return;
 
         ////Destroy 済みチェック
@@ -23,13 +29,13 @@ public class LockOn3DMarker : MonoBehaviour
 
     public void SetLockOn(Transform enemy)
     {
-        if (currentMarker != null) Destroy(currentMarker);
-        if (oldMarker != enemy)
+        //if (currentMarker != null) Destroy(currentMarker);
+        if (enemyTransform != enemy)
         {
             Destroy(currentMarker);
             currentMarker = Instantiate(markerPrefab,
                 enemy.position + Vector3.up * 1.5f, Quaternion.identity);
-            oldMarker = enemy;
+            enemyTransform = enemy;
         }
         //if (!enemy) return;
 
@@ -54,7 +60,7 @@ public class LockOn3DMarker : MonoBehaviour
         {
             Destroy(currentMarker);
             currentMarker = null;
-            oldMarker = null;
+            enemyTransform = null;
         }
     }
 }

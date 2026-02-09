@@ -271,7 +271,7 @@ public class EnemyAI : MonoBehaviour
                 if (Vector3.Distance(hit.position, patrolCenter) <= patrolAreaRadius)
                 {
                     patrolTarget = hit.position; agent.SetDestination(patrolTarget);
-                    Debug.Log($"新しいパトロール地点: {patrolTarget}"); 
+                   // Debug.Log($"新しいパトロール地点: {patrolTarget}"); 
                     return;
                 }
             }

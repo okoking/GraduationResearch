@@ -151,7 +151,6 @@ public class KariBeam : MonoBehaviour
         //var vfx = currentVFX.GetComponent<VisualEffect>();
         //vfx.SetFloat("BeamLength", length);
 
-
         // =====================
         // “–‚½‚è”»’èiRaycastj
         // =====================
