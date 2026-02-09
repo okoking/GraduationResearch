@@ -50,7 +50,7 @@ public class KariBeam : MonoBehaviour
     void Update()
     {
         // ボタン押したらビーム発射
-        if (Input.GetKeyDown(KeyCode.JoystickButton5))
+        if (Input.GetKey(KeyCode.JoystickButton5) && !isShotAnimationing)
         {
             if (!beamCamera.isSootBeam)
             {
@@ -197,6 +197,7 @@ public class KariBeam : MonoBehaviour
         Destroy(currentVFX);
         currentVFX = null; 
         Debug.Log("打ち終わり");
+        plAnim.ChangedAnim(0);
     }
 
     public bool GetisFiring()

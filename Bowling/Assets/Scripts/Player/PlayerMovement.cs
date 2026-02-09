@@ -34,6 +34,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Camera.main == null) return;
 
+        Quaternion save = transform.rotation;
+        save.x = 0f;
+
+        transform.rotation = save;
+
         // --- 移動 ---
         Vector3 camForward = Camera.main.transform.forward;
         camForward.y = 0f;         // 上下成分は消す
@@ -123,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // --- ジャンプ ---
-        if (Input.GetButtonDown("Jump") && isGroundEx)
+        if (Input.GetKey(KeyCode.JoystickButton0) && isGroundEx)
         {
             velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
         }

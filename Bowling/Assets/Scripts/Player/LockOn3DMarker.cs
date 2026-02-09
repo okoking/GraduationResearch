@@ -7,7 +7,7 @@ public class LockOn3DMarker : MonoBehaviour
     private Transform enemyTransform;
     private void Update()
     {
-        if (currentMarker != null)
+        if (currentMarker != null && enemyTransform != null)
             currentMarker.transform.position = enemyTransform.position + Vector3.up * 1.5f;
 
         if (enemyTransform != null && currentMarker != null)
