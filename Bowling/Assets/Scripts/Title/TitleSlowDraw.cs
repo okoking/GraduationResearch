@@ -6,7 +6,6 @@ public class TitleSlowDraw : MonoBehaviour
 {
     [SerializeField] private CanvasGroup group;
     float       time;             //時間      
-    //TMP_Text    text;          //テキスト
     float       text_alph;        //テキストの透明度
 
     void Start()
@@ -40,7 +39,7 @@ public class TitleSlowDraw : MonoBehaviour
 
             case TitleState.SLOW_DRAW:
                 //加算
-                text_alph += 0.0005f;
+                text_alph += 0.001f;
 
                 if (text_alph >= 1.0f)
                 {

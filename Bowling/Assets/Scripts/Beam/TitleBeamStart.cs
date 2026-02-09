@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class kari : MonoBehaviour
+public class TitleBeamStart : MonoBehaviour
 {
     public VisualEffect currentVFX;
     bool FirstFlag = false;

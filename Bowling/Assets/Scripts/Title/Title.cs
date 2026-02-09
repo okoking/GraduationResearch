@@ -10,7 +10,7 @@ public class Title : MonoBehaviour
         Debug.Log("ゲーム開始");
         //UIシーンを合わせている
         SceneManager.LoadScene("TitleUi", LoadSceneMode.Additive);
-        SoundManager.Instance.Request("BGM_Title");
+        //SoundManager.Instance.Request("BGM_Title");
 
     }
 
