@@ -15,7 +15,6 @@ public class PlayerHP : MonoBehaviour
 
     private int currentHp;  //åªç›ÇÃHP
 
-
     void Start()
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -45,6 +44,7 @@ public class PlayerHP : MonoBehaviour
         textHP.text = currentHp.ToString();
         //4åÖÇ≈0ñÑÇﬂÇ∑ÇÈ
         textHP.text = currentHp.ToString("D4");
+       
     }
     
 }
