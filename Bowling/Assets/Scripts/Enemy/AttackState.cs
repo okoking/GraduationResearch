@@ -35,6 +35,7 @@ public class AttackState : IState
         dashTimer = 0f;
 
         moveMode = AttackMoveMode.None;
+        enemy.anim.Play(AnimState.Attack);
     }
 
     public void OnUpdate()

@@ -14,6 +14,7 @@ public class PatrolState : IState
     }
     public void OnStart()
     {
+        enemy.anim.Play(AnimState.Move);
         enemy.SetRandomPatrolPoint();
         Debug.Log("パトロールを始めます");
 

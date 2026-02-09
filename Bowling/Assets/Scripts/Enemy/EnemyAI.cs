@@ -14,6 +14,7 @@ public enum EnemyType
 public class EnemyAI : MonoBehaviour
 {
     private Animator animator;
+    public AnimationController anim;
 
     public enum Role { Front, Side, Back }
     public IState CurrentState { get; private set; }
@@ -140,7 +141,7 @@ public class EnemyAI : MonoBehaviour
             Debug.LogError($"NavMesh 上にいません");
         }
 
-        animator = GetComponent<Animator>();
+        anim = new AnimationController(GetComponent<Animator>());
     }
 
     private void Start()

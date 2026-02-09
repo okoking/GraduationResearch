@@ -18,6 +18,7 @@ public class IdleState : IState
     //‰Šú‰»ˆ—
     public void OnStart()
     {
+        enemy.anim.Play(AnimState.Idle);
         timer = 0f;
         //‘Ò‚¿ŠÔÄİ’è
         waitTime = Random.Range(1.0f, 2.5f);

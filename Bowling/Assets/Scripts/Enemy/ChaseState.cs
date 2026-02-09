@@ -16,6 +16,7 @@ public class ChaseState : IState
 
     public void OnStart()
     {
+        enemy.anim.Play(AnimState.Move);
         //追跡方向の左右をランダム化
         encircleSign = Random.value > 0.5f ? 1f : -1f;
     }
