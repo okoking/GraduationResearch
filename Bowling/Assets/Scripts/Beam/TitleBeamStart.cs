@@ -6,6 +6,9 @@ public class TitleBeamStart : MonoBehaviour
     public VisualEffect currentVFX;
 
     [SerializeField] private TitlePlayerMove player;
+    [SerializeField] AudioSource se1;
+    [SerializeField] AudioSource se2;
+
 
     void Start()
     {
@@ -20,6 +23,8 @@ public class TitleBeamStart : MonoBehaviour
         {
             //エフェクト再生
             currentVFX.Play();
+            se1.Play();
+            se2.Play();
             Debug.Log("3:エフェクト開始");
         }
     }
