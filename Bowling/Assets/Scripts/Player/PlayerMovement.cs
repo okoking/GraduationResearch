@@ -33,6 +33,8 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         if (Camera.main == null) return;
+        //ゲームがスタートしていないときは処理しない
+        if (!GameStartDirector.IsGameStarted) return;
 
         Quaternion save = transform.rotation;
         save.x = 0f;
