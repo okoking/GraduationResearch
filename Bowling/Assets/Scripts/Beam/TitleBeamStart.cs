@@ -4,7 +4,6 @@ using UnityEngine.VFX;
 public class TitleBeamStart : MonoBehaviour
 {
     public VisualEffect currentVFX;
-    bool FirstFlag = false;
 
     [SerializeField] private TitlePlayerMove player;
 
@@ -17,14 +16,11 @@ public class TitleBeamStart : MonoBehaviour
     void Update()
     {
         //モデルが定位置に着いたか確認
-        if (player.GetStopFlag() && !FirstFlag)
+        if (player.GetStopFlag())
         {
             //エフェクト再生
             currentVFX.Play();
             Debug.Log("3:エフェクト開始");
-
-            //一回だけ再生されるように
-            FirstFlag = true;
         }
     }
 }
