@@ -13,7 +13,7 @@ public class AttackController
     private float globalAttackTimer = 0f;
 
     [Header("ラッシュ攻撃（複数同時攻撃）")] 
-    public float rushChance = 0.5f;                 //50%の確率でラッシュ
+    public float rushChance = 0.2f;                 //20%の確率でラッシュ
     public float rushDuration = 4f;                 //ラッシュ継続時間
     public float rushCooldown = 10f;                //ラッシュとラッシュの間隔
     public bool isRush = false;                     //Rushするかどうか

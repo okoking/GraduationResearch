@@ -14,13 +14,9 @@ public enum EnemyType
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : MonoBehaviour
 {
-<<<<<<< Updated upstream
     private Animator animator;
     public AnimationController anim;
 
-=======
-    public AnimController anim;
->>>>>>> Stashed changes
     public enum Role { Front, Side, Back }
     public IState CurrentState { get; private set; }
     public StateType CurrentStateType => CurrentState?.Type ?? StateType.Idle;
@@ -146,11 +142,9 @@ public class EnemyAI : MonoBehaviour
             Debug.LogError($"NavMesh 上にいません");
         }
 
-<<<<<<< Updated upstream
+
         anim = new AnimationController(GetComponent<Animator>());
-=======
-        anim = new AnimController(GetComponent<Animator>());
->>>>>>> Stashed changes
+
     }
 
     private void Start()
