@@ -2367,7 +2367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InitDrow: 0
   MaxAlpha: 1
-  MinAlpha: 0.411
+  MinAlpha: 0.333
 --- !u!225 &605628228
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2393,7 +2393,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.9137255}
+  m_Color: {r: 0.004360993, g: 0.1465014, b: 0.9245283, a: 0.9137255}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2864,7 +2864,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InitDrow: 0
   MaxAlpha: 1
-  MinAlpha: 0.411
+  MinAlpha: 0.333
 --- !u!225 &674178909
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2890,7 +2890,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.9137255}
+  m_Color: {r: 0.004360993, g: 0.1465014, b: 0.9245283, a: 0.9137255}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6565,7 +6565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InitDrow: 0
   MaxAlpha: 1
-  MinAlpha: 0.411
+  MinAlpha: 0.333
 --- !u!225 &1828941700
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6591,7 +6591,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.9137255}
+  m_Color: {r: 0.004360993, g: 0.1465014, b: 0.9245283, a: 0.9137255}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
