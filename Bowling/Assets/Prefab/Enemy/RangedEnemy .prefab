@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 8885601556375657235}
   - component: {fileID: 7753166806999109}
   - component: {fileID: -5292197040953612286}
+  - component: {fileID: 6154561330691276625}
+  - component: {fileID: -8135657840625833096}
   m_Layer: 0
   m_Name: 'RangedEnemy '
   m_TagString: Enemy
@@ -120,6 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5238c6b5a58b4b648b7ec9f7c5961f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
   enemyType: 1
   patrolRadius: 30
   patrolWaitTime: 2
@@ -181,6 +184,40 @@ MonoBehaviour:
   iterationCount: 2
   interval: 0.1
   MeterMax: 100
+--- !u!95 &6154561330691276625
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5411282424450531688}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: f5f00a3362f7c464a90238285614ff1d, type: 3}
+  m_Controller: {fileID: 9100000, guid: afde6df3ed1ee324783428d73300f35e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-8135657840625833096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5411282424450531688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2b69310653389f4ea8f1b5d9d520070, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1278080757178938726
 PrefabInstance:
   m_ObjectHideFlags: 0
