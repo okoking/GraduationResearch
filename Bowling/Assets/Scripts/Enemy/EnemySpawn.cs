@@ -6,7 +6,8 @@ public class EnemySpawn : MonoBehaviour
 {
     public static EnemySpawn Instance { get; private set; }
     [Header("敵プレハブ")]
-    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject meleeEnemyPrefab;
+    [SerializeField] private GameObject rangedEnemyPrefab;
     [Header("スポーン地点（複数指定可能）")]
     [SerializeField] private Transform[] spawnPoints;
     [Header("1回あたりの生成数")]
@@ -63,17 +64,18 @@ public class EnemySpawn : MonoBehaviour
             //NavMesh上の有効な地点を探す
             if (NavMesh.SamplePosition(candidatePos, out NavMeshHit hit, navMeshSearchRadius, NavMesh.AllAreas))
             {
-                GameObject enemy = Instantiate(enemyPrefab, hit.position, Quaternion.identity);
+                //敵タイプを先に決定
+                bool isMelee = Random.value < meleeRate;
+
+                GameObject prefab = isMelee
+                    ? meleeEnemyPrefab
+                    : rangedEnemyPrefab;
+
+                GameObject enemy = Instantiate(prefab, hit.position, Quaternion.identity);
 
                 var enemyAI = enemy.GetComponent<EnemyAI>();
 
-                // ランダムでタイプ決定
-                EnemyType type =
-                    Random.value < meleeRate ? EnemyType.Melee : EnemyType.Ranged;
-
-                enemyAI.SetEnemyType(type);
-
-                // パトロール中心設定
+                enemyAI.SetEnemyType(isMelee ? EnemyType.Melee : EnemyType.Ranged);
                 enemyAI.SetPatrolCenter(basePoint);
 
                 activeEnemies.Add(enemy);

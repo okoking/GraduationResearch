@@ -9,12 +9,12 @@ public class AttackController
     private Queue<EnemyAI> attackQueue = new();
 
     [Header("攻撃テンポ調整")] 
-    public float globalAttackCooldown = 2.5f;       //全体クールダウン
+    public float globalAttackCooldown = 1.5f;       //全体クールダウン
     private float globalAttackTimer = 0f;
 
     [Header("ラッシュ攻撃（複数同時攻撃）")] 
     public float rushChance = 0.2f;                 //20%の確率でラッシュ
-    public float rushDuration = 4f;                 //ラッシュ継続時間
+    public float rushDuration = 3f;                 //ラッシュ継続時間
     public float rushCooldown = 10f;                //ラッシュとラッシュの間隔
     public bool isRush = false;                     //Rushするかどうか
     private float rushTimer = 0f;                   //Rush間隔

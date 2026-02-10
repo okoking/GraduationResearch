@@ -452,6 +452,7 @@ public class EnemyAI : MonoBehaviour
 
     public void FireMissile()
     {
+        anim.Play(AnimState.Attack);
         gameObject.GetComponent<MissileSpawner>().Fire();
     }
 

@@ -35,7 +35,6 @@ public class AttackState : IState
         dashTimer = 0f;
 
         moveMode = AttackMoveMode.None;
-        enemy.anim.Play(AnimState.Attack);
     }
 
     public void OnUpdate()
@@ -92,17 +91,20 @@ public class AttackState : IState
             {
                 Debug.Log("‰“‚·‚¬‚é‚Ì‚Å‹ß‚Ã‚«‚Ü‚·");
                 SetMoveMode(AttackMoveMode.Approach, toPlayerDir);
+                enemy.anim.Play(AnimState.Move);
             }
             else if (distance < enemy.RetreatDistance - 0.5f)
             {
                 Debug.Log("‹ß‚·‚¬‚é‚Ì‚Å—£‚ê‚Ü‚·");
                 SetMoveMode(AttackMoveMode.Retreat, -toPlayerDir);
+                enemy.anim.Play(AnimState.Move);
             }
             else
             {
                 StopMove();
                 attackTimer += Time.deltaTime;
                 Debug.Log("‚¿‚å‚¤‚Ç‚¢‚¢‹——£‚É‚¢‚Ü‚·");
+                enemy.anim.Play(AnimState.Idle);
             }
         }
 
@@ -115,6 +117,8 @@ public class AttackState : IState
 
             if (!isDashing)
             {
+               
+
                 dashDir = (player.position - enemy.transform.position).normalized;
                 dashDir.y = 0f;
                 isDashing = true;
@@ -138,17 +142,20 @@ public class AttackState : IState
             {
                 Debug.Log("‰“‚·‚¬‚é‚Ì‚Å‹ß‚Ã‚«‚Ü‚·");
                 SetMoveMode(AttackMoveMode.Approach, toPlayerDir);
+                enemy.anim.Play(AnimState.Move);
             }
             else if (distance < retdis - 0.5f)
             {
                 Debug.Log("‹ß‚·‚¬‚é‚Ì‚Å—£‚ê‚Ü‚·");
                 SetMoveMode(AttackMoveMode.Retreat, -toPlayerDir);
+                enemy.anim.Play(AnimState.Move);
             }
             else
             {
                 StopMove();
                 attackTimer += Time.deltaTime;
                 Debug.Log("‚¿‚å‚¤‚Ç‚¢‚¢‹——£‚É‚¢‚Ü‚·");
+                enemy.anim.Play(AnimState.Idle);
             }
         }
 
@@ -190,6 +197,8 @@ public class AttackState : IState
     public void PerformAttack()
     {
         if (!isDashing) return;
+
+        enemy.anim.Play(AnimState.Attack);
 
         //“ËiˆÚ“®
         dashTimer += Time.deltaTime;
