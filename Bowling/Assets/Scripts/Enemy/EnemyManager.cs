@@ -55,16 +55,16 @@ public class EnemyManager : MonoBehaviour
         //    return;
         //}
 
-        if (player == null)
-        {
-            Debug.Log("プレイヤー情報がないため処理を終了しました");
-            SetPlayer(GameObject.Find("Player").transform);
-            if (player != null)
-                Debug.Log("プレイヤー情報を取得しました");
-            else
-                Debug.Log("プレイヤー情報を取得できませんでした");
-            return;
-        }
+        //if (player == null)
+        //{
+        //    Debug.Log("プレイヤー情報がないため処理を終了しました");
+        //    SetPlayer(GameObject.Find("Player").transform);
+        //    if (player != null)
+        //        Debug.Log("プレイヤー情報を取得しました");
+        //    else
+        //        Debug.Log("プレイヤー情報を取得できませんでした");
+        //    return;
+        //}
 
        
     }

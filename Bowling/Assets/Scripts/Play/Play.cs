@@ -25,6 +25,7 @@ public class Play : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             SceneController.Instance.ChangeState(GameState.Result);
+            EnemySpawn.Instance.ClearEnemies();
         }
 
         //フリーカメラに変更
