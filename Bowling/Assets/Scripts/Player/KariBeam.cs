@@ -63,11 +63,16 @@ public class KariBeam : MonoBehaviour
             //}
         }
 
-        StartBeam();
 
-        UpdateBeam();
+        if (lockOn.lockOnTarget != null)
+        {
+            StartBeam();
 
-        UpdateRotate();
+            UpdateBeam();
+
+            UpdateRotate();
+        }
+
     }
 
     Vector3 GetDirToTarget()
@@ -195,7 +200,7 @@ public class KariBeam : MonoBehaviour
 
     void ShootStart()
     {
-        if (isFiring || lockOn.lockOnTarget == null) return;
+        if (isFiring/* || lockOn.lockOnTarget == null*/) return;
 
         plAnim.ChangedAnim(5);
 
