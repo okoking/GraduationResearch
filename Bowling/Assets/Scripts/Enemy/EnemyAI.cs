@@ -3,6 +3,7 @@ using Unity.IO.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public enum EnemyType
 {
@@ -13,9 +14,13 @@ public enum EnemyType
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : MonoBehaviour
 {
+<<<<<<< Updated upstream
     private Animator animator;
     public AnimationController anim;
 
+=======
+    public AnimController anim;
+>>>>>>> Stashed changes
     public enum Role { Front, Side, Back }
     public IState CurrentState { get; private set; }
     public StateType CurrentStateType => CurrentState?.Type ?? StateType.Idle;
@@ -141,7 +146,11 @@ public class EnemyAI : MonoBehaviour
             Debug.LogError($"NavMesh 上にいません");
         }
 
+<<<<<<< Updated upstream
         anim = new AnimationController(GetComponent<Animator>());
+=======
+        anim = new AnimController(GetComponent<Animator>());
+>>>>>>> Stashed changes
     }
 
     private void Start()
@@ -165,6 +174,7 @@ public class EnemyAI : MonoBehaviour
 
         //最初は待機状態に遷移
         ChangeState(new IdleState(this));
+
     }
 
     //初期化は外から呼ぶ（EnemyManager など）
@@ -272,7 +282,7 @@ public class EnemyAI : MonoBehaviour
                 if (Vector3.Distance(hit.position, patrolCenter) <= patrolAreaRadius)
                 {
                     patrolTarget = hit.position; agent.SetDestination(patrolTarget);
-                   // Debug.Log($"新しいパトロール地点: {patrolTarget}"); 
+                    Debug.Log($"新しいパトロール地点: {patrolTarget}"); 
                     return;
                 }
             }
@@ -430,7 +440,8 @@ public class EnemyAI : MonoBehaviour
             Die();
             return false;
         }
-
+        
+        anim.Play(AnimState.Hit);
         return true;
     }
 
@@ -496,4 +507,5 @@ public class EnemyAI : MonoBehaviour
     {
         enemyType = type;
     }
+
 }

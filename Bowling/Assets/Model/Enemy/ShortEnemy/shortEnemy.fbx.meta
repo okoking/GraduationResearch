@@ -3,6 +3,7 @@ guid: 1d9d82214a990fc49a83f7b8d68b3502
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
+<<<<<<< Updated upstream
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -19,6 +20,9 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: "\u30DE\u30C6\u30EA\u30A2\u30EB.008"
     second: {fileID: 2100000, guid: dd85c2d3e8c734c459c0470b2c2c1a34, type: 2}
+=======
+  externalObjects: {}
+>>>>>>> Stashed changes
   materials:
     materialImportMode: 2
     materialName: 0
@@ -44,6 +48,7 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
+<<<<<<< Updated upstream
     clipAnimations:
     - serializedVersion: 16
       name: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2|0_def"
@@ -190,6 +195,9 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
+=======
+    clipAnimations: []
+>>>>>>> Stashed changes
     isReadable: 0
   meshes:
     lODScreenPercentages: []
@@ -257,7 +265,11 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+<<<<<<< Updated upstream
   avatarSetup: 1
+=======
+  avatarSetup: 0
+>>>>>>> Stashed changes
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
