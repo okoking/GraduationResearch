@@ -132,7 +132,7 @@ MonoBehaviour:
   minInitVelocity: {x: -30, y: 0, z: 0}
   maxInitVelocity: {x: 30, y: 30, z: 0}
   homingDuration: 4
-  targetRadius: 1.5
+  targetRadius: 5
   warningMarkerPrefab: {fileID: 1824423930510386651, guid: 01b2f362c093ab447bcd37324fcf97c1, type: 3}
   timeToTarget: 1.2
 --- !u!114 &-1236482858010485244
