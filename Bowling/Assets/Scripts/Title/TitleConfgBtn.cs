@@ -8,15 +8,20 @@ public class TitleConfgBtn : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("confg:Start");
         HideConfigpanel();
     }
 
     public void ShowConfigpanel()
     {
         configPanel.SetActive(true);
+        Debug.Log("show");
+
+
     }
     public void HideConfigpanel()
     {
         configPanel.SetActive(false);
+        Debug.Log("hide");
     }
 }
