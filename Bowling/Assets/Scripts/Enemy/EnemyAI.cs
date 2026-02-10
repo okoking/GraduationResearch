@@ -14,6 +14,7 @@ public enum EnemyType
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : MonoBehaviour
 {
+
     private Animator animator;
     public AnimationController anim;
 
@@ -141,7 +142,6 @@ public class EnemyAI : MonoBehaviour
         {
             Debug.LogError($"NavMesh 上にいません");
         }
-
 
         anim = new AnimationController(GetComponent<Animator>());
 
