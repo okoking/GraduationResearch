@@ -24,6 +24,7 @@ TagManager:
   - BeamPoint
   - BeamPointL
   - BeamPointR
+  - TitleFloor
   layers:
   - Default
   - TransparentFX
