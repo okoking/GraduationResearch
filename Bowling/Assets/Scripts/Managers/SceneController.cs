@@ -60,8 +60,8 @@ public class SceneController : MonoBehaviour
     void Start()
     {
         //最初タイトル
-        CurrentState = GameState.Play;
-        _ = OnEnterPlayAsync();
+        CurrentState = GameState.Title;
+        _ = OnEnterTitleAsync();
         Debug.Log("最初のシーンはタイトルです");
     }
 

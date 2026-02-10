@@ -31,10 +31,9 @@ public class Title : MonoBehaviour
 
         //ステージセレクトシーンへ
         //if (InputManager.Instance.Enter)
-        //if (Input.GetKeyUp(KeyCode.Space))
-        //{
-        //    SceneController.Instance.ChangeState(GameState.Play);
-        //}
-
+        if (Input.GetKeyDown(KeyCode.Joystick1Button0))
+        {
+            SceneController.Instance.ChangeState(GameState.Play);
+        }
     }
 }

@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float acceleration = 10f;    // 加速の速さ
     [SerializeField] private float deceleration = 10f;    // 減速の速さ
+    
+    [SerializeField] private float GoalLine = 255f;    // 減速の速さ
 
     private Vector3 velocity;
     private SpecialBeam beamInfo;
@@ -35,6 +37,13 @@ public class PlayerMovement : MonoBehaviour
         if (Camera.main == null) return;
         //ゲームがスタートしていないときは処理しない
         if (!GameStartDirector.IsGameStarted) return;
+
+        // ゴール判定
+        if (transform.position.z > GoalLine)
+        {
+            SceneController.Instance.ChangeState(GameState.Result);
+        }
+
 
         Quaternion save = transform.rotation;
         save.x = 0f;

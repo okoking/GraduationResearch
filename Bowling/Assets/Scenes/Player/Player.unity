@@ -1317,6 +1317,7 @@ MonoBehaviour:
   gravity: -20
   acceleration: 10
   deceleration: 8
+  GoalLine: 255
 --- !u!114 &1316075572
 MonoBehaviour:
   m_ObjectHideFlags: 0

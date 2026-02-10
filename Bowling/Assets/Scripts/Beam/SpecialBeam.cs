@@ -46,7 +46,7 @@ public class SpecialBeam : MonoBehaviour
         //}
 
         // --- ŠJŽn ---
-        if (beamInput && beamCamera.isSootBeam && !isActive && beamGauge.IsLowestValueShotBeam())
+        if (beamInput && beamCamera.isSootBeam && !isActive)
         {
             beamGauge.SetUsingBeam(true);
             StartBeam();
