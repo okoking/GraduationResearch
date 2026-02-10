@@ -40,3 +40,6 @@ MonoBehaviour:
   - effectID: PlayerAura
     effectObject: {fileID: 7131401307255788800, guid: 4a16b10988ce39f4b9a598b7cb376bc7, type: 3}
     comment: "\u30D7\u30EC\u30A4\u30E4\u30FC\u306E\u30D3\u30FC\u30E0\u304C\u6253\u3066\u308B\u3088\u3046\u306B\u306A\u3063\u305F\u3089"
+  - effectID: Ciecle
+    effectObject: {fileID: 6140651357457123983, guid: 0d1f844ca2bef684c926e5440946e4f6, type: 3}
+    comment: "\u30E1\u30C6\u30AA\u306E\u4E88\u6E2C"

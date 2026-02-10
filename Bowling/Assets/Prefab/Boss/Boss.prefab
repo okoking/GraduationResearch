@@ -2624,6 +2624,7 @@ MonoBehaviour:
   beamWarningTime: 1.5
   sweepAngle: 90
   FloorAtkNum: 2
+  handLeft: {fileID: 2215903552969293269}
 --- !u!65 &3891933857951731947
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3330,6 +3331,7 @@ MonoBehaviour:
   beamWarningTime: 1.5
   sweepAngle: 90
   FloorAtkNum: 2
+  handRight: {fileID: 353909668566449863}
 --- !u!65 &3311686124588621534
 BoxCollider:
   m_ObjectHideFlags: 0

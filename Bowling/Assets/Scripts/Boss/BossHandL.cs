@@ -48,6 +48,9 @@ public class BossHandL : MonoBehaviour
 
     List<int> pausedIDs = new List<int>();
 
+    [SerializeField] private Transform handLeft;
+
+
     void Start()
     {
         if (player == null)
@@ -92,12 +95,9 @@ public class BossHandL : MonoBehaviour
         {
             animator.SetBool("isAttack", true);
             floorAttackDispTimer += Time.deltaTime;
-            if (floorAttackDispTimer > 1f)
+
+            if (floorAttackDispTimer > 1.5f)
             {
-                for (int i = 0; i < FloorAtkNum; i++)
-                {
-                    Destroy(floorAttackSub[i]);
-                }
                 floorAttackDispTimer = 0f;
                 isFloorAtack = true;
                 isFloorAtackDisp = false;
@@ -111,7 +111,7 @@ public class BossHandL : MonoBehaviour
             for (int i = 0; i < FloorAtkNum; i++)
             {
                 floorAttack[i] = Instantiate(floorAttackPrefab, PPos[i], new Quaternion(0f, 0f, 0f, 0f));
-                off[i] = EffectManager.instance.Play("meteor", PPos[i]);
+                EffectManager.instance.Play("meteor", PPos[i]);
             }
 
             isFloorAtack = false;
@@ -167,7 +167,7 @@ public class BossHandL : MonoBehaviour
         yield return new WaitForSeconds(displayTime);
 
         // 実際のビーム発射
-        GameObject beam = Instantiate(beamSweepPrefab, transform.position, transform.rotation);
+        GameObject beam = Instantiate(beamSweepPrefab, transform.position, transform.rotation, transform);
         float beamDuration = beam.GetComponent<BeamSweepController>().duration;
 
         yield return new WaitForSeconds(beamDuration);
@@ -180,7 +180,8 @@ public class BossHandL : MonoBehaviour
         for (int i = 0; i < FloorAtkNum; i++)
         {
             PPos[i] = new Vector3(player.position.x + Random.Range(-20, 20), 0.01f, player.position.z + Random.Range(-20, 20));
-            floorAttackSub[i] = Instantiate(floorAttackSubPrefab, PPos[i], new Quaternion(0f, 0f, 0f, 0f));
+            //floorAttackSub[i] = Instantiate(floorAttackSubPrefab, PPos[i], new Quaternion(0f, 0f, 0f, 0f));
+            EffectManager.instance.Play("Ciecle", PPos[i]);
         }
         isFloorAtackDisp = true;
     }
