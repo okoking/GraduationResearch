@@ -22,6 +22,20 @@ public class EnemySpawn : MonoBehaviour
     [SerializeField] private float navMeshSearchRadius = 3f;
     [Header("敵タイプ出現率")]
     [SerializeField] private float meleeRate = 0.6f; // 60% Melee
+    [Header("同時出現できる最大敵数")]
+    [SerializeField] private int maxEnemyCount = 70;
+
+    [System.Serializable]
+    public class SpawnRange
+    {
+        public int startIndex; // 開始インデックス
+        public int count;      // 何個使うか
+    }
+
+    [Header("ステージごとのスポーン範囲")]
+    [SerializeField] private List<SpawnRange> stageSpawnRanges;
+
+    [SerializeField] public int currentStage = 0; // 0 = ステージ1
 
     private float timer;
     private List<GameObject> activeEnemies = new List<GameObject>();
@@ -45,16 +59,25 @@ public class EnemySpawn : MonoBehaviour
     }
     public void SpawnEnemies()
     {
+        //すでに最大数なら何もしない
+        if (activeEnemies.Count >= maxEnemyCount)
+            return;
+
         if (spawnPoints.Length == 0)
         {
             Debug.LogWarning("EnemySpawn: スポーン地点が設定されていません。");
             return;
         }
 
-        for (int i = 0; i < spawnCount; i++)
+        // 生成可能な残り数を計算
+        int canSpawn = maxEnemyCount - activeEnemies.Count;
+        int spawnNum = Mathf.Min(spawnCount, canSpawn);
+
+        for (int i = 0; i < spawnNum; i++)
         {
             //ランダムなスポーン地点を選ぶ
-            Transform basePoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+            Transform basePoint = GetRandomSpawnPoint();
+            if (basePoint == null) return;
 
             //周囲に少しランダムオフセットを加える（Boids群が密集しすぎないように）
             Vector3 randomOffset = Random.insideUnitSphere * randomRadius;
@@ -96,5 +119,39 @@ public class EnemySpawn : MonoBehaviour
             if (e != null) Destroy(e);
         }
         activeEnemies.Clear();
+
+        if (EnemySpawn.Instance != null)
+            EnemySpawn.Instance.UnregisterEnemy(gameObject);
+    }
+
+    Transform GetRandomSpawnPoint()
+    {
+        if (stageSpawnRanges.Count <= currentStage)
+        {
+            Debug.LogWarning("ステージのスポーン範囲が未設定です");
+            return null;
+        }
+
+        SpawnRange range = stageSpawnRanges[currentStage];
+
+        int min = range.startIndex;
+        int max = range.startIndex + range.count;
+
+        // 安全対策
+        max = Mathf.Min(max, spawnPoints.Length);
+
+        int index = Random.Range(min, max);
+        return spawnPoints[index];
+    }
+
+    public void SetStage(int stage)
+    {
+        currentStage = stage;
+    }
+
+    public void UnregisterEnemy(GameObject enemy)
+    {
+        if (activeEnemies.Contains(enemy))
+            activeEnemies.Remove(enemy);
     }
 }
