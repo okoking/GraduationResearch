@@ -8,14 +8,12 @@ public class TitleBeamStart : MonoBehaviour
 
     [SerializeField] private TitlePlayerMove player;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //始まったときに再生されないように
         currentVFX.Stop();
     }
 
-    // Update is called once per frame
     void Update()
     {
         //モデルが定位置に着いたか確認
@@ -23,7 +21,7 @@ public class TitleBeamStart : MonoBehaviour
         {
             //エフェクト再生
             currentVFX.Play();
-            Debug.Log("エフェクト開始");
+            Debug.Log("3:エフェクト開始");
 
             //一回だけ再生されるように
             FirstFlag = true;

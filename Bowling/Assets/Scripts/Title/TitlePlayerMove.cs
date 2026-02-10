@@ -11,16 +11,13 @@ public class TitlePlayerMove : MonoBehaviour
     //アニメーション管理用のコンポーネント変数
     private Animator anim;
     private AnimatorStateInfo state;
+
     //一度だけ再生したい
-    public bool MoveStopFlag = false;
-    public bool EffectStartFlag = false;
+    bool MoveStopFlag = false;
+    bool EffectStartFlag = false;
     
-    private TMP_Text text;
-    private float text_alph; //テキストの透明度
-    private string currentStateName;
-
+    //モデルが停止する場所
     const float STOP_POSX = 4.0f;
-
 
     //ショットポーズで待機する時間
     private int StopTime = 800;
@@ -32,13 +29,11 @@ public class TitlePlayerMove : MonoBehaviour
     bool OneCycleFlag = false;
 
 
-
     void Start()
     {
         //データ取得
         anim = GetComponent<Animator>();
         state = anim.GetCurrentAnimatorStateInfo(0);
-        //anim = this.gameObject.transform.GetComponent<Animator>();
 
         CycleTime = CYCLE_TIME;
         StopTime = STOP_TIME;
@@ -47,16 +42,10 @@ public class TitlePlayerMove : MonoBehaviour
 
     void Update()
     {
-
         Walk();
-
         ShotAnimStart();
-
-        //エフェクト再生開始
         StartEffect();
-        //ポーズ停止
         PoseStop();
-
         ResetCycle();
     }
     
@@ -82,11 +71,14 @@ public class TitlePlayerMove : MonoBehaviour
         if (transform.position.x <= STOP_POSX && !MoveStopFlag)
         {
             speed = 0;
-            anim.SetBool("Stop", true); // アニメーション切り替え
-            Debug.Log("アニメーション開始");
+            anim.SetBool("Stop", true);     // アニメーション開始・開ける
+            anim.SetBool("Reset", false);   //閉める
 
             //一回だけ来るように
             MoveStopFlag = true;
+
+            Debug.Log("1:開始");
+
         }
     }
 
@@ -96,13 +88,13 @@ public class TitlePlayerMove : MonoBehaviour
         //8_beamShotが終了したか確認
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("アーマチュア|8_baemShot") && !EffectStartFlag)
         {
-            Debug.Log("特定のアニメーション終了");
-
             // Attack アニメーションが1回再生し終わった
             EffectStartFlag = true;
 
             //アニメーション停止
             anim.speed = 0;
+
+            Debug.Log("2:特定のアニメ終了");
         }
     }
 
@@ -113,13 +105,16 @@ public class TitlePlayerMove : MonoBehaviour
         if (EffectStartFlag)
         {
             StopTime--;
-            if (StopTime < 0)
-            {
-                //アニメーション再開
-                anim.speed = 1f;
+        }
 
-                OneCycleFlag = true;
-            }
+        if (StopTime < 0 && !OneCycleFlag)
+        {
+            //アニメーション再開
+            anim.speed = 1f;
+
+            OneCycleFlag = true;
+
+            Debug.Log("4:ポーズ");
         }
     }
 
@@ -129,6 +124,7 @@ public class TitlePlayerMove : MonoBehaviour
         {
             CycleTime--;
         }
+
         //ショットアニメーションを再開させたい
         //全体的なサイクル・リセット
         if (CycleTime < 0)
@@ -136,14 +132,13 @@ public class TitlePlayerMove : MonoBehaviour
             MoveStopFlag = false;
             EffectStartFlag = false;
             OneCycleFlag = false;
-
-            anim.SetBool("Reset", true); // アニメーション再開
-
+            anim.SetBool("Stop", false); //閉める
+            anim.SetBool("Reset", true); //開ける
 
             CycleTime = CYCLE_TIME;
             StopTime = STOP_TIME;
 
-            Debug.Log("リセット");
+            Debug.Log("5:リセット");
 
         }
     }
