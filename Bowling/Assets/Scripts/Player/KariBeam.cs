@@ -121,9 +121,29 @@ public class KariBeam : MonoBehaviour
 
         Vector3 dir = targetTf.position - startPos;
 
+        //transform.rotation = Quaternion.Slerp(
+        //    transform.rotation,
+        //    Quaternion.LookRotation(dir),
+        //    5f * Time.deltaTime
+        //);
+
+        // 目標の回転（本来向きたい方向）
+        Quaternion targetRot = Quaternion.LookRotation(dir);
+
+        // 現在と目標をEulerに変換
+        Vector3 currentEuler = transform.eulerAngles;
+        Vector3 targetEuler = targetRot.eulerAngles;
+
+        // Xだけ現在の値を維持
+        targetEuler.x = currentEuler.x;
+
+        // X固定した回転を作り直す
+        Quaternion fixedTargetRot = Quaternion.Euler(targetEuler);
+
+        // Slerp
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
-            Quaternion.LookRotation(dir),
+            fixedTargetRot,
             5f * Time.deltaTime
         );
     }
@@ -134,7 +154,7 @@ public class KariBeam : MonoBehaviour
         if (!isShotAnimationing || lockOn.lockOnTarget == null || !isFiring) return;
 
         Vector3 startPos = transform.position + Vector3.up * 1.0f;
-        Vector3 targetPos = lockOn.lockOnTarget.position;
+        Vector3 targetPos = lockOn.lockOnTarget.position + Vector3.up * 1.0f;
 
         Vector3 dir = targetPos - startPos;
         float length = dir.magnitude;
@@ -159,7 +179,7 @@ public class KariBeam : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, length))
         {
             // デバッグ表示
-            Debug.DrawRay(startPos, dir.normalized * hit.distance, Color.red);
+            //Debug.DrawRay(startPos, dir.normalized * hit.distance, Color.red);
 
             // ダメージ処理
             if (hit.collider.CompareTag("Enemy"))
