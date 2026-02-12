@@ -94,6 +94,9 @@ public class KariBeam : MonoBehaviour
         currentVFX.transform.SetParent(transform, true);
         currentVFX.SendEvent("OnPlay");
 
+        //SoundManager.Instance.Request("PlayerShot");
+
+
         TriggershotBeam = false;
     }
 
