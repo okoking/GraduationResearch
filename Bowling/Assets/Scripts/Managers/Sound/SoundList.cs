@@ -12,31 +12,14 @@ public class SoundData
     public string comment;
 }
 
-[System.Serializable]
-public class AudioSourceData
-{
-    [Tooltip("AudioSourceID")] public string audioSourceID;
-    [Tooltip("AudioSource")] public AudioSource audioSource;
-    [Tooltip("îıçlóì")]
-    [TextArea(0, 4)]
-    public string comment;
-}
-
 [CreateAssetMenu(menuName = "System/SoundList")]
 public class SoundList : ScriptableObject
 {
     public List<SoundData> soundList = new List<SoundData>();
-    public List<AudioSourceData> audioSourceList = new List<AudioSourceData>();
 
     //óvëfÇíTÇ∑
     public SoundData SoundFind(string soudID)
     {
         return soundList.Find(sound => sound.soundID == soudID);
-    }
-
-    //óvëfÇíTÇ∑
-    public AudioSourceData AudioSourceFind(string audioSourceID)
-    {
-        return audioSourceList.Find(sound => sound.audioSourceID == audioSourceID);
     }
 }

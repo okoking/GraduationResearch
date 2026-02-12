@@ -77,16 +77,3 @@ MonoBehaviour:
     audioClip: {fileID: 0}
     soundVolume: 1
     comment: 
-  audioSourceList:
-  - audioSourceID: BGM_Title
-    audioSource: {fileID: 0}
-    comment: 
-  - audioSourceID: Play
-    audioSource: {fileID: 0}
-    comment: 
-  - audioSourceID: Boss
-    audioSource: {fileID: 0}
-    comment: 
-  - audioSourceID: BGM_Result
-    audioSource: {fileID: 0}
-    comment: 
