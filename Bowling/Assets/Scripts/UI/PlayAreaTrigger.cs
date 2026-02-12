@@ -1,10 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PlayAreaTrigger : MonoBehaviour
 {
     //トリガーとなるオブジェクトにつけるもの
 
     [SerializeField] private string areaName;
+
 
     //文字を表示する
     private void OnTriggerEnter(Collider other)
@@ -21,6 +24,7 @@ public class PlayAreaTrigger : MonoBehaviour
                 }
                 EnemySpawn.Instance.SetStage(0);
                 EnemySpawn.Instance.SpawnEnemies();
+
             }
             else if(areaName == "第2エリア")
             {
@@ -51,4 +55,5 @@ public class PlayAreaTrigger : MonoBehaviour
     //        PlayAreaCheck.Instance.Hide();
     //    }
     //}
+
 }
