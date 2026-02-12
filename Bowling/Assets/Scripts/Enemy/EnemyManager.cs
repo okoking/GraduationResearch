@@ -120,10 +120,23 @@ public class EnemyManager : MonoBehaviour
     public List<EnemyAI> GetNearbyEnemies(EnemyAI self, float radius)
     {
         List<EnemyAI> nearby = new List<EnemyAI>();
-        foreach (var e in enemies)
+        for (int i = enemies.Count - 1; i >= 0; i--)
         {
+            var e = enemies[i];
+
+            // Destroy済み or null を削除
+            if (e == null)
+            {
+                enemies.RemoveAt(i);
+                continue;
+            }
+
+            if (e == self) continue;
+
             if (Vector3.Distance(e.transform.position, self.transform.position) < radius)
+            {
                 nearby.Add(e);
+            }
         }
         return nearby;
     }
