@@ -200,8 +200,10 @@ public class EnemyAI : MonoBehaviour
         }
         patrolTarget = Vector3.zero;
 
-       
         Debug.Log("最初は待機状態です");
+
+        //サウンドを再生
+        SoundManager.Instance.Request("EnemySpawn", gameObject.transform.localPosition);
     }
 
     void Update()
@@ -327,6 +329,9 @@ public class EnemyAI : MonoBehaviour
         if (alertPrefab == null) return;
         Debug.Log("プレイヤーを発見しました");
 
+        //サウンドを再生
+        SoundManager.Instance.Request("EnemyFind", gameObject.transform.localPosition);
+
         //敵の頭上に生成
         Vector3 pos = transform.position + Vector3.up * 2.0f;
         GameObject alert = Instantiate(alertPrefab, pos, Quaternion.identity);
@@ -438,18 +443,26 @@ public class EnemyAI : MonoBehaviour
         }
         
         anim.Play(AnimState.Hit);
+
+        //サウンド再生
+        SoundManager.Instance.Request("EnemyDamage",gameObject.transform.localPosition);
+
         return true;
     }
 
     //死亡処理
     void Die()
     {
+        //サウンド再生
+        SoundManager.Instance.Request("EnemyLost", gameObject.transform.localPosition);
+        SoundManager.Instance.Request("EnemyExplosion", gameObject.transform.localPosition);
+
         //EnemyManagerから除外
         manager?.UnregisterEnemy(this);
 
         Debug.Log("敵を倒した！");
 
-        Destroy(gameObject);
+        Destroy(gameObject);        
     }
 
     public void FireMissile()
