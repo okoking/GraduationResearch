@@ -9,6 +9,7 @@ public class Title : MonoBehaviour
     {
         Debug.Log("ÉQÅ[ÉÄäJén");
         SoundManager.Instance.Request("BGMTitle");
+
     }
 
     //Update is called once per frame
@@ -19,12 +20,12 @@ public class Title : MonoBehaviour
         if (InputManager.Instance.Enter)
         {
             SceneController.Instance.ChangeState(GameState.Play);
-            SoundManager.Instance.Stop("BGMTitle");
+            SoundManager.Instance.Stop("BGMTitle",true);
         }
             if (Input.GetKeyDown(KeyCode.Joystick1Button0))
         {
             SceneController.Instance.ChangeState(GameState.Play);
-            SoundManager.Instance.Stop("BGMTitle");
+            SoundManager.Instance.Stop("BGMTitle",true);
         }
     }
 }

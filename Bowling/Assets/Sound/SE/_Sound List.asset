@@ -73,7 +73,15 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: 8c21a45b4f1286740982956682d4f101, type: 3}
     soundVolume: 1
     comment: "\u53E9\u304D\u3064\u3051"
-  - soundID: 
-    audioClip: {fileID: 0}
+  - soundID: BGMPlayFirstArea
+    audioClip: {fileID: 8300000, guid: bca166aede9b7084e8f6807054c772b6, type: 3}
+    soundVolume: 1
+    comment: 
+  - soundID: BGMPlaySecondArea
+    audioClip: {fileID: 8300000, guid: 7df851db7eb23cf41bc229d8903f216e, type: 3}
+    soundVolume: 1
+    comment: 
+  - soundID: BGMPlayBossArea
+    audioClip: {fileID: 8300000, guid: f03231a07c5e08f4aa6a85763ac77730, type: 3}
     soundVolume: 1
     comment: 

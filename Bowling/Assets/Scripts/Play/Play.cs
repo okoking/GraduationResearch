@@ -8,6 +8,8 @@ public class Play : MonoBehaviour
         ////プレイヤーセット
         //EnemyManager.Instance.SetPlayer(
         //    GameObject.Find("Player").transform);
+        SoundManager.Instance.Request("BGMPlayFirstArea", true);
+
     }
 
     // Update is called once per frame

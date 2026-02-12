@@ -7,7 +7,7 @@ public class Result : MonoBehaviour
     void Start()
     {
         Debug.Log("ÉQÅ[ÉÄäJén");
-
+        SoundManager.Instance.AllStop();
         SoundManager.Instance.Request("BGMResult");
     }
 
@@ -24,7 +24,7 @@ public class Result : MonoBehaviour
         //âºí«â¡
         if (InputManager.Instance.Enter)
         {
-            SoundManager.Instance.Stop("BGMResult");
+            SoundManager.Instance.Stop("BGMResult",true);
         }
     }
 }
