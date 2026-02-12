@@ -18,8 +18,6 @@ public class Boss : MonoBehaviour
 
     public int FloorAtkNum;
 
-    GameObject[] floorAttackSub;          //è∞çUåÇëOÇÃäÎåØï\é¶
-
     GameObject[] floorAttack;             //è∞çUåÇ
 
     Vector3[] PPos;
@@ -42,7 +40,6 @@ public class Boss : MonoBehaviour
     void Start()
     {
         PPos = new Vector3[FloorAtkNum];
-        floorAttackSub = new GameObject[FloorAtkNum];
         floorAttack = new GameObject[FloorAtkNum];
 
         bossHp = GetComponent<BossHp>();
@@ -87,12 +84,8 @@ public class Boss : MonoBehaviour
             {
                 animator.SetBool("isAttack", true);
                 floorAttackDispTimer += Time.deltaTime;
-                if (floorAttackDispTimer > 1f)
+                if (floorAttackDispTimer > 1.5f)
                 {
-                    for (int i = 0; i < FloorAtkNum; i++)
-                    {
-                        Destroy(floorAttackSub[i]);
-                    }
                     floorAttackDispTimer = 0f;
                     isFloorAtack = true;
                     isFloorAtackDisp = false;
@@ -147,7 +140,6 @@ public class Boss : MonoBehaviour
             {
                 for (int i = 0; i < FloorAtkNum; i++)
                 {
-                    Destroy(floorAttackSub[i]);
                     Destroy(floorAttack[i]);
                 }
                 bossHp.ThisDestroy();
@@ -161,7 +153,7 @@ public class Boss : MonoBehaviour
         for (int i = 0; i < FloorAtkNum; i++)
         {
             PPos[i] = new Vector3(player.position.x + Random.Range(-50, 50), 0.01f, player.position.z + Random.Range(-50, 50));
-            floorAttackSub[i] = Instantiate(floorAttackSubPrefab, PPos[i], new Quaternion(0f, 0f, 0f, 0f));
+            EffectManager.instance.Play("Ciecle", PPos[i]);
         }
         isFloorAtackDisp = true;
     }

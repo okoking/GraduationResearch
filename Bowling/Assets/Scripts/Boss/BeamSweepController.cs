@@ -1,24 +1,20 @@
-using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
 public class BeamSweepController : MonoBehaviour
 {
     public float duration = 2f;
     public float sweepAngle = 90f;
-    public float sweepSpeed = 90f;
     public float beamLength = 50f;
     public float beamWidth = 0.2f;
     public LayerMask groundLayer;
+
     private LineRenderer line;
     private float timer;
-    private float currentAngle;
-    private bool sweepingRight = true;
 
-    GameObject player;
-
-    private Vector3 groundOrigin;
-    private float baseYaw;
+    // ワールド座標でのターゲット地点
+    private Vector3 targetLeft;
+    private Vector3 targetRight;
 
     private PlayerHealth playerHealth;
 
@@ -28,71 +24,80 @@ public class BeamSweepController : MonoBehaviour
         line.positionCount = 2;
         line.startWidth = beamWidth;
         line.endWidth = beamWidth;
-        line.useWorldSpace = true;
 
-        currentAngle = -sweepAngle / 2f;
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null) playerHealth = player.GetComponent<PlayerHealth>();
 
-        Destroy(gameObject, duration);
+        Vector3 origin = transform.position;
 
-        player = GameObject.FindGameObjectWithTag("Player");
+        // --- ここから書き換え ---
+        Vector3 groundReference;
         if (player != null)
         {
-            playerHealth = player.GetComponent<PlayerHealth>();
+            // プレイヤーの今の足元の位置を基準にする
+            groundReference = player.transform.position;
         }
+        else
+        {
+            // プレイヤーがいない場合は正面の地面を基準にする
+            groundReference = origin + transform.forward * 10f;
+        }
+        groundReference.y = 0; // 地面の高さに固定（ステージに合わせて調整）
+                               // --- ここまで ---
 
-        // ��̈ʒu��n�ʂɌŒ�
-        groundOrigin = new Vector3(transform.position.x, 0.01f, transform.position.z);
+        // 基準点（プレイヤー位置）への方向を出す
+        Vector3 dirToTarget = (groundReference - origin).normalized;
 
-        // �������������擾
-        Vector3 flatForward =
-            Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
+        // その方向を左右に振って、扇形の端っこ（ターゲット地点）を決める
+        Quaternion leftRot = Quaternion.AngleAxis(-sweepAngle / 2f, Vector3.up);
+        Quaternion rightRot = Quaternion.AngleAxis(sweepAngle / 2f, Vector3.up);
 
-        // Yaw�p��ۑ�
-        baseYaw = Mathf.Atan2(flatForward.x, flatForward.z) * Mathf.Rad2Deg;
+        // 発射地点が動いても「ここを狙う」という座標を確定させる
+        targetLeft = origin + (leftRot * dirToTarget) * beamLength;
+        targetRight = origin + (rightRot * dirToTarget) * beamLength;
+
+        // ターゲットの高さも地面（y=0）に揃えておく
+        targetLeft.y = 0;
+        targetRight.y = 0;
+
+        Destroy(gameObject, duration);
     }
 
     void Update()
     {
         timer += Time.deltaTime;
 
-        float step = sweepSpeed * Time.deltaTime * (sweepingRight ? 1 : -1);
-        currentAngle += step;
+        // 0〜1の間で往復、または片道移動させる（Sinなどで往復、またはpingpong）
+        // ここでは duration に合わせて1往復する例
+        float progress = Mathf.PingPong(timer * 2f / duration, 1f);
 
-        if (Mathf.Abs(currentAngle) >= sweepAngle / 2f)
-            sweepingRight = !sweepingRight;
+        // ターゲット地点を線形補間で決定（地面上の「点」を狙い続ける）
+        Vector3 currentTarget = Vector3.Lerp(targetLeft, targetRight, progress);
 
-        // �� transform.forward �͎g��Ȃ��I
-        float yaw = baseYaw + currentAngle;
+        // 発射地点からターゲットへの方向を計算
+        Vector3 origin = transform.position;
+        Vector3 dir = (currentTarget - origin).normalized;
 
-        // ��Ƀ��[���h�
-        Vector3 dir = Quaternion.Euler(0f, yaw, 0f) * Vector3.forward;
-
-        // ��ɒn�ʂ���o��
-        Vector3 start = groundOrigin;
-
-        Vector3 hitPoint = start + dir * beamLength;
-
-        if (Physics.Raycast(start, dir, out RaycastHit hit, beamLength, groundLayer))
+        // 地面への衝突判定（必要に応じて）
+        Vector3 hitPoint = origin + dir * beamLength;
+        if (Physics.Raycast(origin, dir, out RaycastHit hit, beamLength, groundLayer))
         {
             hitPoint = hit.point;
         }
 
-        // �v���C���[����
-        RaycastHit[] hits = Physics.SphereCastAll(start, beamWidth, dir, beamLength);
+        // プレイヤー判定
+        RaycastHit[] hits = Physics.SphereCastAll(origin, beamWidth, dir, beamLength);
         foreach (var h in hits)
         {
-            if (h.collider.CompareTag("Player"))
+            if (h.collider.CompareTag("Player") && playerHealth != null)
             {
                 playerHealth.TakeDamage(1);
-                EffectManager.instance.Play("BeamColl", h.transform.position);
+                // EffectManager.instance.Play("BeamColl", h.point);
             }
         }
 
-        // LineRenderer
-        // �����ڂ̎n�_�́u��v
-        line.SetPosition(0, transform.position);
-
-        // �����ڂ̏I�_�́u�n�ʏ�̓ガ�������ʁv
+        // 見た目の更新
+        line.SetPosition(0, origin);
         line.SetPosition(1, hitPoint);
     }
 }

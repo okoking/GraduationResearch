@@ -34,8 +34,6 @@ public class BossHandL : MonoBehaviour
 
     public int FloorAtkNum;
 
-    GameObject[] floorAttackSub;          //床攻撃前の危険表示
-
     GameObject[] floorAttack;             //床攻撃
 
     Vector3[] PPos;
@@ -57,7 +55,6 @@ public class BossHandL : MonoBehaviour
             player = GameObject.FindWithTag("Player")?.transform;
 
         PPos = new Vector3[FloorAtkNum];
-        floorAttackSub = new GameObject[FloorAtkNum];
         floorAttack = new GameObject[FloorAtkNum];
         off = new int[FloorAtkNum];
 
@@ -180,7 +177,6 @@ public class BossHandL : MonoBehaviour
         for (int i = 0; i < FloorAtkNum; i++)
         {
             PPos[i] = new Vector3(player.position.x + Random.Range(-20, 20), 0.01f, player.position.z + Random.Range(-20, 20));
-            //floorAttackSub[i] = Instantiate(floorAttackSubPrefab, PPos[i], new Quaternion(0f, 0f, 0f, 0f));
             EffectManager.instance.Play("Ciecle", PPos[i]);
         }
         isFloorAtackDisp = true;

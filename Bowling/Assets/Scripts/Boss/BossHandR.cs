@@ -34,8 +34,6 @@ public class BossHandR : MonoBehaviour
 
     public int FloorAtkNum;
 
-    GameObject[] floorAttackSub;          //床攻撃前の危険表示
-
     GameObject[] floorAttack;             //床攻撃
 
     Vector3[] PPos;
@@ -54,7 +52,6 @@ public class BossHandR : MonoBehaviour
             player = GameObject.FindWithTag("Player")?.transform;
 
         PPos = new Vector3[FloorAtkNum];
-        floorAttackSub = new GameObject[FloorAtkNum];
         floorAttack = new GameObject[FloorAtkNum];
         off = new int[FloorAtkNum];
     }
