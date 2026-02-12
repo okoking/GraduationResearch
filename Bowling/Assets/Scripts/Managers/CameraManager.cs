@@ -89,7 +89,7 @@ public class CameraManager : MonoBehaviour
         }
 
         // 必要なカメラが全部揃ったら Ready
-        if (cameras.ContainsKey(CameraMode.Ivent) &&
+        if (/*cameras.ContainsKey(CameraMode.Ivent) &&*/
             cameras.ContainsKey(CameraMode.Player))
         {
             IsReady = true;
@@ -127,7 +127,7 @@ public class CameraManager : MonoBehaviour
 
     IEnumerator MoveFromIventToPlayer(float duration)
     {
-        if (!cameras.TryGetValue(CameraMode.Ivent, out var iventCam) ||
+        if (/*!cameras.TryGetValue(CameraMode.Ivent, out var iventCam) ||*/
        !cameras.TryGetValue(CameraMode.Player, out var playerCam))
         {
             Debug.LogError("Ivent / Player カメラが Register されていません");
@@ -137,36 +137,36 @@ public class CameraManager : MonoBehaviour
         //IventCamera を有効化
 
 
-        currentMode = CameraMode.Ivent;
-        Transform from = iventCam.transform;
-        Transform to = playerCam.transform;
+        currentMode = CameraMode.Player;
+        //Transform from = iventCam.transform;
+        //Transform to = playerCam.transform;
 
-        Vector3 startPos = from.position;
-        Quaternion startRot = from.rotation;
+        //Vector3 startPos = from.position;
+        //Quaternion startRot = from.rotation;
 
-        Vector3 endPos = to.position;
-        Quaternion endRot = to.rotation;
+        //Vector3 endPos = to.position;
+        //Quaternion endRot = to.rotation;
 
-        float t = 0f;
+        //float t = 0f;
 
-        while (t < 1f)
-        {
-            t += Time.deltaTime / duration;
-            float eased = EaseOut(t);
+        //while (t < 1f)
+        //{
+        //    t += Time.deltaTime / duration;
+        //    float eased = EaseOut(t);
 
-            from.position = Vector3.Lerp(startPos, endPos, eased);
-            from.rotation = Quaternion.Slerp(startRot, endRot, eased);
+        //    from.position = Vector3.Lerp(startPos, endPos, eased);
+        //    from.rotation = Quaternion.Slerp(startRot, endRot, eased);
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
 
-        //念のため最終一致
-        from.position = endPos;
-        from.rotation = endRot;
+        ////念のため最終一致
+        //from.position = endPos;
+        //from.rotation = endRot;
 
-        //// ★ PlayerCam も同じ Transform にする
-        //playerCam.transform.position = from.position;
-        //playerCam.transform.rotation = from.rotation;
+        ////// ★ PlayerCam も同じ Transform にする
+        ////playerCam.transform.position = from.position;
+        ////playerCam.transform.rotation = from.rotation;
 
         //PlayerCamera に切替
         SwitchCamera(CameraMode.Player);
