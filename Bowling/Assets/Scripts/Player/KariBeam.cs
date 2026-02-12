@@ -64,14 +64,11 @@ public class KariBeam : MonoBehaviour
         }
 
 
-        if (lockOn.lockOnTarget != null)
-        {
-            StartBeam();
+        StartBeam();
 
-            UpdateBeam();
+        UpdateBeam();
 
-            UpdateRotate();
-        }
+        UpdateRotate();
 
     }
 
@@ -83,16 +80,25 @@ public class KariBeam : MonoBehaviour
 
     void StartBeam()
     {
-        if (!isShotAnimationing || lockOn.lockOnTarget == null || !TriggershotBeam || !isFiring) return;
+        if (!isShotAnimationing|| !TriggershotBeam || !isFiring) return;
+
+        Quaternion rot = transform.rotation;
+
+        if (lockOn.lockOnTarget != null)
+        {
+            rot = Quaternion.LookRotation(GetDirToTarget());
+        }
 
         currentVFX = Instantiate(
-                vfxPrefab,
-                transform.position + Vector3.up * 1.0f,
-                Quaternion.LookRotation(GetDirToTarget())
+            vfxPrefab,
+            transform.position + Vector3.up * 1.0f,
+            rot
         );
 
         currentVFX.transform.SetParent(transform, true);
         currentVFX.SendEvent("OnPlay");
+        SoundManager.Instance.Request("BeamShot");
+
 
         TriggershotBeam = false;
     }
@@ -156,47 +162,61 @@ public class KariBeam : MonoBehaviour
 
     void UpdateBeam()
     {
-        if (!isShotAnimationing || lockOn.lockOnTarget == null || !isFiring) return;
+        if (!isShotAnimationing || !isFiring) return;
 
-        SoundManager.Instance.Request("PlayerShot");
-
-        Vector3 startPos = transform.position + Vector3.up * 1.0f;
-        Vector3 targetPos = lockOn.lockOnTarget.position + Vector3.up * 1.0f;
-
-        Vector3 dir = targetPos - startPos;
-        float length = dir.magnitude;
-
-        // 位置
-        currentVFX.transform.position = startPos;
-
-        // 向き
-        currentVFX.transform.rotation = Quaternion.LookRotation(dir);
-
-        // VFXに距離を渡す
-        currentVFX.transform.localScale = new Vector3(1, 1, length * .1f);
-
-        //var vfx = currentVFX.GetComponent<VisualEffect>();
-        //vfx.SetFloat("BeamLength", length);
-
-        // =====================
-        // 当たり判定（Raycast）
-        // =====================
-        Ray ray = new Ray(startPos, dir.normalized);
-
-        if (Physics.Raycast(ray, out RaycastHit hit, length))
+        if (lockOn.lockOnTarget != null)
         {
-            // デバッグ表示
-            //Debug.DrawRay(startPos, dir.normalized * hit.distance, Color.red);
+            Vector3 startPos = transform.position + Vector3.up * 1.0f;
+            Vector3 targetPos = lockOn.lockOnTarget.position + Vector3.up * 1.0f;
 
-            // ダメージ処理
-            if (hit.collider.CompareTag("Enemy"))
+            Vector3 dir = targetPos - startPos;
+            float length = dir.magnitude;
+
+            // 位置
+            currentVFX.transform.position = startPos;
+
+            // 向き
+            currentVFX.transform.rotation = Quaternion.LookRotation(dir);
+
+            // VFXに距離を渡す
+            currentVFX.transform.localScale = new Vector3(1, 1, length * .1f);
+
+            //var vfx = currentVFX.GetComponent<VisualEffect>();
+            //vfx.SetFloat("BeamLength", length);
+
+            // =====================
+            // 当たり判定（Raycast）
+            // =====================
+            Ray ray = new Ray(startPos, dir.normalized);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, length))
             {
-                hit.collider.GetComponent<EnemyAI>()?.TakeDamage(999, hit.point);
-                beamGauge.Charge();
-            }
+                // デバッグ表示
+                //Debug.DrawRay(startPos, dir.normalized * hit.distance, Color.red);
 
-            // ヒット地点までビームを止めたい場合
-            length = hit.distance;
+                // ダメージ処理
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    hit.collider.GetComponent<EnemyAI>()?.TakeDamage(999, hit.point);
+                    beamGauge.Charge();
+                }
+
+                // ヒット地点までビームを止めたい場合
+                length = hit.distance;
+            }
+        }
+        else
+        {
+            Vector3 startPos = transform.position + Vector3.up * 1.0f;
+
+            // 位置
+            currentVFX.transform.position = startPos;
+
+            // 向き
+            currentVFX.transform.rotation = transform.rotation;
+
+            // VFXに距離を渡す
+            currentVFX.transform.localScale = new Vector3(1f, 1f, 1f);
         }
     }
 

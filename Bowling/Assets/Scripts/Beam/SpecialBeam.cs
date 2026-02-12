@@ -46,7 +46,7 @@ public class SpecialBeam : MonoBehaviour
         //}
 
         // --- ŠJŽn ---
-        if (beamInput && beamCamera.isSootBeam && !isActive)
+        if (beamInput && beamCamera.isSootBeam && !isActive && beamGauge.TryConsume())
         {
             beamGauge.SetUsingBeam(true);
             StartBeam();
@@ -116,6 +116,8 @@ public class SpecialBeam : MonoBehaviour
 
         currentVFX.transform.SetParent(transform, true);
         currentVFX.SendEvent("OnPlay");
+
+        SoundManager.Instance.Request("BeamShot");
 
         isActive = true;
     }

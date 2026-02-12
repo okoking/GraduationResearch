@@ -1049,6 +1049,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HitSoundOjc
       objectReference: {fileID: 0}
+    - target: {fileID: 3915239840544829039, guid: 84e6a004842dad24d8b1e604742cdbaf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1185,6 +1189,10 @@ PrefabInstance:
     - target: {fileID: 7668213291637615090, guid: 711d96b85d4cc7241949dc3f2abb19b4, type: 3}
       propertyPath: m_Name
       value: HitBGMOjc
+      objectReference: {fileID: 0}
+    - target: {fileID: 7668213291637615090, guid: 711d96b85d4cc7241949dc3f2abb19b4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1687,6 +1695,10 @@ PrefabInstance:
     - target: {fileID: 3915239840544829039, guid: 84e6a004842dad24d8b1e604742cdbaf, type: 3}
       propertyPath: m_Name
       value: HitSoundOjc
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915239840544829039, guid: 84e6a004842dad24d8b1e604742cdbaf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2474,6 +2486,10 @@ PrefabInstance:
     - target: {fileID: 7668213291637615090, guid: 711d96b85d4cc7241949dc3f2abb19b4, type: 3}
       propertyPath: m_Name
       value: HitBGMOjc
+      objectReference: {fileID: 0}
+    - target: {fileID: 7668213291637615090, guid: 711d96b85d4cc7241949dc3f2abb19b4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

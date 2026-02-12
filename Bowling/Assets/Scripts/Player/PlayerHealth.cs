@@ -53,7 +53,10 @@ public class PlayerHealth : MonoBehaviour
         {
             Die();
         }
-        SoundManager.Instance.Request("PlayerDamage");
+        else
+        {
+            SoundManager.Instance.Request("PlayerDamage");
+        }
         StartCoroutine(InvincibleCoroutine());
     }
 
@@ -95,6 +98,7 @@ public class PlayerHealth : MonoBehaviour
     {
         Debug.Log("プレイヤー死亡！");
         // 例）アニメ再生、リスポーン、ゲームオーバーUI表示など
+        SoundManager.Instance.Request("BeamShot");
 
         transform.position = Vector3.zero;
         currentHealth = maxHealth;
