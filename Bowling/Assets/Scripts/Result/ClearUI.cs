@@ -10,6 +10,8 @@ public class ClearUI : MonoBehaviour
     int cont = 200;  //フェード開始のカウント
 
 
+
+
     void Start()
     {
         canvasGroup.alpha = 0f;
