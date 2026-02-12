@@ -92,9 +92,12 @@ public class SceneController : MonoBehaviour
     }
     public async Task GoTo(GameState group)
     {
+        await FadeManager.Instance.FadeOut();
+
         await UnloadAllExceptManagers();
         await LoadSceneAsync(SceneGroups.Groups[group]);
 
+        await FadeManager.Instance.FadeIn();
     }
 
     private async Task UnloadAllExceptManagers()
