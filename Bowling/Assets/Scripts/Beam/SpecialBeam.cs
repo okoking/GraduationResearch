@@ -78,6 +78,8 @@ public class SpecialBeam : MonoBehaviour
 
         if (isActive)
         {
+            disableRotate = true;
+
             if (beamGauge.TryConsume())
             {
                 if (beamInput)
@@ -87,14 +89,14 @@ public class SpecialBeam : MonoBehaviour
                 }
                 else
                 {
-                    disableRotate = true;
+                    //disableRotate = true;
                     StopBeam();
                     beamGauge.SetUsingBeam(false);
                 }
             }
             else
             {
-                disableRotate = true;
+                //disableRotate = true;
                 StopBeam();
                 beamGauge.SetUsingBeam(false);
             }
@@ -110,7 +112,7 @@ public class SpecialBeam : MonoBehaviour
     {
         currentVFX = Instantiate(
             vfxPrefab,
-            transform.position + Vector3.up * 1.0f,
+            transform.position + Vector3.up * 1.0f + transform.forward * 1.0f,
             Quaternion.LookRotation(GetCenterToPlayerDir())
         );
 
@@ -130,17 +132,20 @@ public class SpecialBeam : MonoBehaviour
 
         // 体を向ける
         // ★ 撃っている方向にプレイヤーを向ける（水平だけ）
-        Vector3 lookDir = dir;
-        lookDir.y = 0;
-        Quaternion targetRot = Quaternion.LookRotation(lookDir);
+        //Vector3 lookDir = dir;
+        //lookDir.y = 0;
+        //Quaternion targetRot = Quaternion.LookRotation(lookDir);
+
+        Quaternion targetRot = Quaternion.LookRotation(dir);
+
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
             targetRot,
             10.0f * Time.deltaTime
         );
 
-        currentVFX.transform.position = transform.position + Vector3.up * 1.0f;
-        currentVFX.transform.rotation = Quaternion.LookRotation(dir);
+        currentVFX.transform.position = transform.position + Vector3.up * 1.0f + transform.forward * 1.5f;
+        currentVFX.transform.rotation = targetRot;
     }
 
     void StopBeam()
@@ -162,10 +167,11 @@ public class SpecialBeam : MonoBehaviour
     {
         //Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // 中央(0.5,0.5)
         Vector3 dir = GetCenterToPlayerDir();
+
         if (Physics.SphereCast(
             transform.position,  // プレイヤー位置
-            1f,                  // 半径
-            dir,                 // ← さっきの座標方向
+            2f,                  // 半径
+            dir,
             out RaycastHit hit,
             30f                  // 距離
         ))
@@ -175,11 +181,11 @@ public class SpecialBeam : MonoBehaviour
                 Debug.Log("Hit");
                 hit.collider.GetComponent<EnemyAI>()?.TakeDamage(999, hit.point);
             }
-            else if (hit.collider.CompareTag("Boss"))
+            if (hit.collider.CompareTag("Boss"))
             {
                 hit.collider.GetComponent<BossHp>()?.TakeDamage(1);
             }
-            else if (hit.collider.CompareTag("Bosshand"))
+            if (hit.collider.CompareTag("Bosshand"))
             {
                 hit.collider.GetComponent<BossHandHp>()?.TakeDamage(1);
             }
@@ -202,31 +208,28 @@ public class SpecialBeam : MonoBehaviour
 
     Vector3 GetCenterRayPoint()
     {
-        // 画面中央
-        Vector3 center = new Vector3(
-            Screen.width * 0.5f,
-            Screen.height * 0.5f,
-            0f
+        Ray ray = mainCam.ScreenPointToRay(
+            new Vector3(Screen.width / 2f, Screen.height / 2f, 0f)
         );
 
-        Ray ray = mainCam.ScreenPointToRay(center);
 
-        RaycastHit[] hits = Physics.RaycastAll(ray, beamRange);
-
-        float nearestDist = float.MaxValue;
         Vector3 result = ray.origin + ray.direction * beamRange;
 
-        foreach (var h in hits)
-        {
-            if (h.collider.CompareTag("Untagged"))
-                continue;
+        //RaycastHit[] hits = Physics.RaycastAll(ray, beamRange);
 
-            if (h.distance < nearestDist)
-            {
-                nearestDist = h.distance;
-                result = h.point;
-            }
-        }
+        //float nearestDist = float.MaxValue;
+
+        //foreach (var h in hits)
+        //{
+        //    if (h.collider.CompareTag("Untagged"))
+        //        continue;
+
+        //    if (h.distance < nearestDist)
+        //    {
+        //        nearestDist = h.distance;
+        //        result = h.point;
+        //    }
+        //}
 
         return result;
     }
