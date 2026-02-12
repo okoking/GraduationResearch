@@ -8,8 +8,6 @@ public class Title : MonoBehaviour
     void Start()
     {
         Debug.Log("ゲーム開始");
-        //UIシーンを合わせている
-        //SceneManager.LoadScene("TitleUi", LoadSceneMode.Additive);
         SoundManager.Instance.Request("BGMTitle");
     }
 
@@ -17,25 +15,16 @@ public class Title : MonoBehaviour
     void Update()
     {
 
-        //if (InputManager.Instance.Jump)
-        //{
-        //    Debug.Log("ボタン押された");
-        //}
-
-        ////オプションシーンへ
-        //if (InputManager.Instance.Option)
-        //{
-        //    SceneController.Instance.ChangeState(GameState.Option);
-        //}
-
         //ステージセレクトシーンへ
         if (InputManager.Instance.Enter)
         {
             SceneController.Instance.ChangeState(GameState.Play);
+            SoundManager.Instance.Stop("BGMTitle");
         }
             if (Input.GetKeyDown(KeyCode.Joystick1Button0))
         {
             SceneController.Instance.ChangeState(GameState.Play);
+            SoundManager.Instance.Stop("BGMTitle");
         }
     }
 }

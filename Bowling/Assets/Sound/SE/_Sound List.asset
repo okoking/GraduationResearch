@@ -18,7 +18,7 @@ MonoBehaviour:
     soundVolume: 1
     comment: 
   - soundID: BGMTitle
-    audioClip: {fileID: 8300000, guid: a80b3067cdb6c334f937fecd12775425, type: 3}
+    audioClip: {fileID: 8300000, guid: 17f1f5e41c1c0f04c97fad98eeea3266, type: 3}
     soundVolume: 1
     comment: 
   - soundID: PlayerShot

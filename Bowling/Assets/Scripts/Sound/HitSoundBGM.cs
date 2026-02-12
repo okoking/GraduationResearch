@@ -25,8 +25,9 @@ public class HitSoundBGM : MonoBehaviour
         {
             if (other.CompareTag(_data.tagName))
             {
-                audioSource.clip = _data.hitBGM;
-                audioSource.Play();
+                //òAë±Ç≈çƒê∂Ç≥ÇÍÇÈ
+                //audioSource.clip = _data.hitBGM;
+                //audioSource.Play();
                 //if (!audioSource.isPlaying)
                 //{
                 //    audioSource.PlayOneShot(_data.hitBGM);
