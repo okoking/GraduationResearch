@@ -127,6 +127,12 @@ public class EnemySpawn : MonoBehaviour
         }
 
         activeEnemies.Clear();
+
+        //ここで攻撃管理のリセットを呼び出す
+        if (EnemyManager.Instance != null)
+        {
+            EnemyManager.Instance.ResetAttackStatus();
+        }
     }
 
     Transform GetRandomSpawnPoint()

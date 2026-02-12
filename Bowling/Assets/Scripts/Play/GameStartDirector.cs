@@ -47,7 +47,7 @@ public class GameStartDirector : MonoBehaviour
         //ロック
         IsGameStarted = false;
 
-        yield return new WaitForSecondsRealtime(2.0f);
+        //yield return new WaitForSecondsRealtime(2.0f);
 
         //CameraManager.Instance.PlayRailWithFade(startRail, lookTarget, railDuration,
         //    1f);
@@ -59,7 +59,7 @@ public class GameStartDirector : MonoBehaviour
         CameraManager.Instance.PlayMoveFromIventToPlayer(cameraDuration);
         yield return new WaitForSecondsRealtime(cameraDuration);
 
-        yield return new WaitForSecondsRealtime(2.0f);
+        //yield return new WaitForSecondsRealtime(2.0f);
 
         //カウントダウン
         countdownText.gameObject.SetActive(true);

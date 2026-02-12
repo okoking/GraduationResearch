@@ -151,12 +151,12 @@ public class SceneController : MonoBehaviour
     }
     private void OnGUI()
     {
-        if (Instance == null) return;
+        //if (Instance == null) return;
 
-        GameState mode = Instance.CurrentState;
-        GUI.color = Color.cyan;
+        //GameState mode = Instance.CurrentState;
+        //GUI.color = Color.cyan;
 
-        GUI.Label(new Rect(200, 5, 300, 30), $"現在のシーン: {mode}");
+        //GUI.Label(new Rect(200, 5, 300, 30), $"現在のシーン: {mode}");
 
         ////モードに応じて有効化
         //switch (mode)

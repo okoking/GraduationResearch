@@ -95,5 +95,14 @@ public class AttackController
         maxAttacker = baseMaxAttacker;
     }
 
+    public void ResetController()
+    {
+        currentAttacking = 0;
+        attackQueue.Clear();
+        globalAttackTimer = 0f;
+        EndRush(); // ラッシュ中ならそれも解除
+        Debug.Log("[AttackController] 攻撃状態をリセットしました");
+    }
+
     public int CurrentAttacking => currentAttacking;
 }

@@ -164,6 +164,14 @@ public class EnemyManager : MonoBehaviour
         foreach (var e in enemies) e.SetPlayer(player);
     }
 
+    public void ResetAttackStatus()
+    {
+        if (attackController != null)
+        {
+            attackController.ResetController();
+        }
+    }
+
     //取得関数
     public Transform Player => player;
     public AttackController AttackController => attackController;
