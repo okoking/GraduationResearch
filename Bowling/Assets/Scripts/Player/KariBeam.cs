@@ -94,9 +94,6 @@ public class KariBeam : MonoBehaviour
         currentVFX.transform.SetParent(transform, true);
         currentVFX.SendEvent("OnPlay");
 
-        //SoundManager.Instance.Request("PlayerShot");
-
-
         TriggershotBeam = false;
     }
 
@@ -160,6 +157,8 @@ public class KariBeam : MonoBehaviour
     void UpdateBeam()
     {
         if (!isShotAnimationing || lockOn.lockOnTarget == null || !isFiring) return;
+
+        SoundManager.Instance.Request("PlayerShot");
 
         Vector3 startPos = transform.position + Vector3.up * 1.0f;
         Vector3 targetPos = lockOn.lockOnTarget.position + Vector3.up * 1.0f;
