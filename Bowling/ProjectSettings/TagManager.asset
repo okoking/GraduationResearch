@@ -25,6 +25,9 @@ TagManager:
   - BeamPointL
   - BeamPointR
   - TitleFloor
+  - PlayArea1
+  - PlayArea2
+  - PlayAreaBoss
   layers:
   - Default
   - TransparentFX

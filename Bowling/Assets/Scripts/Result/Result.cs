@@ -7,11 +7,8 @@ public class Result : MonoBehaviour
     void Start()
     {
         Debug.Log("ゲーム開始");
-        //UIシーンを合わせている
-        SceneManager.LoadScene("ResultUI", LoadSceneMode.Additive);
 
-        //SoundManager.Instance.Request("BGM_Result");
-
+        SoundManager.Instance.Request("BGMResult");
     }
 
     // Update is called once per frame
@@ -23,5 +20,11 @@ public class Result : MonoBehaviour
         //{
         //    //SceneController.Instance.ChangeState(GameState.Title);
         //}
+
+        //仮追加
+        if (InputManager.Instance.Enter)
+        {
+            SoundManager.Instance.Stop("BGMResult");
+        }
     }
 }
