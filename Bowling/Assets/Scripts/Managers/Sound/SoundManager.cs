@@ -73,6 +73,8 @@ public class SoundManager : MonoBehaviour
 
         //指定した位置で鳴らす（0=2D, 1=3D）
         audioSource.GetComponent<AudioSource>().spatialBlend = 1f;
+        audioSource.GetComponent<AudioSource>().maxDistance = 100f;
+        audioSource.GetComponent<AudioSource>().minDistance = 10f;
 
         //再生
         audioSource.GetComponent<AudioSource>().Play();
