@@ -1,18 +1,16 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
-[RequireComponent(typeof(LineRenderer))]
 public class BeamSweepController : MonoBehaviour
 {
-    public float duration = 2f;        // ビームが出ている時間
-    public float sweepAngle = 90f;     // 振り幅
-    public float sweepSpeed = 90f;     // 回転速度
-    public float beamLength = 50f;     // 最大長さ
-    public float beamWidth = 0.2f;     // 太さ
-    public LayerMask groundLayer;      // 地面レイヤーを設定（例：Default）
+    public float duration = 2f;
+    public float sweepAngle = 90f;
+    public float sweepSpeed = 90f;
+    public float beamLength = 50f;
+    public float beamWidth = 0.2f;
+    public LayerMask groundLayer;
 
-    private LineRenderer line;
-    private float timer;
+    public ParticleSystem beamEffect;
+
     private float currentAngle;
     private bool sweepingRight = true;
 
@@ -20,47 +18,43 @@ public class BeamSweepController : MonoBehaviour
 
     void Start()
     {
-        line = GetComponent<LineRenderer>();
-        line.positionCount = 2;
-        line.startWidth = beamWidth;
-        line.endWidth = beamWidth;
-        line.useWorldSpace = true;
-
         currentAngle = -sweepAngle / 2f;
-
         Destroy(gameObject, duration);
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
-        {
             playerHealth = player.GetComponent<PlayerHealth>();
-        }
     }
 
     void Update()
     {
-        timer += Time.deltaTime;
-
-        // 回転角度更新
+        // スイープ回転
         float step = sweepSpeed * Time.deltaTime * (sweepingRight ? 1 : -1);
         currentAngle += step;
         if (Mathf.Abs(currentAngle) >= sweepAngle / 2f)
             sweepingRight = !sweepingRight;
 
-        // 回転方向計算
         Quaternion rot = Quaternion.Euler(0, currentAngle, 0);
         Vector3 dir = rot * transform.forward;
 
-        // 地面ヒットチェック
         Vector3 start = transform.position;
-        Vector3 hitPoint = start + dir * beamLength; // デフォルトは最大距離
+        Vector3 end = start + dir * beamLength;
 
         if (Physics.Raycast(start, dir, out RaycastHit hit, beamLength, groundLayer))
-        {
-            hitPoint = hit.point;
-        }
+            end = hit.point;
 
-        RaycastHit[] hits = Physics.SphereCastAll(start, beamWidth, dir, beamLength);
+        float length = Vector3.Distance(start, end);
+
+        // ===== エフェクト制御 =====
+        transform.rotation = rot;
+
+        var shape = beamEffect.shape;
+        shape.scale = new Vector3(beamWidth, beamWidth, length);
+
+        beamEffect.transform.position = start + dir * (length * 0.5f);
+
+        // ===== 当たり判定 =====
+        RaycastHit[] hits = Physics.SphereCastAll(start, beamWidth, dir, length);
         foreach (var h in hits)
         {
             if (h.collider.CompareTag("Player"))
@@ -69,9 +63,5 @@ public class BeamSweepController : MonoBehaviour
                 EffectManager.instance.Play("BeamColl", h.transform.position);
             }
         }
-
-        // LineRenderer更新
-        line.SetPosition(0, start);
-        line.SetPosition(1, hitPoint);
     }
 }
