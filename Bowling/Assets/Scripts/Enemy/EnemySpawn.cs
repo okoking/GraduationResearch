@@ -59,6 +59,12 @@ public class EnemySpawn : MonoBehaviour
     }
     public void SpawnEnemies()
     {
+        //null（既に破壊された敵）をリストから除去してカウントを正確にする
+        activeEnemies.RemoveAll(e => e == null);
+
+        if (activeEnemies.Count >= maxEnemyCount)
+            return;
+
         //すでに最大数なら何もしない
         if (activeEnemies.Count >= maxEnemyCount)
             return;

@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.Audio;
+#if UNITY_EDITOR
 using static TreeEditor.TreeGroup;
 using static UnityEditor.PlayerSettings;
+#endif
 
 public class SoundManager : MonoBehaviour
 {
