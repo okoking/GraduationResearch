@@ -117,7 +117,9 @@ public class AttackState : IState
 
             if (!isDashing)
             {
-               
+                //ƒTƒEƒ“ƒh‚ğÄ¶
+                SoundManager.Instance.Request("EnemyCharge", enemy.transform.localPosition);
+
 
                 dashDir = (player.position - enemy.transform.position).normalized;
                 dashDir.y = 0f;

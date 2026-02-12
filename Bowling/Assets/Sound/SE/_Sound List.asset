@@ -23,7 +23,7 @@ MonoBehaviour:
     comment: 
   - soundID: PlayerShot
     audioClip: {fileID: 8300000, guid: 3b6cc825be3d50c40a61a1863401cfd6, type: 3}
-    soundVolume: 1
+    soundVolume: 0.587
     comment: "\u30D7\u30EC\u30A4\u30E4\u30FC\u306E\u901A\u5E38\u653B\u6483"
   - soundID: PlayerDamage
     audioClip: {fileID: 8300000, guid: c342e5d98d5d6864e823cb0132480623, type: 3}

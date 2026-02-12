@@ -90,6 +90,9 @@ public class Missile : MonoBehaviour
         }
 
         homingTimer = homingDuration;
+
+        //サウンドを再生
+        SoundManager.Instance.Request("MissileShot", gameObject.transform.localPosition);
     }
 
     public void Update()
@@ -142,6 +145,8 @@ public class Missile : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        //サウンドを再生
+        SoundManager.Instance.Request("MissileImpact", gameObject.transform.localPosition);
 
         //ターゲットに当たった
         if (other.gameObject.CompareTag("Player"))
@@ -165,8 +170,6 @@ public class Missile : MonoBehaviour
             EffectManager.instance.Play("MissileHit", gameObject.transform.position);
             return;
         }
-
-        
     }
 
     Transform FindRandomTarget()
