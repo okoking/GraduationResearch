@@ -23,7 +23,7 @@ public class EnemySpawn : MonoBehaviour
     [Header("敵タイプ出現率")]
     [SerializeField] private float meleeRate = 0.6f; // 60% Melee
     [Header("同時出現できる最大敵数")]
-    [SerializeField] private int maxEnemyCount = 70;
+    [SerializeField] private int maxEnemyCount = 100;
 
     [System.Serializable]
     public class SpawnRange
@@ -116,12 +116,17 @@ public class EnemySpawn : MonoBehaviour
     {
         foreach (var e in activeEnemies)
         {
-            if (e != null) Destroy(e);
-        }
-        activeEnemies.Clear();
+            if (e != null)
+            {
+                var ai = e.GetComponent<EnemyAI>();
+                if (ai != null)
+                    EnemyManager.Instance.UnregisterEnemy(ai);
 
-        if (EnemySpawn.Instance != null)
-            EnemySpawn.Instance.UnregisterEnemy(gameObject);
+                Destroy(e);
+            }
+        }
+
+        activeEnemies.Clear();
     }
 
     Transform GetRandomSpawnPoint()

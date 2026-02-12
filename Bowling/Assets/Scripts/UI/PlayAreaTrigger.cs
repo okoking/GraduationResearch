@@ -18,30 +18,27 @@ public class PlayAreaTrigger : MonoBehaviour
                 if (EnemySpawn.Instance.currentStage != 0)
                 {
                     EnemySpawn.Instance.ClearEnemies();
-                    Debug.LogWarning("“G‚ğÁ‹‚µ‚Ü‚µ‚½");
                 }
                 EnemySpawn.Instance.SetStage(0);
-               
+                EnemySpawn.Instance.SpawnEnemies();
             }
             else if(areaName == "‘æ2ƒGƒŠƒA")
             {
                 if (EnemySpawn.Instance.currentStage != 1)
                 {
                     EnemySpawn.Instance.ClearEnemies();
-                    Debug.LogWarning("“G‚ğÁ‹‚µ‚Ü‚µ‚½");
                 }
                 EnemySpawn.Instance.SetStage(1);
-                
+                EnemySpawn.Instance.SpawnEnemies();
             }
             else if(areaName == "‘æ3ƒGƒŠƒA")
             {
                 if (EnemySpawn.Instance.currentStage != 2)
                 {
                     EnemySpawn.Instance.ClearEnemies();
-                    Debug.LogWarning("“G‚ğÁ‹‚µ‚Ü‚µ‚½");
                 }
                 EnemySpawn.Instance.SetStage(2);
-               
+                EnemySpawn.Instance.SpawnEnemies();
             }
         }
     }

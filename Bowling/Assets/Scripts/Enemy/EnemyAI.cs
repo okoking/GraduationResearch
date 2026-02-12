@@ -227,6 +227,8 @@ public class EnemyAI : MonoBehaviour
         //    debugLine.SetPosition(0, transform.position + Vector3.up * 0.1f);
         //    debugLine.SetPosition(1, patrolTarget + Vector3.up * 0.1f);
         //}
+
+       
     }
 
     //プレイヤーを見つけたか
@@ -281,7 +283,7 @@ public class EnemyAI : MonoBehaviour
                 }
             }
         }
-        Debug.LogError("有効なパトロール地点が見つかりません");
+        //Debug.LogError("有効なパトロール地点が見つかりません");
     }
 
     public Vector3 EncircleDir(Vector3 toPlayer)
@@ -467,6 +469,12 @@ public class EnemyAI : MonoBehaviour
 
             Agent.Move(away.normalized * Time.deltaTime * 1.5f);
         }
+    }
+
+    void OnDestroy()
+    {
+        if (EnemyManager.Instance != null)
+            EnemyManager.Instance.UnregisterEnemy(this);
     }
 
     //外部用の読み取り専用関数
