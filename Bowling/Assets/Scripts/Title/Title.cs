@@ -8,7 +8,7 @@ public class Title : MonoBehaviour
     void Start()
     {
         Debug.Log("ƒQ[ƒ€ŠJn");
-        SoundManager.Instance.Request("BGMTitle");
+        SoundManager.Instance.Request("BGMTitle",true);
 
     }
 

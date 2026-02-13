@@ -19,19 +19,19 @@ MonoBehaviour:
     comment: 
   - soundID: BGMTitle
     audioClip: {fileID: 8300000, guid: 17f1f5e41c1c0f04c97fad98eeea3266, type: 3}
-    soundVolume: 1
+    soundVolume: 0.512
     comment: 
   - soundID: BGMPlayFirstArea
     audioClip: {fileID: 8300000, guid: bca166aede9b7084e8f6807054c772b6, type: 3}
-    soundVolume: 1
+    soundVolume: 0.672
     comment: 
   - soundID: BGMPlaySecondArea
     audioClip: {fileID: 8300000, guid: 7df851db7eb23cf41bc229d8903f216e, type: 3}
-    soundVolume: 1
+    soundVolume: 0.68
     comment: 
   - soundID: BGMPlayBossArea
     audioClip: {fileID: 8300000, guid: f03231a07c5e08f4aa6a85763ac77730, type: 3}
-    soundVolume: 1
+    soundVolume: 0.715
     comment: 
   - soundID: PlayerShot
     audioClip: {fileID: 8300000, guid: 3b6cc825be3d50c40a61a1863401cfd6, type: 3}
