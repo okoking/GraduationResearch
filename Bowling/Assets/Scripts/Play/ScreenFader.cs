@@ -17,7 +17,6 @@ public class ScreenFader : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         if (fadeImage == null)
         {

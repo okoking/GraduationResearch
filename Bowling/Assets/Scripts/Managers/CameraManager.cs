@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 //カメラモード
 public enum CameraMode
@@ -32,10 +33,15 @@ public class CameraManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject);
 
+        //if (cameras.ContainsKey(CameraMode.Player))
+        //{
+        //    cameras[CameraMode.Player].gameObject.SetActive(true);
+        //    IsReady = true;
+        //}
     }
 
     void Start()
@@ -78,14 +84,39 @@ public class CameraManager : MonoBehaviour
             Debug.LogError($"CameraMode {mode} のカメラが未登録です");
             return;
         }
+        // 破棄されたカメラを除去
+        List<CameraMode> removeKeys = new List<CameraMode>();
 
-        //全OFF
-        foreach (var cam in cameras.Values)
-            cam.gameObject.SetActive(false);
+        foreach (var pair in cameras)
+        {
+            if (pair.Value == null)
+            {
+                removeKeys.Add(pair.Key);
+                continue;
+            }
+
+            pair.Value.gameObject.SetActive(false);
+        }
+
+        foreach (var key in removeKeys)
+            cameras.Remove(key);
+
+        if (!cameras.ContainsKey(mode) || cameras[mode] == null)
+        {
+            Debug.LogError("指定カメラは既に破棄されています");
+            return;
+        }
 
         currentMode = mode;
         cameras[mode].gameObject.SetActive(true);
         Debug.Log($"カメラ切替: {mode}");
+        ////全OFF
+        //foreach (var cam in cameras.Values)
+        //    cam.gameObject.SetActive(false);
+
+        //currentMode = mode;
+        //cameras[mode].gameObject.SetActive(true);
+        //Debug.Log($"カメラ切替: {mode}");
     }
 
     //カメラ演出
@@ -110,4 +141,10 @@ public class CameraManager : MonoBehaviour
         //PlayerCamera に切替
         SwitchCamera(CameraMode.Player);
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
+
 }

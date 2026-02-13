@@ -5,10 +5,6 @@ using Unity.Cinemachine;
 
 public class GameStartDirector : MonoBehaviour
 {
-    //[Header("Camera")]
-    //[SerializeField] CinemachineVirtualCamera introCam;
-    //[SerializeField] CinemachineVirtualCamera playCam;
-
     [Header("UI")]
     [SerializeField] TextMeshProUGUI countdownText;
     [SerializeField] TextMeshProUGUI goText;
@@ -16,10 +12,6 @@ public class GameStartDirector : MonoBehaviour
     [Header("Timing")]
     [SerializeField] float cameraDuration = 2.0f;
     [SerializeField] float countInterval = 1.0f;
-
-    [SerializeField] CameraRail startRail;
-    [SerializeField] float railDuration = 3f;
-    [SerializeField] Transform lookTarget;
 
     public static bool IsGameStarted { get; private set; }
 
@@ -52,8 +44,6 @@ public class GameStartDirector : MonoBehaviour
         //カメラ演出
         CameraManager.Instance.PlayMoveFromIventToPlayer(cameraDuration);
         yield return new WaitForSecondsRealtime(cameraDuration);
-
-        //yield return new WaitForSecondsRealtime(2.0f);
 
         //カウントダウン
         countdownText.gameObject.SetActive(true);

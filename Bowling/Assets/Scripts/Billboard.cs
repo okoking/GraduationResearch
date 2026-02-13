@@ -6,7 +6,13 @@ public class BillBoard : MonoBehaviour
     public Vector3 offset = new Vector3(0, 2f, 0); // ì™è„ÇÃçÇÇ≥
     void LateUpdate()
     {
-        transform.rotation = Quaternion.LookRotation(Camera.main.transform.forward);
+        if (transform != null)
+        {
+            if (Camera.main != null)
+            {
+                transform.rotation = Quaternion.LookRotation(Camera.main.transform.forward);
+            }
+        }
         // ìGÇÃì™è„Ç÷í«è]
         if (enemy != null)
             transform.position = enemy.position + offset;

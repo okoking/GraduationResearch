@@ -42,6 +42,8 @@ public class PlayerMovement : MonoBehaviour
         if (transform.position.z > GoalLine)
         {
             SceneController.Instance.ChangeState(GameState.Result);
+            EnemySpawn.Instance.ClearEnemies();
+            Destroy(CameraManager.Instance);
         }
 
 
