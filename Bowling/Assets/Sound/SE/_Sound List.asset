@@ -85,3 +85,19 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: f03231a07c5e08f4aa6a85763ac77730, type: 3}
     soundVolume: 1
     comment: 
+  - soundID: EnemyFind
+    audioClip: {fileID: 8300000, guid: 4a8834f46900c4844a334b8fa2e5c89d, type: 3}
+    soundVolume: 0.473
+    comment: 
+  - soundID: EnemyCharge
+    audioClip: {fileID: 8300000, guid: 143fd392a2152b24ea78b5f7182b1d34, type: 3}
+    soundVolume: 1
+    comment: 
+  - soundID: EnemyExplosion
+    audioClip: {fileID: 8300000, guid: 3336e5c425c9a7644b946323f399228f, type: 3}
+    soundVolume: 1
+    comment: 
+  - soundID: EnemySpawn
+    audioClip: {fileID: 8300000, guid: 641c5d129e012d143ad73ce43ce52cfb, type: 3}
+    soundVolume: 0.313
+    comment: 
