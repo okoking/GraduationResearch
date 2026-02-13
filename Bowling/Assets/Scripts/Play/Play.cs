@@ -28,6 +28,7 @@ public class Play : MonoBehaviour
         {
             SceneController.Instance.ChangeState(GameState.Result);
             EnemySpawn.Instance.ClearEnemies();
+            Destroy(CameraManager.Instance);
         }
 
         //フリーカメラに変更

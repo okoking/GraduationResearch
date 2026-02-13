@@ -16,10 +16,14 @@ public class Result : MonoBehaviour
     {
 
         //ステージセレクトシーンへ
-        //if (InputManager.Instance.Enter)
-        //{
-        //    //SceneController.Instance.ChangeState(GameState.Title);
-        //}
+        if (Input.GetKeyDown(KeyCode.Joystick1Button0))
+        {
+            SceneController.Instance.ChangeState(GameState.Title);
+        }
+        if (Input.GetKeyDown(KeyCode.Joystick1Button1))
+        {
+            SceneController.Instance.ChangeState(GameState.Title);
+        }
 
         //仮追加
         if (InputManager.Instance.Enter)

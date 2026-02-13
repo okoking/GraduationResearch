@@ -37,10 +37,7 @@ public class GameStartDirector : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            CameraManager.Instance.PlayMoveFromIventToPlayer(cameraDuration);
-        }
+       
     }
 
     IEnumerator GameStartSequence()
@@ -51,14 +48,6 @@ public class GameStartDirector : MonoBehaviour
 
         //ロック
         IsGameStarted = false;
-
-        //yield return new WaitForSecondsRealtime(2.0f);
-
-        //CameraManager.Instance.PlayRailWithFade(startRail, lookTarget, railDuration,
-        //    1f);
-        //CameraManager.Instance.PlayRail(startRail, lookTarget, railDuration,
-        //    CameraLookMode.LookTarget);
-        //yield return new WaitForSecondsRealtime(railDuration);
 
         //カメラ演出
         CameraManager.Instance.PlayMoveFromIventToPlayer(cameraDuration);
