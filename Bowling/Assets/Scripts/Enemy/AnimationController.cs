@@ -8,7 +8,7 @@ public enum AnimState
     
 }
 
-public class AnimationController : MonoBehaviour
+public class AnimationController/* : MonoBehaviour*/
 {
     Animator animator;
     AnimState current;

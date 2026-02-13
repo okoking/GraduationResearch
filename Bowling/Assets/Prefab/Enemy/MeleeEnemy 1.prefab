@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 8885601556375657235}
   - component: {fileID: 7753166806999109}
   - component: {fileID: -5292197040953612286}
-  - component: {fileID: -8654461938833969441}
   - component: {fileID: 9141554693360395717}
   m_Layer: 0
   m_Name: MeleeEnemy 1
@@ -122,7 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5238c6b5a58b4b648b7ec9f7c5961f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 0}
   enemyType: 0
   patrolRadius: 30
   patrolWaitTime: 2
@@ -184,18 +182,6 @@ MonoBehaviour:
   iterationCount: 2
   interval: 0.1
   MeterMax: 100
---- !u!114 &-8654461938833969441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5411282424450531688}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2b69310653389f4ea8f1b5d9d520070, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &9141554693360395717
 Animator:
   serializedVersion: 7

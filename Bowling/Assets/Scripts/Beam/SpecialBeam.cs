@@ -1,5 +1,7 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.VFX;
+using static UnityEngine.UI.Image;
 
 public class SpecialBeam : MonoBehaviour
 {
@@ -167,14 +169,13 @@ public class SpecialBeam : MonoBehaviour
     {
         //Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // 中央(0.5,0.5)
         Vector3 dir = GetCenterToPlayerDir();
-
-        if (Physics.SphereCast(
-            transform.position,  // プレイヤー位置
-            2f,                  // 半径
+        RaycastHit[] hits = 
+            Physics.SphereCastAll(transform.position,
+            2f,
             dir,
-            out RaycastHit hit,
-            30f                  // 距離
-        ))
+            30f);
+
+        foreach (RaycastHit hit in hits)
         {
             if (hit.collider.CompareTag("Enemy"))
             {
@@ -190,6 +191,29 @@ public class SpecialBeam : MonoBehaviour
                 hit.collider.GetComponent<BossHandHp>()?.TakeDamage(1);
             }
         }
+
+        //if (Physics.SphereCast(
+        //    transform.position,  // プレイヤー位置
+        //    2f,                  // 半径
+        //    dir,
+        //    out RaycastHit hit,
+        //    30f                  // 距離
+        //))
+        //{
+        //    if (hit.collider.CompareTag("Enemy"))
+        //    {
+        //        Debug.Log("Hit");
+        //        hit.collider.GetComponent<EnemyAI>()?.TakeDamage(999, hit.point);
+        //    }
+        //    if (hit.collider.CompareTag("Boss"))
+        //    {
+        //        hit.collider.GetComponent<BossHp>()?.TakeDamage(1);
+        //    }
+        //    if (hit.collider.CompareTag("Bosshand"))
+        //    {
+        //        hit.collider.GetComponent<BossHandHp>()?.TakeDamage(1);
+        //    }
+        //}
     }
     // =====================
     // Utility
