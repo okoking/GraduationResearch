@@ -12,14 +12,14 @@ public class PlayAreaCheck : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(transform.root.gameObject);
-        }else
-        {
-            Destroy(gameObject);
-        }
+        //if(Instance == null)
+        //{
+        //    Instance = this;
+        //    DontDestroyOnLoad(transform.root.gameObject);
+        //}else
+        //{
+        //    Destroy(gameObject);
+        //}
     }
 
     //•¶Žš‚ð•\Ž¦

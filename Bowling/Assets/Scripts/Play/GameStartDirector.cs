@@ -23,6 +23,11 @@ public class GameStartDirector : MonoBehaviour
 
     public static bool IsGameStarted { get; private set; }
 
+    private void Awake()
+    {
+        IsGameStarted = false;
+    }
+
     void Start()
     {
         countdownText.gameObject.SetActive(false);

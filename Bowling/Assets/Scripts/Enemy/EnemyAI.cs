@@ -127,6 +127,7 @@ public class EnemyAI : MonoBehaviour
 
     void Awake()
     {
+
         agent = GetComponent<NavMeshAgent>();
         boids = new BoidsSteering(this, neighborRadius, separationWeight, alignmentWeight, cohesionWeight, maxBoidsForce, boidsUpdateInterval);
         agent.radius = 0.6f;
