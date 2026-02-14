@@ -121,6 +121,8 @@ public class SpecialBeam : MonoBehaviour
         currentVFX.transform.SetParent(transform, true);
         currentVFX.SendEvent("OnPlay");
 
+        currentVFX.SetFloat("TimeLimt", beamGauge.beamLifeTime);
+
         SoundManager.Instance.Request("BeamShot");
 
         isActive = true;

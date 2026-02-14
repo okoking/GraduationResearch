@@ -9,6 +9,9 @@ public class BeamGauge : MonoBehaviour
     [SerializeField] float chargeVal = 20f;          // “G“¢”°‚Ì‰ñ•œ—Ê
     [SerializeField] float consumePerSecond = 30f;   // •bŠÔÁ”ï—Ê
 
+
+    public float beamLifeTime;
+
     bool isUsingBeam;
 
     private void Start()
@@ -18,7 +21,7 @@ public class BeamGauge : MonoBehaviour
 
     void Update()
     {
-
+        beamLifeTime = maxGauge / consumePerSecond;
     }
 
     public void Charge()
